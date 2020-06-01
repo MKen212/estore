@@ -14,7 +14,6 @@ include_once("../config/_config.php");
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="css/userForms.css" />
-
 </head>
 
 <body class="text-center">
@@ -80,7 +79,7 @@ include_once("../config/_config.php");
     </div>
     <!-- Result -->
     <div class="row justify-content-center">
-      <?php //TODO include("../controllers/registerUser.php");?>
+      <?php include("../controllers/userRegister.php");?>
     </div>
   </div>
 

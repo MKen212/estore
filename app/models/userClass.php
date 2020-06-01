@@ -11,7 +11,7 @@ class User {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Database Connection Failed: " . $err->getMessage() . "<br />";
+      echo "Error - Database Connection Failed: " . $err->getMessage() . "<br />";
     }
   }
 
@@ -29,27 +29,28 @@ class User {
     try {
       // Check Username does not exist
       $sql = "SELECT UserID FROM users WHERE UserName = '$username'";
-      $statement = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $statement->rowCount();
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $count = $stmt->rowCount();
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Row Count Failed: " . $err->getMessage();
+      $_SESSION["message"] = "Error - Register Check Failed: " . $err->getMessage();
       return false;
     }
     if ($count == 0) {  // Username is unique
       try {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sqlInsUser = "INSERT INTO users
-          (UserName, UserPassword, FirstName, LastName, Email, ContactNo) VALUES
+          (UserName, Password, FirstName, LastName, Email, ContactNo) VALUES
           ('$username', '$passwordHash', '$firstName', '$lastName', '$email', '$contactNo')";
         $this->conn->exec($sqlInsUser);
-        $_SESSION["message"] = "User Name Inserted Success";
-        return ($this->conn->lastInsertId());
+        $newID = $this->conn->lastInsertId();
+        $_SESSION["message"] = "Registration of '$username' was successful.";
+        return $newID;
       } catch (PDOException $err) {
-        $_SESSION["message"] = "Insert Failed: " . $err->getMessage() . "<br />";
+        $_SESSION["message"] = "Error - Register Failed: " . $err->getMessage() . "<br />";
         return false;
       }
     } else {  // Username is not unique
-      $_SESSION["message"] = "User Name is already taken! Please try again.";
+      $_SESSION["message"] = "Error - Username '$username' is already taken!<br />Please try again.";
       return false;
     }
   }
@@ -61,19 +62,29 @@ class User {
    * @return bool             True if Function success
    */
   public function login($username, $password) {
-    $sql = "SELECT UserID, UserPassword, IsAdmin, UserStatus FROM users WHERE UserName = '$username'";
-    $statement = $this->conn->query($sql, PDO::FETCH_ASSOC);
-    $count = $statement->rowCount();
+    try {
+      $sql = "SELECT UserID, Password, IsAdmin, Status FROM users WHERE UserName = '$username'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $count = $stmt->rowCount();
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Login Check Failed: " . $err->getMessage();
+      return false;
+    }
     if ($count != 1) {  // Username not found
       $_SESSION["message"] = "Incorrect User Name or Password entered!";
       return false;
     } else {
-      $result = $statement->fetch();
-      $passwordStatus = password_verify($password, $result["UserPassword"]);
-      $userID = $result["UserID"];
-      $userIsAdmin = $result["IsAdmin"];
-      $userStatus = $result["UserStatus"];
-      $result = null;
+      try {
+        $result = $stmt->fetch();
+        $passwordStatus = password_verify($password, $result["Password"]);
+        $userID = $result["UserID"];
+        $userIsAdmin = $result["IsAdmin"];
+        $userStatus = $result["Status"];
+        $result = null;
+      } catch (PDOException $err) {
+        $_SESSION["message"] = "Error - Login Failed: " . $err->getMessage();
+        return false;
+      }
       if ($passwordStatus == true) {  // Correct Password Entered
         if ($userStatus == true) {  // User is approved
           $_SESSION["userLogin"] = true;
@@ -81,9 +92,8 @@ class User {
           $_SESSION["userID"] = $userID;
           $_SESSION["userName"] = $username;
           return true;
-        } else {
-          // User is unapproved
-          $_SESSION["message"] = "Sorry - User not yet approved!";
+        } else {  // User is unapproved
+          $_SESSION["message"] = "Error - User not yet approved!";
           return false;
         }
       } else {
@@ -99,7 +109,7 @@ class User {
    * @return bool  True if function success
    */
   public function logout() {
-    $_SESSION["message"] = "Thanks for using the LibraryMS.";
+    $_SESSION["message"] = "Thanks for using the eStore.";
     $_SESSION["userLogin"] = false;
     return true;
   }

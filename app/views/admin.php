@@ -37,7 +37,7 @@ include_once("../config/_config.php");
       <?php include("../views/admin-sidebar.php");?>
       <!-- Main -->
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <?php include("../views/admin-home.php");?>
+        <?php include("../views/admin-prodAdd.php");?>
       </main>
     </div>
   </div>

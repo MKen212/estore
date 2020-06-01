@@ -6,7 +6,7 @@
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
       <a class="nav-link" href="../views/admin.php?q=logout">Sign out</a>
-        <?php // TODO include("../controllers/logoutUser.php");?>
+        <?php include("../controllers/userLogout.php");?>
     </li>
   </ul>
 </nav>
