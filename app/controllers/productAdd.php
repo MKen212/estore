@@ -34,9 +34,9 @@ if (isset($_POST["addProduct"])) {
   $priceCHF = cleanInput($_POST["priceCHF"], "float");
   $quantity = cleanInput($_POST["quantity"], "int");
   if ($_FILES["imgFilename"]["error"] == 0) {
-    $imgFilename = basename($_FILES["imgFilename"]["name"]);
+    $imgFilename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
   } else {
-    $imgFilename = NULL;
+    $imgFilename = null;
   }
   $editUserID = $_SESSION["userID"];
   $_POST = [];
@@ -49,8 +49,6 @@ if (isset($_POST["addProduct"])) {
     if ($imgFilename) {  // Image File included - Create dir & upload
       $targetDir = DEFAULTS["productsImgPath"] . $addProduct . "/";
       $targetFile = $targetDir . $imgFilename;
-
-      // NEED WAY TO MAKE FILENAME UNIQUE AS MORE THAN 1 PER PROD
 
       if (!file_exists($targetDir)) {
         mkdir($targetDir, 0750);

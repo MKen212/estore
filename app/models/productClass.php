@@ -24,7 +24,7 @@ class Product {
    * @param int $quantity        Quantity of Product Added
    * @param string $imgFilename  Filename for Product Image
    * @param int $editUserID      User ID who added product
-   * @return int lastInsertID    Product ID of added product or False
+   * @return int $newID          Product ID of added product or False
    */
   public function addProduct($name, $description, $category, $priceCHF, $quantity, $imgFilename, $editUserID) {
     try {
@@ -37,9 +37,22 @@ class Product {
       $_SESSION["message"] = "Error - Add Product Failed: " . $err->getMessage() . "<br />";
       return false;
     }
-
-
   }
 
+  /**
+   * getProductsActive function - Retrieve all ACTIVE product records
+   * @return array $result  Returns all active product records or False 
+   */
+  public function getProductsActive() {
+    try{
+      $sql = "SELECT ProductID, Name, Description, Category, PriceCHF, QtyAvail, ImgFilename FROM products WHERE status = '1'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Get Products Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
 }
 ?>

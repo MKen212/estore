@@ -1,22 +1,21 @@
 <?php
 session_start();
-/* Not setup yet
-if (!$_SESSION["userLogin"] == true) {
+if ($_SESSION["userLogin"] != true) {  // Reject User that is not logged in
   $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
   header("location:../views/user-logout.php");
 }
-*/
 include_once("../config/_config.php");
+if (!isset($_GET["p"])) $_GET["p"] = "admin-home";  // If $_GET not set, page=admin-home
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="decription" content="Electronic Online Store" />
+  <meta name="decription" content="Electronic Online Store Admin" />
   <meta name="author" content="Malarena SA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>eStore - Admin</title>
+  <title>eStore | Admin</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="css/dashboard.css">
@@ -37,7 +36,7 @@ include_once("../config/_config.php");
       <?php include("../views/admin-sidebar.php");?>
       <!-- Main -->
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <?php include("../views/admin-prodAdd.php");?>
+        <?php include("../views/" . $_GET["p"] . ".php");?>
       </main>
     </div>
   </div>

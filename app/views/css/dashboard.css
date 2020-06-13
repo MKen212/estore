@@ -106,7 +106,7 @@
 }
 
 /*
- * Input form
+ * Input forms
  */
 
  .labFixed {
@@ -115,4 +115,8 @@
 
  .inpFixed {
    width: 350px;
+ }
+
+ .taFixed{
+   resize: none;
  }

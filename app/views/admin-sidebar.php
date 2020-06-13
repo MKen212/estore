@@ -4,16 +4,16 @@
     <ul class="nav flex-column">
       <!-- Welcome -->
       <li class="nav-brand">
-        <h6 class="ml-2">Welcome, <?php // TODO include("../controllers/welcomeUser.php")?></h6>
+        <h6 class="ml-2">Welcome, <?php echo $_SESSION["userName"] ?></h6>
         <hr>
       </li>
       <!-- Home -->
       <li class="nav-item">
-        <a class="nav-link active" href="admin-home.php"><span data-feather="home"></span>Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link<?php echo $_GET["p"] == "admin-home" ? " active" : "";?>" href="admin.php?p=admin-home"><span data-feather="home"></span>Home<span class="sr-only">(current)</span></a>
       </li>
-      <!-- Display Books -->
+      <!-- Add Product -->
       <li class="nav-item">
-        <a class="nav-link" href="admin-booksDisplay.php"><span data-feather="book"></span>Display Books</a>
+        <a class="nav-link<?php echo $_GET["p"] == "admin-prodAdd" ? " active" : "";?>" href="admin.php?p=admin-prodAdd"><span data-feather="book"></span>Add Products</a>
       </li>
       <!-- Issued to Me -->
       <li class="nav-item">
