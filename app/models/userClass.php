@@ -16,7 +16,7 @@ class User {
   }
 
   /**
-   * registerUser function - Register a new user
+   * register function - Register a new user
    * @param string $username    User Username
    * @param string $password    User Password
    * @param string $firstName   User First Name
@@ -25,7 +25,7 @@ class User {
    * @param string $contactNo   User Contact Number
    * @return int lastInsertID   User ID of new user or False
    */
-  public function registerUser($username, $password, $firstName, $lastName, $email, $contactNo) {
+  public function register($username, $password, $firstName, $lastName, $email, $contactNo) {
     try {
       // Check Username does not exist
       $sql = "SELECT UserID FROM users WHERE UserName = '$username'";

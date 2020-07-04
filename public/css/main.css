@@ -151,6 +151,11 @@ a#scrollUp i{
 	padding-right:0;
 }
 
+.cart-badge {
+  background:#FE980F;
+  color:#fff;
+}
+
 .usa {
   border-radius: 0;
   color: #B4B1AB;
@@ -1216,7 +1221,7 @@ h2.title {
   border: 1px solid #F7F7F0;
   overflow: hidden;
   padding-bottom: 60px;
-  padding-left: 60px;
+  padding-left: 30px;
   padding-top: 60px;
   position: relative;
 }

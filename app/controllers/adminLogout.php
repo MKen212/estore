@@ -1,10 +1,12 @@
 <?php  // Logout User
-include_once("../models/userClass.php");
 
 if (isset($_GET["q"])) {
+  include_once("../app/models/userClass.php");
+
   $user = new User();
   $user->logout();
   $_GET = [];
-  header("location:../views/user-logout.php");
+  
+  header("location:admin_login.php?p=logout");
   }
 ?>

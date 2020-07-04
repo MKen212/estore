@@ -16,41 +16,86 @@ class Product {
   }
 
   /**
-   * addProduct function - Add Product record
+   * add function - Add Product record
    * @param string $name         Product Name
    * @param string $description  Product Description
    * @param string $category     Product Category 
-   * @param string $priceCHF     Product Price in CHF
+   * @param float $priceLocal   Product Price in Local currency
    * @param int $quantity        Quantity of Product Added
    * @param string $imgFilename  Filename for Product Image
    * @param int $editUserID      User ID who added product
    * @return int $newID          Product ID of added product or False
    */
-  public function addProduct($name, $description, $category, $priceCHF, $quantity, $imgFilename, $editUserID) {
+  public function add($name, $description, $category, $priceCHF, $quantity, $imgFilename, $editUserID) {
     try {
-      $sql = "INSERT INTO products (Name, Description, Category, PriceCHF, QtyAvail, ImgFilename, EditUserID) VALUES ('$name', '$description', '$category', '$priceCHF', '$quantity', '$imgFilename', '$editUserID')";
+      $sql = "INSERT INTO products (Name, Description, Category, PriceLocal, QtyAvail, ImgFilename, EditUserID) VALUES ('$name', '$description', '$category', '$priceCHF', '$quantity', '$imgFilename', '$editUserID')";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
       $_SESSION["message"] = "Product '$name' added successfully.";
       return $newID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Add Product Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = "Error - Product/add Failed: " . $err->getMessage() . "<br />";
       return false;
     }
   }
 
   /**
-   * getProductsActive function - Retrieve all ACTIVE product records
-   * @return array $result  Returns all active product records or False 
+   * count function - Get COUNT of product records
+   * @param bool $status    Product Status (0=Inactive/1=Active/2=Both)
+   * @return array $result  Returns count of defined product records or False 
    */
-  public function getProductsActive() {
-    try{
-      $sql = "SELECT ProductID, Name, Description, Category, PriceCHF, QtyAvail, ImgFilename FROM products WHERE status = '1'";
+  public function count($status) {
+    try {
+      if ($status == 2) {
+        $sql = "SELECT COUNT(*) FROM products";  
+      } else {
+        $sql = "SELECT COUNT(*) FROM products WHERE status = '$status'";
+      }
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Product/count Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
+
+  /**
+   * getPage function - Retrieve Page of product records
+   * @param bool $status    Product Status (0=Inactive/1=Active/2=Both)
+   * @param int $limit      Max number of records to return
+   * @param int $offset     Offset of first record
+   * @return array $result  Returns defined product records or False 
+   */
+  public function getPage($status, $limit, $offset) {
+    try {
+      if ($status == 2) {
+        $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products LIMIT $limit OFFSET $offset";  
+      } else {
+        $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products WHERE Status = '$status' LIMIT $limit OFFSET $offset";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Get Products Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = "Error - Product/getPage Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
+
+  /**
+   * getRecord function - Retrieve single product record
+   * @param bool $productID  Product ID of product required
+   * @return array $result   Returns selected product record or False 
+   */
+  public function getRecord($productID) {
+    try {
+      $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products WHERE ProductID = '$productID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetch();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Product/getRecord Failed: " . $err->getMessage() . "<br />";
       return false;
     }
   }

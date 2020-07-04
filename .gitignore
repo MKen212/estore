@@ -104,7 +104,11 @@ dist
 .tern-port
 
 # local working files
-_localFiles
+_localFiles/
+
+# server ini files
+inifiles/mariaDBCon.ini
+estore.crt
+estore.key
 
 # specific files for this project
-mariaDBCon.ini

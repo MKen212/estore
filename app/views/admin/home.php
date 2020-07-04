@@ -1,6 +1,6 @@
 <!-- Main Section - Admin Home -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Home</h1>
+  <h2>Home</h2>
 </div>
 
 <div>

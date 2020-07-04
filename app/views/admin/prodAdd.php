@@ -1,6 +1,6 @@
 <!-- Main Section - Add Product -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h1 class="h2">Add Products</h1>
+  <h2>Add Products</h2>
 </div>
 
 <!-- Add Products Form -->
@@ -29,11 +29,11 @@
         <option value="shoesMen">Mens Shoes</option>
         <option value="shoesWomen">Womens Shoes</option>
       </select>
-    </div><!-- Price CHF -->
+    </div><!-- Price Local -->
     <div class="form-group row">
-      <label class="col-form-label labFixed" for="priceCHF">Price (CHF):</label>
+      <label class="col-form-label labFixed" for="priceLocal">Price (<?= DEFAULTS["localCurrency"] ?>):</label>
       <div class="inpFixed">
-        <input class="form-control" type="number" name="priceCHF" id="priceCHF" placeholder="Enter Price in CHF" min="0" step="0.01" value="0.00" autocomplete="off" required />
+        <input class="form-control" type="number" name="priceLocal" id="priceLocal" placeholder="Enter Price in <?= DEFAULTS["localCurrency"]; ?>" min="0" step="0.01" value="0.00" autocomplete="off" required />
       </div>
     </div>
     <!-- Quantity -->
@@ -59,7 +59,7 @@
       </div>
       <!-- Results -->
       <div class="inpFixed">
-        <?php include("../controllers/productAdd.php");?>
+        <?php include("../app/controllers/productAdd.php");?>
       </div>
     </div>
   </form>

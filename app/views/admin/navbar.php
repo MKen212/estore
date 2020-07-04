@@ -5,8 +5,8 @@
   <!-- Logout -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="../views/admin.php?q=logout">Sign out</a>
-        <?php include("../controllers/userLogout.php");?>
+      <a class="nav-link" href="admin.php?q=logout">Sign out</a>
+        <?php include("../app/controllers/adminLogout.php");?>
     </li>
   </ul>
 </nav>

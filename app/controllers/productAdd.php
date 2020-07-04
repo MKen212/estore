@@ -1,7 +1,8 @@
 <?php  // Add Products
-include_once("../models/productClass.php");
 
 if (isset($_POST["addProduct"])) {
+  include_once("../app/models/productClass.php");
+
   // Perform File Upload Checks if Image File chosen
   if ($_FILES["imgFilename"]["error"] != 4) {
     // Check Temp Image Upload Errors
@@ -31,7 +32,7 @@ if (isset($_POST["addProduct"])) {
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
   $category = cleanInput($_POST["category"], "string");
-  $priceCHF = cleanInput($_POST["priceCHF"], "float");
+  $priceLocal = cleanInput($_POST["priceLocal"], "float");
   $quantity = cleanInput($_POST["quantity"], "int");
   if ($_FILES["imgFilename"]["error"] == 0) {
     $imgFilename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
@@ -44,7 +45,7 @@ if (isset($_POST["addProduct"])) {
 
   // Create database entry
   $product = new Product();
-  $addProduct = $product->addProduct($name, $description, $category, $priceCHF, $quantity, $imgFilename, $editUserID);
+  $addProduct = $product->add($name, $description, $category, $priceLocal, $quantity, $imgFilename, $editUserID);
   if ($addProduct) {  // Database Entry Success
     if ($imgFilename) {  // Image File included - Create dir & upload
       $targetDir = DEFAULTS["productsImgPath"] . $addProduct . "/";

@@ -1,7 +1,8 @@
 <?php  // Register New User
-include_once("../models/userClass.php");
 
 if (isset($_POST["register"])) {
+  include_once("../app/models/userClass.php");
+  
   $username = cleanInput($_POST["estUsername"], "string");
   $password = cleanInput($_POST["estPassword"], "password");
   $firstName = cleanInput($_POST["estFirstName"], "string");
@@ -11,7 +12,7 @@ if (isset($_POST["register"])) {
   $_POST = [];
 
   $user = new User();
-  $newUser = $user->registerUser($username, $password, $firstName, $lastName, $email, $contactNo);
+  $newUser = $user->register($username, $password, $firstName, $lastName, $email, $contactNo);
   unset($user, $password);
   if ($newUser) {
     // Send Admin message
