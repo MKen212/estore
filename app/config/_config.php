@@ -57,7 +57,7 @@ function cleanInput($input, $type) {
  */
 function pagination($subPage, $lastPage, $url) {
   $midPage = ceil(DEFAULTS["paginationItems"] / 2);
-  if ($subPage <= $midPage) {  // First Section
+  if ($subPage <= $midPage  || $lastPage <= DEFAULTS["paginationItems"]) {  // First Section
     $leftScroll = 0;
     $firstItem = 1;
     if ($lastPage > DEFAULTS["paginationItems"]) {
@@ -91,12 +91,14 @@ function pagination($subPage, $lastPage, $url) {
 
 /**
  * addToCart function - Used to add items to the Cart
- * @param int $productID     ProductID of item ordered
- * @param float $priceLocal  Price in Local currency of item ordered
- * @param int $qtyOrdered    Quantity of item ordered
- * @return bool              Returns true on completion
+ * @param int $productID       ProductID of item ordered
+ * @param string $name         Product Name
+ * @param float $priceLocal    Price in Local currency of item ordered
+ * @param int $qtyOrdered      Quantity of item ordered
+ * @param string $imgFilename  Filename for Product Image
+ * @return bool                Returns true on completion
  */
-function addToCart($productID, $priceLocal, $qtyOrdered) {
+function addToCart($productID, $name, $priceLocal, $qtyOrdered, $ImgFilename) {
   if (!isset($_SESSION["cart"][0])) {  // Create Empty Session Cart if not already created
     $_SESSION["cart"][0] = [
       "cartItems" => 0,
@@ -108,8 +110,10 @@ function addToCart($productID, $priceLocal, $qtyOrdered) {
   $newItem = [
     "itemID" => $newItemID,
     "productID" => $productID,
+    "name" => $name,
     "priceLocal" => $priceLocal,
     "qtyOrdered" => $qtyOrdered,
+    "imgFilename" => $ImgFilename,
     "timestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
@@ -117,6 +121,23 @@ function addToCart($productID, $priceLocal, $qtyOrdered) {
   $_SESSION["cart"][0]["cartQuantity"] += $newItem["qtyOrdered"];
   $_SESSION["cart"][0]["cartValue"] += ($newItem["priceLocal"] * $newItem["qtyOrdered"]);
   return true;
+}
+
+/**
+ * msgPrep function - Used to add relevant DIV Classes to results message
+ * @param string $type       Type of message (success / warning / danger)
+ * @param string $msg        Message Content
+ * @return string $prepdMsg  Prepared Message
+ */
+function msgPrep($type, $msg) {
+  if ($type == "success") {
+    $prepdMsg = '<div class="alert alert-success">' . $msg . '<div>';
+  } else if ($type == "warning") {
+    $prepdMsg = '<div class="alert alert-warning">' . $msg . '<div>';
+  } else if ($type == "danger") {
+    $prepdMsg = '<div class="alert alert-danger">' . $msg . '<div>';
+  }
+  return $prepdMsg;
 }
 
 ?>

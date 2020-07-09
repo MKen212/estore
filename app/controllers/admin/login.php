@@ -1,5 +1,7 @@
-<?php  // Verify & Login User
-if (isset($_POST["login"])){
+<?php  // Display Login Form
+include("../app/views/admin/loginForm.php");
+
+if (isset($_POST["login"])){  // Verify & Login User
   include_once("../app/models/userClass.php");
 
   $username = cleanInput($_POST["estUsername"], "string");
@@ -11,7 +13,7 @@ if (isset($_POST["login"])){
   unset($user, $password);  
   if ($login) {
     // Login Success
-    header("location:admin.php?p=home");
+    header("location:admin_dashboard.php?p=home");
   } else {
     // Login Failure
     header("location:admin_login.php?p=logout");

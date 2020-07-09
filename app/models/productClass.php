@@ -11,7 +11,7 @@ class Product {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - Database Connection Failed: " . $err->getMessage() . "<br />";
+      echo "Error - Product/DB Connection Failed: " . $err->getMessage() . "<br />";
     }
   }
 

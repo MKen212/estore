@@ -9,13 +9,14 @@ $lastPage = ceil($totRecords / DEFAULTS["productsPerPage"]);
 isset($_GET["sp"]) ? $subPage = $_GET["sp"] : $subPage = 1;
 if ($subPage > $lastPage) $subPage = $lastPage;
 $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
+
+include("../app/views/shop/advert.php");
 ?>
 
-<!-- featured_items -->
-<div class="featured_items">
+<div class="featured_items"><!-- featured_items -->
   <h2 class="title text-center">Featured Items</h2>
 
-  <?php // Loop through all ACTIVE Products and output a page of the values
+  <?php  // Loop through all ACTIVE Products and output a page of the values
   foreach (new RecursiveArrayIterator($product->getPage(1, DEFAULTS["productsPerPage"], $curOffset)) as $value) {
     if ($value["ImgFilename"] == "") {
       $fullPath = DEFAULTS["noImgUploaded"];

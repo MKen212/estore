@@ -1,11 +1,6 @@
-<!-- Main Section - Add Product -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add Products</h2>
-</div>
-
-<!-- Add Products Form -->
+<!-- Products Form -->
 <div>
-  <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="addProdForm">
+  <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="ProductsForm">
     <!-- Name -->
     <div class="form-group row">
       <label class="col-form-label labFixed" for="name">Name:</label>
@@ -58,8 +53,7 @@
         <button class="btn btn-primary" type="submit" name="addProduct">Add Product</button>
       </div>
       <!-- Results -->
-      <div class="inpFixed">
-        <?php include("../app/controllers/productAdd.php");?>
+      <div class="inpFixed" id="productAddRes">
       </div>
     </div>
   </form>

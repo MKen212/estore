@@ -9,11 +9,11 @@
       </li>
       <!-- Home -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "home" ? " active" : "";?>" href="admin.php?p=home"><span data-feather="home"></span>Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link<?= $_GET["p"] == "home" ? " active" : "";?>" href="admin_dashboard.php?p=home"><span data-feather="home"></span>Home<span class="sr-only">(current)</span></a>
       </li>
       <!-- Add Product -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "prodAdd" ? " active" : "";?>" href="admin.php?p=prodAdd"><span data-feather="book"></span>Add Products</a>
+        <a class="nav-link<?= $_GET["p"] == "productAdd" ? " active" : "";?>" href="admin_dashboard.php?p=productAdd"><span data-feather="book"></span>Add Products</a>
       </li>
       <!-- Issued to Me -->
       <li class="nav-item">

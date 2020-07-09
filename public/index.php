@@ -25,8 +25,12 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 </head><!--/head-->
 
 <body>
-  <?php include("../app/views/shop/header.php");?>
-	
+  <?php include("../app/views/shop/header.php");
+
+  if($_GET["p"] == "cart" || $_GET["p"] == "checkout") : 
+    include("../app/controllers/shop/" . $_GET["p"] . ".php");
+  else : 
+  ?>
 	<section>
 		<div class="container">
 			<div class="row">
@@ -42,7 +46,9 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 		</div>
 	</section>
   
-  <?php include("../app/views/shop/footer.php");?>
+  <?php
+  endif;
+  include("../app/views/shop/footer.php");?>
   
   <script src="js/jquery.js"></script>
   <script src="js/price-range.js"></script>

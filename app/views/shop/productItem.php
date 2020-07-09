@@ -1,4 +1,4 @@
-<div class="col-sm-4"><!--Featured Item-->
+<div class="col-sm-4"><!--Product Item-->
   <div class="product-image-wrapper">
     <div class="single-products">
       <div class="productinfo text-center">
@@ -28,4 +28,4 @@
       </ul>
     </div>
   </div>
-</div><!--/Featured Item-->
+</div><!--/Product Item-->

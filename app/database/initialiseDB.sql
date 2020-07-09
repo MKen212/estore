@@ -45,6 +45,24 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (EditUserID) REFERENCES users (UserID)
 );
 
+-- Create orders table
+CREATE TABLE IF NOT EXISTS orders (
+  `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `BillFullName` VARCHAR(50) NOT NULL,
+  `BillAddress1` VARCHAR(50) NOT NULL,
+  `BillAddress2` VARCHAR(50),
+  `BillCity` VARCHAR(50) NOT NULL,
+  `BillRegion` VARCHAR(50),
+  `BillCountry` VARCHAR(50) NOT NULL,
+  `BillPostcode` VARCHAR(20) NOT NULL,
+  `BillEmail` VARCHAR(50) NOT NULL,
+  `BillContact` VARCHAR(50) NOT NULL,
+
+
+-- UP TO HERE SORTING ORDERS TABLE, ADDRESS STANDARDS, COUNTRY CODES, etc.
+
+)
+
 /*
 -- Create messages table
 CREATE TABLE IF NOT EXISTS messages (

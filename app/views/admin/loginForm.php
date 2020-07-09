@@ -24,9 +24,3 @@
     <a class="ml-3" href="admin_login.php?p=register">Create new account</a>
   </form>
 </div>
-<!-- Result -->
-<div class="row justify-content-center">
-  <?php 
-    include("../app/controllers/adminLogin.php");
-  ?>
-</div>

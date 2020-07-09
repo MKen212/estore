@@ -1,4 +1,4 @@
-<?php // Shop - Product Details
+<?php  // Shop - Product Details
 include_once("../app/models/productClass.php");
 $product = new Product();
 
@@ -13,18 +13,17 @@ if ($value["ImgFilename"] == "") {
 $locPrice = DEFAULTS["localCurrency"] . " " . $value["PriceLocal"];
 $quantity = $value["QtyAvail"] > 0 ? 1 : 0;
 
+include("../app/views/shop/productInfo.php");
+
 // If Add-To-Cart POSTed then update SESSION variables
 if (isset($_POST["addProdToCart"])) {
   $qtyordered = cleanInput($_POST["qtyOrdered"], "int");
   $_POST=[];
 
-  addToCart($value["ProductID"], $value["PriceLocal"], $qtyordered);
-  ?>
-  <script>
+  addToCart($value["ProductID"], $value["Name"], $value["PriceLocal"], $qtyordered, $value["ImgFilename"]);
+  ?><script>
     document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["cartItems"];?>;
-  </script>
-  <?php
+  </script><?php
 }
 
-include("../app/views/shop/productInfo.php");
 ?>

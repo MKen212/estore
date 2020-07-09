@@ -62,8 +62,8 @@
             <ul class="nav navbar-nav">
               <li><a href=""><i class="fa fa-user"></i> Account</a></li>
               <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
-              <li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-              <li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) ? $_SESSION["cart"][0]["cartItems"] : null; ?></span></a></li>
+              <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+              <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) ? $_SESSION["cart"][0]["cartItems"] : null; ?></span></a></li>
               <li><a href="admin_login.php"><i class="fa fa-lock"></i> Login</a></li>
             </ul>
           </div>
@@ -91,8 +91,8 @@
                 <ul role="menu" class="sub-menu">
                   <li><a <?= $_GET["p"] == "products" ? 'class="active"' : null;?>href="index.php?p=products&sp=1">Products</a></li>
                   <li><a <?= $_GET["p"] == "productDetails" ? 'class="active"' : null;?>href="index.php?p=productDetails&id=1">Product Details</a></li> 
-                  <li><a href="checkout.html">Checkout</a></li> 
-                  <li><a href="cart.html">Cart</a></li> 
+                  <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout">Checkout</a></li> 
+                  <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart">Cart</a></li> 
                   <li><a href="login.html">Login</a></li> 
                 </ul>
               </li> 
@@ -116,9 +116,3 @@
     </div>
   </div><!--/header-bottom-->  
 </header>
-
-<section id="advertisement"><!--Advertising Section-->
-	<div class="container">
-		<img src="images/shop/advertisement.jpg" alt="" />
-	</div>
-</section><!--/Advertising Section-->

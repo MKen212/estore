@@ -11,7 +11,7 @@ class User {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - Database Connection Failed: " . $err->getMessage() . "<br />";
+      echo "Error - User/DB Connection Failed: " . $err->getMessage() . "<br />";
     }
   }
 
@@ -32,7 +32,7 @@ class User {
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Register Check Failed: " . $err->getMessage();
+      $_SESSION["message"] = "Error - User/register check Failed: " . $err->getMessage();
       return false;
     }
     if ($count == 0) {  // Username is unique
@@ -46,7 +46,7 @@ class User {
         $_SESSION["message"] = "Registration of '$username' was successful.";
         return $newID;
       } catch (PDOException $err) {
-        $_SESSION["message"] = "Error - Register Failed: " . $err->getMessage() . "<br />";
+        $_SESSION["message"] = "Error - User/register Failed: " . $err->getMessage() . "<br />";
         return false;
       }
     } else {  // Username is not unique
@@ -67,11 +67,11 @@ class User {
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Login Check Failed: " . $err->getMessage();
+      $_SESSION["message"] = "Error - User/login Check Failed: " . $err->getMessage();
       return false;
     }
     if ($count != 1) {  // Username not found
-      $_SESSION["message"] = "Incorrect User Name or Password entered!";
+      $_SESSION["message"] = "Incorrect Username or Password entered!";
       return false;
     } else {
       try {
@@ -82,7 +82,7 @@ class User {
         $userStatus = $result["Status"];
         $result = null;
       } catch (PDOException $err) {
-        $_SESSION["message"] = "Error - Login Failed: " . $err->getMessage();
+        $_SESSION["message"] = "Error - User/Login Failed: " . $err->getMessage();
         return false;
       }
       if ($passwordStatus == true) {  // Correct Password Entered
@@ -98,7 +98,7 @@ class User {
         }
       } else {
         // Password invalid
-        $_SESSION["message"] = "Incorrect User Name or Password entered!";
+        $_SESSION["message"] = "Incorrect Username or Password entered!";
         return false;
       }
     }
@@ -109,7 +109,7 @@ class User {
    * @return bool  True if function success
    */
   public function logout() {
-    $_SESSION["message"] = "Thanks for using the eStore.";
+    $_SESSION["message"] = "Thanks for using eStore.";
     $_SESSION["userLogin"] = false;
     return true;
   }

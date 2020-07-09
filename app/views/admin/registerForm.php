@@ -53,6 +53,5 @@
   </form>
 </div>
 <!-- Result -->
-<div class="row justify-content-center">
-  <?php include("../app/controllers/adminRegister.php");?>
+<div class="row justify-content-center" id="adminRegRes">
 </div>

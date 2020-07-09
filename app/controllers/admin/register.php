@@ -1,6 +1,7 @@
-<?php  // Register New User
+<?php  // Display Registration Form
+include("../app/views/admin/registerForm.php");
 
-if (isset($_POST["register"])) {
+if (isset($_POST["register"])) {  // Register New User
   include_once("../app/models/userClass.php");
   
   $username = cleanInput($_POST["estUsername"], "string");
@@ -14,19 +15,17 @@ if (isset($_POST["register"])) {
   $user = new User();
   $newUser = $user->register($username, $password, $firstName, $lastName, $email, $contactNo);
   unset($user, $password);
+
   if ($newUser) {
-    // Send Admin message
-    // include_once("../models/messageClass.php");
-    // $message = new Message();
-    // $notify = $message->addMessage($newUser, DEFAULTS["userAdminUserID"], "New User", "Please process my New User registration.");
-    // ECHO "They will receive an email once their account is approved." .
     // Registration Success
-    echo "<div class='alert alert-success form-user'>" .
-      $_SESSION["message"] . "</div>";
+    $resultMsg = msgPrep("success", $_SESSION["message"]);
   } else {
     // Registration Failure
-    echo "<div class='alert alert-danger form-user'>" .
-      $_SESSION["message"] . "</div>";
+    $resultMsg = msgPrep("danger", $_SESSION["message"]);
   }
+  ?><script>
+    document.getElementById("adminRegRes").innerHTML = `<?= $resultMsg;?>`;
+  </script><?php
+  unset($_SESSION["message"]);
 }
 ?>

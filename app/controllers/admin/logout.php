@@ -5,8 +5,8 @@ if (isset($_GET["q"])) {
 
   $user = new User();
   $user->logout();
-  $_GET = [];
-  
-  header("location:admin_login.php?p=logout");
-  }
+}
+$_GET = [];
+
+include("../app/views/admin/logout.php");
 ?>
