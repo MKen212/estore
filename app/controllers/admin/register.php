@@ -4,16 +4,21 @@ include("../app/views/admin/registerForm.php");
 if (isset($_POST["register"])) {  // Register New User
   include_once("../app/models/userClass.php");
   
-  $username = cleanInput($_POST["estUsername"], "string");
-  $password = cleanInput($_POST["estPassword"], "password");
-  $firstName = cleanInput($_POST["estFirstName"], "string");
-  $lastName = cleanInput($_POST["estLastName"], "string");
-  $email = cleanInput($_POST["estEmail"], "email");
-  $contactNo = cleanInput($_POST["estContactNo"], "int");
+  $username = cleanInput($_POST["username"], "string");
+  $password = cleanInput($_POST["password"], "password");
+  $fullName = cleanInput($_POST["fullName"], "string");
+  $address1 = cleanInput($_POST["address1"], "string");
+  $address2 = cleanInput($_POST["address2"], "string");
+  $city = cleanInput($_POST["city"], "string");
+  $region = cleanInput($_POST["region"], "string");
+  $countryCode = cleanInput($_POST["countryCode"], "string");
+  $postcode = cleanInput($_POST["postcode"], "string");
+  $email = cleanInput($_POST["email"], "email");
+  $contactNo = cleanInput($_POST["contactNo"], "int");
   $_POST = [];
 
   $user = new User();
-  $newUser = $user->register($username, $password, $firstName, $lastName, $email, $contactNo);
+  $newUser = $user->register($username, $password, $fullName, $address1, $address2, $city, $region, $countryCode, $postcode, $email, $contactNo);
   unset($user, $password);
 
   if ($newUser) {

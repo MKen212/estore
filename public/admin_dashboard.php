@@ -5,6 +5,7 @@ if ($_SESSION["userLogin"] != true) {  // Reject User that is not logged in
   header("location:admin_login.php?p=logout");
 }
 include_once("../app/config/_config.php");
+include_once("../app/helpers/helperFunctions.php");
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 ?>
 <!DOCTYPE html>

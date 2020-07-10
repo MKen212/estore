@@ -28,7 +28,7 @@ class Product {
    */
   public function add($name, $description, $category, $priceCHF, $quantity, $imgFilename, $editUserID) {
     try {
-      $sql = "INSERT INTO products (Name, Description, Category, PriceLocal, QtyAvail, ImgFilename, EditUserID) VALUES ('$name', '$description', '$category', '$priceCHF', '$quantity', '$imgFilename', '$editUserID')";
+      $sql = "INSERT INTO products (`Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename`, `EditUserID`) VALUES ('$name', '$description', '$category', '$priceCHF', '$quantity', '$imgFilename', '$editUserID')";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
       $_SESSION["message"] = "Product '$name' added successfully.";
@@ -70,9 +70,9 @@ class Product {
   public function getPage($status, $limit, $offset) {
     try {
       if ($status == 2) {
-        $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products LIMIT $limit OFFSET $offset";  
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename` FROM products LIMIT $limit OFFSET $offset";  
       } else {
-        $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products WHERE Status = '$status' LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -90,7 +90,7 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT ProductID, Name, Description, Category, PriceLocal, QtyAvail, ImgFilename FROM products WHERE ProductID = '$productID'";
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

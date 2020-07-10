@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("../app/config/_config.php");
+include_once("../app/helpers/helperFunctions.php");
 if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
 ?>
 <!DOCTYPE html>

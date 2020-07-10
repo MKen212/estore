@@ -1,4 +1,31 @@
 <?php  // Shop - Checkout
+if (isset($_SESSION["userLogin"])) {  // User is Logged In - Get User Record
+  $userData = [
+    "fullName" => "AdminTest",
+    "Address1" => "Address One",
+    "Address2" => "Address Two",
+    "City" => "Lausanne",
+    "Region" => "Vaud",
+    "CountryCode" => "CH",
+    "Postcode" => "1012",
+    "Email" => "mk@213.com",
+    "ContactNo" => "121212"
+  ];
+} else {  // User is not Logged In - Leave $userData empty
+  $userData = [
+  "fullName" => null,
+  "Address1" => null,
+  "Address2" => null,
+  "City" => null,
+  "Region" => null,
+  "CountryCode" => DEFAULTS["countryCode"],
+  "Postcode" => null,
+  "Email" => null,
+  "ContactNo" => null
+];
+}
+
+// UP TO HERE. NEED TO CHECK WHETHER YOU CAN GET DATA FROM $_POST INSTEAD AND HOW TO CREATE EMPTY DATA WITHOUT SPECIFYING ALL THE FIELDS. CAN LOOK AT CODEIGNITER DEMO FOR OPTIONS
 
 ?>
 
@@ -15,52 +42,20 @@
       <p>Please <a href="">Login</a> to use the billing information from your account, or continue as a Guest</p>
     </div>
 
-    <div class="shopper-info"><!--shopper_information-->
-      <div class="row">
-        <div class="col-sm-8 clearfix">
-          <div class="bill-to">
-            <div class="form-one"><!--billing_information-->
-              <p>Bill To</p>
-              <form>
-                <input type="text" placeholder="Full Name">
-                <input type="text" placeholder="Address 1">
-                <input type="text" placeholder="Address 2">
-                <input type="text" placeholder="Town/City">
-                <input type="text" placeholder="State/Province/Region">
-                <input type="text" placeholder="Country">
-                <input type="text" placeholder="Postcode">
-                <input type="text" placeholder="Email">
-                <input type="text" placeholder="Contact Telephone">
-              </form>
-            </div><!--/billing_information-->
-            <div class="form-two"><!--shipping_information-->
-              <p>Ship To</p>
-              <form>
-                <input type="text" placeholder="Full Name">
-                <input type="text" placeholder="Address 1">
-                <input type="text" placeholder="Address 2">
-                <input type="text" placeholder="Town/City">
-                <input type="text" placeholder="State/Province/Region">
-                <input type="text" placeholder="Country">
-                <input type="text" placeholder="Postcode">
-                <input type="text" placeholder="Email">
-                <input type="text" placeholder="Contact Telephone">
-              </form>
-            </div><!--/shipping_information-->
-          </div>
-        </div>
-        <div class="col-sm-4">
-          <div class="order-message">
-            <p>Shipping Instructions</p>
-            <textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-            <label><input type="checkbox"> Copy Shipping Details from Billing Details</label>
-          </div>	
-        </div>					
-      </div>
-    </div><!--/shopper_information-->
+    <?php include("../app/views/shop/shopperForm.php"); ?>
+
+    <div>
+      <pre>
+      <?php
+        if (isset($_POST["placeOrder"])) {
+          print_r($_POST);
+        }
+      ?>
+      </pre>
+    </div>
 
     <div class="review-payment">
-      <h2>Review & Payment</h2>
+      <h2>Review Order & Payment</h2>
     </div>
 
     <div class="table-responsive cart_info">

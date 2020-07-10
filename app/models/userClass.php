@@ -17,18 +17,23 @@ class User {
 
   /**
    * register function - Register a new user
-   * @param string $username    User Username
-   * @param string $password    User Password
-   * @param string $firstName   User First Name
-   * @param string $lastName    User Last Name
-   * @param string $email       User Email Address
-   * @param string $contactNo   User Contact Number
-   * @return int lastInsertID   User ID of new user or False
+   * @param string $username     User Username
+   * @param string $password     User Password
+   * @param string $firstName    User Full Name
+   * @param string $address1     User Address 1
+   * @param string $address2     User Address 2
+   * @param string $city         User City
+   * @param string $region       User Region
+   * @param string $countryCode  User Country Code
+   * @param string $postcode     User Postcode
+   * @param string $email        User Email Address
+   * @param string $contactNo    User Contact Number
+   * @return int lastInsertID    User ID of new user or False
    */
-  public function register($username, $password, $firstName, $lastName, $email, $contactNo) {
+  public function register($username, $password, $fullName, $address1, $address2, $city, $region, $countryCode, $postcode, $email, $contactNo) {
     try {
       // Check Username does not exist
-      $sql = "SELECT UserID FROM users WHERE UserName = '$username'";
+      $sql = "SELECT `UserID` FROM users WHERE `UserName` = '$username'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
@@ -39,8 +44,8 @@ class User {
       try {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sqlInsUser = "INSERT INTO users
-          (UserName, Password, FirstName, LastName, Email, ContactNo) VALUES
-          ('$username', '$passwordHash', '$firstName', '$lastName', '$email', '$contactNo')";
+          (`UserName`, `Password`, `FullName`, `Address1`, `Address2`, `City`, `Region`, `CountryCode`, `Postcode`, `Email`, `ContactNo`) VALUES
+          ('$username', '$passwordHash', '$fullName', '$address1', '$address2', '$city', '$region', '$countryCode', '$postcode', '$email', '$contactNo')";
         $this->conn->exec($sqlInsUser);
         $newID = $this->conn->lastInsertId();
         $_SESSION["message"] = "Registration of '$username' was successful.";
@@ -63,7 +68,7 @@ class User {
    */
   public function login($username, $password) {
     try {
-      $sql = "SELECT UserID, Password, IsAdmin, Status FROM users WHERE UserName = '$username'";
+      $sql = "SELECT `UserID`, `Password`, `IsAdmin`, `Status` FROM users WHERE `UserName` = '$username'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
