@@ -63,9 +63,9 @@
       <div class="col-sm-6">
         <div class="total_area">
           <ul>
-            <li>Cart Sub Total <span><?= $cartTotal ?></span></li>
-            <li>Shipping Cost <span>Free</span></li>
-            <li>Total <span><?= $cartTotal ?></span></li>
+            <li>Cart Sub Total <span><?= symValue($cart0["cartSubTotal"]); ?></span></li>
+            <li>Shipping Cost <span><?= symValue($cart0["cartShipping"]); ?></span></li>
+            <li>TOTAL <span><?= symValue($cart0["cartTotal"]); ?></span></li>
           </ul>
             <a class="btn btn-default update" href="">Update</a>
             <a class="btn btn-default check_out" href="">Check Out</a>

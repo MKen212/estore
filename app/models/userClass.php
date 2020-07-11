@@ -119,5 +119,21 @@ class User {
     return true;
   }
 
+  /**
+   * getRecord function - Retrive single user record
+   * @param int $userID    User ID of User required
+   * @param array $result  Returns selected User record or False
+   */
+  public function getRecord($userID) {
+    try {
+      $sql = "SELECT `FullName`, `Address1`, `Address2`, `City`, `Region`, `CountryCode`, `Postcode`, `Email`, `ContactNo` FROM users WHERE `UserID` = '$userID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetch();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - User/getRecord Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
 }
 ?>

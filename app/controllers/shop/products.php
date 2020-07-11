@@ -17,13 +17,12 @@ include("../app/views/shop/advert.php");
   <h2 class="title text-center">Featured Items</h2>
 
   <?php  // Loop through all ACTIVE Products and output a page of the values
-  foreach (new RecursiveArrayIterator($product->getPage(1, DEFAULTS["productsPerPage"], $curOffset)) as $value) {
-    if ($value["ImgFilename"] == "") {
+  foreach (new RecursiveArrayIterator($product->getPage(1, DEFAULTS["productsPerPage"], $curOffset)) as $values) {
+    if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
       $fullPath = DEFAULTS["noImgUploaded"];
     } else {
-      $fullPath = DEFAULTS["productsImgPath"] . $value["ProductID"] . "/" . $value["ImgFilename"];
+      $fullPath = DEFAULTS["productsImgPath"] . $values["ProductID"] . "/" . $values["ImgFilename"];
     }
-    $locPrice = DEFAULTS["localCurrency"] . " " . $value["PriceLocal"];
     include("../app/views/shop/productItem.php");
   }
   ?>

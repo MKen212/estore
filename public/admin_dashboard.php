@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION["userLogin"] != true) {  // Reject User that is not logged in
+if (!isset($_SESSION["userLogin"])) {  // Reject User that is not logged in
   $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
   header("location:admin_login.php?p=logout");
 }

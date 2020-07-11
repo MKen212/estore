@@ -85,12 +85,12 @@ class Product {
 
   /**
    * getRecord function - Retrieve single product record
-   * @param bool $productID  Product ID of product required
-   * @return array $result   Returns selected product record or False 
+   * @param int $productID  Product ID of product required
+   * @return array $result  Returns selected product record or False 
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `Name`, `Description`, `Category`, `PriceLocal`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

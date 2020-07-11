@@ -1,31 +1,9 @@
 <?php  // Shop - Checkout
-if (isset($_SESSION["userLogin"])) {  // User is Logged In - Get User Record
-  $userData = [
-    "fullName" => "AdminTest",
-    "Address1" => "Address One",
-    "Address2" => "Address Two",
-    "City" => "Lausanne",
-    "Region" => "Vaud",
-    "CountryCode" => "CH",
-    "Postcode" => "1012",
-    "Email" => "mk@213.com",
-    "ContactNo" => "121212"
-  ];
-} else {  // User is not Logged In - Leave $userData empty
-  $userData = [
-  "fullName" => null,
-  "Address1" => null,
-  "Address2" => null,
-  "City" => null,
-  "Region" => null,
-  "CountryCode" => DEFAULTS["countryCode"],
-  "Postcode" => null,
-  "Email" => null,
-  "ContactNo" => null
-];
+if (!isset($_POST["saveShopper"]) && isset($_SESSION["userLogin"])) {  // User has not yet POSTed form and IS logged In - Get User Record
+  include_once("../app/models/userClass.php");
+  $user = new User;
+  $_POST = $user->getRecord($_SESSION["userID"]);
 }
-
-// UP TO HERE. NEED TO CHECK WHETHER YOU CAN GET DATA FROM $_POST INSTEAD AND HOW TO CREATE EMPTY DATA WITHOUT SPECIFYING ALL THE FIELDS. CAN LOOK AT CODEIGNITER DEMO FOR OPTIONS
 
 ?>
 
@@ -42,14 +20,28 @@ if (isset($_SESSION["userLogin"])) {  // User is Logged In - Get User Record
       <p>Please <a href="">Login</a> to use the billing information from your account, or continue as a Guest</p>
     </div>
 
-    <?php include("../app/views/shop/shopperForm.php"); ?>
+    <?php
+      include("../app/views/shop/shopperForm.php");
+
+      if (isset($_POST["saveShopper"])) {  // Save ShopperInfo to $_SESSION
+        $_SESSION["cart"][0]["shopperInfo"] = $_POST;
+      
+      // UP TO HERE - Display Cart if ShopperInfo Completed
+      
+      
+      }
+
+      
+      
+    ?>
 
     <div>
       <pre>
       <?php
-        if (isset($_POST["placeOrder"])) {
-          print_r($_POST);
-        }
+        echo "SESSION: ";
+        print_r($_SESSION);
+        echo "<br />POST: ";
+        print_r($_POST);
       ?>
       </pre>
     </div>

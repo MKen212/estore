@@ -57,6 +57,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   <script src="js/bootstrap.min.js"></script>
   <script src="js/jquery.prettyPhoto.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/estore.js"></script>
 
 </body>
 </html>

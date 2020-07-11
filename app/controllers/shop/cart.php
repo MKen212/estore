@@ -15,7 +15,7 @@
       <div style="margin-bottom:50px">Your Shopping Cart is currently empty.</div>
     <?php else :?>
       <div class="table-responsive cart_info">
-        <table class="table table-condensed">
+        <table class="table table-condensed" style="margin-bottom:0px">
           <thead>
             <tr class="cart_menu">
               <td class="image">Item</td>
@@ -28,31 +28,41 @@
           </thead>
           <tbody>
 
-          <?php  // Loop through Cart and output a row per item
-            foreach ($_SESSION["cart"] as $key => $value) {
-              if ($key == 0) { // Get Summary Details
-                $cartTotal = DEFAULTS["localCurrency"] . " " . $value["cartValue"];
-                continue;
-              }
-              if ($value["imgFilename"] == "") {
-                $fullPath = DEFAULTS["noImgUploaded"];
-              } else {
-                $fullPath = DEFAULTS["productsImgPath"] . $value["productID"] . "/" . $value["imgFilename"];
-              }
-              $locPrice = DEFAULTS["localCurrency"] . " " . $value["priceLocal"];
-              $itemPrice = DEFAULTS["localCurrency"] . " " . ($value["qtyOrdered"] * $value["priceLocal"]);
+            <?php  // Loop through Cart and output a row per item
+              foreach ($_SESSION["cart"] as $key => $values) {
+                if ($key == 0) { // Get Summary Details
+                  $cart0 = $values;
+                  continue;
+                }
+                if ($values["imgFilename"] == null || $values["imgFilename"] == "") {
+                  $fullPath = DEFAULTS["noImgUploaded"];
+                } else {
+                  $fullPath = DEFAULTS["productsImgPath"] . $values["productID"] . "/" . $values["imgFilename"];
+                }
 
-              include("../app/views/shop/cartItem.php");
-            }
-          ?>
+                include("../app/views/shop/cartItem.php");
+              }
+            ?>
 
+            <tr class="cart_menu"><!--sub_total-->
+              <td></td>
+              <td class="description">
+                <h4>Cart Sub-Totals:</h4>
+              </td>
+              <td class="price">
+                <h4><?= $cart0["cartItems"]; ?> Item(s)</h4>
+              </td>
+              <td class="quantity">
+                <input class="cart_quantity_input" type="text" name="quantity" value="<?= $cart0["cartQuantity"]; ?>"  size="2" readonly />
+              </td>
+              <td class="total">
+                <h4><?= symValue($cart0["cartSubTotal"]); ?></h4>
+              </td>
+              <td></td>
+            </tr><!--/sub_total-->
           </tbody>
         </table>
       </div>
     <?php endif;?>
   </div>
 </section><!--/cart_items-->
-
-<?php  // Cart Summary
-if (isset($_SESSION["cart"][0])) include("../app/views/shop/cartSummary.php");
-?>

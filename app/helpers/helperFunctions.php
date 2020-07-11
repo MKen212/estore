@@ -77,7 +77,9 @@ function addToCart($productID, $name, $priceLocal, $qtyOrdered, $ImgFilename) {
     $_SESSION["cart"][0] = [
       "cartItems" => 0,
       "cartQuantity" => 0,
-      "cartValue" => 0.00,
+      "cartSubTotal" => 0.00,
+      "cartShipping" => 0.00,
+      "cartTotal" => 0.00,
     ];
   }
   $newItemID = $_SESSION["cart"][0]["cartItems"] + 1;
@@ -93,7 +95,10 @@ function addToCart($productID, $name, $priceLocal, $qtyOrdered, $ImgFilename) {
   $_SESSION["cart"][$newItemID] = $newItem;
   $_SESSION["cart"][0]["cartItems"] = $newItemID;
   $_SESSION["cart"][0]["cartQuantity"] += $newItem["qtyOrdered"];
-  $_SESSION["cart"][0]["cartValue"] += ($newItem["priceLocal"] * $newItem["qtyOrdered"]);
+  $_SESSION["cart"][0]["cartSubTotal"] += ($newItem["priceLocal"] * $newItem["qtyOrdered"]);
+  // TODO Fix Shipping Handling - For now is 1.50 per qty
+  $_SESSION["cart"][0]["cartShipping"] += ($newItem["qtyOrdered"] * 1.50);
+  $_SESSION["cart"][0]["cartTotal"] = $_SESSION["cart"][0]["cartSubTotal"] + $_SESSION["cart"][0]["cartShipping"];
   return true;
 }
 
@@ -120,6 +125,7 @@ function msgPrep($type, $msg) {
  * @return bool            Returns true on completion
  */
 function countryOptions($defCode) {
+  if ($defCode == null || $defCode == "") $defCode = DEFAULTS["countryCode"];  // Use Default if not set
   include_once("../app/models/countryClass.php");
   $country = new Country();
   foreach (new RecursiveArrayIterator($country->getCountries()) as $value) {
@@ -132,4 +138,25 @@ function countryOptions($defCode) {
   return true;
 }
 
+/**
+ * postValue function - Returns the value in a $_POST key field IF it's set
+ * @param string $key            Name of $_POST["key"] to return
+ * @return string $_POST["key"]  Returns $_POST key value or NULL
+ */
+function postValue($key) {
+  if (isset($_POST["$key"])) {
+    return $_POST["$key"];
+  } else {
+    return null;
+  }
+}
+
+/**
+ * lcValue function - Returns the the local currency code + value to 2 decimal places
+ * @param float $value  Value to be prefixed
+ * @return string       Returns the Default currency code + value
+ */
+function symValue($value) {
+  return DEFAULTS["localCurrency"] . " " . number_format($value, 2);
+}
 ?>

@@ -1,7 +1,7 @@
 <div class="product-details"><!--Product Details-->
   <div class="col-sm-5">
     <div class="view-product"> <!-- Main Image -->
-    <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $value["ImgFilename"]; ?>" />
+    <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $values["ImgFilename"]; ?>" />
     </div>
 
     <!-- TODO  Decide if including carousel of product images -->
@@ -34,25 +34,25 @@
       <!-- TODO  Decide if adding NEW Corner flags
       <img src="images/product-details/new.jpg" class="newarrival" alt="" />
       -->
-      <h2><?= $value["Name"]; ?></h2>
-      <p>Web ID: <?= $value["ProductID"]; ?></p>
+      <h2><?= $values["Name"]; ?></h2>
+      <p><?= $values["Description"]; ?></p>
       <!-- TODO  Decide if adding ratings -->
       <img src="images/product-details/rating.png" alt="" />
       
       <form action="" method="POST" name="prodATCForm">
         <span>
-          <span><?= $locPrice; ?></span>
+          <span><?= symValue($values["PriceLocal"]); ?></span>
           <label>Quantity:</label>
-          <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $value["QtyAvail"]; ?>" />
-          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $value["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
+          <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $values["QtyAvail"]; ?>" />
+          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $values["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
         </span>
       </form>
 
-      <p><b>Availability:</b> <?= $value["QtyAvail"] > 0 ? $value["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
+      <p><b>Web ID:</b> <?= $selectedID; ?></p>
+      <p><b>Availability:</b> <?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
       <!-- TODO  Decide how to handle Condition / Brand / Sharing -->
-      <p><b>Condition:</b> New</p>
+      <p><b>Condition:</b> New
       <p><b>Brand:</b> E-SHOPPER</p>
-      <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
       
     </div><!--/product-information-->
   </div>

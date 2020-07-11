@@ -60,7 +60,7 @@
         <div class="col-sm-8">
           <div class="shop-menu pull-right">
             <ul class="nav navbar-nav">
-              <li><a href=""><i class="fa fa-user"></i> Account</a></li>
+              <li><a href="admin_dashboard.php?p=home"><i class="fa fa-user"></i> Account</a></li>
               <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
               <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
               <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) ? $_SESSION["cart"][0]["cartItems"] : null; ?></span></a></li>
