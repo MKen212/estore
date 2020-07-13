@@ -68,37 +68,39 @@ function pagination($subPage, $lastPage, $url) {
  * @param int $productID       ProductID of item ordered
  * @param string $name         Product Name
  * @param float $priceLocal    Price in Local currency of item ordered
+ * @param int $weightGrams     Shipping Weight of item ordered
  * @param int $qtyOrdered      Quantity of item ordered
  * @param string $imgFilename  Filename for Product Image
  * @return bool                Returns true on completion
  */
-function addToCart($productID, $name, $priceLocal, $qtyOrdered, $ImgFilename) {
+function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $ImgFilename) {
   if (!isset($_SESSION["cart"][0])) {  // Create Empty Session Cart if not already created
     $_SESSION["cart"][0] = [
-      "cartItems" => 0,
-      "cartQuantity" => 0,
-      "cartSubTotal" => 0.00,
-      "cartShipping" => 0.00,
-      "cartTotal" => 0.00,
+      "items" => 0,
+      "products" => 0,
+      "shippingWeight" => 0,
+      "subTotal" => 0.00,
+      "shippingCost" => 0.00,
+      "total" => 0.00,
     ];
   }
-  $newItemID = $_SESSION["cart"][0]["cartItems"] + 1;
+  $newItemID = $_SESSION["cart"][0]["items"] + 1;
   $newItem = [
     "itemID" => $newItemID,
     "productID" => $productID,
     "name" => $name,
     "priceLocal" => $priceLocal,
+    "weightGrams" => $weightGrams,
     "qtyOrdered" => $qtyOrdered,
     "imgFilename" => $ImgFilename,
     "timestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
-  $_SESSION["cart"][0]["cartItems"] = $newItemID;
-  $_SESSION["cart"][0]["cartQuantity"] += $newItem["qtyOrdered"];
-  $_SESSION["cart"][0]["cartSubTotal"] += ($newItem["priceLocal"] * $newItem["qtyOrdered"]);
-  // TODO Fix Shipping Handling - For now is 1.50 per qty
-  $_SESSION["cart"][0]["cartShipping"] += ($newItem["qtyOrdered"] * 1.50);
-  $_SESSION["cart"][0]["cartTotal"] = $_SESSION["cart"][0]["cartSubTotal"] + $_SESSION["cart"][0]["cartShipping"];
+  $_SESSION["cart"][0]["items"] = $newItemID;
+  $_SESSION["cart"][0]["products"] += $qtyOrdered;
+  $_SESSION["cart"][0]["shippingWeight"] += ($weightGrams * $qtyOrdered);
+  $_SESSION["cart"][0]["subTotal"] += ($priceLocal * $qtyOrdered);
+  $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
   return true;
 }
 

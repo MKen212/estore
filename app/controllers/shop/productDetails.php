@@ -12,16 +12,16 @@ if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
 }
 $quantity = $values["QtyAvail"] > 0 ? 1 : 0;
 
-include("../app/views/shop/productInfo.php");
+include("../app/views/shop/productDetail.php");
 
 // If Add-To-Cart POSTed then update SESSION variables
 if (isset($_POST["addProdToCart"])) {
   $qtyordered = cleanInput($_POST["qtyOrdered"], "int");
   $_POST=[];
 
-  addToCart($selectedID, $values["Name"], $values["PriceLocal"], $qtyordered, $values["ImgFilename"]);
+  addToCart($selectedID, $values["Name"], $values["PriceLocal"], $values["WeightGrams"], $qtyordered, $values["ImgFilename"]);
   ?><script>
-    document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["cartItems"];?>;
+    document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["items"];?>;
   </script><?php
 }
 
