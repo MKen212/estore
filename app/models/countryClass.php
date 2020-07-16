@@ -11,7 +11,7 @@ Class Country {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - User/DB Connection Failed: " . $err->getMessage() . "<br />";
+      echo "Error - Country/DB Connection Failed: " . $err->getMessage() . "<br />";
     }
   }
 
@@ -27,6 +27,23 @@ Class Country {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = "Error - Country/getCountries Failed: " . $err->getMessage();
+      return false;
+    }
+  }
+
+  /**
+   * getShippingCode function - Retrieve the Shipping Band for a specified Country
+   * @param string $countryCode  Code for Country to search
+   * @return string $result       Returns the Shipping Band or False
+   */
+  public function getShippingBand($countryCode) {
+    try {
+      $sql = "SELECT `ShippingBand` FROM countries WHERE `Code` = '$countryCode'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Country/getShippingBand Failed: " . $err->getMessage();
       return false;
     }
   }

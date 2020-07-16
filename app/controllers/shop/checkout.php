@@ -1,16 +1,14 @@
 <?php  // Shop - Checkout
-if (!isset($_POST["saveShopper"]) && isset($_SESSION["cart"][0]["shopperInfo"]["saveShopper"])) {  // User has previously saved shopper info
-  $_POST = $_SESSION["cart"][0]["shopperInfo"];
-  unset($_POST["saveShopper"]);
+if (!isset($_POST["saveShopper"])) {  // User has not just POSTed new shopper info
+  if (isset($_SESSION["cart"][0]["shopperInfo"]["saveShopper"])) {  // User has previously saved shopper info
+    $_POST = $_SESSION["cart"][0]["shopperInfo"];
+    unset($_POST["saveShopper"]);
+  } else if (isset($_SESSION["userLogin"])) {  // User is logged in so get User Record
+    include_once("../app/models/userClass.php");
+    $user = new User;
+    $_POST = $user->getRecord($_SESSION["userID"]);
+  }
 }
-if (!isset($_POST["saveShopper"]) && isset($_SESSION["userLogin"])) {  // User has not yet POSTed form and IS logged In - Get User Record
-  include_once("../app/models/userClass.php");
-  $user = new User;
-  $_POST = $user->getRecord($_SESSION["userID"]);
-}
-
-// TO HERE ^ NEED TO FIX THAT SHIP TO IS NOT DISPLAYING MAYBE UPDATE ABOVE TO IF/ELSEIF
-// NEED TO THEN ADD SHIPPING UPDATES
 ?>
 
 <section id="cart_items"><!--checkout-->
@@ -33,7 +31,7 @@ if (!isset($_POST["saveShopper"]) && isset($_SESSION["userLogin"])) {  // User h
 
         if (isset($_POST["saveShopper"])) {  // Save ShopperInfo to $_SESSION
           $_SESSION["cart"][0]["shopperInfo"] = $_POST;
-        
+
           // Display Cart ?>
           <div class="review-payment" id="cont">
             <h2>Review Order</h2>
@@ -41,17 +39,39 @@ if (!isset($_POST["saveShopper"]) && isset($_SESSION["userLogin"])) {  // User h
 
           include("../app/controllers/shop/cartList.php");
 
+          // Update Shipping Band based on Ship To Country Code
+          include_once("../app/models/countryClass.php");
+          $country = new Country;
+          $_SESSION["cart"][0]["shippingBand"] = $country->getShippingBand($_SESSION["cart"][0]["shopperInfo"]["ShipCountryCode"]);
+
+          // Update Shipping Cost based on Shipping Band and Shipping Weight
+          if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
+            $priceBandKG = 2;
+          } else if ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
+            $priceBandKG = 5;
+          } else {
+            $priceBandKG = 10;
+          }
+          include_once("../app/models/shippingClass.php");
+          $shipping = new Shipping;
+          $shippingCosts = $shipping->getShippingCosts($_SESSION["cart"][0]["shippingBand"], $priceBandKG);
+          foreach ($shippingCosts as $value) {
+            if ($value["Type"] == $_SESSION["cart"][0]["shippingType"]) {
+              $_SESSION["cart"][0]["shippingCost"] = $value["PriceBandCost"];
+            }
+          }          
+          $_SESSION["cart"][0]["total"] += $_SESSION["cart"][0]["shippingCost"];
+        
           // Display Shipping Summary ?>
-          <div class="review-payment">
+          <div class="review-payment" id="ship">
             <h2>Shipping & Payment</h2>
           </div><?php
-
+          
           include("../app/views/shop/checkoutSummary.php");
 
         }
-        
-      ?>
-    <?php endif;?>
+  
+      endif;?>
 
     <div>
       <pre>

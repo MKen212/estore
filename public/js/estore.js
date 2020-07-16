@@ -16,3 +16,10 @@ function copyBillTo() {
   document.getElementById("shipContact").value = document.getElementById("contactNo").value;
   return;
 }
+
+/**
+ * updateShipCost function - Copies the selected Shipping Priority VALUE into Shipping Cost
+ */
+function updateShipCost() {
+  document.getElementById("shippingCost").value = document.getElementById("shippingPriority").value;
+}

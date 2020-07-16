@@ -78,7 +78,9 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
     $_SESSION["cart"][0] = [
       "items" => 0,
       "products" => 0,
-      "shippingWeight" => 0,
+      "shippingWeightKG" => 0,
+      "shippingBand" => "",
+      "shippingType" => "Standard",
       "subTotal" => 0.00,
       "shippingCost" => 0.00,
       "total" => 0.00,
@@ -98,9 +100,14 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
   $_SESSION["cart"][$newItemID] = $newItem;
   $_SESSION["cart"][0]["items"] = $newItemID;
   $_SESSION["cart"][0]["products"] += $qtyOrdered;
-  $_SESSION["cart"][0]["shippingWeight"] += ($weightGrams * $qtyOrdered);
+  $_SESSION["cart"][0]["shippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
   $_SESSION["cart"][0]["subTotal"] += ($priceLocal * $qtyOrdered);
   $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
+  return true;
+}
+
+function updateCartShipping() {
+  
   return true;
 }
 

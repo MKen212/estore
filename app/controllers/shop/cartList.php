@@ -50,5 +50,8 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
         </tr><!--/sub_total-->
       </tbody>
     </table>
+    <div style="margin-bottom:20px;">
+      <a class="btn btn-default update" href="index.php?p=cart&mt">Empty Cart</a>
+    </div>
   </div>
 <?php endif;?>

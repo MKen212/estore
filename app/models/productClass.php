@@ -42,8 +42,8 @@ class Product {
 
   /**
    * count function - Get COUNT of product records
-   * @param bool $status    Product Status (0=Inactive/1=Active/2=Both)
-   * @return array $result  Returns count of defined product records or False 
+   * @param bool $status  Product Status (0=Inactive/1=Active/2=Both)
+   * @return int $result  Returns count of defined product records or False 
    */
   public function count($status) {
     try {

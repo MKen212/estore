@@ -1,4 +1,7 @@
 <?php  // Shop - Shopping Cart
+if (isset($_GET["mt"])) {  // User has Opted to Empty Cart
+  unset($_SESSION["cart"]);
+}
 
 ?>
 <section id="cart_items"><!--cart_items-->
