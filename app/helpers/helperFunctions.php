@@ -106,11 +106,6 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
   return true;
 }
 
-function updateCartShipping() {
-  
-  return true;
-}
-
 /**
  * msgPrep function - Used to add relevant DIV Classes to results message
  * @param string $type       Type of message (success / warning / danger)

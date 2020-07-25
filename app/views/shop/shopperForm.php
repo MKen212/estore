@@ -1,6 +1,6 @@
 <!-- Shopper Information Form -->
 <div class="shopper-info"><!--shopper_information-->
-  <form class="row" action="index.php?p=checkout#cont" method="POST" name="shopperForm" autocomplete="off">
+  <form class="row" action="index.php?p=checkout#order" method="POST" name="shopperForm" autocomplete="off">
     <div class="col-sm-8 clearfix">
       <div class="bill-to">
         <div class="form-one"><!--billing_information-->
