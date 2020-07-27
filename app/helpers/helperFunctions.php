@@ -76,17 +76,17 @@ function pagination($subPage, $lastPage, $url) {
 function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $ImgFilename) {
   if (!isset($_SESSION["cart"][0])) {  // Create Empty Session Cart if not already created
     $_SESSION["cart"][0] = [
-      "items" => 0,
-      "products" => 0,
-      "shippingWeightKG" => 0,
-      "shippingBand" => "",
-      "shippingType" => "Standard",
-      "subTotal" => 0.00,
-      "shippingCost" => 0.00,
-      "total" => 0.00,
+      "Items" => 0,
+      "Products" => 0,
+      "ShippingWeightKG" => 0,
+      "ShippingBand" => "",
+      "ShippingType" => "Standard",
+      "SubTotal" => 0.00,
+      "ShippingCost" => 0.00,
+      "Total" => 0.00,
     ];
   }
-  $newItemID = $_SESSION["cart"][0]["items"] + 1;
+  $newItemID = $_SESSION["cart"][0]["Items"] + 1;
   $newItem = [
     "itemID" => $newItemID,
     "productID" => $productID,
@@ -98,11 +98,11 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
     "timestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
-  $_SESSION["cart"][0]["items"] = $newItemID;
-  $_SESSION["cart"][0]["products"] += $qtyOrdered;
-  $_SESSION["cart"][0]["shippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
-  $_SESSION["cart"][0]["subTotal"] += ($priceLocal * $qtyOrdered);
-  $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
+  $_SESSION["cart"][0]["Items"] = $newItemID;
+  $_SESSION["cart"][0]["Products"] += $qtyOrdered;
+  $_SESSION["cart"][0]["ShippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
+  $_SESSION["cart"][0]["SubTotal"] += ($priceLocal * $qtyOrdered);
+  $_SESSION["cart"][0]["Total"] = $_SESSION["cart"][0]["SubTotal"];
   return true;
 }
 

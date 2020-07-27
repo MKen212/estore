@@ -13,7 +13,7 @@ function copyBillTo() {
   document.getElementById("shipCountryCode").value = document.getElementById("countryCode").value;
   document.getElementById("shipPostcode").value = document.getElementById("postcode").value;
   document.getElementById("shipEmail").value = document.getElementById("email").value;
-  document.getElementById("shipContact").value = document.getElementById("contactNo").value;
+  document.getElementById("shipContactNo").value = document.getElementById("contactNo").value;
   return;
 }
 

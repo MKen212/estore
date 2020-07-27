@@ -69,10 +69,16 @@ CREATE TABLE IF NOT EXISTS products (
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `OrderItems` INT(11) DEFAULT NULL,
-  `OrderValue` DECIMAL(10, 2) DEFAULT NULL,
-  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0,  -- 0=InProgress/1=Shipped
+  `Status` TINYINT(1) NOT NULL DEFAULT 0,  -- 0=InProgress/1=Shipped
   `UserID` INT(11) DEFAULT NULL,
+  `Items` INT(11) DEFAULT 0,
+  `Products` INT(11) DEFAULT 0,
+  `ShippingWeightKG` DECIMAL(10,2) DEFAULT 0.00,
+  `ShippingBand` VARCHAR(50) NOT NULL,
+  `ShippingType` VARCHAR(50) NOT NULL,
+  `SubTotal` DECIMAL(10, 2) DEFAULT 0.00,
+  `ShippingCost` DECIMAL(10, 2) DEFAULT 0.00,
+  `Total` DECIMAL(10, 2) DEFAULT 0.00,
   `FullName` VARCHAR(50) NOT NULL,
   `Address1` VARCHAR(50) NOT NULL,
   `Address2` VARCHAR(50) DEFAULT NULL,
@@ -93,7 +99,7 @@ CREATE TABLE IF NOT EXISTS orders (
   `ShipContactNo` VARCHAR(50) DEFAULT NULL,
   `ShipInstructions` VARCHAR(500) DEFAULT NULL,
   FOREIGN KEY (`UserID`) REFERENCES users (`UserID`),
-  FOREIGN KEY (`BillCountryCode`) REFERENCES countries (`code`),
+  FOREIGN KEY (`CountryCode`) REFERENCES countries (`code`),
   FOREIGN KEY (`ShipCountryCode`) REFERENCES countries (`code`)
 );
 

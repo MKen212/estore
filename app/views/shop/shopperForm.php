@@ -29,14 +29,14 @@
           </select>
           <input type="text" name="ShipPostcode" id="shipPostcode" value="<?= postValue("ShipPostcode"); ?>" placeholder="Postcode*" required />
           <input type="email" name="ShipEmail" id="shipEmail" value="<?= postValue("ShipEmail"); ?>" placeholder="Email*" required />
-          <input type="tel" name="ShipContact" id="shipContact" value="<?= postValue("ShipContact"); ?>" placeholder="Contact Telephone*" />
+          <input type="tel" name="ShipContactNo" id="shipContactNo" value="<?= postValue("ShipContactNo"); ?>" placeholder="Contact Telephone*" />
         </div><!--/shipping_information-->
       </div>
     </div>
     <div class="col-sm-4">
       <div class="order-message"><!--shipping_instructions-->
         <p>Shipping Instructions</p>
-        <textarea name="shipInstructions" placeholder="Notes about your order, Special Notes for Delivery" maxlength="500"></textarea>
+        <textarea name="ShipInstructions" placeholder="Notes about your order, Special Notes for Delivery" maxlength="500"><?= postValue("ShipInstructions"); ?></textarea>
         <button class="btn btn-primary" type="button" onclick="copyBillTo()">Copy Bill To > Ship To</button>
         <button class="btn btn-primary" type="submit" name="saveShopper">Save & Continue</button>
       </div><!--/shipping_instructions-->
