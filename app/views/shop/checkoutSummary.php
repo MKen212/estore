@@ -1,4 +1,7 @@
 <!-- Checkout Summary -->
+<div class="review-payment" id="ship">
+  <h2>Review Shipping</h2>
+</div>
 <section id="do_action"><!--do_action-->
   <div class="row">
     <div class="col-sm-6">
@@ -33,13 +36,13 @@
       </form>
     </div>
     <div class="col-sm-6">
-      <form class="total_area" action="" method="POST" name="checkoutForm">
+      <form class="total_area" action="index.php?p=checkout#pay" method="POST" name="checkoutForm">
         <ul>
           <li>Cart Sub Total <span><?= symValue($_SESSION["cart"][0]["SubTotal"]); ?></span></li>
           <li>Shipping Cost <span><?= symValue($_SESSION["cart"][0]["ShippingCost"]); ?></span></li>
           <li>TOTAL <span><?= symValue($_SESSION["cart"][0]["Total"]); ?></span></li>
         </ul>
-        <button class="btn btn-default check_out" type="submit" name="processCheckout">Check Out</button>
+        <button class="btn btn-default update" type="submit" name="processPayment">Make Payment</button>
       </form>
     </div>
   </div>

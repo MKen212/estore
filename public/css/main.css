@@ -1529,6 +1529,10 @@ h2.title {
   margin-bottom: 50px;
 }
 
+#do_payment {
+  margin-bottom: 80px;
+}
+
 .breadcrumbs {
   position: relative;
 }
@@ -1702,7 +1706,16 @@ h2.title {
   border: 1px solid #E6E4DF;
   color: #696763;
   padding: 30px 25px 30px 0;
-  margin-bottom: 80px;
+}
+
+#do_payment .total_area {
+  padding-bottom: 18px !important;
+}
+
+#do_payment .total_area, #do_payment .chose_area {
+  border: 1px solid #E6E4DF;
+  color: #696763;
+  padding: 30px 25px 30px 0;
 }
 
 .total_area span {
@@ -1881,7 +1894,9 @@ h2.title {
   color: #FE980F;
 }
 
-
+.shopper-info {
+  margin-bottom: 50px;
+}
 
 .shopper-info p, 
 .bill-to p, 

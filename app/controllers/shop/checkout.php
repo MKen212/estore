@@ -1,5 +1,5 @@
 <?php  // Shop - Checkout
-if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_POST["processCheckout"])) {  // User has not just POSTed new shopper info or HAS just updated shipping info or HAS clicked CheckOut
+if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_POST["processPayment"])) {  // User has not just POSTed new shopper info or HAS just updated shipping info or HAS clicked CheckOut
   if (isset($_SESSION["cart"][0]["shopperInfo"])) {  // User has previously saved shopper info
     $_POST += $_SESSION["cart"][0]["shopperInfo"];
   } else if (isset($_SESSION["userLogin"])) {  // User is logged in so get User Record
@@ -46,10 +46,11 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
         $_SESSION["cart"][0]["ShippingBand"] = $country->getShippingBand($_SESSION["cart"][0]["shopperInfo"]["ShipCountryCode"]);
       }
 
-      if (isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_POST["processCheckout"])) { // Display Cart ?>
+      if (isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_POST["processPayment"])) { // Display Cart ?>
         <div class="review-payment" id="order">
           <h2>Review Order</h2>
         </div><?php  // Show cart
+        // TODO Would normally validate Cart against stock at this point
 
         include("../app/controllers/shop/cartList.php");
 
@@ -75,64 +76,16 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
           }
         }          
         $_SESSION["cart"][0]["Total"] = $_SESSION["cart"][0]["SubTotal"] + $_SESSION["cart"][0]["ShippingCost"];
-        ?>
-        <div class="review-payment" id="ship">
-          <h2>Shipping & Payment</h2>
-        </div><?php  // Display Checkout Shipping & Payment Summary
         
+        // Display Checkout Shipping Summary
         include("../app/views/shop/checkoutSummary.php");
 
-        // If Check-Out actioned
-        if (isset($_POST["processCheckout"])) {
-          // First Validate Cart Items against Stock
-          echo "Validating Cart Items against stock </br>";
-
-          // Build new Order Record
-          $insFields = "";
-          $insValues = "";
-          if ($_SESSION["userLogin"]) {
-            $insFields .= "`UserID`, ";
-            $insValues .= "'" . $_SESSION["userID"] . "', ";
-          }
-          foreach ($_SESSION["cart"][0] as $key => $value) {
-            if ($key == "shopperInfo") {
-              $insFields .= "`" . implode("`, `", array_keys($_SESSION["cart"][0]["shopperInfo"])) . "`";
-              $insValues .= "'" . implode("', '", $_SESSION["cart"][0]["shopperInfo"]) . "'";
-            } else {
-              $insFields .= "`" . $key . "`, ";
-              $insValues .= "'" . $value . "', ";
-            }
-          }
-          //  Insert new Order Record into orders table
-          include_once("../app/models/orderClass.php");
-          $order = new Order;
-          $addOrder = $order->add($insFields, $insValues);
-          if ($addOrder) {  // Database Entry Success
-            $resultMsg = msgPrep("success", $_SESSION["message"]);
-          } else {  // Database Entry Failed
-            $resultMsg = msgPrep("danger", $_SESSION["message"]);
-          }
-
-
-          // UP TO HERE - ADDED ORDER RECORD . NEED TO TIMESTAMP AND THEN ADD ITEMS AND OUTPUT RESULT IN AN ORDER INFO FORM OR SIMILAR
-          
-          
-          // Insert Order Items into order_items table
-          echo "Inserting Order Items into order_items table </br>";
-
+        // If Process Payment actioned
+        if (isset($_POST["processPayment"])) {
+          // Display Payment Summary
+          include("../app/views/shop/checkoutPayment.php");
         }
       }
     endif;?>
-
-    <div>
-      <pre>
-      <?php
-        echo "SESSION: ";
-        print_r($_SESSION);
-        echo "<br />POST: ";
-        print_r($_POST);
-      ?>
-      </pre>
-    </div>
   </div>
 </section><!--/checkout-->
