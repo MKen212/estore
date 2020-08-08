@@ -1,5 +1,5 @@
 <?php  // Shop - Product Details
-include_once("../app/models/productClass.php");
+include_once "../app/models/productClass.php";
 $product = new Product();
 
 isset($_GET["id"]) ? $selectedID = $_GET["id"] : $selectedID = 1;
@@ -12,7 +12,7 @@ if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
 }
 $quantity = $values["QtyAvail"] > 0 ? 1 : 0;
 
-include("../app/views/shop/productDetail.php");
+include "../app/views/shop/productDetail.php";
 
 // If Add-To-Cart POSTed then update SESSION variables
 if (isset($_POST["addProdToCart"])) {

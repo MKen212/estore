@@ -1,8 +1,8 @@
 <?php  // Display Login Form
-include("../app/views/admin/loginForm.php");
+include "../app/views/admin/loginForm.php";
 
 if (isset($_POST["login"])){  // Verify & Login User
-  include_once("../app/models/userClass.php");
+  include_once "../app/models/userClass.php";
 
   $username = cleanInput($_POST["estUsername"], "string");
   $password = cleanInput($_POST["estPassword"], "password");

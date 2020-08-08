@@ -4,10 +4,10 @@
 </div>
 
 <?php  // Display Product Add Form
-include("../app/views/admin/productForm.php");
+include "../app/views/admin/productForm.php";
 
 if (isset($_POST["addProduct"])) {  // Add Products
-  include_once("../app/models/productClass.php");
+  include_once "../app/models/productClass.php";
 
   // Perform File Upload Checks if Image File chosen
   if ($_FILES["imgFilename"]["error"] != 4) {

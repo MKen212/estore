@@ -1,8 +1,8 @@
 <?php  // Display Registration Form
-include("../app/views/admin/registerForm.php");
+include "../app/views/admin/registerForm.php";
 
 if (isset($_POST["register"])) {  // Register New User
-  include_once("../app/models/userClass.php");
+  include_once "../app/models/userClass.php";
   
   $username = cleanInput($_POST["username"], "string");
   $password = cleanInput($_POST["password"], "password");

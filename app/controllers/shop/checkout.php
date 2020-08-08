@@ -3,7 +3,7 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
   if (isset($_SESSION["cart"][0]["shopperInfo"])) {  // User has previously saved shopper info
     $_POST += $_SESSION["cart"][0]["shopperInfo"];
   } else if (isset($_SESSION["userLogin"])) {  // User is logged in so get User Record
-    include_once("../app/models/userClass.php");
+    include_once "../app/models/userClass.php";
     $user = new User;
     $_POST += $user->getRecord($_SESSION["userID"]);
   }
@@ -26,7 +26,7 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
       </div>
 
       <?php  // Show shopper form
-      include("../app/views/shop/shopperForm.php");
+      include "../app/views/shop/shopperForm.php";
 
       if (isset($_POST["saveShopper"])) {
         // Clean ShopperInfo and save to $_SESSION
@@ -41,7 +41,7 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
           $_SESSION["cart"][0]["shopperInfo"][$key] = cleanInput($value, $type);
         }
         // Update Shipping Band based on Ship To Country Code
-        include_once("../app/models/countryClass.php");
+        include_once "../app/models/countryClass.php";
         $country = new Country;
         $_SESSION["cart"][0]["ShippingBand"] = $country->getShippingBand($_SESSION["cart"][0]["shopperInfo"]["ShipCountryCode"]);
       }
@@ -52,7 +52,7 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
         </div><?php  // Show cart
         // TODO Would normally validate Cart against stock at this point
 
-        include("../app/controllers/shop/cartList.php");
+        include "../app/controllers/shop/cartList.php";
 
         // Update Shipping Cost based on Shipping Band and Shipping Weight
         if ($_SESSION["cart"][0]["ShippingWeightKG"] <= 2) {
@@ -62,7 +62,7 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
         } else {
           $priceBandKG = 10;
         }
-        include_once("../app/models/shippingClass.php");
+        include_once "../app/models/shippingClass.php";
         $shipping = new Shipping;
         $shippingCosts = $shipping->getShippingCosts($_SESSION["cart"][0]["ShippingBand"], $priceBandKG);
         // Update Shipping Type if Shipping Details were updated
@@ -78,12 +78,12 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
         $_SESSION["cart"][0]["Total"] = $_SESSION["cart"][0]["SubTotal"] + $_SESSION["cart"][0]["ShippingCost"];
         
         // Display Checkout Shipping Summary
-        include("../app/views/shop/checkoutSummary.php");
+        include "../app/views/shop/checkoutSummary.php";
 
         // If Process Payment actioned
         if (isset($_POST["processPayment"])) {
           // Display Payment Summary
-          include("../app/views/shop/checkoutPayment.php");
+          include "../app/views/shop/checkoutPayment.php";
         }
       }
     endif;?>

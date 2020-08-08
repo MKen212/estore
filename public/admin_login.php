@@ -1,7 +1,7 @@
 <?php
 session_start();
-include_once("../app/config/_config.php");
-include_once("../app/helpers/helperFunctions.php");
+require "../app/config/_config.php";
+require "../app/helpers/helperFunctions.php";
 if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
 ?>
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
     <div class="row justify-content-center">
       <h1>eStore Administration</h1>
     </div>
-    <?php include("../app/controllers/admin/" . $_GET["p"] . ".php");?>
+    <?php include "../app/controllers/admin/" . $_GET["p"] . ".php";?>
   </div>
 
 </body>

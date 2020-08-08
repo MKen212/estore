@@ -130,7 +130,7 @@ function msgPrep($type, $msg) {
  */
 function countryOptions($defCode) {
   if ($defCode == null || $defCode == "") $defCode = DEFAULTS["countryCode"];  // Use Default if not set
-  include_once("../app/models/countryClass.php");
+  include_once "../app/models/countryClass.php";
   $country = new Country();
   foreach (new RecursiveArrayIterator($country->getCountries()) as $value) {
     if ($value["Code"] == $defCode) {

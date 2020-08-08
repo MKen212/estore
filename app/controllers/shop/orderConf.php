@@ -20,7 +20,7 @@
           //   }
           // }
           // //  Insert new Order Record into orders table
-          // include_once("../app/models/orderClass.php");
+          // include_once "../app/models/orderClass.php";
           // $order = new Order;
           // $addOrder = $order->add($insFields, $insValues);
           // if ($addOrder) {  // Database Entry Success
@@ -44,7 +44,7 @@
 		</div>
     
     <?php  // Display Order
-      include("../app/views/shop/orderDetails.php");
+      include "../app/views/shop/orderDetails.php";
     ?>
 
   </div>

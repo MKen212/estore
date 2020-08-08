@@ -106,8 +106,12 @@ dist
 # local working files
 _localFiles/
 
+# Composer /vendor directory
+vendor/
+
 # server ini files
 inifiles/mariaDBCon.ini
+inifiles/paypalAPI.ini
 estore.crt
 estore.key
 

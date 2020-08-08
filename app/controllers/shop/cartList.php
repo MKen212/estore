@@ -28,7 +28,7 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
               $fullPath = DEFAULTS["productsImgPath"] . $values["productID"] . "/" . $values["imgFilename"];
             }
 
-            include("../app/views/shop/cartItem.php");
+            include "../app/views/shop/cartItem.php";
           }
         ?>
 

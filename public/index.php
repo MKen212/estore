@@ -1,7 +1,9 @@
 <?php
 session_start();
-include_once("../app/config/_config.php");
-include_once("../app/helpers/helperFunctions.php");
+require "../app/config/_config.php";
+require "../app/helpers/helperFunctions.php";
+require "../vendor/autoload.php";
+
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 ?>
 <!DOCTYPE html>
@@ -23,24 +25,26 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   <link rel="stylesheet" href="css/responsive.css">
   
   <link rel="shortcut icon" href="images/home/favicon-96x96.png">
+
+  <script src="https://www.paypal.com/sdk/js?client-id=<?= PAYPALAPI["clientID"] ?>&currency=<?= DEFAULTS["localCurrency"] ?>"></script>
 </head><!--/head-->
 
 <body>
-  <?php include("../app/views/shop/header.php");
+  <?php include "../app/views/shop/header.php";
 
   if($_GET["p"] == "cart" || $_GET["p"] == "checkout" || $_GET["p"] == "orderConf") : 
-    include("../app/controllers/shop/" . $_GET["p"] . ".php");
+    include "../app/controllers/shop/" . $_GET["p"] . ".php";
   else : 
   ?>
 	<section>
 		<div class="container">
 			<div class="row">
         <div class="col-sm-3">
-          <?php include("../app/views/shop/sidebar.php");?>
+          <?php include "../app/views/shop/sidebar.php";?>
         </div>
 
 				<div class="col-sm-9 padding-right">
-          <?php include("../app/controllers/shop/" . $_GET["p"] . ".php"); ?>
+          <?php include "../app/controllers/shop/" . $_GET["p"] . ".php"; ?>
         </div>
         
 			</div>
@@ -49,7 +53,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   
   <?php
   endif;
-  include("../app/views/shop/footer.php");?>
+  include "../app/views/shop/footer.php";?>
   
   <script src="js/jquery.js"></script>
   <script src="js/price-range.js"></script>

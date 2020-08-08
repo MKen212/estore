@@ -1,5 +1,5 @@
 <?php  // Shop - Home
 
-include("../app/views/shop/home.php")
+include "../app/views/shop/home.php";
 
 ?>

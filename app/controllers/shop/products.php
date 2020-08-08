@@ -1,5 +1,5 @@
 <?php  // Shop - Products
-include_once("../app/models/productClass.php");
+include_once "../app/models/productClass.php";
 $product = new Product();
 
 // Get Total Records and Page Details
@@ -10,7 +10,7 @@ isset($_GET["sp"]) ? $subPage = $_GET["sp"] : $subPage = 1;
 if ($subPage > $lastPage) $subPage = $lastPage;
 $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
 
-include("../app/views/shop/advert.php");
+include "../app/views/shop/advert.php";
 ?>
 
 <div class="featured_items"><!-- featured_items -->
@@ -23,7 +23,7 @@ include("../app/views/shop/advert.php");
     } else {
       $fullPath = DEFAULTS["productsImgPath"] . $values["ProductID"] . "/" . $values["ImgFilename"];
     }
-    include("../app/views/shop/productItem.php");
+    include "../app/views/shop/productItem.php";
   }
   ?>
 

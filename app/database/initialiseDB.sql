@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS users (
   `Postcode` VARCHAR(20) NOT NULL,
   `Email` VARCHAR (50),
   `ContactNo` VARCHAR(50),
-  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0, -- 0=NotAdmin/1=Admin
-  `Status` TINYINT(1) NOT NULL DEFAULT 0,  -- 0=Unapproved/1=Approved
+  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotAdmin, 1=Admin",
+  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unapproved, 1=Approved",
   FOREIGN KEY (`CountryCode`) REFERENCES countries (`Code`)
 );
 
@@ -61,15 +61,14 @@ CREATE TABLE IF NOT EXISTS products (
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL,
-  `Status` TINYINT(1) NOT NULL DEFAULT 1,  -- 0=Inactive/1=Active
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`EditUserID`) REFERENCES users (`UserID`)
 );
-
 
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Status` TINYINT(1) NOT NULL DEFAULT 0,  -- 0=InProgress/1=Shipped
+  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=InProgress, 1=Shipped",
   `UserID` INT(11) DEFAULT NULL,
   `Items` INT(11) DEFAULT 0,
   `Products` INT(11) DEFAULT 0,
@@ -112,7 +111,7 @@ CREATE TABLE IF NOT EXISTS messages (
   Subject VARCHAR(40) NOT NULL,
   Body VARCHAR(500) NOT NULL,
   MsgTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  MsgRead TINYINT(1) NOT NULL DEFAULT 0,  --0=Unread/1=Read
+  MsgRead TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unread, 1=Read",
   FOREIGN KEY (SenderID) REFERENCES users (UserID),
   FOREIGN KEY (ReceiverID) REFERENCES users (UserID)
 );
@@ -120,6 +119,7 @@ CREATE TABLE IF NOT EXISTS messages (
 */
 
 -- Countries data
+-- NOTE This assumes CH is Local "Domestic" Country. Change as required
 INSERT INTO countries (`Code`, `Name`, `ShippingBand`) VALUES
   ('AD', 'Andorra', 'Europe'),
   ('AE', 'United Arab Emirates', 'Rest of World'),
@@ -372,8 +372,8 @@ INSERT INTO countries (`Code`, `Name`, `ShippingBand`) VALUES
   ('ZM', 'Zambia', 'Rest of World'),
   ('ZW', 'Zimbabwe', 'Rest of World');
 
-
 -- Shipping data
+-- UPDATED Jun-2020 based on Swiss Post prices
 INSERT INTO shipping (`Band`, `Type`, `PriceBandKG`, `PriceBandCost`) VALUES
   ("Domestic", "Standard", "2", "7.00"),
   ("Domestic", "Standard", "5", "9.70"),

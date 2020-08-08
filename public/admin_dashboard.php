@@ -4,8 +4,8 @@ if (!isset($_SESSION["userLogin"])) {  // Reject User that is not logged in
   $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
   header("location:admin_login.php?p=logout");
 }
-include_once("../app/config/_config.php");
-include_once("../app/helpers/helperFunctions.php");
+require "../app/config/_config.php";
+require "../app/helpers/helperFunctions.php";
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 ?>
 <!DOCTYPE html>
@@ -32,14 +32,14 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 
 <body>
   <!-- Top -->
-  <?php include("../app/views/admin/navbar.php");?>
+  <?php include "../app/views/admin/navbar.php";?>
   <div class=container-fluid>
     <div class="row">
       <!-- Side -->
-      <?php include("../app/views/admin/sidebar.php");?>
+      <?php include "../app/views/admin/sidebar.php";?>
       <!-- Main -->
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <?php include("../app/controllers/admin/" . $_GET["p"] . ".php");?>
+        <?php include "../app/controllers/admin/" . $_GET["p"] . ".php";?>
       </main>
     </div>
   </div>
