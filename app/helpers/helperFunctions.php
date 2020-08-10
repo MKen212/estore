@@ -67,13 +67,13 @@ function pagination($subPage, $lastPage, $url) {
  * addToCart function - Used to add items to the Cart
  * @param int $productID       ProductID of item ordered
  * @param string $name         Product Name
- * @param float $priceLocal    Price in Local currency of item ordered
+ * @param float $price         Product Price
  * @param int $weightGrams     Shipping Weight of item ordered
  * @param int $qtyOrdered      Quantity of item ordered
  * @param string $imgFilename  Filename for Product Image
  * @return bool                Returns true on completion
  */
-function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $ImgFilename) {
+function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFilename) {
   if (!isset($_SESSION["cart"][0])) {  // Create Empty Session Cart if not already created
     $_SESSION["cart"][0] = [
       "Items" => 0,
@@ -91,7 +91,7 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
     "itemID" => $newItemID,
     "productID" => $productID,
     "name" => $name,
-    "priceLocal" => $priceLocal,
+    "price" => $price,
     "weightGrams" => $weightGrams,
     "qtyOrdered" => $qtyOrdered,
     "imgFilename" => $ImgFilename,
@@ -101,7 +101,7 @@ function addToCart($productID, $name, $priceLocal, $weightGrams, $qtyOrdered, $I
   $_SESSION["cart"][0]["Items"] = $newItemID;
   $_SESSION["cart"][0]["Products"] += $qtyOrdered;
   $_SESSION["cart"][0]["ShippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
-  $_SESSION["cart"][0]["SubTotal"] += ($priceLocal * $qtyOrdered);
+  $_SESSION["cart"][0]["SubTotal"] += ($price * $qtyOrdered);
   $_SESSION["cart"][0]["Total"] = $_SESSION["cart"][0]["SubTotal"];
   return true;
 }
@@ -156,11 +156,11 @@ function postValue($key) {
 }
 
 /**
- * lcValue function - Returns the the local currency code + value to 2 decimal places
+ * lcValue function - Returns the the default currency + value to 2 decimal places
  * @param float $value  Value to be prefixed
- * @return string       Returns the Default currency code + value
+ * @return string       Returns the Default currency + value
  */
 function symValue($value) {
-  return DEFAULTS["localCurrency"] . " " . number_format($value, 2);
+  return DEFAULTS["currency"] . " " . number_format($value, 2);
 }
 ?>

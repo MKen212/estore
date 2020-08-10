@@ -84,6 +84,22 @@ if (!isset($_POST["saveShopper"]) || isset($_POST["updateShipping"]) || isset($_
         if (isset($_POST["processPayment"])) {
           // Display Payment Summary
           include "../app/views/shop/checkoutPayment.php";
+
+          //  TO HERE - NEED TO ADD THE PAYPAL BUTTONS & CREATE THE ORDER
+          
+
+
+          // Get the next Invoice ID
+          include_once "../app/models/invoiceIDClass.php";
+          $invoiceID = new InvoiceID;
+          $nextInvoiceID = $invoiceID->getInvoiceID();
+
+          // Process the Order in PayPal          
+          include_once "../app/models/paypalClass.php";
+          $paypal = new PayPal;
+          
+          
+          echo "Current Invoice ID: {$nextInvoiceID}<br />";
         }
       }
     endif;?>

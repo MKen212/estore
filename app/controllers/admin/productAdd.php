@@ -47,7 +47,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
   $category = cleanInput($_POST["category"], "string");
-  $priceLocal = cleanInput($_POST["priceLocal"], "float");
+  $price = cleanInput($_POST["price"], "float");
   $weightGrams = cleanInput($_POST["weightGrams"], "int");
   $quantity = cleanInput($_POST["quantity"], "int");
   if ($_FILES["imgFilename"]["error"] == 0) {
@@ -61,7 +61,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
 
   // Create database entry
   $product = new Product();
-  $addProduct = $product->add($name, $description, $category, $priceLocal, $weightGrams, $quantity, $imgFilename, $editUserID);
+  $addProduct = $product->add($name, $description, $category, $price, $weightGrams, $quantity, $imgFilename, $editUserID);
   if ($addProduct) {  // Database Entry Success
     if ($imgFilename) {  // Image File included - Create dir & upload
       $targetDir = DEFAULTS["productsImgPath"] . $addProduct . "/";

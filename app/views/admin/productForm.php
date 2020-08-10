@@ -27,9 +27,9 @@
     </div>
     <!-- Price Local -->
     <div class="form-group row">
-      <label class="col-form-label labFixed" for="priceLocal">Price (<?= DEFAULTS["localCurrency"] ?>):</label>
+      <label class="col-form-label labFixed" for="price">Price (<?= DEFAULTS["currency"] ?>):</label>
       <div class="inpFixed">
-        <input class="form-control" type="number" name="priceLocal" id="priceLocal" placeholder="Enter Price in <?= DEFAULTS["localCurrency"]; ?>" min="0" step="0.01" value="0.00" required />
+        <input class="form-control" type="number" name="price" id="price" placeholder="Enter Price in <?= DEFAULTS["currency"]; ?>" min="0" step="0.01" value="0.00" required />
       </div>
     </div>
     <!-- Weight in Grams -->

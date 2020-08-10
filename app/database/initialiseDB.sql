@@ -55,7 +55,7 @@ CREATE TABLE IF NOT EXISTS products (
   `Name` VARCHAR(40) NOT NULL,
   `Description` VARCHAR(500) NOT NULL,
   `Category` VARCHAR(40) NOT NULL,
-  `PriceLocal` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+  `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
   `WeightGrams` INT(11) NOT NULL DEFAULT 0,
   `QtyAvail` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
@@ -65,10 +65,13 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (`EditUserID`) REFERENCES users (`UserID`)
 );
 
+-- Create invoice_ID Sequence
+CREATE SEQUENCE `invoice_ID` start with 12980 maxvalue 99999999999 increment by 1;
+
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=InProgress, 1=Shipped",
+  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Placed, 1=Paid, 2=Shipped, 3=Returned, 4=Refunded",
   `UserID` INT(11) DEFAULT NULL,
   `Items` INT(11) DEFAULT 0,
   `Products` INT(11) DEFAULT 0,

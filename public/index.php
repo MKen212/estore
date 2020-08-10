@@ -26,7 +26,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   
   <link rel="shortcut icon" href="images/home/favicon-96x96.png">
 
-  <script src="https://www.paypal.com/sdk/js?client-id=<?= PAYPALAPI["clientID"] ?>&currency=<?= DEFAULTS["localCurrency"] ?>"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=<?= PAYPALAPI["clientID"] ?>&currency=<?= DEFAULTS["currency"] ?>"></script>
 </head><!--/head-->
 
 <body>

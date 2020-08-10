@@ -20,16 +20,16 @@ class Product {
    * @param string $name         Product Name
    * @param string $description  Product Description
    * @param string $category     Product Category 
-   * @param float $priceLocal    Product Price in Local currency
+   * @param float $price         Product Price
    * @param int $weightGrams     Product Shipping Weight in Grams
    * @param int $quantity        Quantity of Product Added
    * @param string $imgFilename  Filename for Product Image
    * @param int $editUserID      User ID who added product
    * @return int $newID          Product ID of added product or False
    */
-  public function add($name, $description, $category, $priceLocal, $weightGrams, $quantity, $imgFilename, $editUserID) {
+  public function add($name, $description, $category, $price, $weightGrams, $quantity, $imgFilename, $editUserID) {
     try {
-      $sql = "INSERT INTO products (`Name`, `Description`, `Category`, `PriceLocal`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`) VALUES ('$name', '$description', '$category', '$priceLocal', '$weightGrams', '$quantity', '$imgFilename', '$editUserID')";
+      $sql = "INSERT INTO products (`Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`) VALUES ('$name', '$description', '$category', '$price', '$weightGrams', '$quantity', '$imgFilename', '$editUserID')";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
       $_SESSION["message"] = "Product '$name' added successfully.";
@@ -71,9 +71,9 @@ class Product {
   public function getPage($status, $limit, $offset) {
     try {
       if ($status == 2) {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products LIMIT $limit OFFSET $offset";  
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products LIMIT $limit OFFSET $offset";  
       } else {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `PriceLocal`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -91,7 +91,7 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `Name`, `Description`, `Category`, `PriceLocal`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

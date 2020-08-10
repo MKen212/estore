@@ -41,7 +41,7 @@
       
       <form action="" method="POST" name="prodATCForm">
         <span>
-          <span><?= symValue($values["PriceLocal"]); ?></span>
+          <span><?= symValue($values["Price"]); ?></span>
           <label>Quantity:</label>
           <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $values["QtyAvail"]; ?>" />
           <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $values["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
