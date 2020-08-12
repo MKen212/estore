@@ -10,7 +10,8 @@ isset($_GET["sp"]) ? $subPage = $_GET["sp"] : $subPage = 1;
 if ($subPage > $lastPage) $subPage = $lastPage;
 $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
 
-include "../app/views/shop/advert.php";
+// Advert Removed as is hard-coded image
+// include "../app/views/shop/advert.php";
 ?>
 
 <div class="featured_items"><!-- featured_items -->

@@ -1525,11 +1525,11 @@ h2.title {
 *******Cart CSS******
 **************************/
 
-#do_action {
+#ship {
   margin-bottom: 50px;
 }
 
-#do_payment {
+#pay {
   margin-bottom: 80px;
 }
 
@@ -1698,24 +1698,24 @@ h2.title {
 }
 
 
-#do_action .total_area {
+#ship .total_area {
   padding-bottom: 18px !important;
 }
 
-#do_action .total_area, #do_action .chose_area {
-  border: 1px solid #E6E4DF;
+#ship .total_area, #ship .chose_area {
+  /* border: 1px solid #E6E4DF;*/
   color: #696763;
-  padding: 30px 25px 30px 0;
+  padding: 0px 25px 30px 0;
 }
 
-#do_payment .total_area {
+#pay .total_area {
   padding-bottom: 18px !important;
 }
 
-#do_payment .total_area, #do_payment .chose_area {
-  border: 1px solid #E6E4DF;
+#pay .total_area, #pay .chose_area {
+  /* border: 1px solid #E6E4DF; */
   color: #696763;
-  padding: 30px 25px 30px 0;
+  padding: 0 25px 30px 0;
 }
 
 .total_area span {
@@ -1729,6 +1729,13 @@ h2.title {
   padding: 7px 20px;
 }
 
+.total_area p {
+  color: #696763;
+  font-size: 20px;
+  font-weight: 300;
+  padding-left: 40px;
+}
+
 
 .user_option label {
   color: #696763;
@@ -1740,7 +1747,7 @@ h2.title {
 .user_info {
   display: block;
   margin-bottom: 15px;
-  margin-top: 20px;
+  /* margin-top: 20px; */
   overflow: hidden;
 }
 
@@ -1753,7 +1760,7 @@ h2.title {
 }
 
 .user_info .single_field {
-  width: 31%
+  /* width: 31% */
 }
 
 .user_info .single_field.zip-field input {
@@ -1762,7 +1769,7 @@ h2.title {
 }
 
 .user_info > li {
-  float: left;
+  /* float: left; */
   margin-right: 10px
 }
 
@@ -1792,16 +1799,17 @@ h2.title {
   background: #FE980F;
   border-radius: 0;
   color: #FFFFFF;
-  margin-top: 18px;
   border: none;
   padding: 5px 15px;
 }
 .update{
-    margin-left: 40px;
+  margin-top: 18px;
+  margin-left: 0px;
 }
 
 .check_out {
-  margin-left: 20px
+  margin-top: 18px;
+  margin-left: 40px
 }
 
 
@@ -2010,6 +2018,10 @@ h2.title {
 }
 
 
+#paypal-button-container {
+  padding-top: 10px;
+  padding-left: 40px;
+}
 
 
 /*************************

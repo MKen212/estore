@@ -21,7 +21,7 @@ if (isset($_POST["addProdToCart"])) {
 
   addToCart($selectedID, $values["Name"], $values["Price"], $values["WeightGrams"], $qtyordered, $values["ImgFilename"]);
   ?><script>
-    document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["Items"];?>;
+    document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"];?>;
   </script><?php
 }
 

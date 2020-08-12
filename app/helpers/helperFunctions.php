@@ -76,17 +76,20 @@ function pagination($subPage, $lastPage, $url) {
 function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFilename) {
   if (!isset($_SESSION["cart"][0])) {  // Create Empty Session Cart if not already created
     $_SESSION["cart"][0] = [
-      "Items" => 0,
-      "Products" => 0,
-      "ShippingWeightKG" => 0,
-      "ShippingBand" => "",
-      "ShippingType" => "Standard",
-      "SubTotal" => 0.00,
-      "ShippingCost" => 0.00,
-      "Total" => 0.00,
+      "itemCount" => 0,
+      "productCount" => 0,
+      "shippingInstructions" => "",
+      "shippingWeightKG" => 0,
+      "shippingPriceBandKG" => 0,
+      "shippingCountry" => DEFAULTS["countryCode"],
+      "shippingType" => "Standard",
+      "subTotal" => 0.00,
+      "shippingCost" => 0.00,
+      "total" => 0.00,
     ];
   }
-  $newItemID = $_SESSION["cart"][0]["Items"] + 1;
+  // Add Item
+  $newItemID = $_SESSION["cart"][0]["itemCount"] + 1;
   $newItem = [
     "itemID" => $newItemID,
     "productID" => $productID,
@@ -98,11 +101,20 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
     "timestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
-  $_SESSION["cart"][0]["Items"] = $newItemID;
-  $_SESSION["cart"][0]["Products"] += $qtyOrdered;
-  $_SESSION["cart"][0]["ShippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
-  $_SESSION["cart"][0]["SubTotal"] += ($price * $qtyOrdered);
-  $_SESSION["cart"][0]["Total"] = $_SESSION["cart"][0]["SubTotal"];
+  // Update Shipment Weight & Shipping PriceBandKG based on 3 bands <2kg, <5kg, <10kg or more
+  $_SESSION["cart"][0]["shippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
+  if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
+    $_SESSION["cart"][0]["shippingPriceBandKG"] = 2;
+  } else if ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
+    $_SESSION["cart"][0]["shippingPriceBandKG"] = 5;
+  } else {
+    $_SESSION["cart"][0]["shippingPriceBandKG"] = 10;
+  }
+  // Update Counts & Totals
+  $_SESSION["cart"][0]["itemCount"] += 1;
+  $_SESSION["cart"][0]["productCount"] += $qtyOrdered;
+  $_SESSION["cart"][0]["subTotal"] += ($price * $qtyOrdered);
+  $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
   return true;
 }
 
@@ -125,19 +137,38 @@ function msgPrep($type, $msg) {
 
 /**
  * countryOptions function - Outputs all Countries as HTML options
- * @param string $defCode  Default Country Code marked as 'selected'
+ * @param string $selCode  Country Code that is marked as 'selected'
  * @return bool            Returns true on completion
  */
-function countryOptions($defCode) {
-  if ($defCode == null || $defCode == "") $defCode = DEFAULTS["countryCode"];  // Use Default if not set
+function countryOptions($selCode) {
+  if (empty($selCode)) $selCode = DEFAULTS["countryCode"];  // Use Default if not set
   include_once "../app/models/countryClass.php";
   $country = new Country();
   foreach (new RecursiveArrayIterator($country->getCountries()) as $value) {
-    if ($value["Code"] == $defCode) {
+    if ($value["Code"] == $selCode) {
       echo "<option value='" . $value["Code"] . "' selected>" . $value["Name"] . "</option>";
     } else {
       echo "<option value='" . $value["Code"] . "'>" . $value["Name"] . "</option>";
     }
+  }
+  return true;
+}
+
+/**
+ * shippingOptions function - Outputs distinct values from shipping field as HTML options
+ * @param string $field   Field to get distinct values from
+ * @param string $selOpt  Value that is marked as 'selected'
+ * @return bool           Returns true on completion
+ */
+function shippingOptions($field, $selCode) {
+  include_once "../app/models/shippingClass.php";
+  $shipping = new Shipping;
+  foreach (new RecursiveArrayIterator($shipping->getDistinct($field)) as $value) {
+   if ($value[$field] == $selCode) {
+     echo "<option value='" . $value[$field] . "' selected>" . $value[$field] . "</option>";
+   } else {
+     echo "<option value='" . $value[$field] . "'>" . $value[$field] . "</option>";
+   }
   }
   return true;
 }
@@ -156,7 +187,7 @@ function postValue($key) {
 }
 
 /**
- * lcValue function - Returns the the default currency + value to 2 decimal places
+ * symValue function - Returns the the default currency + value to 2 decimal places
  * @param float $value  Value to be prefixed
  * @return string       Returns the Default currency + value
  */

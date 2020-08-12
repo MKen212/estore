@@ -34,7 +34,7 @@ Class Country {
   /**
    * getShippingCode function - Retrieve the Shipping Band for a specified Country
    * @param string $countryCode  Code for Country to search
-   * @return string $result       Returns the Shipping Band or False
+   * @return string $result      Returns the Shipping Band or False
    */
   public function getShippingBand($countryCode) {
     try {

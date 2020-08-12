@@ -15,7 +15,6 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
         </tr>
       </thead>
       <tbody>
-
         <?php  // Loop through Cart and output a row per item
           foreach ($_SESSION["cart"] as $key => $values) {
             if ($key == 0) { // Get Summary Details
@@ -30,28 +29,13 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
 
             include "../app/views/shop/cartItem.php";
           }
+        
+          include "../app/views/shop/cartTotals.php";
         ?>
-
-        <tr class="cart_menu"><!--sub_total-->
-          <td></td>
-          <td class="description">
-            <h4>Cart Sub-Totals:</h4>
-          </td>
-          <td class="price">
-            <h4><?= $cart0["Items"]; ?> Item(s)</h4>
-          </td>
-          <td class="quantity">
-            <input class="cart_quantity_input" type="text" name="quantity" value="<?= $cart0["Products"]; ?>"  size="2" readonly />
-          </td>
-          <td class="total">
-            <h4><?= symValue($cart0["SubTotal"]); ?></h4>
-          </td>
-          <td></td>
-        </tr><!--/sub_total-->
       </tbody>
     </table>
     <div style="margin-bottom:20px;">
-      <a class="btn btn-default update" href="index.php?p=cart&mt">Empty Cart</a>
+      <a class="btn btn-default check_out" href="index.php?p=cart&mt">Empty Cart</a>
     </div>
   </div>
 <?php endif;?>

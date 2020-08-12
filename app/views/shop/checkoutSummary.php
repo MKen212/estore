@@ -1,49 +1,47 @@
 <!-- Checkout Summary -->
-<div class="review-payment" id="ship">
-  <h2>Review Shipping</h2>
-</div>
-<section id="do_action"><!--do_action-->
+<section id="ship"><!--ship-->
   <div class="row">
-    <div class="col-sm-6">
-      <form class="chose_area" action="index.php?p=checkout#ship" method="POST" name="shippingForm">
-        <h5 style="margin-left:30px;">Current Shipment Weight: <?= $_SESSION["cart"][0]["ShippingWeightKG"]; ?> KG - NO additional charges over 10KG!!</h5>
+    <div class="col-sm-8 clearfix">
+      <form class="bill-to" action="index.php?p=checkout#ship" method="POST" name="shippingForm">
+        <div class="form-one order-message"><!--shipping_instructions-->
+          <p>Shipping Instructions</p>
+          <textarea name="shipInstructions" placeholder="Notes about your order, Special Notes for Delivery" maxlength="500"><?= $_SESSION["cart"][0]["shippingInstructions"] ?></textarea>
+        </div><!--/shipping_instructions-->
+        <div class="form-two"><!--shipping_costs-->
+          <p style="padding-left: 40px">Shipping Details</p>
+          <ul class="user_info">
+            <li>Current shipment weight is: <?= $_SESSION["cart"][0]["shippingWeightKG"]; ?> KG.<br /><b>NO</b> additional charges on shipments over 10KG!!</li>
+            <br />
+            <li class="single_field">
+              <label>"Ship To" Country:</label>
+              <select name="shipToCountry" required>
+                <?php countryOptions($_SESSION["cart"][0]["shippingCountry"]); ?>
+              </select>
+            </li>
+            <li class="single_field">
+              <label>Shipping Priority:</label>
+              <select name="shippingPriority">
+                <?php shippingOptions("Type", $_SESSION["cart"][0]["shippingType"]); ?>
+              </select>
+            </li>
+            <li>
+              <button class="btn btn-default update" type="submit" name="updateShipping">Update</button>
+            </li>
+          </ul>
+        </div><!--/shipping_costs-->
+      </form>
+    </div>
 
-        <ul class="user_info">
-          <li class="single_field">
-            <label>Shipping Band:</label>
-            <select>
-              <option selected><?= $_SESSION["cart"][0]["ShippingBand"]; ?></option>
-            </select>
-          </li>
-          <li class="single_field">
-            <label>Shipping Priority:</label>
-            <select id="shippingPriority" name="updatedShipValue" onchange="updateShipCost()">
-              <?php foreach ($shippingCosts as $value) {
-                if ($value["Type"] == $_SESSION["cart"][0]["ShippingType"]) {
-                  echo "<option value='" . $value["PriceBandCost"] . "' selected>" . $value["Type"] . "</option>";
-                } else {
-                  echo "<option value='" . $value["PriceBandCost"] . "'>" . $value["Type"] . "</option>";
-                }
-              } ?>
-            </select>
-          </li>
-          <li class="single_field zip-field">
-            <label>Shipping Cost:</label>
-            <input type="text" id="shippingCost" value="<?= $_SESSION["cart"][0]["ShippingCost"]; ?>" readonly />
-          </li>
-        </ul>
-        <button class="btn btn-default update" type="submit" name="updateShipping">Update</button>
-      </form>
-    </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4" id="pay"><!--totals-->
       <form class="total_area" action="index.php?p=checkout#pay" method="POST" name="checkoutForm">
+        <p>Payment Summary</p>
         <ul>
-          <li>Cart Sub Total <span><?= symValue($_SESSION["cart"][0]["SubTotal"]); ?></span></li>
-          <li>Shipping Cost <span><?= symValue($_SESSION["cart"][0]["ShippingCost"]); ?></span></li>
-          <li>TOTAL <span><?= symValue($_SESSION["cart"][0]["Total"]); ?></span></li>
+          <li>Cart Sub Total <span><?= symValue($_SESSION["cart"][0]["subTotal"]); ?></span></li>
+          <li>Shipping Cost <span><?= symValue($_SESSION["cart"][0]["shippingCost"]); ?></span></li>
+          <li>TOTAL <span><?= symValue($_SESSION["cart"][0]["total"]); ?></span></li>
         </ul>
-        <button class="btn btn-default update" type="submit" name="processPayment">Make Payment</button>
+        <div id="paypal-button-container"></div>
       </form>
-    </div>
+    </div><!--/totals-->
   </div>
-</section><!--/do_action-->
+</section><!--/ship-->
