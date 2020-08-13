@@ -86,6 +86,9 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
       "subTotal" => 0.00,
       "shippingCost" => 0.00,
       "total" => 0.00,
+      "ppInvoiceID" => "",
+      "ppOrderID" => "",
+      "ppOrderStatus" => "",
     ];
   }
   // Add Item

@@ -36,6 +36,11 @@
 
       $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];
 
+      // Get an Invoice ID
+      include_once "../app/models/invoiceIDClass.php";
+      $invoiceID = new InvoiceID;
+      $_SESSION["cart"][0]["ppInvoiceID"] = $invoiceID->getInvoiceID();
+
       // Display Checkout Shipping Summary
       include "../app/views/shop/checkoutSummary.php";
 
@@ -45,24 +50,12 @@
         include "../app/views/shop/checkoutPayment.php";
 
         //  TO HERE - NEED TO ADD THE PAYPAL BUTTONS & CREATE THE ORDER
-        
 
-
-        // Get the next Invoice ID
-        include_once "../app/models/invoiceIDClass.php";
-        $invoiceID = new InvoiceID;
-        $nextInvoiceID = $invoiceID->getInvoiceID();
-
-        // Process the Order in PayPal          
-        include_once "../app/models/paypalClass.php";
-        $paypal = new PayPal;
-        
-        
-        echo "Current Invoice ID: {$nextInvoiceID}<br />";
       }
     endif;?>
   </div>
 </section><!--/checkout-->
+
 
 <!-- Render PayPal Buttons -->
 <script>
@@ -70,36 +63,31 @@
     style: {
       label: "buynow"
     },
-    // This function sets up the details of the transaction
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{
-          invoice_id: "12345",
-          description: "eStore Order",
-          amount: {
-            currency_code: "CHF",
-            value: "5.00"
-          }
-        }]
+    // Set up the details of the transaction
+    createOrder: function() {
+      return fetch("ppCreateOrder.php", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          invoiceID: "<?= $_SESSION["cart"][0]["ppInvoiceID"] ?>",
+          currencyCode: "<?= DEFAULTS["currency"] ?>",
+          value: <?= $_SESSION["cart"][0]["total"] ?>
+        })
+      }).then(function(response) {
+        // console.log(response);
+        if (response.ok && response.status == 200) {
+          return response.json();
+        } else {
+          alert("Error Processing PayPal Payment");
+          window.location = "index.php?p=checkout";
+        }
+      }).then(function(data) {
+        console.log(data);
+        return data.result.id;
       });
-    // createOrder: function() {
-    //   return fetch("https://raspi3b-5c2a9c65/tutorials/PayPal/SDKDemo/ppCreateOrder.php", {
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json"
-    //     }
-    //   }).then(function(response) {
-    //     console.log(response);
-    //     if (response.ok && response.status == 200) {
-    //       return response.json();
-    //     } else {
-    //       window.location = "checkout.php";
-    //     }
-    //   }).then(function(data) {
-    //     console.log(data);
-    //     return data.result.id;
-    //   });
-    // },
+    },
     // // This function checks the Shipping Address
     // onShippingChange: function(data, actions) {
     //   if (data.shipping_address.country_code  !== " $shipCountry ") {
@@ -121,29 +109,29 @@
     //     }]);
     //   }
     // },
-    // // This function captures the funds from the transaction
-    // onApprove: function(data) {
-    //   console.log(data);
-    //   return fetch("https://raspi3b-5c2a9c65/tutorials/PayPal/SDKDemo/ppCaptureOrder.php", {
-    //     method: "POST",
-    //     headers: {
-    //       "content-type": "application/json"
-    //     },
-    //     body: JSON.stringify({
-    //       orderID: data.orderID
-    //     })
-    //   }).then(function(response){
-    //     console.log(response);
-    //     if (response.ok && response.status == 200) {
-    //       return response.json();
-    //     } else {
-    //       window.location = "checkout.php";
-    //     }
-    //   }).then(function(details){
-    //     console.log(details);
-    //     // alert('Transaction funds captured from ' + details.payer_given_name);
-    //     document.getElementById("paypal-result").innerHTML = JSON.stringify(details);
-    //   });
+    // Captures the funds from the transaction
+    onApprove: function(data) {
+      console.log(data);
+      return fetch("ppCaptureOrder.php", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          orderID: data.orderID
+        })
+      }).then(function(response){
+        console.log(response);
+        if (response.ok && response.status == 200) {
+          return response.json();
+        } else {
+          window.location = "checkout.php";
+        }
+      }).then(function(details){
+        console.log(details);
+        // alert('Transaction funds captured from ' + details.payer_given_name);
+        document.getElementById("paypal-result").innerHTML = JSON.stringify(details);
+      });
     }
   }).render("#paypal-button-container");
 </script>

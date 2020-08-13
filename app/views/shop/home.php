@@ -13,8 +13,8 @@
       print_r($_GET);
       echo "<br />FILES: ";
       print_r($_FILES);
-      echo "<br />SERVER: ";
-      print_r($_SERVER);
+      // echo "<br />SERVER: ";
+      // print_r($_SERVER);
       echo "<br />";
     ?>
   </pre>

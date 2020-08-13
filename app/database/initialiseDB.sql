@@ -68,6 +68,18 @@ CREATE TABLE IF NOT EXISTS products (
 -- Create invoice_ID Sequence
 CREATE SEQUENCE `invoice_ID` start with 12980 maxvalue 99999999999 increment by 1;
 
+-- Create PayPal Orders table
+CREATE TABLE IF NOT EXISTS paypal_orders (
+  `OrderID` VARCHAR(20) NOT NULL PRIMARY KEY,
+  `Status` VARCHAR(20) NOT NULL,
+  `CurrencyCode` VARCHAR(5) NOT NULL,
+  `Value` DECIMAL(10, 2) NOT NULL,
+  `InvoiceID` INT(11) NOT NULL,
+  `CreateTime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `PayPalDebugID` VARCHAR(20)
+);
+
+
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
