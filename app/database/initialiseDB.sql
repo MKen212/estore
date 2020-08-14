@@ -70,51 +70,60 @@ CREATE SEQUENCE `invoice_ID` start with 12980 maxvalue 99999999999 increment by 
 
 -- Create PayPal Orders table
 CREATE TABLE IF NOT EXISTS paypal_orders (
-  `OrderID` VARCHAR(20) NOT NULL PRIMARY KEY,
+  `InvoiceID` INT(11) NOT NULL PRIMARY KEY,
+  `OrderID` VARCHAR(20) NOT NULL,
   `Status` VARCHAR(20) NOT NULL,
   `CurrencyCode` VARCHAR(5) NOT NULL,
   `Value` DECIMAL(10, 2) NOT NULL,
-  `InvoiceID` INT(11) NOT NULL,
+  `Shipping` VARCHAR(200),
+  `PaymentID` VARCHAR(20),
+  `PaymentStatus` VARCHAR(20),
+  `PaymentCurrency` VARCHAR(5),
+  `PaymentValue` DECIMAL(10, 2),
+  `PayerID` VARCHAR(20),
+  `PayerName` VARCHAR(100),
+  `PayerEmail` VARCHAR(100),
   `CreateTime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `PayPalDebugID` VARCHAR(20)
+  `CreateDebugID` VARCHAR(20),
+  `CaptureTime` TIMESTAMP,
+  `CaptureDebugID` VARCHAR(20),
+  KEY `OrderID` (`OrderID`)
 );
-
 
 -- Create orders table
 CREATE TABLE IF NOT EXISTS orders (
   `OrderID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Placed, 1=Paid, 2=Shipped, 3=Returned, 4=Refunded",
-  `UserID` INT(11) DEFAULT NULL,
-  `Items` INT(11) DEFAULT 0,
-  `Products` INT(11) DEFAULT 0,
+  `ItemCount` INT(11) DEFAULT 0,
+  `ProductCount` INT(11) DEFAULT 0,
+  `ShippingInstructions` VARCHAR(500) DEFAULT NULL,
   `ShippingWeightKG` DECIMAL(10,2) DEFAULT 0.00,
-  `ShippingBand` VARCHAR(50) NOT NULL,
+  `ShippingPriceBandKG` INT(11) DEFAULT 0,
+  `ShippingCountry` VARCHAR(2) NOT NULL,
   `ShippingType` VARCHAR(50) NOT NULL,
   `SubTotal` DECIMAL(10, 2) DEFAULT 0.00,
   `ShippingCost` DECIMAL(10, 2) DEFAULT 0.00,
   `Total` DECIMAL(10, 2) DEFAULT 0.00,
-  `FullName` VARCHAR(50) NOT NULL,
-  `Address1` VARCHAR(50) NOT NULL,
-  `Address2` VARCHAR(50) DEFAULT NULL,
-  `City` VARCHAR(50) NOT NULL,
-  `Region` VARCHAR(50) DEFAULT NULL,
-  `CountryCode` VARCHAR(2) NOT NULL,
-  `Postcode` VARCHAR(20) NOT NULL,
-  `Email` VARCHAR(50) NOT NULL,
-  `ContactNo` VARCHAR(50) DEFAULT NULL,
-  `ShipFullName` VARCHAR(50) NOT NULL,
-  `ShipAddress1` VARCHAR(50) NOT NULL,
-  `ShipAddress2` VARCHAR(50) DEFAULT NULL,
-  `ShipCity` VARCHAR(50) NOT NULL,
-  `ShipRegion` VARCHAR(50) DEFAULT NULL,
-  `ShipCountryCode` VARCHAR(2) NOT NULL,
-  `ShipPostcode` VARCHAR(20) NOT NULL,
-  `ShipEmail` VARCHAR(50) NOT NULL,
-  `ShipContactNo` VARCHAR(50) DEFAULT NULL,
-  `ShipInstructions` VARCHAR(500) DEFAULT NULL,
-  FOREIGN KEY (`UserID`) REFERENCES users (`UserID`),
-  FOREIGN KEY (`CountryCode`) REFERENCES countries (`code`),
-  FOREIGN KEY (`ShipCountryCode`) REFERENCES countries (`code`)
+  `PpInvoiceID` INT(11) NOT NULL,
+  `PpOrderID` VARCHAR(20) NOT NULL,
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Placed, 1=Paid, 2=Shipped, 3=Returned, 4=Refunded",
+  FOREIGN KEY (`PPInvoiceID`) REFERENCES paypal_orders (`InvoiceID`)
+);
+
+-- Create order_items table
+CREATE TABLE IF NOT EXISTS order_items (
+  `OrderItemID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `OrderID` INT(11) NOT NULL,
+  `ItemID` INT(11) NOT NULL,
+  `ProductID` INT(11) NOT NULL,
+  `Name` VARCHAR(40) NOT NULL,
+  `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+  `WeightGrams` INT(11) NOT NULL DEFAULT 0,
+  `QtyOrdered` INT(11) NOT NULL DEFAULT 0,
+  `ImgFilename` VARCHAR(40) DEFAULT NULL,
+  `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  FOREIGN KEY (`OrderID`) REFERENCES orders (`OrderID`),
+  FOREIGN KEY (`ProductID`) REFERENCES products (`ProductID`)
 );
 
 /*

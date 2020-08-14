@@ -36,10 +36,12 @@
 
       $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];
 
-      // Get an Invoice ID
+      // Get an Invoice ID & Clear ppOrderID & ppOrderStatus
       include_once "../app/models/invoiceIDClass.php";
       $invoiceID = new InvoiceID;
       $_SESSION["cart"][0]["ppInvoiceID"] = $invoiceID->getInvoiceID();
+      $_SESSION["cart"][0]["ppOrderID"] = "";
+      $_SESSION["cart"][0]["ppOrderStatus"] = "";
 
       // Display Checkout Shipping Summary
       include "../app/views/shop/checkoutSummary.php";
@@ -56,12 +58,15 @@
   </div>
 </section><!--/checkout-->
 
-
 <!-- Render PayPal Buttons -->
 <script>
   paypal.Buttons({
     style: {
       label: "buynow"
+    },
+    // Return to checkout page if PayPal transaction cancelled
+    onCancel: function (data) {
+      window.location = "index.php?p=checkout";
     },
     // Set up the details of the transaction
     createOrder: function() {
@@ -87,7 +92,7 @@
         console.log(data);
         return data.result.id;
       });
-    },
+    // },
     // // This function checks the Shipping Address
     // onShippingChange: function(data, actions) {
     //   if (data.shipping_address.country_code  !== " $shipCountry ") {
@@ -108,7 +113,7 @@
     //       }
     //     }]);
     //   }
-    // },
+    },
     // Captures the funds from the transaction
     onApprove: function(data) {
       console.log(data);
@@ -121,16 +126,16 @@
           orderID: data.orderID
         })
       }).then(function(response){
-        console.log(response);
+        // console.log(response);
         if (response.ok && response.status == 200) {
           return response.json();
         } else {
-          window.location = "checkout.php";
+          alert("Error Processing PayPal Payment");
+          window.location = "index.php?p=checkout";
         }
       }).then(function(details){
         console.log(details);
-        // alert('Transaction funds captured from ' + details.payer_given_name);
-        document.getElementById("paypal-result").innerHTML = JSON.stringify(details);
+        window.location = "index.php?p=orderConfirmation";
       });
     }
   }).render("#paypal-button-container");
