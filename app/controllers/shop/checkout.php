@@ -39,21 +39,12 @@
       // Get an Invoice ID & Clear ppOrderID & ppOrderStatus
       include_once "../app/models/invoiceIDClass.php";
       $invoiceID = new InvoiceID;
-      $_SESSION["cart"][0]["ppInvoiceID"] = $invoiceID->getInvoiceID();
+      $_SESSION["cart"][0]["invoiceID"] = $invoiceID->getInvoiceID();
       $_SESSION["cart"][0]["ppOrderID"] = "";
       $_SESSION["cart"][0]["ppOrderStatus"] = "";
 
       // Display Checkout Shipping Summary
       include "../app/views/shop/checkoutSummary.php";
-
-      // If Process Payment actioned
-      if (isset($_POST["processPayment"])) {
-        // Display Payment Summary
-        include "../app/views/shop/checkoutPayment.php";
-
-        //  TO HERE - NEED TO ADD THE PAYPAL BUTTONS & CREATE THE ORDER
-
-      }
     endif;?>
   </div>
 </section><!--/checkout-->
@@ -76,7 +67,7 @@
           "content-type": "application/json"
         },
         body: JSON.stringify({
-          invoiceID: "<?= $_SESSION["cart"][0]["ppInvoiceID"] ?>",
+          invoiceID: "<?= $_SESSION["cart"][0]["invoiceID"] ?>",
           currencyCode: "<?= DEFAULTS["currency"] ?>",
           value: <?= $_SESSION["cart"][0]["total"] ?>
         })

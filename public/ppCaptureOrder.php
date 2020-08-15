@@ -18,7 +18,6 @@ if (!isset($_SESSION["cart"][0])) {  // Reject User without a Shopping Cart
 
   // Capture order
   $order = $paypal->captureOrder($bodyObj->orderID);
-
   if ($order) {  // If captureOrder successful
     // Output the result in JSON format
     header("Content-type: application/json");

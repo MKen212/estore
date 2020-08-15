@@ -49,6 +49,19 @@ Class Order {
       return false;
     }
   }
+
+  public function getDetails($invoiceID) {
+    try {
+      // $sql = "SELECT `orders`.`Status`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`SubTotal`, `orders`.`ShippingCost`, `orders`.`Total`, `orders`.`EditTimeStamp`, `paypal_orders`.`Shipping`, `orders`.`ShippingInstructions`, `orders`.`ShippingWeightKG`, `orders`.`ShippingType`, `orders`.`PpInvoiceID`, `paypal_orders`.`OrderID`, `paypal_orders`.`Status` as `ppOrderStatus`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PaymentCurrency`, `paypal_orders`.`PaymentValue`, `paypal_orders`.`PayerID`, `paypal_orders`.`PayerName`, `paypal_orders`.`Capture Date/Time` FROM orders LEFT JOIN "
+    $sql = "SELECT * FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID WHERE orders.InvoiceID = '$invoiceID'";
+    $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+    $result = $stmt->fetch();
+    return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
 }
 
 ?>

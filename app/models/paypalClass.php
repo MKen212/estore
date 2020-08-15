@@ -107,7 +107,7 @@ class PayPal {
       $createTime = date("Y-m-d H:i-s", strtotime($response->result->create_time));
 
       // Build SQL & Execute
-      $sql = "INSERT INTO paypal_orders (`InvoiceID`, `OrderID`, `Status`, `CurrencyCode`, `Value`, `CreateTime`, `CreateDebugID`) VALUES ('{$response->result->purchase_units[0]->invoice_id}', '{$response->result->id}', '{$response->result->status}', '{$response->result->purchase_units[0]->amount->currency_code}', '{$response->result->purchase_units[0]->amount->value}', '{$createTime}', '{$response->headers["Paypal-Debug-Id"]}')";
+      $sql = "INSERT INTO paypal_orders (`PpInvoiceID`, `PpOrderID`, `PpOrderStatus`, `CurrencyCode`, `Value`, `CreateTime`, `CreateDebugID`) VALUES ('{$response->result->purchase_units[0]->invoice_id}', '{$response->result->id}', '{$response->result->status}', '{$response->result->purchase_units[0]->amount->currency_code}', '{$response->result->purchase_units[0]->amount->value}', '{$createTime}', '{$response->headers["Paypal-Debug-Id"]}')";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -118,15 +118,15 @@ class PayPal {
 
   /**
    * captureOrder function - Capture an authorised PayPal Order
-   * @param string $orderID    PayPal Order ID
+   * @param string $ppOrderID    PayPal Order ID
    * @return object $response  Returns object of the Captured Order or False
    */
-  public function captureOrder($orderID) {
+  public function captureOrder($ppOrderID) {
     try {
-      if (empty($orderID)) throw new HttpException("Order ID not provided.", 400, null);
+      if (empty($ppOrderID)) throw new HttpException("PayPal Order ID not provided.", 400, null);
 
       // Build the Capture Request
-      $request = new OrdersCaptureRequest($orderID);
+      $request = new OrdersCaptureRequest($ppOrderID);
       $request->prefer("return=representation");
 
       // Execute the Capture request
@@ -161,7 +161,7 @@ class PayPal {
       $captureTime = date("Y-m-d H:i-s", strtotime($response->result->update_time));
 
       // Build SQL & Execute
-      $sql = "UPDATE paypal_orders SET `Status` = '{$response->result->status}', `Shipping` = '$shipping', `PaymentID` ='{$response->result->purchase_units[0]->payments->captures[0]->id}', `PaymentStatus` ='{$response->result->purchase_units[0]->payments->captures[0]->status}', `PaymentCurrency` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->currency_code}', `PaymentValue` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->value}', `PayerID` = '{$response->result->payer->payer_id}', `PayerName` ='$payerName', `PayerEmail` ='{$response->result->payer->email_address}', `CaptureTime` ='$captureTime', `CaptureDebugID` = '{$response->headers["Paypal-Debug-Id"]}' WHERE `OrderID` = '{$response->result->id}'";
+      $sql = "UPDATE paypal_orders SET `PpOrderStatus` = '{$response->result->status}', `Shipping` = '$shipping', `PaymentID` ='{$response->result->purchase_units[0]->payments->captures[0]->id}', `PaymentStatus` ='{$response->result->purchase_units[0]->payments->captures[0]->status}', `PaymentCurrency` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->currency_code}', `PaymentValue` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->value}', `PayerID` = '{$response->result->payer->payer_id}', `PayerName` ='$payerName', `PayerEmail` ='{$response->result->payer->email_address}', `CaptureTime` ='$captureTime', `CaptureDebugID` = '{$response->headers["Paypal-Debug-Id"]}' WHERE `PpOrderID` = '{$response->result->id}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

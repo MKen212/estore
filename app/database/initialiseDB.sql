@@ -70,9 +70,9 @@ CREATE SEQUENCE `invoice_ID` start with 12980 maxvalue 99999999999 increment by 
 
 -- Create PayPal Orders table
 CREATE TABLE IF NOT EXISTS paypal_orders (
-  `InvoiceID` INT(11) NOT NULL PRIMARY KEY,
-  `OrderID` VARCHAR(20) NOT NULL,
-  `Status` VARCHAR(20) NOT NULL,
+  `PpInvoiceID` INT(11) NOT NULL PRIMARY KEY,
+  `PpOrderID` VARCHAR(20) NOT NULL,
+  `PpOrderStatus` VARCHAR(20) NOT NULL,
   `CurrencyCode` VARCHAR(5) NOT NULL,
   `Value` DECIMAL(10, 2) NOT NULL,
   `Shipping` VARCHAR(200),
@@ -86,8 +86,7 @@ CREATE TABLE IF NOT EXISTS paypal_orders (
   `CreateTime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `CreateDebugID` VARCHAR(20),
   `CaptureTime` TIMESTAMP,
-  `CaptureDebugID` VARCHAR(20),
-  KEY `OrderID` (`OrderID`)
+  `CaptureDebugID` VARCHAR(20)
 );
 
 -- Create orders table
@@ -103,11 +102,11 @@ CREATE TABLE IF NOT EXISTS orders (
   `SubTotal` DECIMAL(10, 2) DEFAULT 0.00,
   `ShippingCost` DECIMAL(10, 2) DEFAULT 0.00,
   `Total` DECIMAL(10, 2) DEFAULT 0.00,
-  `PpInvoiceID` INT(11) NOT NULL,
+  `InvoiceID` INT(11) NOT NULL,
   `PpOrderID` VARCHAR(20) NOT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Placed, 1=Paid, 2=Shipped, 3=Returned, 4=Refunded",
-  FOREIGN KEY (`PPInvoiceID`) REFERENCES paypal_orders (`InvoiceID`)
+  FOREIGN KEY (`InvoiceID`) REFERENCES paypal_orders (`PpInvoiceID`)
 );
 
 -- Create order_items table

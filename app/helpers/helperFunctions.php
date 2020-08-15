@@ -86,7 +86,7 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
       "subTotal" => 0.00,
       "shippingCost" => 0.00,
       "total" => 0.00,
-      "ppInvoiceID" => "",
+      "invoiceID" => "",
       "ppOrderID" => "",
       "ppOrderStatus" => "",
     ];
@@ -196,5 +196,14 @@ function postValue($key) {
  */
 function symValue($value) {
   return DEFAULTS["currency"] . " " . number_format($value, 2);
+}
+
+/**
+ * commaToBR function - Returns the string with the commas replaced with HTML <br /> tags
+ * @param string $string  String to be changed
+ * @return string         Retuns the updated string
+ */
+function commaToBR($string) {
+  return str_replace(", ", ",<br />", $string);
 }
 ?>

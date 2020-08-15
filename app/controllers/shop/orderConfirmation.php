@@ -7,7 +7,8 @@
 		  <h3>Order Confirmation</h3>
     </div>
     
-    <?php  // Check Cart has confirmed order
+    <?php  // Check Cart contains a confirmed order
+    /* TODO REMOVE BLOCK COMMENT
     if (!isset($_SESSION["cart"][0]["ppOrderID"])) :?>
       <div style="margin-bottom:50px">Your Order is not yet confirmed.</div>
     <?php else : 
@@ -33,14 +34,14 @@
       $order = new Order;
       $addOrder = $order->add($ordFields, $ordValues);
       if (!$addOrder) {  // Database Entry Failed
-        // TODO Sort Warning
         $resultMsg = msgPrep("danger", $_SESSION["message"]);
+        echo $resultMsg;
       } else {
         // Build New Order Items Records
         $ordItmFields = "(";
         $ordItmValues = "(";
         foreach ($_SESSION["cart"] as $key => $value) {
-          if ($key == 0) continue;  // Skip 0 record
+          if ($key == 0) continue;  // Skip record 0
           if ($key == 1) {  // Build Field List only on 1st Item
             // First Field is OrderID
             $ordItmFields .= "`OrderID`, ";
@@ -71,38 +72,23 @@
         // Save Order Items to Database
         $addItems = $order->addItems($ordItmFields, $ordItmValues);
         if (!$addItems) {  // Database Entry Failed
-          // TODO Sort Warning
           $resultMsg = msgPrep("danger", $_SESSION["message"]);
+          echo $resultMsg;
         } else {
+          $_SESSION["invoiceID"] = $_SESSION["cart"][0]["invoiceID"];
           // Clear the Cart now that it is loaded in the database
-          unset($_SESSION["cart"]);
-          ?><script>
+          unset($_SESSION["cart"]);?>
+          <script>
             document.getElementById("cartItems").innerHTML = "";
-          </script><?php
+          </script>
+          <div>Your order was processed successfully. The details are as follows:</div><?php
 
+          include "../app/controllers/shop/orderDetails.php";
         }
-      }
-    ?>
-
-
-
-
-
-    <pre>
-    <?php // Display Order Confirmation
-
-    // UP TO HERE - NEED TO CREATE THE ORDER DETAILS VIEW
-
-    echo "NEW ORDER CREATED: {$addOrder} <br />";
-    echo "NEW ITEMS CREATED: {$addItems} <br />";
-
-
-
-    print_r($_SESSION);
-    ?>
-    </pre>
-
-    <?php endif; ?>
-
+      } 
+    endif; */?>
+    <div class="register-req">Your order was processed successfully. The details are as follows:</div><?php
+    $_SESSION["invoiceID"] = "14005";
+    include "../app/controllers/shop/orderDetails.php";?>
   </div>
 </section>

@@ -1,4 +1,4 @@
-<?php  // List Cart Items
+<?php  // Shop - List Cart Items
 if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
   <div style="margin-bottom:50px">Your Shopping Cart is currently empty.</div>
 <?php else : ?>
