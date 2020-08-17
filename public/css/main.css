@@ -1729,7 +1729,7 @@ h2.title {
   padding: 7px 20px;
 }
 
-.total_area p {
+.total_area h2 {
   color: #696763;
   font-size: 20px;
   font-weight: 300;
@@ -1903,12 +1903,13 @@ h2.title {
 }
 
 .shopper-info {
-  margin-bottom: 50px;
+  /* margin-bottom: 50px; */
+  margin-bottom: 0px;
 }
 
-.shopper-info p, 
-.bill-to p, 
-.order-message p {
+.shopper-info h2, 
+.bill-to h2, 
+.order-message h2 {
   color: #696763;
   font-size: 20px;
   font-weight: 300

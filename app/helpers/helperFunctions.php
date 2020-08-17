@@ -204,6 +204,6 @@ function symValue($value) {
  * @return string         Retuns the updated string
  */
 function commaToBR($string) {
-  return str_replace(", ", ",<br />", $string);
+  return str_replace(", ", "<br />", $string);
 }
 ?>

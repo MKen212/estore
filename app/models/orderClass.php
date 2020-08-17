@@ -50,15 +50,35 @@ Class Order {
     }
   }
 
+  /**
+   * getDetails function - Get combined orders and paypal_orders record for an invoiceID
+   * @param int $invoiceiD  Invoice ID for specific order
+   * @return array $result  All details of order for InvoiceID or False
+   */
   public function getDetails($invoiceID) {
     try {
-      // $sql = "SELECT `orders`.`Status`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`SubTotal`, `orders`.`ShippingCost`, `orders`.`Total`, `orders`.`EditTimeStamp`, `paypal_orders`.`Shipping`, `orders`.`ShippingInstructions`, `orders`.`ShippingWeightKG`, `orders`.`ShippingType`, `orders`.`PpInvoiceID`, `paypal_orders`.`OrderID`, `paypal_orders`.`Status` as `ppOrderStatus`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PaymentCurrency`, `paypal_orders`.`PaymentValue`, `paypal_orders`.`PayerID`, `paypal_orders`.`PayerName`, `paypal_orders`.`Capture Date/Time` FROM orders LEFT JOIN "
-    $sql = "SELECT * FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID WHERE orders.InvoiceID = '$invoiceID'";
-    $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-    $result = $stmt->fetch();
-    return $result;
+      $sql = "SELECT * FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID WHERE orders.InvoiceID = '$invoiceID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetch();
+      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
+
+  /** getItems function - Retrieve order items for an orderID
+   * @param int $orderID  Order ID of items required
+   * @return array $result  Order Items for specified order or False
+   */
+  public function  getItems($orderID) {
+    try {
+      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename` FROM order_items WHERE `OrderID` = '$orderID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Order/getItems Failed: " . $err->getMessage() . "<br />";
       return false;
     }
   }

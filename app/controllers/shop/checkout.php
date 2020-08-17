@@ -23,9 +23,16 @@
         $_SESSION["cart"][0]["shippingInstructions"] = $shipInstructions;
         $_SESSION["cart"][0]["shippingCountry"] = $_POST["shipToCountry"];
         $_SESSION["cart"][0]["shippingType"] = $_POST["shippingPriority"];
+
+        // Get an Invoice ID & Clear ppOrderID & ppOrderStatus
+        include_once "../app/models/invoiceIDClass.php";
+        $invoiceID = new InvoiceID;
+        $_SESSION["cart"][0]["invoiceID"] = $invoiceID->getInvoiceID();
+        $_SESSION["cart"][0]["ppOrderID"] = "";
+        $_SESSION["cart"][0]["ppOrderStatus"] = "";
       }
 
-      // Update Shipping Costs & Total Value
+      // Get Shipping Costs & Update Total Value
       include_once "../app/models/countryClass.php";
       $country = new Country();
       $shippingBand = $country->getShippingBand($_SESSION["cart"][0]["shippingCountry"]);
@@ -35,13 +42,6 @@
       $_SESSION["cart"][0]["shippingCost"] = $shipping->getShippingCost($shippingBand, $_SESSION["cart"][0]["shippingType"], $_SESSION["cart"][0]["shippingPriceBandKG"]);
 
       $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];
-
-      // Get an Invoice ID & Clear ppOrderID & ppOrderStatus
-      include_once "../app/models/invoiceIDClass.php";
-      $invoiceID = new InvoiceID;
-      $_SESSION["cart"][0]["invoiceID"] = $invoiceID->getInvoiceID();
-      $_SESSION["cart"][0]["ppOrderID"] = "";
-      $_SESSION["cart"][0]["ppOrderStatus"] = "";
 
       // Display Checkout Shipping Summary
       include "../app/views/shop/checkoutSummary.php";
@@ -61,6 +61,7 @@
     },
     // Set up the details of the transaction
     createOrder: function() {
+      document.getElementById("paypal-processing").innerHTML = "<div class='alert alert-warning'>Processing Order. Please Wait...</div>";
       return fetch("ppCreateOrder.php", {
         method: "POST",
         headers: {

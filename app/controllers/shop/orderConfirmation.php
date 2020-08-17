@@ -8,8 +8,7 @@
     </div>
     
     <?php  // Check Cart contains a confirmed order
-    /* TODO REMOVE BLOCK COMMENT
-    if (!isset($_SESSION["cart"][0]["ppOrderID"])) :?>
+    if (empty($_SESSION["cart"][0]["ppOrderID"])) :?>
       <div style="margin-bottom:50px">Your Order is not yet confirmed.</div>
     <?php else : 
       // Build New Order Record
@@ -81,14 +80,12 @@
           <script>
             document.getElementById("cartItems").innerHTML = "";
           </script>
-          <div>Your order was processed successfully. The details are as follows:</div><?php
+          <div class="alert alert-success">Your order was processed successfully. The details are as follows:</div><?php 
 
+          // Show the order details
           include "../app/controllers/shop/orderDetails.php";
         }
       } 
-    endif; */?>
-    <div class="register-req">Your order was processed successfully. The details are as follows:</div><?php
-    $_SESSION["invoiceID"] = "14005";
-    include "../app/controllers/shop/orderDetails.php";?>
+    endif; ?>
   </div>
 </section>
