@@ -9,7 +9,7 @@
     
     <?php  // Check Cart contains a confirmed order
     if (empty($_SESSION["cart"][0]["ppOrderID"])) :?>
-      <div style="margin-bottom:50px">Your Order is not yet confirmed.</div>
+      <div style="margin-bottom:50px">Your Cart is empty or your Order is not yet confirmed.</div>
     <?php else : 
       // Build New Order Record
       $ordFields = "(";
@@ -84,6 +84,9 @@
 
           // Show the order details
           include "../app/controllers/shop/orderDetails.php";
+
+          // Clear the InvoiceID Session Variable
+          unset($_SESSION["invoiceID"]);
         }
       } 
     endif; ?>

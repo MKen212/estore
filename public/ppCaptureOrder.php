@@ -8,13 +8,13 @@ if (!isset($_SESSION["cart"][0])) {  // Reject User without a Shopping Cart
   require "../app/helpers/helperFunctions.php";
   require "../vendor/autoload.php";
 
-  // Initialise the PayPal API
-  include_once "../app/models/paypalClass.php";
-  $paypal = new PayPal;
-
   // Get body contents
   $body = file_get_contents("php://input");
   $bodyObj = json_decode($body);
+
+  // Initialise the PayPal API
+  include_once "../app/models/paypalClass.php";
+  $paypal = new PayPal;
 
   // Capture order
   $order = $paypal->captureOrder($bodyObj->orderID);

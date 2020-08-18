@@ -80,31 +80,42 @@
           alert("Error Processing PayPal Payment");
           window.location = "index.php?p=checkout";
         }
-      }).then(function(data) {
-        console.log(data);
-        return data.result.id;
+      }).then(function(details) {
+        console.log(details);
+        return details.result.id;
       });
-    // },
-    // // This function checks the Shipping Address
-    // onShippingChange: function(data, actions) {
-    //   if (data.shipping_address.country_code  !== " $shipCountry ") {
-    //     let newValue = "5.00";
-    //     if (data.shipping_address.country_code == "CH") {
-    //       newValue = "8.00";
-    //     } else if (data.shipping_address.country_code == "GB" || data.shipping_address.country_code == "FR") {
-    //       newValue = "11.00";
-    //     } else {
-    //       newValue = "14.00";
-    //     }
-    //     return actions.order.patch([{
-    //       op: "replace",
-    //       path: "/purchase_units/@reference_id==\'default\'/amount",
-    //       value: {
-    //         "currency_code": "CHF",
-    //         "value": newValue,
-    //       }
-    //     }]);
-    //   }
+    },
+    // This function checks for Shipping Address Changes
+    onShippingChange: function(data, actions) {
+      if (data.shipping_address.country_code  !== "<?= $_SESSION["cart"][0]["shippingCountry"]; ?>") {
+        return fetch("ppUpdateShipping.php", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json"
+          },
+          body: JSON.stringify({
+            shippingCountry: data.shipping_address.country_code
+          })
+        }).then(function(response){
+          // console.log(response);
+          if (response.ok && response.status == 200) {
+            return response.json();
+          } else {
+            alert("Error Processing PayPal Payment");
+            window.location = "index.php?p=checkout";
+          }
+        }).then(function(details){
+          console.log(details);
+          return actions.order.patch([{
+            op: "replace",
+            path: "/purchase_units/@reference_id==\'default\'/amount",
+            value: {
+              "currency_code": "<?= DEFAULTS["currency"]; ?>",
+              "value": details,
+            }
+          }]);
+        });
+      }
     },
     // Captures the funds from the transaction
     onApprove: function(data) {
