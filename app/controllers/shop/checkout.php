@@ -26,22 +26,30 @@
 
         // Get an Invoice ID & Clear ppOrderID & ppOrderStatus
         include_once "../app/models/invoiceIDClass.php";
-        $invoiceID = new InvoiceID;
+        $invoiceID = new InvoiceID();
         $_SESSION["cart"][0]["invoiceID"] = $invoiceID->getInvoiceID();
         $_SESSION["cart"][0]["ppOrderID"] = "";
         $_SESSION["cart"][0]["ppOrderStatus"] = "";
+
+        // Get Shipping Costs & Update Total Value
+        include_once "../app/models/countryClass.php";
+        $country = new Country();
+        $shippingBand = $country->getShippingBand($_SESSION["cart"][0]["shippingCountry"]);
+
+        // Update shipping PriceBandKG based on 3 bands <2kg, <5kg, <10kg or more
+        if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
+          $_SESSION["cart"][0]["shippingPriceBandKG"] = 2;
+        } else if ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
+          $_SESSION["cart"][0]["shippingPriceBandKG"] = 5;
+        } else {
+          $_SESSION["cart"][0]["shippingPriceBandKG"] = 10;
+        }
+        include_once "../app/models/shippingClass.php";
+        $shipping = new Shipping();
+        $_SESSION["cart"][0]["shippingCost"] = $shipping->getShippingCost($shippingBand, $_SESSION["cart"][0]["shippingType"], $_SESSION["cart"][0]["shippingPriceBandKG"]);
+
+        $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];
       }
-
-      // Get Shipping Costs & Update Total Value
-      include_once "../app/models/countryClass.php";
-      $country = new Country();
-      $shippingBand = $country->getShippingBand($_SESSION["cart"][0]["shippingCountry"]);
-      
-      include_once "../app/models/shippingClass.php";
-      $shipping = new Shipping;
-      $_SESSION["cart"][0]["shippingCost"] = $shipping->getShippingCost($shippingBand, $_SESSION["cart"][0]["shippingType"], $_SESSION["cart"][0]["shippingPriceBandKG"]);
-
-      $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];
 
       // Display Checkout Shipping Summary
       include "../app/views/shop/checkoutSummary.php";

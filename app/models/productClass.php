@@ -100,5 +100,22 @@ class Product {
       return false;
     }
   }
+
+  /**
+   * updateQtyAvail function - Update Quantity Available for specific product
+   * @param int $productID    Product ID of product to update
+   * @param int $qtyAvailChg  (+-)Quantity to change in QtyAvail field
+   * @return bool $result     Returns True if update success or False
+   */
+  public function updateQtyAvail($productID, $qtyAvailChg) {
+    try {
+      $sql = "UPDATE products SET `QtyAvail` = `QtyAvail` + $qtyAvailChg WHERE `ProductID` = '$productID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Product/updateQtyAvail Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
 }
 ?>

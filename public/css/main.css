@@ -1796,9 +1796,11 @@ h2.title {
 }
 
 .update, .check_out {
-  background: #FE980F;
+  /* background: #FE980F; */
+  background:#F5F5ED;
   border-radius: 0;
-  color: #FFFFFF;
+  /* color: #FFFFFF; */
+  color: #696763;
   border: none;
   padding: 5px 15px;
 }
@@ -1810,6 +1812,13 @@ h2.title {
 .check_out {
   margin-top: 18px;
   margin-left: 40px
+}
+
+.check_out:hover, .update:hover {
+  background: #FE980F;
+  border: 0 none;
+  border-radius: 0;
+  color: #FFFFFF;
 }
 
 

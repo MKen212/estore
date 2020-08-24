@@ -8,7 +8,7 @@
     </div>
     
     <?php  // Check Cart contains a confirmed order
-    if (empty($_SESSION["cart"][0]["ppOrderID"])) :?>
+    if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) :?>
       <div style="margin-bottom:50px">Your Cart is empty or your Order is not yet confirmed.</div>
     <?php else : 
       // Build New Order Record
@@ -30,7 +30,7 @@
       
       // Save Order to Database
       include_once "../app/models/orderClass.php";
-      $order = new Order;
+      $order = new Order();
       $addOrder = $order->add($ordFields, $ordValues);
       if (!$addOrder) {  // Database Entry Failed
         $resultMsg = msgPrep("danger", $_SESSION["message"]);
@@ -39,8 +39,15 @@
         // Build New Order Items Records
         $ordItmFields = "(";
         $ordItmValues = "(";
+        $prodQtyUpdates = [];  // Product Quantity Updates Array
         foreach ($_SESSION["cart"] as $key => $value) {
           if ($key == 0) continue;  // Skip record 0
+          // Fill Product Quantity Updates Array
+          if (array_key_exists($value["productID"], $prodQtyUpdates)) {
+            $prodQtyUpdates[$value["productID"]] += -$value["qtyOrdered"];
+          } else {
+            $prodQtyUpdates[$value["productID"]] = -$value["qtyOrdered"];
+          }          
           if ($key == 1) {  // Build Field List only on 1st Item
             // First Field is OrderID
             $ordItmFields .= "`OrderID`, ";
@@ -75,6 +82,16 @@
           echo $resultMsg;
         } else {
           $_SESSION["invoiceID"] = $_SESSION["cart"][0]["invoiceID"];
+          // Update Products Quantity Available for each item
+          include_once "../app/models/productClass.php";
+          $product = new Product();
+          foreach($prodQtyUpdates as $productID => $qtyAvailChg) {
+            $prodUpdate = $product->updateQtyAvail($productID, $qtyAvailChg);
+            if (!$prodUpdate) {  // Database Entry Failed
+              $resultMsg = msgPrep("danger", $_SESSION["message"]);
+              echo $resultMsg;
+            }
+          }
           // Clear the Cart now that it is loaded in the database
           unset($_SESSION["cart"]);?>
           <script>

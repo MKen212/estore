@@ -104,21 +104,32 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
     "timestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
-  // Update Shipment Weight & Shipping PriceBandKG based on 3 bands <2kg, <5kg, <10kg or more
-  $_SESSION["cart"][0]["shippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
-  if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
-    $_SESSION["cart"][0]["shippingPriceBandKG"] = 2;
-  } else if ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
-    $_SESSION["cart"][0]["shippingPriceBandKG"] = 5;
-  } else {
-    $_SESSION["cart"][0]["shippingPriceBandKG"] = 10;
-  }
-  // Update Counts & Totals
+    
+  // Update Weights, Counts & Totals
   $_SESSION["cart"][0]["itemCount"] += 1;
   $_SESSION["cart"][0]["productCount"] += $qtyOrdered;
+  $_SESSION["cart"][0]["shippingWeightKG"] += ($weightGrams * $qtyOrdered) / 1000;
   $_SESSION["cart"][0]["subTotal"] += ($price * $qtyOrdered);
   $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
   return true;
+}
+
+function removeFromCart($itemID) {
+  if ($_SESSION["cart"][0]["itemCount"] == 1) {  // Only 1 item in cart so delete cart
+    unset($_SESSION["cart"]);
+  } else {  // Remove Specific Item Details from Totals
+    $_SESSION["cart"][0]["itemCount"] -= 1;
+    $_SESSION["cart"][0]["productCount"] -= $_SESSION["cart"][$itemID]["qtyOrdered"];
+    $_SESSION["cart"][0]["shippingWeightKG"] -= ($_SESSION["cart"][$itemID]["weightGrams"] * $_SESSION["cart"][$itemID]["qtyOrdered"]) / 1000;
+    $_SESSION["cart"][0]["shippingPriceBandKG"] = 0;
+    $_SESSION["cart"][0]["subTotal"] -= ($_SESSION["cart"][$itemID]["price"] * $_SESSION["cart"][$itemID]["qtyOrdered"]);
+    $_SESSION["cart"][0]["shippingCost"] = 0.00;
+    $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
+    // Remove Specific Item
+    // TO HERE TO REMOVE SPECIFIC ITEM
+
+  }
+
 }
 
 /**
@@ -129,11 +140,11 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
  */
 function msgPrep($type, $msg) {
   if ($type == "success") {
-    $prepdMsg = '<div class="alert alert-success">' . $msg . '<div>';
+    $prepdMsg = '<div class="alert alert-success">' . $msg . '</div>';
   } else if ($type == "warning") {
-    $prepdMsg = '<div class="alert alert-warning">' . $msg . '<div>';
+    $prepdMsg = '<div class="alert alert-warning">' . $msg . '</div>';
   } else if ($type == "danger") {
-    $prepdMsg = '<div class="alert alert-danger">' . $msg . '<div>';
+    $prepdMsg = '<div class="alert alert-danger">' . $msg . '</div>';
   }
   return $prepdMsg;
 }

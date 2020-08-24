@@ -16,6 +16,6 @@
     <p class="cart_total_price"><?= symValue(($values["qtyOrdered"] * $values["price"])); ?></p>
   </td>
   <td class="cart_delete">
-    <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
+    <a class="cart_quantity_delete" href="index.php?p=cart&delItem&id=<?= $values["itemID"]; ?>"><i class="fa fa-times"></i></a>
   </td>
 </tr><!--/Cart Item-->
