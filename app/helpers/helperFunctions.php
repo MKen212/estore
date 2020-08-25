@@ -114,6 +114,11 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
   return true;
 }
 
+/**
+ * removeFromCart function - Used to remove an item for the Cart
+ * @param int $itemID  ItemID of item to be removed
+ * @return bool        Returns true on completion
+ */
 function removeFromCart($itemID) {
   if ($_SESSION["cart"][0]["itemCount"] == 1) {  // Only 1 item in cart so delete cart
     unset($_SESSION["cart"]);
@@ -126,10 +131,20 @@ function removeFromCart($itemID) {
     $_SESSION["cart"][0]["shippingCost"] = 0.00;
     $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"];
     // Remove Specific Item
-    // TO HERE TO REMOVE SPECIFIC ITEM
-
+    unset($_SESSION["cart"][$itemID]);
+    // Re-Build Cart
+    $newCart = [];
+    $newKey = 0;
+    foreach($_SESSION["cart"] as $value) {
+      $newCart[$newKey] = $value;
+      if ($newKey != 0) $newCart[$newKey]["itemID"] = $newKey;  // Fix Item ID
+      $newKey++;
+    }
+    // Reload Cart to Session
+    unset($_SESSION["cart"]);
+    $_SESSION["cart"] = $newCart;
+    return true;
   }
-
 }
 
 /**

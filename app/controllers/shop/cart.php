@@ -1,6 +1,9 @@
 <?php  // Shop - Shopping Cart
 if (isset($_GET["mt"])) {  // User has Opted to Empty Cart
   unset($_SESSION["cart"]);
+  ?><script>
+    document.getElementById("cartItems").innerHTML = null;
+  </script><?php 
 }
 
 if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
@@ -10,8 +13,9 @@ if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
     echo $message;
   } else {
     removeFromCart($delID);
-
-    // UP TO HERE - NEED TO CHECK HOW ARRAY_SLICE WORKS
+    ?><script>
+      document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"];?>;
+    </script><?php 
   }
 }
 
