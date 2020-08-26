@@ -9,22 +9,22 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <meta name="decription" content="Electronic Online Store" />
   <meta name="author" content="Malarena SA" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
   <title>eStore | Shop</title>
 
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/font-awesome.min.css">
-  <link rel="stylesheet" href="css/prettyPhoto.css">
-  <link rel="stylesheet" href="css/price-range.css">
-  <link rel="stylesheet" href="css/animate.css">
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/font-awesome.min.css" />
+  <link rel="stylesheet" href="css/prettyPhoto.css" />
+  <link rel="stylesheet" href="css/price-range.css" />
+  <link rel="stylesheet" href="css/animate.css" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
   
-  <link rel="shortcut icon" href="images/home/favicon-96x96.png">
+  <link rel="shortcut icon" href="images/home/favicon-96x96.png" />
 
   <script src="https://www.paypal.com/sdk/js?client-id=<?= PAYPALAPI["clientID"] ?>&currency=<?= DEFAULTS["currency"] ?>"></script>
 </head><!--/head-->
@@ -32,7 +32,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 <body>
   <?php include "../app/views/shop/header.php";
 
-  if($_GET["p"] == "cart" || $_GET["p"] == "checkout" || $_GET["p"] == "orderConfirmation") : 
+  if($_GET["p"] == "cart" || $_GET["p"] == "checkout" || $_GET["p"] == "orderConfirmation" || $_GET["p"] == "orderDisplay") : 
     include "../app/controllers/shop/" . $_GET["p"] . ".php";
   else : 
   ?>

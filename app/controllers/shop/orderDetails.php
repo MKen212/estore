@@ -1,5 +1,5 @@
 <?php  // Shop - Order Details
-if (!isset($_SESSION["invoiceID"])) :  // Check Invoice ID Provided ?>
+if (empty($_SESSION["invoiceID"])) :  // Check Invoice ID Provided ?>
   <div style="margin-bottom:50px">No Invoice ID provided.</div>
 <?php else :
   include_once "../app/models/orderClass.php";
@@ -8,29 +8,18 @@ if (!isset($_SESSION["invoiceID"])) :  // Check Invoice ID Provided ?>
   // Get Order Details
   $orderDetails = $order->getDetails($_SESSION["invoiceID"]);
   // Update Status Code to Text
-  if ($orderDetails["Status"] = 0) {
-    $orderDetails["Status"] = "Placed";
-  } else if ($orderDetails["Status"] = 1) {
-    $orderDetails["Status"] = "Paid";
-  } else if ($orderDetails["Status"] = 2) {
-    $orderDetails["Status"] = "Shipped";
-  } else if ($orderDetails["Status"] = 3) {
-    $orderDetails["Status"] = "Returned";
-  } else if ($orderDetails["Status"] = 4) {
-    $orderDetails["Status"] = "Refunded";
-  }
-
+  $orderDetails["Status"] = ordStatusText($orderDetails["Status"]);
   // Update Shipping Instructions if none
   if (empty($orderDetails["ShippingInstructions"])) $orderDetails["ShippingInstructions"] = "-None-";
-  
+
   // Show Details in Order Header
   include "../app/views/shop/orderHeader.php";
 
-  // Get Order Items & show each item
+  // Show Order Items
   ?>
   <div class="row"><!--order_items-->
     <div class="col-sm-12 shopper-info">
-      <h2>Ordered Items</h2>
+      <h5>Ordered Items</h5>
       <div class="table-responsive cart_info">
         <table class="table table-condensed" style="margin-bottom:0px">
           <thead>
@@ -45,11 +34,11 @@ if (!isset($_SESSION["invoiceID"])) :  // Check Invoice ID Provided ?>
           <tbody>
             <?php  // Loop through Order Items and output a row per item
             $orderID = $orderDetails["OrderID"];
-            foreach (new RecursiveArrayIterator($order->getItems($orderID)) as $key => $values) {
-              if (empty($values["ImgFilename"])) {
+            foreach (new RecursiveArrayIterator($order->getItems($orderID)) as $record) {
+              if (empty($record["ImgFilename"])) {
                 $fullPath = DEFAULTS["noImgUploaded"];
               } else {
-                $fullPath = DEFAULTS["productsImgPath"] . $values["ProductID"] . "/" . $values["ImgFilename"];
+                $fullPath = DEFAULTS["productsImgPath"] . $record["ProductID"] . "/" . $record["ImgFilename"];
               }
               include "../app/views/shop/orderItem.php";
             }

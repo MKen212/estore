@@ -51,6 +51,22 @@ Class Order {
   }
 
   /**
+   * getList function - Get full list of  combined orders and paypal_orders records
+   * @return array $result  Details of all orders (Descending Order) or False
+   */
+  public function getList() {
+    try {
+      $sql = "SELECT `orders`.`InvoiceID`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`ShippingCountry`, `orders`.`ShippingType`, `orders`.`Total`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PayerName`, `orders`.`EditTimestamp`, `orders`.`Status` FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID ORDER BY `orders`.`InvoiceID` DESC";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Order/getList Failed: " . $err->getMessage() . "<br />";
+      return false;
+    }
+  }
+
+  /**
    * getDetails function - Get combined orders and paypal_orders record for an invoiceID
    * @param int $invoiceiD  Invoice ID for specific order
    * @return array $result  All details of order for InvoiceID or False

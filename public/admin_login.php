@@ -17,7 +17,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" href="css/userForms.css" />
 
-  <link rel="shortcut icon" href="images/home/favicon-96x96.png">
+  <link rel="shortcut icon" href="images/home/favicon-96x96.png" />
 </head>
 
 <body class="text-center">

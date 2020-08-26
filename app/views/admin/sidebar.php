@@ -15,9 +15,9 @@
       <li class="nav-item">
         <a class="nav-link<?= $_GET["p"] == "productAdd" ? " active" : "";?>" href="admin_dashboard.php?p=productAdd"><span data-feather="book"></span>Add Products</a>
       </li>
-      <!-- Issued to Me -->
+      <!-- List Orders -->
       <li class="nav-item">
-        <a class="nav-link" href="admin-booksIssuedToMe.php"><span data-feather="book-open"></span>Issued to Me</a>
+        <a class="nav-link<?= $_GET["p"] == "ordersList" ? " active" : "";?>" href="admin_dashboard.php?p=ordersList"><span data-feather="layers"></span>List Orders</a>
       </li>
       <!-- Send a Message -->
       <li class="nav-item">

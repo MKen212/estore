@@ -232,4 +232,26 @@ function symValue($value) {
 function commaToBR($string) {
   return str_replace(", ", "<br />", $string);
 }
+
+/**
+ * ordStatusText function - Returns the Text relevant to the given status code
+ * @param int $status          Order Status Code
+ * @return string $statusText  Returns the Text for the Status Code
+ */
+function ordStatusText($status) {
+  $statusText = "";
+  if ($status == 0) {
+    $statusText = "Placed";
+  } else if ($status == 1) {
+    $statusText = "Paid";
+  } else if ($status == 2) {
+    $statusText = "Shipped";
+  } else if ($status == 3) {
+    $statusText = "Returned";
+  } else if ($status == 4) {
+    $statusText = "Refunded";
+  }
+  return $statusText;
+}
+
 ?>

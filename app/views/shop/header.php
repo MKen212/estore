@@ -98,6 +98,7 @@
               </li> 
               <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
+                  <li><a <?= $_GET["p"] == "orderDisplay" ? 'class="active"' : null;?>href="index.php?p=orderDisplay">Display Order</a></li>
                   <li><a href="blog.html">Blog List</a></li>
                   <li><a href="blog-single.html">Blog Single</a></li>
                 </ul>

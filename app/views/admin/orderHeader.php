@@ -1,4 +1,4 @@
-<div class="row shopper-info"><!--order_header_SHOP-->
+<div class="row"><!--order_header_ADMIN-->
   <div class="col-sm-4"><!--order_information-->
     <h5>Order Information</h5>
     <table class="table table-sm">
@@ -35,4 +35,4 @@
       <tr><td>Date & Time Paid:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["CaptureTime"])); ?></td></tr>
     </table>
   </div><!--/paypal_information-->
-</div><!--order_header_SHOP-->
+</div><!--order_header_ADMIN-->
