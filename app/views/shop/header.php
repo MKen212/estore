@@ -64,7 +64,7 @@
               <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
               <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
               <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null; ?></span></a></li>
-              <li><a href="admin_login.php"><i class="fa fa-lock"></i> Login</a></li>
+              <li><a href="admin.php"><i class="fa fa-lock"></i> Login</a></li>
             </ul>
           </div>
         </div>

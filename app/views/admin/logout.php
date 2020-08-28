@@ -17,5 +17,5 @@
 <!-- To Shop or Re-Login -->
 <div class="row justify-content-center">
   <a class="mr-3" href="/">To eStore</a>
-  <a class="ml-3" href="admin_login.php?p=login">Back to Login</a>
+  <a class="ml-3" href="admin.php?p=login">Back to Login</a>
 </div>

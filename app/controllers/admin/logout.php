@@ -1,5 +1,4 @@
-<?php  // Logout User
-
+<?php  // Admin - Logout
 if (isset($_GET["q"])) {
   include_once "../app/models/userClass.php";
 

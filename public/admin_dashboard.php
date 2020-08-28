@@ -2,7 +2,7 @@
 session_start();
 if (!isset($_SESSION["userLogin"])) {  // Reject User that is not logged in
   $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
-  header("location:admin_login.php?p=logout");
+  header("location:admin.php?p=logout");
 }
 require "../app/config/_config.php";
 require "../app/helpers/helperFunctions.php";

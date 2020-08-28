@@ -1,4 +1,4 @@
-<?php  // Main Section - Admin Order Details
+<?php  // Admin Dashboard - Order Details
 if (!isset($_GET["id"])) :  // Check Invoice ID Provided ?>
   <div>No Invoice ID provided.</div>
 <?php else : ?>

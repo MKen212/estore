@@ -1,22 +1,22 @@
-<?php  // Display Login Form
+<?php  // Admin - Login
 include "../app/views/admin/loginForm.php";
 
 if (isset($_POST["login"])){  // Verify & Login User
   include_once "../app/models/userClass.php";
 
-  $username = cleanInput($_POST["estUsername"], "string");
+  $email = cleanInput($_POST["estEmail"], "string");
   $password = cleanInput($_POST["estPassword"], "password");
   $_POST = [];
 
   $user = new User();  
-  $login = $user->login($username, $password);
+  $login = $user->login($email, $password);
   unset($user, $password);  
   if ($login) {
     // Login Success
     header("location:admin_dashboard.php?p=home");
   } else {
     // Login Failure
-    header("location:admin_login.php?p=logout");
+    header("location:admin.php?p=logout");
   }
 }
 ?>

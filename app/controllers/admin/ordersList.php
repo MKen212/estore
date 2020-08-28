@@ -1,4 +1,4 @@
-<!-- Main Section - Admin Orders List -->
+<!-- Admin Dashboard - Orders List -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Orders List</h2>
 </div>

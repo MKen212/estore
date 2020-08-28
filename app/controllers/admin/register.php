@@ -1,24 +1,15 @@
-<?php  // Display Registration Form
+<?php  // Admin - Register New User Form
 include "../app/views/admin/registerForm.php";
 
 if (isset($_POST["register"])) {  // Register New User
   include_once "../app/models/userClass.php";
-  
-  $username = cleanInput($_POST["username"], "string");
-  $password = cleanInput($_POST["password"], "password");
-  $fullName = cleanInput($_POST["fullName"], "string");
-  $address1 = cleanInput($_POST["address1"], "string");
-  $address2 = cleanInput($_POST["address2"], "string");
-  $city = cleanInput($_POST["city"], "string");
-  $region = cleanInput($_POST["region"], "string");
-  $countryCode = cleanInput($_POST["countryCode"], "string");
-  $postcode = cleanInput($_POST["postcode"], "string");
   $email = cleanInput($_POST["email"], "email");
-  $contactNo = cleanInput($_POST["contactNo"], "int");
+  $password = cleanInput($_POST["password"], "password");
+  $name = cleanInput($_POST["name"], "string");
   $_POST = [];
 
   $user = new User();
-  $newUser = $user->register($username, $password, $fullName, $address1, $address2, $city, $region, $countryCode, $postcode, $email, $contactNo);
+  $newUser = $user->register($email, $password, $name);
   unset($user, $password);
 
   if ($newUser) {
@@ -29,7 +20,7 @@ if (isset($_POST["register"])) {  // Register New User
     $resultMsg = msgPrep("danger", $_SESSION["message"]);
   }
   ?><script>
-    document.getElementById("adminRegRes").innerHTML = `<?= $resultMsg;?>`;
+    document.getElementById("registerFormResult").innerHTML = `<?= $resultMsg;?>`;
   </script><?php
   unset($_SESSION["message"]);
 }

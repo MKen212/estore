@@ -1,4 +1,4 @@
-<!-- Main Section - Admin Add Products -->
+<!-- Admin Dashboard - Add Products -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add Products</h2>
 </div>

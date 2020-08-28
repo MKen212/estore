@@ -17,58 +17,50 @@ class User {
 
   /**
    * register function - Register a new user
-   * @param string $username     User Username
-   * @param string $password     User Password
-   * @param string $firstName    User Full Name
-   * @param string $address1     User Address 1
-   * @param string $address2     User Address 2
-   * @param string $city         User City
-   * @param string $region       User Region
-   * @param string $countryCode  User Country Code
-   * @param string $postcode     User Postcode
-   * @param string $email        User Email Address
-   * @param string $contactNo    User Contact Number
-   * @return int lastInsertID    User ID of new user or False
+   * @param string $email      User Email Address
+   * @param string $password   User Password
+   * @param string $name       User Name
+   * @return int lastInsertID  User ID of new user or False
    */
-  public function register($username, $password, $fullName, $address1, $address2, $city, $region, $countryCode, $postcode, $email, $contactNo) {
+  public function register($email, $password, $name) {
     try {
-      // Check Username does not exist
-      $sql = "SELECT `UserID` FROM users WHERE `UserName` = '$username'";
+      // Check Email does not already exist
+      $sql = "SELECT `Email` FROM users WHERE `Email` = '$email'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
       $_SESSION["message"] = "Error - User/register check Failed: " . $err->getMessage();
       return false;
     }
-    if ($count == 0) {  // Username is unique
+    if ($count == 0) {  // Email is unique
       try {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sqlInsUser = "INSERT INTO users
-          (`UserName`, `Password`, `FullName`, `Address1`, `Address2`, `City`, `Region`, `CountryCode`, `Postcode`, `Email`, `ContactNo`) VALUES
-          ('$username', '$passwordHash', '$fullName', '$address1', '$address2', '$city', '$region', '$countryCode', '$postcode', '$email', '$contactNo')";
+          (`Email`, `Password`, `Name`) VALUES
+          ('$email', '$passwordHash', '$name')";
         $this->conn->exec($sqlInsUser);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = "Registration of '$username' was successful.";
+        $_SESSION["message"] = "Registration of '$email' was successful.";
         return $newID;
       } catch (PDOException $err) {
         $_SESSION["message"] = "Error - User/register Failed: " . $err->getMessage() . "<br />";
         return false;
       }
-    } else {  // Username is not unique
-      $_SESSION["message"] = "Error - Username '$username' is already taken!<br />Please try again.";
+    } else {  // Email is not unique
+      $_SESSION["message"] = "Error - Email Address '$email' is already in use!<br />Please try again.";
       return false;
     }
   }
 
   /**
-   * login function - Check username & password & set Session
-   * @param string $name      User Name
+   * login function - Check email & password & set Session
+   * @param string $email     User Email
    * @param string $password  User Password
    * @return bool             True if Function success
    */
-  public function login($username, $password) {
+  public function login($email, $password) {
     try {
-      $sql = "SELECT `UserID`, `Password`, `IsAdmin`, `Status` FROM users WHERE `UserName` = '$username'";
+      $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM users WHERE `Email` = '$email'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
     } catch (PDOException $err) {
@@ -82,10 +74,7 @@ class User {
       try {
         $result = $stmt->fetch();
         $passwordStatus = password_verify($password, $result["Password"]);
-        $userID = $result["UserID"];
-        $userIsAdmin = $result["IsAdmin"];
         $userStatus = $result["Status"];
-        $result = null;
       } catch (PDOException $err) {
         $_SESSION["message"] = "Error - User/Login Failed: " . $err->getMessage();
         return false;
@@ -93,9 +82,10 @@ class User {
       if ($passwordStatus == true) {  // Correct Password Entered
         if ($userStatus == true) {  // User is approved
           $_SESSION["userLogin"] = true;
-          $_SESSION["userIsAdmin"] = $userIsAdmin;
-          $_SESSION["userID"] = $userID;
-          $_SESSION["userName"] = $username;
+          $_SESSION["userIsAdmin"] = $result["IsAdmin"];
+          $_SESSION["userID"] = $result["UserID"];
+          $_SESSION["userName"] = $result["Name"];
+          $result = null;
           return true;
         } else {  // User is unapproved
           $_SESSION["message"] = "Error - User not yet approved!";

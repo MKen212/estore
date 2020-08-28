@@ -1,6 +1,6 @@
 /* Database and Table Initialisation SQL Statements for estore*/
 
--- Create libraryms main database
+-- Create estore main database
 CREATE DATABASE IF NOT EXISTS estore;
 
 -- Use estore database
@@ -8,13 +8,13 @@ USE estore;
 
 -- Create Countries table
 CREATE TABLE IF NOT EXISTS countries (
-  `Code` VARCHAR(2) NOT NULL UNIQUE,
+  `Code` VARCHAR(2) NOT NULL UNIQUE PRIMARY KEY,
   `Name` VARCHAR(50) NOT NULL,
   `ShippingBand` VARCHAR(50) NOT NULL
 );
 -- For Country Data see end of file...
 
--- Create shipping table
+-- Create Shipping table
 CREATE TABLE IF NOT EXISTS shipping (
   `ShippingID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Band` VARCHAR(50) NOT NULL,
@@ -24,23 +24,21 @@ CREATE TABLE IF NOT EXISTS shipping (
 );
 -- For Shipping Data see end of file...
 
+-- Create Product Categories table
+CREATE TABLE IF NOT EXISTS prod_categories (
+  `ProdCatID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Name` VARCHAR(40) NOT NULL UNIQUE
+);
+-- For Product Categories see end of file...
+
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
   `UserID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Username` VARCHAR(40) NOT NULL UNIQUE,
+  `Email` VARCHAR (50) NOT NULL UNIQUE,
   `Password` VARCHAR(100) NOT NULL,
-  `FullName` VARCHAR(50) NOT NULL,
-  `Address1` VARCHAR(50) NOT NULL,
-  `Address2` VARCHAR(50) DEFAULT NULL,
-  `City` VARCHAR(50) NOT NULL,
-  `Region` VARCHAR(50) DEFAULT NULL,
-  `CountryCode` VARCHAR(2) NOT NULL,
-  `Postcode` VARCHAR(20) NOT NULL,
-  `Email` VARCHAR (50),
-  `ContactNo` VARCHAR(50),
+  `Name` VARCHAR(50) NOT NULL,
   `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotAdmin, 1=Admin",
-  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unapproved, 1=Approved",
-  FOREIGN KEY (`CountryCode`) REFERENCES countries (`Code`)
+  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unapproved, 1=Approved"
 );
 
 -- Load initial test users - Better to use user-registration.php to ensure Password Hashing
@@ -62,6 +60,7 @@ CREATE TABLE IF NOT EXISTS products (
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL,
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  FOREIGN KEY (`Category`) REFERENCES prod_categories (`Name`),
   FOREIGN KEY (`EditUserID`) REFERENCES users (`UserID`)
 );
 
@@ -81,8 +80,8 @@ CREATE TABLE IF NOT EXISTS paypal_orders (
   `PaymentCurrency` VARCHAR(5),
   `PaymentValue` DECIMAL(10, 2),
   `PayerID` VARCHAR(20),
-  `PayerName` VARCHAR(100),
   `PayerEmail` VARCHAR(100),
+  `PayerName` VARCHAR(100),
   `CreateTime` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `CreateDebugID` VARCHAR(20),
   `CaptureTime` TIMESTAMP,
@@ -398,30 +397,37 @@ INSERT INTO countries (`Code`, `Name`, `ShippingBand`) VALUES
 -- Shipping data
 -- UPDATED Jun-2020 based on Swiss Post prices
 INSERT INTO shipping (`Band`, `Type`, `PriceBandKG`, `PriceBandCost`) VALUES
-  ("Domestic", "Standard", "2", "7.00"),
-  ("Domestic", "Standard", "5", "9.70"),
-  ("Domestic", "Standard", "10", "9.70"),
-  ("Domestic", "Fast", "2", "9.00"),
-  ("Domestic", "Fast", "5", "10.70"),
-  ("Domestic", "Fast", "10", "10.70"),
-  ("Domestic", "Express", "2", "18.00"),
-  ("Domestic", "Express", "5", "22.00"),
-  ("Domestic", "Express", "10", "22.00"),
-  ("Europe", "Standard", "2", "34.00"),
-  ("Europe", "Standard", "5", "42.00"),
-  ("Europe", "Standard", "10", "46.00"),
-  ("Europe", "Fast", "2", "38.00"),
-  ("Europe", "Fast", "5", "48.00"),
-  ("Europe", "Fast", "10", "56.00"),
-  ("Europe", "Express", "2", "98.00"),
-  ("Europe", "Express", "5", "158.00"),
-  ("Europe", "Express", "10", "200.00"),
-  ("Rest of World", "Standard", "2", "44.00"),
-  ("Rest of World", "Standard", "5", "57.00"),
-  ("Rest of World", "Standard", "10", "76.00"),
-  ("Rest of World", "Fast", "2", "53.00"),
-  ("Rest of World", "Fast", "5", "76.00"),
-  ("Rest of World", "Fast", "10", "104.00"),
-  ("Rest of World", "Express", "2", "119.00"),
-  ("Rest of World", "Express", "5", "182.00"),
-  ("Rest of World", "Express", "10", "250.00");
+  ('Domestic', 'Standard', '2', '7.00'),
+  ('Domestic', 'Standard', '5', '9.70'),
+  ('Domestic', 'Standard', '10', '9.70'),
+  ('Domestic', 'Fast', '2', '9.00'),
+  ('Domestic', 'Fast', '5', '10.70'),
+  ('Domestic', 'Fast', '10', '10.70'),
+  ('Domestic', 'Express', '2', '18.00'),
+  ('Domestic', 'Express', '5', '22.00'),
+  ('Domestic', 'Express', '10', '22.00'),
+  ('Europe', 'Standard', '2', '34.00'),
+  ('Europe', 'Standard', '5', '42.00'),
+  ('Europe', 'Standard', '10', '46.00'),
+  ('Europe', 'Fast', '2', '38.00'),
+  ('Europe', 'Fast', '5', '48.00'),
+  ('Europe', 'Fast', '10', '56.00'),
+  ('Europe', 'Express', '2', '98.00'),
+  ('Europe', 'Express', '5', '158.00'),
+  ('Europe', 'Express', '10', '200.00'),
+  ('Rest of World', 'Standard', '2', '44.00'),
+  ('Rest of World', 'Standard', '5', '57.00'),
+  ('Rest of World', 'Standard', '10', '76.00'),
+  ('Rest of World', 'Fast', '2', '53.00'),
+  ('Rest of World', 'Fast', '5', '76.00'),
+  ('Rest of World', 'Fast', '10', '104.00'),
+  ('Rest of World', 'Express', '2', '119.00'),
+  ('Rest of World', 'Express', '5', '182.00'),
+  ('Rest of World', 'Express', '10', '250.00');
+
+  -- Product Categories data
+  INSERT INTO prod_categories (`Name`) VALUES
+    ('Clothes-Men'),
+    ('Clothes-Women'),
+    ('Shoes-Men'),
+    ('Shoes-Women');

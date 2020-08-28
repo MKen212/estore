@@ -5,7 +5,7 @@
   <!-- Logout -->
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
-      <a class="nav-link" href="admin_login.php?p=logout&q">Sign out</a>
+      <a class="nav-link" href="admin.php?p=logout&q">Sign out</a>
     </li>
   </ul>
 </nav>
