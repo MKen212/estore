@@ -24,6 +24,19 @@ function cleanInput($input, $type) {
 }
 
 /**
+ * fixSearch function - Used to clean and fix Search String to be MariaDB compliant
+ * @param string $searcgString  Original Input Search String
+ * @return string $fixed        Cleaned and fixed MariaDB-Compliant Search String
+ */
+function fixSearch($searchString) {
+  $fixed = htmlspecialchars($searchString);
+  $fixed = trim($fixed);
+  $fixed = str_replace("?", "_", $fixed);  // Fix MariaDB one char wildcard
+  $fixed = str_replace("*", "%", $fixed);  // Fix MariaDB multi char wildcard
+  return $fixed;
+}
+
+/**
  * pagination function - Used to display page links
  * @param int $subPage   Current Sub Page being viewed
  * @param int $lastPage  Last Page for all records
@@ -165,6 +178,18 @@ function msgPrep($type, $msg) {
 }
 
 /**
+ * msgShow function - Used to display the Session Message & then clear it
+ * @return bool  Returns true on completion
+ */
+function msgShow() {
+  if (!empty($_SESSION["message"])) {
+    echo $_SESSION["message"];
+    unset($_SESSION["message"]);
+  }
+  return true;
+}
+
+/**
  * countryOptions function - Outputs all Countries as HTML options
  * @param string $selCode  Country Code that is marked as 'selected'
  * @return bool            Returns true on completion
@@ -234,24 +259,34 @@ function commaToBR($string) {
 }
 
 /**
- * ordStatusText function - Returns the Text relevant to the given status code
- * @param int $status          Order Status Code
- * @return string $statusText  Returns the Text for the Status Code
+ * statusOutput function - Returns the HTML output relevant to the given status code
+ * @param string $type           Order Status Type (from Config/StatusCodes)
+ * @param int $status            Order Status Code
+ * @param string $link           Optional HREF Link
+ * @return string $statusOutput  Returns the HTML output for the Status Code
  */
-function ordStatusText($status) {
-  $statusText = "";
-  if ($status == 0) {
-    $statusText = "Placed";
-  } else if ($status == 1) {
-    $statusText = "Paid";
-  } else if ($status == 2) {
-    $statusText = "Shipped";
-  } else if ($status == 3) {
-    $statusText = "Returned";
-  } else if ($status == 4) {
-    $statusText = "Refunded";
+function statusOutput($type, $status, $link = null) {
+  $badge = STATUS_CODES[$type][$status]["badge"];
+  $text = STATUS_CODES[$type][$status]["text"];
+  $statusOutput = "<a class='badge badge-{$badge}' href='{$link}'>{$text}</a>";
+  return $statusOutput;
+}
+
+/**
+ * statusOptions function - Outputs Status Codes as HTML options
+ * @param string $type     Order Status Type (from Config/StatusCodes)
+ * @param string $selCode  Statsus Code that is marked as 'selected'
+ * @return bool            Returns true on completion
+ */
+function statusOptions($type, $selCode) {
+  foreach (STATUS_CODES[$type] as $key => $value) {
+    if ($key == $selCode) {
+      echo "<option value='" . $key . "' selected>" . $value["text"] . "</option>";
+    } else {
+      echo "<option value='" . $key . "'>" . $value["text"] . "</option>";
+    }
   }
-  return $statusText;
+  return true;
 }
 
 ?>

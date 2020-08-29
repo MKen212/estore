@@ -4,6 +4,12 @@ if (!isset($_SESSION["userLogin"])) {  // Reject User that is not logged in
   $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
   header("location:admin.php?p=logout");
 }
+if ($_SESSION["userIsAdmin"] != 1) {  // Reject User that is not an Admin
+  $_SESSION["message"] = "Sorry - You need Admin Privileges to proceed.";
+  header("location:admin.php?p=logout");
+}
+
+
 require "../app/config/_config.php";
 require "../app/helpers/helperFunctions.php";
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home

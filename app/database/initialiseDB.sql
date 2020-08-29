@@ -10,7 +10,10 @@ USE estore;
 CREATE TABLE IF NOT EXISTS countries (
   `Code` VARCHAR(2) NOT NULL UNIQUE PRIMARY KEY,
   `Name` VARCHAR(50) NOT NULL,
-  `ShippingBand` VARCHAR(50) NOT NULL
+  `ShippingBand` VARCHAR(50) NOT NULL,
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
 );
 -- For Country Data see end of file...
 
@@ -20,14 +23,20 @@ CREATE TABLE IF NOT EXISTS shipping (
   `Band` VARCHAR(50) NOT NULL,
   `Type` VARCHAR(50) NOT NULL,
   `PriceBandKG` INT(11) DEFAULT 0,
-  `PriceBandCost` DECIMAL(10, 2) DEFAULT 0.00
+  `PriceBandCost` DECIMAL(10, 2) DEFAULT 0.00,
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
 );
 -- For Shipping Data see end of file...
 
 -- Create Product Categories table
 CREATE TABLE IF NOT EXISTS prod_categories (
   `ProdCatID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Name` VARCHAR(40) NOT NULL UNIQUE
+  `Name` VARCHAR(40) NOT NULL UNIQUE,
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
 );
 -- For Product Categories see end of file...
 
@@ -38,13 +47,15 @@ CREATE TABLE IF NOT EXISTS users (
   `Password` VARCHAR(100) NOT NULL,
   `Name` VARCHAR(50) NOT NULL,
   `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotAdmin, 1=Admin",
-  `Status` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unapproved, 1=Approved"
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
 );
 
 -- Load initial test users - Better to use user-registration.php to ensure Password Hashing
 
 -- Manually Update UserStatus and IsAdmin settings for test users
-UPDATE users SET `Status` = "1" WHERE `UserID` = 1 OR `UserID` = 2;
+-- UPDATE users SET `Status` = "1" WHERE `UserID` = 1 OR `UserID` = 2; // Not Now required
 UPDATE users SET `IsAdmin` = "1" WHERE `UserID` = 1;
 
 -- Create products table

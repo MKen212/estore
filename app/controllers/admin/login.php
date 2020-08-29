@@ -11,7 +11,7 @@ if (isset($_POST["login"])){  // Verify & Login User
   $user = new User();  
   $login = $user->login($email, $password);
   unset($user, $password);  
-  if ($login) {
+  if ($login == true) {
     // Login Success
     header("location:admin_dashboard.php?p=home");
   } else {

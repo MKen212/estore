@@ -9,45 +9,41 @@
       </li>
       <!-- Home -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "home" ? " active" : "";?>" href="admin_dashboard.php?p=home"><span data-feather="home"></span>Home<span class="sr-only">(current)</span></a>
+        <a class="nav-link<?= $_GET["p"] == "home" ? " active" : "";?>" href="admin_dashboard.php?p=home"><span data-feather="home"></span>Home</a>
       </li>
-      <!-- Add Product -->
+      <!-- Products -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "productAdd" ? " active" : "";?>" href="admin_dashboard.php?p=productAdd"><span data-feather="book"></span>Add Products</a>
+        <a class="nav-link<?= $_GET["p"] == "productAdd" ? " active" : "";?>" href="admin_dashboard.php?p=productAdd"><span data-feather="layers"></span>Products</a>
       </li>
-      <!-- List Orders -->
+      <!-- Orders -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "ordersList" ? " active" : "";?>" href="admin_dashboard.php?p=ordersList"><span data-feather="layers"></span>List Orders</a>
+        <a class="nav-link<?= $_GET["p"] == "ordersList" ? " active" : "";?>" href="admin_dashboard.php?p=ordersList"><span data-feather="package"></span>Orders</a>
       </li>
-      <!-- Send a Message -->
+      <!-- Messages -->
       <li class="nav-item">
-        <a class="nav-link" href="admin-messagesSend.php"><span data-feather="send"></span>Send a Message</a>
+        <a class="nav-link" href="admin-messagesSend.php"><span data-feather="mail"></span>Messages</a>
+      </li>
+      <!-- Users-->
+      <li class="nav-item">
+        <a class="nav-link<?= ($_GET["p"] == "users" || $_GET["p"] == "userDetails" ) ? " active" : "";?>" href="admin_dashboard.php?p=users"><span data-feather="users"></span>Users</a>
         <hr />
       </li>
-      <!-- My Profile -->
+      <!-- Product Categories-->
       <li class="nav-item">
-        <a class="nav-link" href="admin-usersProfile.php"><span data-feather="user"></span>My Profile</a>
+        <a class="nav-link" href="admin-booksIssuedAdd.php"><span data-feather="list"></span>Product Categories</a>
+      </li>
+      <!-- Shipping Rates -->
+      <li class="nav-item">
+        <a class="nav-link" href="admin-booksIssuedRtn.php"><span data-feather="truck"></span>Shipping Rates</a>
+      </li>
+      <!-- Shipping Countries -->
+      <li class="nav-item">
+        <a class="nav-link" href="admin-booksAdd.php"><span data-feather="map"></span>Shipping Countries</a>
         <hr />
-      </li>
-      <!-- Issue Books-->
+      </li>      
+      <!-- eStore -->
       <li class="nav-item">
-        <a class="nav-link" href="admin-booksIssuedAdd.php"><span data-feather="arrow-up-circle"></span>Issue Books</a>
-      </li>
-      <!-- Return Books -->
-      <li class="nav-item">
-        <a class="nav-link" href="admin-booksIssuedRtn.php"><span data-feather="arrow-down-circle"></span>Return Books</a>
-      </li>
-      <!-- Add Books -->
-      <li class="nav-item">
-        <a class="nav-link" href="admin-booksAdd.php"><span data-feather="plus-circle"></span>Add Books</a>
-      </li>
-      <!-- List/Edit Books -->
-      <li class="nav-item">
-        <a class="nav-link" href="admin-booksList.php"><span data-feather="layers"></span>List/Edit Books</a>
-      </li>
-      <!-- List/Edit Users-->
-      <li class="nav-item">
-        <a class="nav-link" href="admin-usersList.php"><span data-feather="users"></span>List/Edit Users</a>
+        <a class="nav-link" href="index.php?p=home"><img src="/images/home/logo.png" alt="logo" /> eStore</a>
       </li>
     </ul>
   </div>

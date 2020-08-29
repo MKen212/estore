@@ -27,4 +27,30 @@ $defaultValues = [
 
 define("DEFAULTS", $defaultValues);
 
+/* Status Codes */
+$statusCodes = [
+  "Status" => [ // All Tables / Status Field
+    0 => [
+      "text" => "Inactive",
+      "badge" => "danger",
+    ],
+    1 => [
+      "text" => "Active",
+      "badge" => "success",
+    ],
+  ],
+  "IsAdmin" => [  // users Table / IsAdmin Field
+    0 => [
+      "text" => "No",
+      "badge" => "secondary",
+    ],
+    1 => [
+      "text" => "Yes",
+      "badge" => "primary",
+    ],
+  ],
+];
+
+define("STATUS_CODES", $statusCodes);
+
 ?>

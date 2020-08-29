@@ -7,7 +7,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text form-labels">Email:</span>
       </div>
-      <input class="form-control" type="email" name="email" placeholder="Enter Email Address" required />
+      <input class="form-control" type="email" name="email" placeholder="Enter Email Address" required autofocus />
     </div>
     <!-- Password -->
     <div class="input-group">
@@ -33,4 +33,5 @@
 </div>
 <!-- Result -->
 <div class="row justify-content-center" id="registerFormResult">
+  <?php msgShow(); ?>
 </div>

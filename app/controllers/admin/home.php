@@ -4,7 +4,7 @@
 </div>
 
 <div>
-  <pre>
-    <?php print_r($_SESSION);?>
-  </pre>
+  <?php
+  include "../app/views/admin/home.php";
+  ?>
 </div>

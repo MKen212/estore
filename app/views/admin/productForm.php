@@ -1,6 +1,6 @@
 <!-- Products Form -->
 <div>
-  <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="productsForm" autocomplete="off">
+  <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="productForm" autocomplete="off">
     <!-- Name -->
     <div class="form-group row">
       <label class="col-form-label labFixed" for="name">Name:</label>
