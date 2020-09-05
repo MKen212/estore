@@ -11,9 +11,9 @@ CREATE TABLE IF NOT EXISTS countries (
   `Code` VARCHAR(2) NOT NULL UNIQUE PRIMARY KEY,
   `Name` VARCHAR(50) NOT NULL,
   `ShippingBand` VARCHAR(50) NOT NULL,
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
 );
 -- For Country Data see end of file...
 
@@ -24,9 +24,9 @@ CREATE TABLE IF NOT EXISTS shipping (
   `Type` VARCHAR(50) NOT NULL,
   `PriceBandKG` INT(11) DEFAULT 0,
   `PriceBandCost` DECIMAL(10, 2) DEFAULT 0.00,
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
 );
 -- For Shipping Data see end of file...
 
@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS shipping (
 CREATE TABLE IF NOT EXISTS prod_categories (
   `ProdCatID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Name` VARCHAR(40) NOT NULL UNIQUE,
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
 );
 -- For Product Categories see end of file...
 
@@ -46,10 +46,11 @@ CREATE TABLE IF NOT EXISTS users (
   `Email` VARCHAR (50) NOT NULL UNIQUE,
   `Password` VARCHAR(100) NOT NULL,
   `Name` VARCHAR(50) NOT NULL,
-  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotAdmin, 1=Admin",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `LoginTimestamp` TIMESTAMP DEFAULT 0,
+  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
 );
 
 -- Load initial test users - Better to use user-registration.php to ensure Password Hashing
@@ -61,17 +62,18 @@ UPDATE users SET `IsAdmin` = "1" WHERE `UserID` = 1;
 -- Create products table
 CREATE TABLE IF NOT EXISTS products (
   `ProductID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `Name` VARCHAR(40) NOT NULL,
+  `Name` VARCHAR(40) NOT NULL UNIQUE,
   `Description` VARCHAR(500) NOT NULL,
-  `Category` VARCHAR(40) NOT NULL,
+  `ProdCatID` INT(11) NOT NULL,
   `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
   `WeightGrams` INT(11) NOT NULL DEFAULT 0,
   `QtyAvail` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL,
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `IsOnSale` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotOnSale, 1=OnSale",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
-  FOREIGN KEY (`Category`) REFERENCES prod_categories (`Name`),
+  FOREIGN KEY (`ProdCatID`) REFERENCES prod_categories (`ProdCatID`),
   FOREIGN KEY (`EditUserID`) REFERENCES users (`UserID`)
 );
 

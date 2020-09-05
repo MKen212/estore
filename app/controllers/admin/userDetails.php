@@ -18,6 +18,10 @@ if ($userData == false) {  // UserID not found
   echo "<div>User ID not found.</div>";
 } else {
   // Show User Form
+  $formData = [
+    "subName" => "updateUser",
+    "subText" => "Update User",
+  ];
   include "../app/views/admin/userForm.php";
 
   if (isset($_POST["updateUser"])) {  // Update User Record

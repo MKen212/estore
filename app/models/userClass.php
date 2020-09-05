@@ -16,13 +16,32 @@ class User {
   }
 
   /**
-   * register function - Register a new user
-   * @param string $email      User Email Address
-   * @param string $password   User Password
-   * @param string $name       User Name
-   * @return int lastInsertID  User ID of new user or False
+   * exists function - Check if User Email already exists in DB
+   * @param string $email  User Email
+   * @return int $count    Count of User Records with selected Email or False
    */
-  public function register($email, $password, $name) {
+  public function exists($email) {
+    try {
+      $sql = "SELECT `Email` FROM users WHERE `Email` = '$email'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $count = $stmt->rowCount();
+      return $count;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - User/exists Failed: " . $err->getMessage());
+      return false;
+    }
+  }
+
+  /**
+   * register function - Register a new user
+   * @param string $email     User Email Address
+   * @param string $password  User Password
+   * @param string $name      User Name
+   * @param int $isAdmin      User is Admin (Optional)
+   * @param int $status       User Status (Optional)
+   * @return int $newID       User ID of new user or False
+   */
+  public function register($email, $password, $name, $isAdmin = 0, $status = 1) {
     try {
       // Check User does not already exist
       $count = $this->exists($email);
@@ -31,8 +50,8 @@ class User {
         return false;
       } else {  // Insert User Record
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
-        $sql = "INSERT INTO users (`Email`, `Password`, `Name`) VALUES
-          ('$email', '$passwordHash', '$name')";
+        $sql = "INSERT INTO users (`Email`, `Password`, `Name`, `IsAdmin`, `Status`) VALUES
+          ('$email', '$passwordHash', '$name', '$isAdmin', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
         $_SESSION["message"] = msgPrep("success", "Registration of '$email' was successful.");
@@ -55,7 +74,7 @@ class User {
       // Check User exists
       $count = $this->exists($email);
       if ($count != 1) {  // User does not exist
-        $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
+        $_SESSION["message"] = "Incorrect Username or Password entered!";
         return false;
       } else {  // Confirm Password
         $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM users WHERE `Email` = '$email'";
@@ -64,25 +83,29 @@ class User {
         $passwordStatus = password_verify($password, $result["Password"]);
         $userStatus = $result["Status"];
         if ($passwordStatus == true) {  // Correct Password Entered
-          if ($userStatus == 1) {  // User is active
+          if ($userStatus == 1) {  // User is active so Login
             $_SESSION["userLogin"] = true;
             $_SESSION["userIsAdmin"] = $result["IsAdmin"];
             $_SESSION["userID"] = $result["UserID"];
+            $userID = $result["UserID"];
             $_SESSION["userName"] = $result["Name"];
             $result = null;
+            // Record Login Timestamp
+            $sqlLogin = "UPDATE users SET `LoginTimestamp` = CURRENT_TIMESTAMP() WHERE `UserID` = $userID";
+            $this->conn->exec($sqlLogin);
             return true;
           } else {  // User is inactive
-            $_SESSION["message"] = msgPrep("danger", "Error - User Account Inactive!");
+            $_SESSION["message"] = "Error - User Account Inactive!";
             return false;
           }
         } else {
           // Password invalid
-          $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
+          $_SESSION["message"] = "Incorrect Username or Password entered!";
           return false;
         }
       }  
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/Login Failed: " . $err->getMessage());
+      $_SESSION["message"] = "Error - User/Login Failed: " . $err->getMessage();
       return false;
     }
   }
@@ -153,8 +176,8 @@ class User {
    * @param string $email      User Email Address
    * @param string $password   User Password
    * @param string $name       User Name
-   * @param bool $isAdmin      User is Admin
-   * @param bool $statis       User Status
+   * @param int $isAdmin       User is Admin
+   * @param int $status        User Status
    * @return bool              True if Function success or False
    */
   public function updateRecord($userID, $email, $password, $name, $isAdmin, $status) {
@@ -176,9 +199,15 @@ class User {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sqlPassword = "`Password` = '$passwordHash', ";
       }
-      $sql = "UPDATE users SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE users SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
       $_SESSION["message"] = msgPrep("success","Update of User ID: '$userID' was successful.");
+      if ($userID == $editID) {  // User has updated own record
+        // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
+        $_SESSION["userName"] = $name;
+
+      }
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - User/updateRecord Failed: " . $err->getMessage() . "<br />");
@@ -186,21 +215,5 @@ class User {
     }
   }
 
-  /**
-   * exists function - Check if User Email already exists in DB
-   * @param string $email  User Email
-   * @return int $count    Count of User Records with selected Email or False
-   */
-  public function exists($email) {
-    try {
-      $sql = "SELECT `Email` FROM users WHERE `Email` = '$email'";
-      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/exists Failed: " . $err->getMessage());
-      return false;
-    }
-  }
 }
 ?>

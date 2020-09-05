@@ -16,26 +16,52 @@ class Product {
   }
 
   /**
+   * exists function - Check if Product Name already exists in DB
+   * @param string $name  Product Name
+   * @return int $count   Count of Product Records with selected Name or False
+   */
+  public function exists($name) {
+    try {
+      $sql = "SELECT `Name` FROM products WHERE `Name` = '$name'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $count = $stmt->rowCount();
+      return $count;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/exists Failed: " . $err->getMessage());
+      return false;
+    }
+  }
+
+  /**
    * add function - Add Product record
    * @param string $name         Product Name
    * @param string $description  Product Description
-   * @param string $category     Product Category 
+   * @param string $prodCatID    Product Category ID
    * @param float $price         Product Price
    * @param int $weightGrams     Product Shipping Weight in Grams
    * @param int $quantity        Quantity of Product Added
    * @param string $imgFilename  Filename for Product Image
    * @param int $editUserID      User ID who added product
+   * @param int $isOnSale        Product is On Sale (Optional)
+   * @param int $status          Product Status (Optional)
    * @return int $newID          Product ID of added product or False
    */
-  public function add($name, $description, $category, $price, $weightGrams, $quantity, $imgFilename, $editUserID) {
+  public function add($name, $description, $prodCatID, $price, $weightGrams, $quantity, $imgFilename, $editUserID, $isOnSale = 0, $status = 1) {
     try {
-      $sql = "INSERT INTO products (`Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`) VALUES ('$name', '$description', '$category', '$price', '$weightGrams', '$quantity', '$imgFilename', '$editUserID')";
-      $this->conn->exec($sql);
-      $newID = $this->conn->lastInsertId();
-      $_SESSION["message"] = "Product '$name' added successfully.";
-      return $newID;
+      // Check Product Name does not already exist
+      $count = $this->exists($name);
+      if ($count != 0) {  // Name is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
+        return false;
+      } else {  // Insert Product Record
+        $sql = "INSERT INTO products (`Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `IsOnSale`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$price', '$weightGrams', '$quantity', '$imgFilename', '$editUserID', '$isOnSale', '$status')";
+        $this->conn->exec($sql);
+        $newID = $this->conn->lastInsertId();
+        $_SESSION["message"] = "Product '$name' added successfully.";
+        return $newID;
+      }
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Product/add Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/add Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

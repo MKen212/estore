@@ -19,40 +19,45 @@
   <div class="col-2">
     <!-- New User Button -->
     <div class="input-group">
-      <button class="btn btn-primary" type="button" name="userAdd">Add New User</button>
+      <a class="btn btn-primary" href="admin_dashboard.php?p=userAdd">Add New User</a>
     </div>
   </div>
   <div class="col-6">
   </div>
+</div>
 
-<!-- Users Table List -->
-<div class="table-responsive">
-  <table class="table table-striped table-sm">
-    <thead>
-      <!-- Users Table Header -->
-      <th>User ID</th>
-      <th>Email</th>
-      <th>Name</th>
-      <th>Admin User</th>
-      <th>Status</th>
-    </thead>
-    <tbody>
-      <?php
-      include_once "../app/models/userClass.php";
-      $user = new User();
+<div class="row">
+  <!-- Users Table List -->
+  <div class="table-responsive">
+    <table class="table table-striped table-sm">
+      <thead>
+        <!-- Users Table Header -->
+        <th>User ID</th>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Last Edit</th>
+        <th>Last Login</th>
+        <th>Admin User</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <?php
+        include_once "../app/models/userClass.php";
+        $user = new User();
 
-      if (isset($_POST["userSearch"])) {
-        $email = fixSearch($_POST["schEmail"]);
-        $_POST = [];
-        foreach(new RecursiveArrayIterator($user->getListByEmail($email)) as $record) {
-          include "../app/views/admin/userListItem.php";
+        if (isset($_POST["userSearch"])) {
+          $email = fixSearch($_POST["schEmail"]);
+          $_POST = [];
+          foreach(new RecursiveArrayIterator($user->getListByEmail($email)) as $record) {
+            include "../app/views/admin/userListItem.php";
+          }
+        } else {
+          foreach(new RecursiveArrayIterator($user->getList()) as $record) {
+            include "../app/views/admin/userListItem.php";
+          }
         }
-      } else {
-        foreach(new RecursiveArrayIterator($user->getList()) as $record) {
-          include "../app/views/admin/userListItem.php";
-        }
-      }
-      ?>      
-    </tbody>
-  </table>
+        ?>      
+      </tbody>
+    </table>
+  </div>
 </div>

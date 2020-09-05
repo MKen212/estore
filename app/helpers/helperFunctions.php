@@ -216,12 +216,30 @@ function countryOptions($selCode) {
  */
 function shippingOptions($field, $selCode) {
   include_once "../app/models/shippingClass.php";
-  $shipping = new Shipping;
+  $shipping = new Shipping();
   foreach (new RecursiveArrayIterator($shipping->getDistinct($field)) as $value) {
    if ($value[$field] == $selCode) {
      echo "<option value='" . $value[$field] . "' selected>" . $value[$field] . "</option>";
    } else {
      echo "<option value='" . $value[$field] . "'>" . $value[$field] . "</option>";
+   }
+  }
+  return true;
+}
+
+/**
+ * prodCatOptions function - Outputs all Names from prod_categories as HTML options
+ * @param string $selID  ProdCatID that is marked as 'selected'
+ * @return bool          Returns true on completion
+ */
+function prodCatOptions($selID) {
+  include_once "../app/models/prodCatClass.php";
+  $prodCat = new ProdCat();
+  foreach (new RecursiveArrayIterator($prodCat->getCategories()) as $value) {
+   if ($value["ProdCatID"] == $selID) {
+     echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
+   } else {
+     echo "<option value='" . $value["ProdCatID"] . "'>" . $value["Name"] . "</option>";
    }
   }
   return true;

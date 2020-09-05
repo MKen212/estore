@@ -43,7 +43,7 @@
     <div class="form-group row">
       <!-- Submit Button -->
       <div class="col-form-label labFixed">
-        <button class="btn btn-primary" type="submit" name="updateUser">Update User</button>
+        <button class="btn btn-primary" type="submit" name="<?= $formData["subName"]; ?>"><?= $formData["subText"]; ?></button>
       </div>
       <!-- Results -->
       <div class="inpFixed" id="userFormResult">
@@ -52,4 +52,3 @@
     </div>
   </form>
 </div>
-

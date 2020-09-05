@@ -13,7 +13,7 @@
       </li>
       <!-- Products -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "productAdd" ? " active" : "";?>" href="admin_dashboard.php?p=productAdd"><span data-feather="layers"></span>Products</a>
+        <a class="nav-link<?= $_GET["p"] == "products" ? " active" : "";?>" href="admin_dashboard.php?p=products"><span data-feather="layers"></span>Products</a>
       </li>
       <!-- Orders -->
       <li class="nav-item">

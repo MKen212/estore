@@ -1,94 +1,80 @@
-<!-- Admin Dashboard - Add Products -->
+<!-- Admin Dashboard - Product Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add Products</h2>
+  <h2>Add Product</h2>
 </div>
 
-<?php  // Display Product Add Form
+<?php
+// Initialise Product Data
+$productData = [
+  "Name" => null,
+  "Description" => null,
+  "ProdCatID" => 0,
+  "Price" => null,
+  "WeightGrams" => null,
+  "QtyAvail" => null,
+  "IsOnSale" => 0,
+  "Status" => 1,
+];
+
+// Display Product Add Form
+$formData = [
+  "subName" => "addProduct",
+  "subText" => "Add Product",
+];
 include "../app/views/admin/productForm.php";
 
 if (isset($_POST["addProduct"])) {  // Add Products
-  include_once "../app/models/productClass.php";
-
-  // Perform File Upload Checks if Image File chosen
-  if ($_FILES["imgFilename"]["error"] != 4) {
-    // Check Temp Image Upload Errors
-    if ($_FILES["imgFilename"]["error"] != 0) {
-      if ($_FILES["imgFilename"]["error"] == 2) {
-        $_SESSION["message"] = "Error - Image size larger than " . (DEFAULTS["maxUploadSize"] / 1000000) . " Mbyte(s).";
-      } else {
-        $_SESSION["message"] = "Error - Image upload error #" . $_FILES["imgFilename"]["error"] . ".";
-      }
-      $resultMsg = msgPrep("danger", $_SESSION["message"]);
+  
+  // If Image File included - Perform initial checks on file
+  if ($_FILES["imgFilename"]["error"] != 4) {  // File was Uploaded
+    include_once "../app/models/uploadImgClass.php";
+    $uploadImg = new UploadImg();
+    $initialChecks = $uploadImg->initialChecks();
+    if ($initialChecks != true) {
       ?><script>
-        document.getElementById("productAddRes").innerHTML = `<?= $resultMsg;?>`;
+        window.location.assign("admin_dashboard.php?p=productAdd");
       </script><?php
-      $_POST = [];
-      $_FILES = [];
-      unset($_SESSION["message"]);
-      return;
-    }
-    // Check File Type to ensure it's an image
-    $tmpFile = $_FILES["imgFilename"]["tmp_name"];
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    $fileType = $finfo->file($tmpFile);
-    if (strpos($fileType, "image") === false) {
-      $_SESSION["message"] = "Error - Chosen File is not an image file.";
-      $resultMsg = msgPrep("danger", $_SESSION["message"]);
-      ?><script>
-        document.getElementById("productAddRes").innerHTML = `<?= $resultMsg;?>`;
-      </script><?php
-      $_POST = [];
-      $_FILES = [];
-      unset($_SESSION["message"]);
       return;
     }
   }
-  // Get Fields for database entry
+
+  // Initial checks passed or no file uploaded - Get Fields for DB entry
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
-  $category = cleanInput($_POST["category"], "string");
+  $prodCatID = cleanInput($_POST["prodCatID"], "string");
   $price = cleanInput($_POST["price"], "float");
   $weightGrams = cleanInput($_POST["weightGrams"], "int");
-  $quantity = cleanInput($_POST["quantity"], "int");
+  $quantity = cleanInput($_POST["qtyAvail"], "int");
   if ($_FILES["imgFilename"]["error"] == 0) {
     $imgFilename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
   } else {
     $imgFilename = null;
   }
   $editUserID = $_SESSION["userID"];
+  $isOnSale = $_POST["isOnSale"];
+  $status = $_POST["status"];
   $_POST = [];
   $_FILES = [];
 
   // Create database entry
+  include_once "../app/models/productClass.php";
   $product = new Product();
-  $addProduct = $product->add($name, $description, $category, $price, $weightGrams, $quantity, $imgFilename, $editUserID);
+  $addProduct = $product->add($name, $description, $prodCatID, $price, $weightGrams, $quantity, $imgFilename, $editUserID, $isOnSale, $status);
   if ($addProduct) {  // Database Entry Success
     if ($imgFilename) {  // Image File included - Create dir & upload
-      $targetDir = DEFAULTS["productsImgPath"] . $addProduct . "/";
-      $targetFile = $targetDir . $imgFilename;
-
-      if (!file_exists($targetDir)) {
-        mkdir($targetDir, 0750);
-      }
-      if (move_uploaded_file($tmpFile, $targetFile)) {
-        // File Upload Success
-        $_SESSION["message"] .= " Image successfully uploaded.";
-        $resultMsg = msgPrep("success", $_SESSION["message"]);
-      } else {
-        // File Upload Failure
-        $_SESSION["message"] .= " Warning: Image upload failed.";
-        $resultMsg = msgPrep("warning", $_SESSION["message"]);
-      }
+      include_once "../app/models/uploadImgClass.php";
+      $uploadImg = new UploadImg();
+      $newUpload = $uploadImg->addProductImg($addProduct, $imgFilename);
     } else {  // No Image File included
-      $_SESSION["message"] .= " No Image to upload.";
-      $resultMsg = msgPrep("success", $_SESSION["message"]);
+      $_SESSION["message"] = msgPrep("success", ($_SESSION["message"] . " No Image to upload."));
     }
   } else {  // Database Entry Failed
-    $resultMsg = msgPrep("danger", $_SESSION["message"]);
+    // $_SESSION["message"] = msgPrep("danger", $_SESSION["message"]);  // Not Required as included in productClass
   }
+
+  // Refresh page
   ?><script>
-    document.getElementById("productAddRes").innerHTML = `<?= $resultMsg;?>`;
+    window.location.assign("admin_dashboard.php?p=productAdd");
   </script><?php
-  unset($_SESSION["message"]);
 }
 ?>
