@@ -20,6 +20,7 @@ $formData = [
 include "../app/views/admin/userForm.php";
 
 if (isset($_POST["addUser"])) {  // Add User Record
+  // Clean Fields for DB entry
   $email = cleanInput($_POST["email"], "email");
   $password = cleanInput($_POST["password"], "password");
   $name = cleanInput($_POST["name"], "string");
@@ -27,9 +28,9 @@ if (isset($_POST["addUser"])) {  // Add User Record
   $status = $_POST["status"];
   $_POST = [];
 
+  // Create database entry
   include_once "../app/models/userClass.php";
   $user = new User();
-
   $newUser = $user->register($email, $password, $name, $isAdmin, $status);
   unset($newUser, $password);
 
@@ -38,3 +39,4 @@ if (isset($_POST["addUser"])) {  // Add User Record
     window.location.assign("admin_dashboard.php?p=userAdd");
   </script><?php
 }
+?>

@@ -42,19 +42,16 @@
       </thead>
       <tbody>
         <?php
-        include_once "../app/models/userClass.php";
-        $user = new User();
-
         if (isset($_POST["userSearch"])) {
           $email = fixSearch($_POST["schEmail"]);
           $_POST = [];
-          foreach(new RecursiveArrayIterator($user->getListByEmail($email)) as $record) {
-            include "../app/views/admin/userListItem.php";
-          }
         } else {
-          foreach(new RecursiveArrayIterator($user->getList()) as $record) {
-            include "../app/views/admin/userListItem.php";
-          }
+          $email = null;
+        }
+        include_once "../app/models/userClass.php";
+        $user = new User();
+        foreach(new RecursiveArrayIterator($user->getList($email)) as $record) {
+          include "../app/views/admin/userListItem.php";
         }
         ?>      
       </tbody>

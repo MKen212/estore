@@ -11,7 +11,7 @@ class Product {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - Product/DB Connection Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/DB Connection Failed: " . $err->getMessage() . "<br />");
     }
   }
 
@@ -82,7 +82,7 @@ class Product {
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Product/count Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/count Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -105,7 +105,28 @@ class Product {
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Product/getPage Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getPage Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * getList function - Get list of product records
+   * @param string $name    Product Name (Optional)
+   * @return array $result  Details of all/selected products (Name order) or False
+   */
+  public function getList($name = null) {
+    try {
+      if ($name == null) {
+        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` ORDER BY `products`.`Name`";
+      } else {
+        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` WHERE `products`.`Name` LIKE '%$name%' ORDER BY `products`.`Name`";
+      }
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getList Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -117,12 +138,12 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `IsOnSale`, `Status` FROM products WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Product/getRecord Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecord Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -139,7 +160,7 @@ class Product {
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Product/updateQtyAvail Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateQtyAvail Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

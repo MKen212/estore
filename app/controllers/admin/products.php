@@ -32,13 +32,11 @@
     <table class="table table-striped table-sm">
       <thead>
         <!-- Products Table Header -->
-        <th>Image</th>
         <th>Product ID</th>
         <th>Name</th>
-        <th>Description</th>
         <th>Category</th>
-        <th>Price (<?= DEFAULTS["currency"]; ?>)</th>
-        <th>Weight (Grams)</th>
+        <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
+        <th>Weight<br />(Grams)</th>
         <th>Quantity</th>
         <th>Last Edit</th>
         <th>On Sale</th>
@@ -46,19 +44,16 @@
       </thead>
       <tbody>
         <?php
-        include_once "../app/models/productClass.php";
-        $product = new Product();
-
         if (isset($_POST["productSearch"])) {
           $name = fixSearch($_POST["schProduct"]);
           $_POST = [];
-          foreach(new RecursiveArrayIterator($user->getListByEmail($email)) as $record) {
-            include "../app/views/admin/productListItem.php";
-          }
         } else {
-          foreach(new RecursiveArrayIterator($user->getList()) as $record) {
-            include "../app/views/admin/productListItem.php";
-          }
+          $name = null;
+        }
+        include_once "../app/models/productClass.php";
+        $product = new Product();
+        foreach(new RecursiveArrayIterator($product->getList($name)) as $record) {
+          include "../app/views/admin/productListItem.php";
         }
         ?>      
       </tbody>

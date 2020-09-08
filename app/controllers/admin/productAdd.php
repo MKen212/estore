@@ -24,7 +24,6 @@ $formData = [
 include "../app/views/admin/productForm.php";
 
 if (isset($_POST["addProduct"])) {  // Add Products
-  
   // If Image File included - Perform initial checks on file
   if ($_FILES["imgFilename"]["error"] != 4) {  // File was Uploaded
     include_once "../app/models/uploadImgClass.php";
@@ -38,7 +37,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
     }
   }
 
-  // Initial checks passed or no file uploaded - Get Fields for DB entry
+  // Initial checks passed or no file uploaded - Clean Fields for DB entry
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
   $prodCatID = cleanInput($_POST["prodCatID"], "string");
@@ -54,7 +53,6 @@ if (isset($_POST["addProduct"])) {  // Add Products
   $isOnSale = $_POST["isOnSale"];
   $status = $_POST["status"];
   $_POST = [];
-  $_FILES = [];
 
   // Create database entry
   include_once "../app/models/productClass.php";
@@ -65,6 +63,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
       include_once "../app/models/uploadImgClass.php";
       $uploadImg = new UploadImg();
       $newUpload = $uploadImg->addProductImg($addProduct, $imgFilename);
+      $_FILES = [];
     } else {  // No Image File included
       $_SESSION["message"] = msgPrep("success", ($_SESSION["message"] . " No Image to upload."));
     }

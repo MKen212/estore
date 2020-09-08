@@ -37,8 +37,6 @@ class UploadImg {
       $targetDir = DEFAULTS["productsImgPath"] . $productID . "/";
       $targetFile = $targetDir . $imgFilename;
 
-      // TO HERE - FILE IS NOT UPLOADING EVEN WHEN OK...
-
       // Create Path if not exists
       if (!file_exists($targetDir)) mkdir($targetDir, 0750);
 

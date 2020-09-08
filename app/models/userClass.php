@@ -121,34 +121,22 @@ class User {
   }
 
   /**
-   * getList function - Get full list of user records
-   * @return array $result  Details of all users (Email Order) or False
+   * getList function - Get list of user records
+   * @param string $email   User Email (Optional)
+   * @return array $result  Details of all/selected users (Email order) or False
    */
-  public function getList() {
+  public function getList($email = null) {
     try {
-      $sql = "SELECT * FROM users ORDER BY `Email`";
+      if ($email == null) {
+        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM users ORDER BY `Email`";
+      } else {
+        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM users WHERE `Email` LIKE '%$email%' ORDER BY `Email`";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - User/getList Failed: " . $err->getMessage());
-      return false;
-    }
-  }
-
-  /**
-   * getListByEmail function - Get list of user records by Email
-   * @param string $email   User Email
-   * @return array $result  Details of users for $email or False
-   */
-  public function getListByEmail($email) {
-    try {
-      $sql = "SELECT * FROM users WHERE `Email` LIKE '%$email%' ORDER BY `Email`";
-      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $result = $stmt->fetchAll();
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/getListByEmail Failed: " . $err->getMessage());
       return false;
     }
   }
@@ -160,7 +148,7 @@ class User {
    */
   public function getRecord($userID) {
     try {
-      $sql = "SELECT * FROM users WHERE `UserID` = '$userID'";
+      $sql = "SELECT `Email`, `Name`, `IsAdmin`, `Status` FROM users WHERE `UserID` = '$userID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -214,6 +202,5 @@ class User {
       return false;
     }
   }
-
 }
 ?>
