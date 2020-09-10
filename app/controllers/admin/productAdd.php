@@ -12,6 +12,7 @@ $productData = [
   "Price" => null,
   "WeightGrams" => null,
   "QtyAvail" => null,
+  "IsNew" => 1,
   "IsOnSale" => 0,
   "Status" => 1,
 ];
@@ -40,16 +41,17 @@ if (isset($_POST["addProduct"])) {  // Add Products
   // Initial checks passed or no file uploaded - Clean Fields for DB entry
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
-  $prodCatID = cleanInput($_POST["prodCatID"], "string");
+  $prodCatID = cleanInput($_POST["prodCatID"], "int");
   $price = cleanInput($_POST["price"], "float");
   $weightGrams = cleanInput($_POST["weightGrams"], "int");
-  $quantity = cleanInput($_POST["qtyAvail"], "int");
+  $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
   if ($_FILES["imgFilename"]["error"] == 0) {
     $imgFilename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
   } else {
     $imgFilename = null;
   }
   $editUserID = $_SESSION["userID"];
+  $isNew = $_POST["isNew"];
   $isOnSale = $_POST["isOnSale"];
   $status = $_POST["status"];
   $_POST = [];
@@ -57,12 +59,13 @@ if (isset($_POST["addProduct"])) {  // Add Products
   // Create database entry
   include_once "../app/models/productClass.php";
   $product = new Product();
-  $addProduct = $product->add($name, $description, $prodCatID, $price, $weightGrams, $quantity, $imgFilename, $editUserID, $isOnSale, $status);
-  if ($addProduct) {  // Database Entry Success
-    if ($imgFilename) {  // Image File included - Create dir & upload
+  $newProductID = $product->add($name, $description, $prodCatID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $isNew, $isOnSale, $status);
+
+  if ($newProductID) {  // Database Entry Success
+    if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload
       include_once "../app/models/uploadImgClass.php";
       $uploadImg = new UploadImg();
-      $newUpload = $uploadImg->addProductImg($addProduct, $imgFilename);
+      $newUpload = $uploadImg->addProductImg($newProductID, $imgFilename);
       $_FILES = [];
     } else {  // No Image File included
       $_SESSION["message"] = msgPrep("success", ($_SESSION["message"] . " No Image to upload."));

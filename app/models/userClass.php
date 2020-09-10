@@ -144,7 +144,7 @@ class User {
   /**
    * getRecord function - Retrive single user record
    * @param string $userID  ID of User record required
-   * @return array $result   Returns selected User record or False
+   * @return array $result  Returns selected User record or False
    */
   public function getRecord($userID) {
     try {
@@ -159,20 +159,19 @@ class User {
   }
 
   /**
-   * updateRecord function - Updates an existing record
-   * @param int $userID        User ID
+   * updateRecord function - Update an existing user record
+   * @param int $userID        User ID of user being update
    * @param string $email      User Email Address
    * @param string $password   User Password
    * @param string $name       User Name
    * @param int $isAdmin       User is Admin
    * @param int $status        User Status
-   * @return bool              True if Function success or False
+   * @return int $result       Number of records updated (=1) or False
    */
   public function updateRecord($userID, $email, $password, $name, $isAdmin, $status) {
     try {
-      $sqlEmail = "";
-      $sqlPassword = "";
       // If updating email check new Email does not already exist
+      $sqlEmail = "";
       if (!empty($email)) {
         $count = $this->exists($email);
         if ($count != 0) {  // Email is NOT unique
@@ -182,19 +181,23 @@ class User {
           $sqlEmail = "`Email` = '$email', ";
         }
       }
-      // Email is unique or empty (not being updated)
-      if (!empty($password)) {  // Only hash password if new one provided
+      // Only hash password if new one provided
+      $sqlPassword = "";
+      if (!empty($password)) {
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sqlPassword = "`Password` = '$passwordHash', ";
       }
       $editID = $_SESSION["userID"];
       $sql = "UPDATE users SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
-      $_SESSION["message"] = msgPrep("success","Update of User ID: '$userID' was successful.");
-      if ($userID == $editID) {  // User has updated own record
-        // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
-        $_SESSION["userName"] = $name;
-
+      if ($result == 1) {  // Only 1 record should be updated
+        $_SESSION["message"] = msgPrep("success","Update of User ID: '$userID' was successful.");
+        if ($userID == $editID) {  // User has updated own record
+          // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
+          $_SESSION["userName"] = $name;
+        }
+      } else {
+        throw new PDOException("0 or >1 record was updated.");
       }
       return $result;
     } catch (PDOException $err) {

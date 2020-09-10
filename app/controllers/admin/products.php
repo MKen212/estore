@@ -39,6 +39,7 @@
         <th>Weight<br />(Grams)</th>
         <th>Quantity</th>
         <th>Last Edit</th>
+        <th>New</th>
         <th>On Sale</th>
         <th>Status</th>
       </thead>

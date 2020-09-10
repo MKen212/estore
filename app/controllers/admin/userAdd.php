@@ -31,8 +31,8 @@ if (isset($_POST["addUser"])) {  // Add User Record
   // Create database entry
   include_once "../app/models/userClass.php";
   $user = new User();
-  $newUser = $user->register($email, $password, $name, $isAdmin, $status);
-  unset($newUser, $password);
+  $newUserID = $user->register($email, $password, $name, $isAdmin, $status);
+  unset($password);
 
   // Refresh page
   ?><script>

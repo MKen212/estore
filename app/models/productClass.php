@@ -39,14 +39,15 @@ class Product {
    * @param string $prodCatID    Product Category ID
    * @param float $price         Product Price
    * @param int $weightGrams     Product Shipping Weight in Grams
-   * @param int $quantity        Quantity of Product Added
+   * @param int $qtyAvail        Quantity of Product Available
    * @param string $imgFilename  Filename for Product Image
-   * @param int $editUserID      User ID who added product
+   * @param int $editUserID      User ID who added the product
+   * @param int $isNew           Product is New (Optional)
    * @param int $isOnSale        Product is On Sale (Optional)
    * @param int $status          Product Status (Optional)
    * @return int $newID          Product ID of added product or False
    */
-  public function add($name, $description, $prodCatID, $price, $weightGrams, $quantity, $imgFilename, $editUserID, $isOnSale = 0, $status = 1) {
+  public function add($name, $description, $prodCatID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $isNew = 1, $isOnSale = 0, $status = 1) {
     try {
       // Check Product Name does not already exist
       $count = $this->exists($name);
@@ -54,10 +55,10 @@ class Product {
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
-        $sql = "INSERT INTO products (`Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `IsOnSale`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$price', '$weightGrams', '$quantity', '$imgFilename', '$editUserID', '$isOnSale', '$status')";
+        $sql = "INSERT INTO products (`Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `IsNew`, `IsOnSale`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', '$editUserID', '$isNew', '$isOnSale', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = "Product '$name' added successfully.";
+        $_SESSION["message"] = "Product '$name' added successfully as Product ID '$newID'.";
         return $newID;
       }
     } catch (PDOException $err) {
@@ -68,12 +69,12 @@ class Product {
 
   /**
    * count function - Get COUNT of product records
-   * @param bool $status  Product Status (0=Inactive/1=Active/2=Both)
+   * @param bool $status  Product Status (0=Inactive/1=Active/9=All)
    * @return int $result  Returns count of defined product records or False 
    */
   public function count($status) {
     try {
-      if ($status == 2) {
+      if ($status == 9) {
         $sql = "SELECT COUNT(*) FROM products";  
       } else {
         $sql = "SELECT COUNT(*) FROM products WHERE status = '$status'";
@@ -89,17 +90,17 @@ class Product {
 
   /**
    * getPage function - Retrieve Page of product records
-   * @param bool $status    Product Status (0=Inactive/1=Active/2=Both)
+   * @param bool $status    Product Status (0=Inactive/1=Active/9=Both)
    * @param int $limit      Max number of records to return
    * @param int $offset     Offset of first record
    * @return array $result  Returns defined product records or False 
    */
   public function getPage($status, $limit, $offset) {
     try {
-      if ($status == 2) {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products LIMIT $limit OFFSET $offset";  
+      if ($status == 9) {
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `IsNew`, `IsOnSale` FROM products LIMIT $limit OFFSET $offset";  
       } else {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `IsNew`, `IsOnSale` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -118,9 +119,9 @@ class Product {
   public function getList($name = null) {
     try {
       if ($name == null) {
-        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` ORDER BY `products`.`Name`";
+        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsNew`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` ORDER BY `products`.`Name`";
       } else {
-        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` WHERE `products`.`Name` LIKE '%$name%' ORDER BY `products`.`Name`";
+        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`IsNew`, `products`.`IsOnSale`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` WHERE `products`.`Name` LIKE '%$name%' ORDER BY `products`.`Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -138,7 +139,7 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `IsOnSale`, `Status` FROM products WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `IsNew`, `IsOnSale`, `Status` FROM products WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -149,10 +150,54 @@ class Product {
   }
 
   /**
+   * updateRecord function - Update an existing product record
+   * @param int $productID       Product ID of product being updated
+   * @param string $name         Product Name
+   * @param string $description  Product Description
+   * @param string $prodCatID    Product Category ID
+   * @param float $price         Product Price
+   * @param int $weightGrams     Product Shipping Weight in Grams
+   * @param int $quantity        Quantity of Product Added
+   * @param string $imgFilename  Filename for Product Image
+   * @param int $editUserID      User ID who updated the product
+   * @param int $isNew           Product is New (Optional)
+   * @param int $isOnSale        Product is On Sale (Optional)
+   * @param int $status          Product Status (Optional)
+   * @return int $result         Number of records updated or False
+   */
+  public function updateRecord($productID, $name, $description, $prodCatID, $price, $weightGrams, $qtyAvail, $imgFilename, $isNew, $isOnSale, $status) {
+    try {
+      // If updating name check new Name does not already exist
+      $sqlName = "";
+      if (!empty($name)) {
+        $count = $this->exists($name);
+        if ($count != 0) {  // Name is NOT unique
+          $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
+          return false;
+        } else {
+          $sqlName = "`Name` = '$name'";
+        }
+      }
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE products SET {$sqlName}`Description` = '$description', `ProdCatID` = '$prodCatID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsNew` = '$isNew', `IsOnSale` = '$isOnSale', `Status` = '$status' WHERE `ProductID` = $productID";
+      $result = $this->conn->exec($sql);
+      if ($result == 1) {  // Only 1 record should be updated
+        $_SESSION["message"] = "Update of Product ID '$productID' was successful.";
+      } else {
+        throw new PDOException("0 or >1 record was updated.");
+      }
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateRecord Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * updateQtyAvail function - Update Quantity Available for specific product
    * @param int $productID    Product ID of product to update
-   * @param int $qtyAvailChg  (+-)Quantity to change in QtyAvail field
-   * @return bool $result     Returns True if update success or False
+   * @param int $qtyAvailChg  (+/-)Quantity to change in QtyAvail field
+   * @return int $result      Number of records updated or False
    */
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {

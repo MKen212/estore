@@ -32,12 +32,12 @@ if ($userData == false) {  // UserID not found
     $status = $_POST["status"];
     $_POST = [];
 
-    if ($email == $userData["Email"]) $email = "";  // Unset $email if same as DB
+    if ($email == $userData["Email"]) $email = "";  // Unset $email if same as current record
 
     include_once "../app/models/userClass.php";
     $user = new User();
     $updateUser = $user->updateRecord($id, $email, $password, $name, $isAdmin, $status);
-    unset($user, $password);
+    unset($password);
 
     // Refresh page
     ?><script>

@@ -1,7 +1,7 @@
 <!-- Product Form -->
-<div class="row">
-  <div class="col-6">
-    <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="productForm" autocomplete="off">
+<form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="productForm" autocomplete="off">
+  <div class="row">
+    <div class="col-6">
       <!-- Name -->
       <div class="form-group row">
         <label class="col-form-label labFixed" for="name">Name:</label>
@@ -39,18 +39,18 @@
       </div>
       <!-- Quantity Available -->
       <div class="form-group row">
-        <label class="col-form-label labFixed" for="qtyAvail">Quantity:</label>
+        <label class="col-form-label labFixed" for="qtyAvail">Quantity Available:</label>
         <div class="inpFixed">
-          <input class="form-control" type="number" name="qtyAvail" id="qtyAvail" placeholder="Enter Initial Quantity" min="0" value="<?= $productData["QtyAvail"]; ?>" required />
+          <input class="form-control" type="number" name="qtyAvail" id="qtyAvail" placeholder="Enter Quantity Available" min="0" value="<?= $productData["QtyAvail"]; ?>" required />
         </div>
       </div>
-      <!-- Image Filename -->
+      <!-- IsNew -->
       <div class="form-group row">
-        <label class="col-form-label labFixed">Product Image:</label>
-        <div class="custom-file inpFixed">
-          <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo DEFAULTS['maxUploadSize'];?>" />
-          <label class="custom-file-label" for="imgFilename">Choose file</label>
-          <input class="custom-file-input" type="file" name="imgFilename" id="imgFilename" />
+        <label class="col-form-label labFixed" for="isNew">New:</label>
+        <div class="inpFixed">
+          <select class="form-control" name="isNew" id="isNew" required>
+            <?php statusOptions("IsNew", $productData["IsNew"]); ?>
+          </select>
         </div>
       </div>
       <!-- IsOnSale -->
@@ -81,12 +81,24 @@
           <?php msgShow(); ?>
         </div>
       </div>
-    </form>
+    </div>
+    <div class="col-6">
+      <!-- Image Filename -->
+      <div class="form-group row">
+        <label class="col-form-label labFixed">Product Image:</label>
+        <div class="custom-file inpFixed">
+          <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo DEFAULTS['maxUploadSize'];?>" />
+          <label class="custom-file-label" for="imgFilename">Choose file</label>
+          <input class="custom-file-input" type="file" name="imgFilename" id="imgFilename" />
+        </div>
+      </div>
+      <?php if (!empty($fullPath)) : ?>
+        <!-- Current Image (if Editing) -->
+        <div class="form-group row">
+          <label class="col-form-label labFixed" for="image">Current Image:</label>
+          <img width="270" height="250" id="image" src="<?= $fullPath; ?>" alt="<?= $productData["ImgFilename"]; ?>" />
+        </div>
+      <?php endif ; ?>
+    </div>
   </div>
-
-  <div class="col-6">
-    <?php if (!empty($productData["ImgFilename"])) : ?>
-      <img width="270" height="250" id="image" src="<?= $fullPath; ?>" alt="<?= $productData["ImgFilename"]; ?>" />
-    <?php endif ; ?>
-  </div>
-</div>
+</form>

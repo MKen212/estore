@@ -6,6 +6,7 @@
   <td><?= $record["WeightGrams"]; ?></td>
   <td><?= $record["QtyAvail"]; ?></td>
   <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+  <td><?= statusOutput("IsNew", $record["IsNew"]); ?></td>
   <td><?= statusOutput("IsOnSale", $record["IsOnSale"]); ?></td>
   <td><?= statusOutput("Status", $record["Status"]); ?></td>
 </tr>

@@ -49,6 +49,16 @@ $statusCodes = [
       "badge" => "primary",
     ],
   ],
+  "IsNew" => [  // users Table / IsNew Field
+    0 => [
+      "text" => "No",
+      "badge" => "secondary",
+    ],
+    1 => [
+      "text" => "Yes",
+      "badge" => "primary",
+    ],
+  ],
   "IsOnSale" => [  // users Table / IsOnSale Field
     0 => [
       "text" => "No",

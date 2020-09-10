@@ -71,6 +71,7 @@ CREATE TABLE IF NOT EXISTS products (
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  'IsNew' TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=NotNew, 1=New",
   `IsOnSale` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotOnSale, 1=OnSale",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`ProdCatID`) REFERENCES prod_categories (`ProdCatID`),
