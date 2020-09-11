@@ -1430,20 +1430,20 @@ h2.title {
 
 #form {
   display: block;
-  margin-bottom: 185px;
-  margin-top: 185px;
+  margin-bottom: 150px;
+  margin-top: 50px;
   overflow: hidden;
 }
 
 .login-form {
-
+  margin-bottom: 20px;
 }
 
 .signup-form {
-
+  margin-bottom: 20px;
 }
 
-.login-form h2, .signup-form h2 {
+.login-form h5, .signup-form h5 {
   color: #696763;
   font-family: 'Roboto', sans-serif;
   font-size: 20px;

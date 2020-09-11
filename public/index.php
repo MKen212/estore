@@ -32,27 +32,23 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 <body>
   <?php include "../app/views/shop/header.php";
 
-  if($_GET["p"] == "cart" || $_GET["p"] == "checkout" || $_GET["p"] == "orderConfirmation" || $_GET["p"] == "orderDisplay") : 
+  if($_GET["p"] == "home" || $_GET["p"] == "products" || $_GET["p"] == "productDetails") : ?>
+    <section>
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3">
+            <?php include "../app/views/shop/sidebar.php";?>
+          </div>
+          <div class="col-sm-9 padding-right">
+            <?php include "../app/controllers/shop/" . $_GET["p"] . ".php"; ?>
+          </div>
+        </div>
+      </div>
+    </section>
+  <?php else:
     include "../app/controllers/shop/" . $_GET["p"] . ".php";
-  else : 
-  ?>
-	<section>
-		<div class="container">
-			<div class="row">
-        <div class="col-sm-3">
-          <?php include "../app/views/shop/sidebar.php";?>
-        </div>
-
-				<div class="col-sm-9 padding-right">
-          <?php include "../app/controllers/shop/" . $_GET["p"] . ".php"; ?>
-        </div>
-        
-			</div>
-		</div>
-	</section>
-  
-  <?php
   endif;
+
   include "../app/views/shop/footer.php";?>
   
   <script src="js/jquery.js"></script>

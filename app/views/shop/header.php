@@ -60,11 +60,20 @@
         <div class="col-sm-8">
           <div class="shop-menu pull-right">
             <ul class="nav navbar-nav">
-              <li><a href="admin_dashboard.php?p=home"><i class="fa fa-user"></i> Account</a></li>
+              <?php if (isset($_SESSION["userLogin"])) : 
+                if ($_SESSION["userIsAdmin"] == 1) : ?>
+                  <li><a href="admin_dashboard.php?p=home"><i class="fa fa-tasks"></i> Admin</a></li>
+                <?php endif; ?>
+                <li><a href="index.php?p=myAccount"><i class="fa fa-user"></i> My Account</a></li>
+              <?php endif; ?>
               <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
               <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
               <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null; ?></span></a></li>
-              <li><a href="admin.php"><i class="fa fa-lock"></i> Login</a></li>
+              <?php if (isset($_SESSION["userLogin"])) : ?>
+                <li><a <?= $_GET["p"] == "logout" ? 'class="active"' : null;?>href="index.php?p=logout"><i class="fa fa-unlock-alt"></i> Logout</a></li>
+              <?php else : ?>
+                <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null;?>href="index.php?p=login"><i class="fa fa-lock"></i> Login</a></li>
+              <?php endif; ?>
             </ul>
           </div>
         </div>
@@ -96,14 +105,17 @@
                   <li><a href="login.html">Login</a></li> 
                 </ul>
               </li> 
-              <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
+              <li class="dropdown"><a <?= $_GET["p"] == "login" || $_GET["p"] == "myAccount"|| $_GET["p"] == "orderDisplay" ? 'class="active"' : null;?>href="#">Account<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
-                  <li><a <?= $_GET["p"] == "orderDisplay" ? 'class="active"' : null;?>href="index.php?p=orderDisplay">Display Order</a></li>
-                  <li><a href="blog.html">Blog List</a></li>
-                  <li><a href="blog-single.html">Blog Single</a></li>
+                  <?php if (isset($_SESSION["userLogin"])) : ?>
+                    <li><a <?= $_GET["p"] == "myAccount" ? 'class="active"' : null;?>href="index.php?p=myAccount">My Account</a></li>
+                    <li><a <?= $_GET["p"] == "orderDisplay" ? 'class="active"' : null;?>href="index.php?p=orderDisplay">My Orders</a></li>
+                    <li><a href="index.php?p=logout">Logout</a></li>
+                  <?php else : ?>
+                    <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null;?>href="index.php?p=login">Login</a></li>
+                  <?php endif; ?>
                 </ul>
-              </li> 
-              <li><a href="404.html">404</a></li>
+              </li>
               <li><a href="contact-us.html">Contact</a></li>
             </ul>
           </div>
