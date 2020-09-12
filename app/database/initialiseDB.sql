@@ -38,7 +38,17 @@ CREATE TABLE IF NOT EXISTS prod_categories (
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
 );
--- For Product Categories see end of file...
+-- For Product Category Data see end of file...
+
+-- Create Product Brands table
+CREATE TABLE IF NOT EXISTS prod_brands (
+  `ProdBrandID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `Name` VARCHAR(40) NOT NULL UNIQUE,
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+);
+-- For Product Brand Data see end of file...
 
 -- Create users table
 CREATE TABLE IF NOT EXISTS users (
@@ -65,17 +75,17 @@ CREATE TABLE IF NOT EXISTS products (
   `Name` VARCHAR(40) NOT NULL UNIQUE,
   `Description` VARCHAR(500) NOT NULL,
   `ProdCatID` INT(11) NOT NULL,
+  `ProdBrandID` INT(11) NOT NULL,
   `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
   `WeightGrams` INT(11) NOT NULL DEFAULT 0,
   `QtyAvail` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  'IsNew' TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=NotNew, 1=New",
-  `IsOnSale` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=NotOnSale, 1=OnSale",
+  `Flag` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=None, 1=New, 2=Sale",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`ProdCatID`) REFERENCES prod_categories (`ProdCatID`),
-  FOREIGN KEY (`EditUserID`) REFERENCES users (`UserID`)
+  FOREIGN KEY (`ProdBrandID`) REFERENCES prod_brands (`ProdBrandID`)
 );
 
 -- Create invoice_ID Sequence
@@ -439,9 +449,17 @@ INSERT INTO shipping (`Band`, `Type`, `PriceBandKG`, `PriceBandCost`) VALUES
   ('Rest of World', 'Express', '5', '182.00'),
   ('Rest of World', 'Express', '10', '250.00');
 
-  -- Product Categories data
-  INSERT INTO prod_categories (`Name`) VALUES
-    ('Clothes-Men'),
-    ('Clothes-Women'),
-    ('Shoes-Men'),
-    ('Shoes-Women');
+-- Product Categories data
+INSERT INTO prod_categories (`Name`) VALUES
+  ('Clothes-Men'),
+  ('Clothes-Women'),
+  ('Shoes-Men'),
+  ('Shoes-Women');
+
+-- Product Brands data
+INSERT INTO prod_brands (`Name`) VALUES
+  ('UnBranded'),
+  ('Armani'),
+  ('Burberry'),
+  ('Hermes'),
+  ('Prada');

@@ -9,11 +9,11 @@ $productData = [
   "Name" => null,
   "Description" => null,
   "ProdCatID" => 0,
+  "ProdBrandID" => 0,
   "Price" => null,
   "WeightGrams" => null,
   "QtyAvail" => null,
-  "IsNew" => 1,
-  "IsOnSale" => 0,
+  "Flag" => 1,
   "Status" => 1,
 ];
 
@@ -41,7 +41,8 @@ if (isset($_POST["addProduct"])) {  // Add Products
   // Initial checks passed or no file uploaded - Clean Fields for DB entry
   $name = cleanInput($_POST["name"], "string");
   $description = cleanInput($_POST["description"], "string");
-  $prodCatID = cleanInput($_POST["prodCatID"], "int");
+  $prodCatID = $_POST["prodCatID"];
+  $prodBrandID = $_POST["prodBrandID"];
   $price = cleanInput($_POST["price"], "float");
   $weightGrams = cleanInput($_POST["weightGrams"], "int");
   $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
@@ -51,15 +52,14 @@ if (isset($_POST["addProduct"])) {  // Add Products
     $imgFilename = null;
   }
   $editUserID = $_SESSION["userID"];
-  $isNew = $_POST["isNew"];
-  $isOnSale = $_POST["isOnSale"];
+  $flag = $_POST["flag"];
   $status = $_POST["status"];
   $_POST = [];
 
   // Create database entry
   include_once "../app/models/productClass.php";
   $product = new Product();
-  $newProductID = $product->add($name, $description, $prodCatID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $isNew, $isOnSale, $status);
+  $newProductID = $product->add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $flag, $status);
 
   if ($newProductID) {  // Database Entry Success
     if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload

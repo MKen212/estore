@@ -39,7 +39,7 @@
         // Update shipping PriceBandKG based on 3 bands <2kg, <5kg, <10kg or more
         if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
           $_SESSION["cart"][0]["shippingPriceBandKG"] = 2;
-        } else if ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
+        } elseif ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
           $_SESSION["cart"][0]["shippingPriceBandKG"] = 5;
         } else {
           $_SESSION["cart"][0]["shippingPriceBandKG"] = 10;

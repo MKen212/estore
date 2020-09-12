@@ -2,7 +2,7 @@
 include_once "../app/models/productClass.php";
 $product = new Product();
 
-// Get Total Records and Page Details
+// Get Total Active Records and Page Details
 $totRecords = $product->count(1);
 $lastPage = ceil($totRecords / DEFAULTS["productsPerPage"]);
 

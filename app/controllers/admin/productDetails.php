@@ -47,7 +47,8 @@ if ($productData == false) {  // ProductID not found
     // Initial checks passed or no file uploaded - Clean Fields for DB entry
     $name = cleanInput($_POST["name"], "string");
     $description = cleanInput($_POST["description"], "string");
-    $prodCatID = cleanInput($_POST["prodCatID"], "int");
+    $prodCatID = $_POST["prodCatID"];
+    $prodBrandID = $_POST["prodBrandID"];
     $price = cleanInput($_POST["price"], "float");
     $weightGrams = cleanInput($_POST["weightGrams"], "int");
     $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
@@ -66,7 +67,7 @@ if ($productData == false) {  // ProductID not found
     // Update database entry
     include_once "../app/models/productClass.php";
     $product = new Product();
-    $updateProduct = $product->updateRecord($id, $name, $description, $prodCatID, $price, $weightGrams, $qtyAvail, $imgFilename, $isNew, $isOnSale, $status);
+    $updateProduct = $product->updateRecord($id, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $isNew, $isOnSale, $status);
 
     if ($updateProduct) {  // Database Entry Success
       if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload

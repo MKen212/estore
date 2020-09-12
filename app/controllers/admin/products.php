@@ -32,15 +32,15 @@
     <table class="table table-striped table-sm">
       <thead>
         <!-- Products Table Header -->
-        <th>Product ID</th>
+        <th>ID</th>
         <th>Name</th>
         <th>Category</th>
+        <th>Brand</th>
         <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
         <th>Weight<br />(Grams)</th>
         <th>Quantity</th>
         <th>Last Edit</th>
-        <th>New</th>
-        <th>On Sale</th>
+        <th>Flag</th>
         <th>Status</th>
       </thead>
       <tbody>

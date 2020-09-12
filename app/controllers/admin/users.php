@@ -32,7 +32,7 @@
     <table class="table table-striped table-sm">
       <thead>
         <!-- Users Table Header -->
-        <th>User ID</th>
+        <th>ID</th>
         <th>Email</th>
         <th>Name</th>
         <th>Last Edit</th>

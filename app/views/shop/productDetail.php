@@ -1,7 +1,7 @@
 <div class="product-details"><!--Product Details-->
   <div class="col-sm-5">
     <div class="view-product"> <!-- Main Image -->
-    <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $values["ImgFilename"]; ?>" />
+      <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $values["ImgFilename"]; ?>" />
     </div>
 
     <!-- TODO  Decide if including carousel of product images -->
@@ -31,13 +31,16 @@
 
   <div class="col-sm-7">
     <div class="product-information"><!--/product-information-->
-      <!-- TODO  Decide if adding NEW Corner flags
-      <img src="images/product-details/new.jpg" class="newarrival" alt="" />
-      -->
+      <?php if ($values["Flag"] == 1) : ?>
+        <img src="images/shop/new.png" class="new" alt="" />
+      <?php elseif ($values["Flag"] == 2) : ?>
+        <img src="images/shop/sale.png" class="sale" alt="" />
+      <?php endif; ?>
       <h2><?= $values["Name"]; ?></h2>
       <p><?= $values["Description"]; ?></p>
-      <!-- TODO  Decide if adding ratings -->
+      <!-- Removed Ratings as hard-coded image
       <img src="images/product-details/rating.png" alt="" />
+      -->
       
       <form action="" method="POST" name="prodATCForm">
         <span>
@@ -49,9 +52,8 @@
       </form>
 
       <p><b>Web ID:</b> <?= $selectedID; ?></p>
-      <p><b>Availability:</b> <?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
-      <!-- TODO  Decide how to handle Condition / Brand / Sharing -->
-      <p><b>Condition:</b> New
+      <p><b>Availability:</b> <?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p> <?= $values[""]; ?>
+      <p><b>Category:</b> 
       <p><b>Brand:</b> E-SHOPPER</p>
       
     </div><!--/product-information-->

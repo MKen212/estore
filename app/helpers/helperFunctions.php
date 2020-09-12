@@ -13,11 +13,11 @@ function cleanInput($input, $type) {
     $input = trim($input);
     $input = stripslashes($input);
     $input = filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW);
-  } else if ($type == "int") {
+  } elseif ($type == "int") {
     $input = filter_var($input, FILTER_SANITIZE_NUMBER_INT);
-  } else if ($type == "float") {
+  } elseif ($type == "float") {
     $input = filter_var($input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-  } else if ($type = "email") {
+  } elseif ($type = "email") {
     $input = filter_var($input, FILTER_SANITIZE_EMAIL);
   }
   return $input;
@@ -54,7 +54,7 @@ function pagination($subPage, $lastPage, $url) {
       $lastItem = $lastPage;
       $rightScroll = 0;
     }
-  } else if ($subPage > ($lastPage - $midPage)) {  // Last Section
+  } elseif ($subPage > ($lastPage - $midPage)) {  // Last Section
     $leftScroll = $lastPage - DEFAULTS["paginationItems"];
     $firstItem = $leftScroll + 1;
     $lastItem = $lastPage;
@@ -169,9 +169,9 @@ function removeFromCart($itemID) {
 function msgPrep($type, $msg) {
   if ($type == "success") {
     $prepdMsg = '<div class="alert alert-success">' . $msg . '</div>';
-  } else if ($type == "warning") {
+  } elseif ($type == "warning") {
     $prepdMsg = '<div class="alert alert-warning">' . $msg . '</div>';
-  } else if ($type == "danger") {
+  } elseif ($type == "danger") {
     $prepdMsg = '<div class="alert alert-danger">' . $msg . '</div>';
   }
   return $prepdMsg;
@@ -240,6 +240,24 @@ function prodCatOptions($selID) {
      echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
    } else {
      echo "<option value='" . $value["ProdCatID"] . "'>" . $value["Name"] . "</option>";
+   }
+  }
+  return true;
+}
+
+/**
+ * prodBrandOptions function - Outputs all Names from prod_brands as HTML options
+ * @param string $selID  ProdBrandID that is marked as 'selected'
+ * @return bool          Returns true on completion
+ */
+function prodBrandOptions($selID) {
+  include_once "../app/models/prodBrandClass.php";
+  $prodBrand = new ProdBrand();
+  foreach (new RecursiveArrayIterator($prodBrand->getBrands()) as $value) {
+   if ($value["ProdBrandID"] == $selID) {
+     echo "<option value='" . $value["ProdBrandID"] . "' selected>" . $value["Name"] . "</option>";
+   } else {
+     echo "<option value='" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</option>";
    }
   }
   return true;

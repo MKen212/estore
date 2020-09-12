@@ -23,7 +23,7 @@ class PayPal {
       // Load relevant Sandbox/Production Environment
       if (PAYPALAPI["env"] == "sandbox") {
         $environment = new SandboxEnvironment(PAYPALAPI["clientID"], PAYPALAPI["secret"]);
-      } else if (PAYPALAPI["env"] == "production") {
+      } elseif (PAYPALAPI["env"] == "production") {
         $environment = new ProductionEnvironment(PAYPALAPI["clientID"], PAYPALAPI["secret"]);
       } else {
         throw new HttpException("PayPal Environment not specified.", 400, null);
