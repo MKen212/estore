@@ -132,7 +132,9 @@
   </div><!--/price-range-panel-->
   
   <div class="shipping text-center"><!--shipping-advert-panel-->
+    <!-- Removed as hard-coded image
     <img src="images/home/shipping.jpg" alt="" />
+    -->
   </div><!--/shipping-advert-panel-->
   
 </div>

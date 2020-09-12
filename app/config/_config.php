@@ -18,7 +18,7 @@ define("PAYPALAPI", $ppAPIDetails);
 $defaultValues = [
   "maxUploadSize" => 2000000,  // Maximum PHP upload file size in bytes - see phpInfo
   "productsImgPath" => "uploads/imgProducts/",  // Path to product images
-  "noImgUploaded" => "images/home/noImage.jpg" ,  // Default Image if no image file uploaded
+  "noImgUploaded" => "images/shared/noImage.jpg" ,  // Default Image if no image file uploaded
   "countryCode" => "CH",  // Default Country Code
   "currency" => "CHF",  // Default Currency
   "productsPerPage" => 6,  // Total Number of products displayed per page

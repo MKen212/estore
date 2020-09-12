@@ -6,7 +6,7 @@
         <div class="col-sm-6 ">
           <div class="contactinfo">
             <ul class="nav nav-pills">
-              <li><a href=""><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
+              <li><a href=""><i class="fa fa-phone"></i> +41 21 123 4567</a></li>
               <li><a href=""><i class="fa fa-envelope"></i> info@domain.com</a></li>
             </ul>
           </div>
@@ -31,7 +31,7 @@
       <div class="row">
         <div class="col-sm-4">
           <div class="logo pull-left">
-            <a href="/"><img src="images/home/logoName.png" alt="" /></a>
+            <a href="/"><img src="images/shared/logoName.png" alt="" /></a>
           </div>
           <div class="btn-group pull-right">
             <div class="btn-group">

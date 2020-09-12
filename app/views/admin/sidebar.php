@@ -43,7 +43,7 @@
       </li>      
       <!-- eStore -->
       <li class="nav-item">
-        <a class="nav-link" href="index.php?p=home"><img src="/images/home/logo.png" alt="logo" /> eStore</a>
+        <a class="nav-link" href="index.php?p=home"><img src="/images/shared/logo.png" alt="logo" /> eStore</a>
       </li>
     </ul>
   </div>
