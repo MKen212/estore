@@ -1,6 +1,5 @@
 <?php  // Shop - Logout
-session_unset();
-session_destroy();
+unset($_SESSION["userLogin"], $_SESSION["userIsAdmin"], $_SESSION["userID"], $_SESSION["userName"]);
 ?>
 
 <script>

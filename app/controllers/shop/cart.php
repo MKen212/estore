@@ -13,9 +13,11 @@ if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
     echo $message;
   } else {
     removeFromCart($delID);
+    unset($_GET["id"]);
+    // Refresh page
     ?><script>
-      document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"];?>;
-    </script><?php 
+      window.location.assign("index.php?p=cart");
+    </script><?php
   }
 }
 

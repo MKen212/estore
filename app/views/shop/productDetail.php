@@ -42,7 +42,7 @@
       <img src="images/product-details/rating.png" alt="" />
       -->
       
-      <form action="" method="POST" name="prodATCForm">
+      <form action="" method="POST" name="prodATCForm"><!-- Add To Cart Form -->
         <span>
           <span><?= symValue($values["Price"]); ?></span>
           <label>Quantity:</label>
@@ -51,10 +51,11 @@
         </span>
       </form>
 
-      <p><b>Web ID:</b> <?= $selectedID; ?></p>
-      <p><b>Availability:</b> <?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p> <?= $values[""]; ?>
-      <p><b>Category:</b> 
-      <p><b>Brand:</b> E-SHOPPER</p>
+      <p><b>Product ID: </b><?= $selectedID; ?></p>
+      <p><b>Availability: </b><?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
+      <p><b>Category: </b><?= $values["Category"]; ?></p>
+      <p><b>Brand: </b><?= $values["Brand"]; ?></p>
+      <p><b>Weight: </b><?= $values["WeightGrams"]; ?> grams</p>
       
     </div><!--/product-information-->
   </div>

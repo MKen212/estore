@@ -1,6 +1,8 @@
 <?php  // Shop - List Cart Items
 if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
-  <div style="margin-bottom:50px">Your Shopping Cart is currently empty.</div>
+  <div class="register-req">
+		<p>Your Shopping Cart is currently empty. Please visit our <a href="index.php?p=products">Shop</a> to proceed.</p>
+	</div>
 <?php else : ?>
   <div class="table-responsive cart_info">
     <table class="table table-condensed" style="margin-bottom:0px">

@@ -1900,11 +1900,12 @@ h2.title {
   font-weight: 300;
   padding: 15px 20px;
   margin-top: 35px;
+  margin-bottom: 50px;
 
 }
 
 .register-req p {
-  margin-bottom: 0;
+  margin-bottom: 0px;
 }
 
 

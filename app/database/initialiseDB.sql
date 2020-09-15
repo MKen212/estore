@@ -88,6 +88,25 @@ CREATE TABLE IF NOT EXISTS products (
   FOREIGN KEY (`ProdBrandID`) REFERENCES prod_brands (`ProdBrandID`)
 );
 
+-- Create products uncoded view
+CREATE VIEW IF NOT EXISTS prod_uncoded_view AS SELECT
+`products`.`ProductID` AS `ProductID`,
+`products`.`Name` AS `Name`,
+`products`.`Description` AS `Description`,
+`prod_categories`.`Name` AS `Category`,
+`prod_brands`.`Name` AS `Brand`,
+`products`.`Price` AS `Price`,
+`products`.`WeightGrams` AS `WeightGrams`,
+`products`.`QtyAvail` AS `QtyAvail`,
+`products`.`ImgFilename` AS `ImgFilename`,
+`products`.`EditTimestamp` AS `EditTimestamp`,
+`products`.`EditUserID` AS `EditUserID`,
+`products`.`Flag` AS `Flag`,
+`products`.`Status` AS `Status`
+FROM products
+LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID`
+LEFT JOIN prod_brands ON `products`.`ProdBrandID` = `prod_brands`.`ProdBrandID`;
+
 -- Create invoice_ID Sequence
 CREATE SEQUENCE `invoice_ID` start with 12980 maxvalue 99999999999 increment by 1;
 

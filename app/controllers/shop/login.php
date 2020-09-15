@@ -1,5 +1,9 @@
 <?php  // Shop - Login
-
+if (isset($_GET["r"])) {  // Check if return page is set
+  $returnPage = $_GET["r"];
+} else {
+  $returnPage = "home";
+}
 ?>
 
 <section id="form"><!--form-->
@@ -21,7 +25,7 @@
           if ($login == true) {
             // Login Success
             ?><script>
-              window.location.assign("index.php?p=home");
+              window.location.assign("index.php?p=<?= $returnPage; ?>");
             </script><?php
           } else {
             // Login Failure

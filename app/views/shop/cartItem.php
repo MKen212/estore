@@ -4,7 +4,7 @@
   </td>
   <td class="cart_description">
     <h4><?= $values["name"]; ?></h4>
-    <p>Web ID: <?= $values["productID"]; ?></p>
+    <p>Product ID: <?= $values["productID"]; ?></p>
   </td>
   <td class="cart_price">
     <p><?= symValue($values["price"]); ?></p>

@@ -5,9 +5,6 @@
         <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $values["ImgFilename"]; ?>" />
         <h2><?= symValue($values["Price"]); ?></h2>
         <p><?= $values["Name"]; ?></p>
-        <!--  Removed "Add to Cart" Link from hidden window as never clickable
-        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-        -->
       </div>
       <div class="product-overlay">
         <div class="overlay-content">

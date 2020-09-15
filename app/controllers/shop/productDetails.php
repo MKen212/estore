@@ -3,7 +3,7 @@ include_once "../app/models/productClass.php";
 $product = new Product();
 
 isset($_GET["id"]) ? $selectedID = $_GET["id"] : $selectedID = 1;
-$values = $product->getRecord($selectedID);  // Get Product Details
+$values = $product->getRecordView($selectedID);  // Get Product Details from View
 
 if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
   $fullPath = DEFAULTS["noImgUploaded"];

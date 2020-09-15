@@ -98,9 +98,9 @@ class Product {
   public function getPage($status, $limit, $offset) {
     try {
       if ($status == 9) {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `Flag` FROM products LIMIT $limit OFFSET $offset";  
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products LIMIT $limit OFFSET $offset";  
       } else {
-        $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `Flag` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -112,22 +112,39 @@ class Product {
   }
 
   /**
-   * getList function - Get list of product records
+   * getList function - Get list of product records using prod_uncoded_view
    * @param string $name    Product Name (Optional)
    * @return array $result  Details of all/selected products (Name order) or False
    */
   public function getList($name = null) {
     try {
       if ($name == null) {
-        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `prod_brands`.`Name` as 'Brand', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`Flag`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` LEFT JOIN prod_brands ON `products`.`ProdBrandID` = `prod_brands`.`ProdBrandID`ORDER BY `products`.`Name`";
+        $sql = "SELECT * FROM prod_uncoded_view ORDER BY `Name`";
       } else {
-        $sql = "SELECT `products`.`ProductID`, `products`.`Name`, `prod_categories`.`Name` as 'Category', `prod_brands`.`Name` as 'Brand', `products`.`Price`, `products`.`WeightGrams`, `products`.`QtyAvail`, `products`.`EditTimestamp`, `products`.`EditUserID`, `products`.`Flag`, `products`.`Status` FROM products LEFT JOIN prod_categories ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID` LEFT JOIN prod_brands ON `products`.`ProdBrandID` = `prod_brands`.`ProdBrandID` WHERE `products`.`Name` LIKE '%$name%' ORDER BY `products`.`Name`";
+        $sql = "SELECT * FROM prod_uncoded_view WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Product/getList Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * getRecordView function - Retrieve single product record using prod_uncoded_view
+   * @param int $productID  Product ID of product required
+   * @return array $result  Returns selected product record or False 
+   */
+  public function getRecordView($productID) {
+    try {
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Brand`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `Flag` FROM prod_uncoded_view WHERE `ProductID` = '$productID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetch();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecordView Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
