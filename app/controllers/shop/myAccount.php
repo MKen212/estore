@@ -41,4 +41,4 @@
       }
     endif; ?>
   </div>
-</section>
+</section><!--/my_account-->

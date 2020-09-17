@@ -33,6 +33,27 @@ class Product {
   }
 
   /**
+   * count function - Get COUNT of product records
+   * @param bool $status  Product Status (0=Inactive/1=Active/9=All)
+   * @return int $result  Returns count of defined product records or False 
+   */
+  public function count($status) {
+    try {
+      if ($status == 9) {
+        $sql = "SELECT COUNT(*) FROM products";  
+      } else {
+        $sql = "SELECT COUNT(*) FROM products WHERE status = '$status'";
+      }
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/count Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * add function - Add Product record
    * @param string $name         Product Name
    * @param string $description  Product Description
@@ -63,27 +84,6 @@ class Product {
       }
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Product/add Failed: " . $err->getMessage() . "<br />");
-      return false;
-    }
-  }
-
-  /**
-   * count function - Get COUNT of product records
-   * @param bool $status  Product Status (0=Inactive/1=Active/9=All)
-   * @return int $result  Returns count of defined product records or False 
-   */
-  public function count($status) {
-    try {
-      if ($status == 9) {
-        $sql = "SELECT COUNT(*) FROM products";  
-      } else {
-        $sql = "SELECT COUNT(*) FROM products WHERE status = '$status'";
-      }
-      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $result = $stmt->fetchColumn();
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/count Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

@@ -11,7 +11,7 @@ Class Order {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - Order/DB Connection Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/DB Connection Failed: " . $err->getMessage() . "<br />");
     }
   }
 
@@ -28,7 +28,7 @@ Class Order {
       $newID = $this->conn->lastInsertId();
       return $newID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Order/add Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/add Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -45,46 +45,80 @@ Class Order {
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Order/addItems Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/addItems Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
 
   /**
-   * getList function - Get full list of  combined orders and paypal_orders records
+   * getOwner function - Returns the OwnerUserID for the specific OrderID
+   * @param int $orderID  Order ID for specific order
+   * @return int $result  OwnerUserID for OrderID or False
+   */
+  public function getOwner($orderID) {
+    try {
+      $sql = "SELECT `OwnerUserID` FROM orders WHERE `OrderID` = '$orderID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getOwner Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * getList function - Get full list of combined orders and paypal_orders records
    * @return array $result  Details of all orders (Descending Order) or False
    */
   public function getList() {
     try {
-      $sql = "SELECT `orders`.`InvoiceID`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`ShippingCountry`, `orders`.`ShippingType`, `orders`.`Total`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PayerName`, `orders`.`EditTimestamp`, `orders`.`Status` FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID ORDER BY `orders`.`InvoiceID` DESC";
+      $sql = "SELECT `orders`.`InvoiceID`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`ShippingCountry`, `orders`.`ShippingType`, `orders`.`Total`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PayerName`, `orders`.`EditTimestamp`, `orders`.`OrderStatus` FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID ORDER BY `orders`.`InvoiceID` DESC";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Order/getList Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getList Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
 
   /**
-   * getDetails function - Get combined orders and paypal_orders record for an invoiceID
-   * @param int $invoiceiD  Invoice ID for specific order
-   * @return array $result  All details of order for InvoiceID or False
+   * getListByUser function - Get list of orders for a User using ord_paypal_view
+   * @param int $userID     User ID of Orders' OwnerUserID
+   * @return array $result  Details of orders for User (Descending Order) or False
    */
-  public function getDetails($invoiceID) {
+  public function getListByUser($userID) {
     try {
-      $sql = "SELECT * FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID WHERE orders.InvoiceID = '$invoiceID'";
+      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `CreateTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `OrderID` DESC";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getListByUser Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * getDetails function - Get combined order record for an OrderID using ord_paypal_view
+   * @param int $orderID    Order ID for specific order
+   * @return array $result  All details of order for OrderID or False
+   */
+  public function getDetails($orderID) {
+    try {
+      $sql = "SELECT * FROM ord_paypal_view WHERE OrderID = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
 
   /** getItems function - Retrieve order items for an orderID
-   * @param int $orderID  Order ID of items required
+   * @param int $orderID    Order ID of items required
    * @return array $result  Order Items for specified order or False
    */
   public function  getItems($orderID) {
@@ -94,10 +128,9 @@ Class Order {
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Order/getItems Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getItems Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
 }
-
 ?>

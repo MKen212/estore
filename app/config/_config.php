@@ -63,6 +63,46 @@ $statusCodes = [
       "badge" => "success",
     ],
   ],
+  "OrderStatus" => [  // orders Table / OrderStatus Field
+    0 => [
+      "text" => "UnPaid",
+      "badge" => "danger",
+    ],
+    1 => [
+      "text" => "Paid",
+      "badge" => "primary",
+    ],
+    2 => [
+      "text" => "Shipped",
+      "badge" => "success",
+    ],
+    3 => [
+      "text" => "Returned",
+      "badge" => "warning",
+    ],
+    4 => [
+      "text" => "Refunded",
+      "badge" => "info",
+    ],
+    5 => [
+      "text" => "Cancelled",
+      "badge" => "secondary",
+    ],
+  ],
+  "OrderItemStatus" => [  // order_items Table / OrderItemStatus Field
+    0 => [
+      "text" => "UnSent",
+      "badge" => "danger",
+    ],
+    1 => [
+      "text" => "Sent",
+      "badge" => "success",
+    ],
+    2 => [
+      "text" => "Returned",
+      "badge" => "info",
+    ],
+  ],
 ];
 
 define("STATUS_CODES", $statusCodes);
