@@ -2,6 +2,7 @@
   <div class="col-sm-4"><!--order_information-->
     <h5>Order Information</h5>
     <table class="table table-sm">
+      <tr><td><b>Invoice ID:</b></td><td><b><?= $orderDetails["InvoiceID"] ?></b></td></tr>
       <tr><td>Order Status:</td><td><?= statusOutput("OrderStatus", $orderDetails["OrderStatus"]) ?></td></tr>
       <tr><td>Number of Items:</td><td><?= $orderDetails["ItemCount"] ?></td></tr>
       <tr><td>Number of Products:</td><td><?= $orderDetails["ProductCount"] ?></td></tr>
@@ -23,7 +24,6 @@
   <div class="col-sm-4"><!--paypal_information-->
     <h5>PayPal Information</h5>
     <table class="table table-sm">
-      <tr><td>Invoice ID:</td><td><?= $orderDetails["InvoiceID"] ?></td></tr>
       <tr><td>Order ID:</td><td><?= $orderDetails["PpOrderID"] ?></td></tr>
       <tr><td>Order Status:</td><td><?= $orderDetails["PpOrderStatus"] ?></td></tr>
       <tr><td>Payment ID:</td><td><?= $orderDetails["PaymentID"] ?></td></tr>

@@ -15,4 +15,7 @@
   <td class="cart_total">
     <p class="cart_total_price"><?= symValue(($record["QtyOrdered"] * $record["Price"])); ?></p>
   </td>
+  <td>
+    <p><?= statusOutput("OrderItemStatus", $record["OrderItemStatus"]); ?></p>
+  </td>
 </tr><!--/order_item_SHOP-->

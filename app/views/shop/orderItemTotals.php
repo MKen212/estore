@@ -12,4 +12,5 @@
   <td class="total">
     <h4><?= symValue($orderDetails["SubTotal"]); ?></h4>
   </td>
+  <td></td>
 </tr><!--/orderItemTotals-->

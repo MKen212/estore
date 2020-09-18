@@ -49,6 +49,7 @@
                     <td class="price">Unit Price</td>
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
+                    <td >Item Status</td>
                   </tr>
                 </thead>
                 <tbody>

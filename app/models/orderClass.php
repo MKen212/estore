@@ -90,7 +90,7 @@ Class Order {
    */
   public function getListByUser($userID) {
     try {
-      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `CreateTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `OrderID` DESC";
+      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `OrderID` DESC";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -123,7 +123,7 @@ Class Order {
    */
   public function  getItems($orderID) {
     try {
-      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename` FROM order_items WHERE `OrderID` = '$orderID'";
+      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename`, `OrderItemStatus` FROM order_items WHERE `OrderID` = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
