@@ -93,7 +93,7 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
         document.getElementById("cartItems").innerHTML = "";
       </script><?php
       
-      $_SESSION["message"] = msgPrep("success", "Your order was processed successfully. The details are as follows:<br />");
+      $_SESSION["message"] = msgPrep("success", ("THANK YOU, " . $_SESSION["userName"] . "! Your order was processed successfully. The details are as follows:<br />"));
 
       // Show the order details
       $_GET["id"] = $addOrder;

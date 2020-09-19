@@ -34,7 +34,7 @@ class Product {
 
   /**
    * count function - Get COUNT of product records
-   * @param bool $status  Product Status (0=Inactive/1=Active/9=All)
+   * @param int $status   Product Status (0=Inactive/1=Active/9=All)
    * @return int $result  Returns count of defined product records or False 
    */
   public function count($status) {
@@ -42,7 +42,7 @@ class Product {
       if ($status == 9) {
         $sql = "SELECT COUNT(*) FROM products";  
       } else {
-        $sql = "SELECT COUNT(*) FROM products WHERE status = '$status'";
+        $sql = "SELECT COUNT(*) FROM products WHERE `Status` = '$status'";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();

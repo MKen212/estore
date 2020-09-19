@@ -16,6 +16,23 @@ Class Order {
   }
 
   /**
+   * count function - Get COUNT of order records by OrderStatus
+   * @param int $orderStatus  Order OrderStatus
+   * @return int $result      Returns count of defined order records or False 
+   */
+  public function count($orderStatus) {
+    try {
+      $sql = "SELECT COUNT(*) FROM orders WHERE `OrderStatus` = '$orderStatus'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/count Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * add function - Add Order Record
    * @param string $fields  List of fields for $values
    * @param string $values  List of values to be inserted
@@ -68,12 +85,17 @@ Class Order {
   }
 
   /**
-   * getList function - Get full list of combined orders and paypal_orders records
+   * getList function - Get full list of orders using ord_paypal_view
+   * @param int invoiceID   Invoice ID (Optional)
    * @return array $result  Details of all orders (Descending Order) or False
    */
-  public function getList() {
+  public function getList($invoiceID = null) {
     try {
-      $sql = "SELECT `orders`.`InvoiceID`, `orders`.`ItemCount`, `orders`.`ProductCount`, `orders`.`ShippingCountry`, `orders`.`ShippingType`, `orders`.`Total`, `paypal_orders`.`PaymentStatus`, `paypal_orders`.`PayerName`, `orders`.`EditTimestamp`, `orders`.`OrderStatus` FROM orders LEFT JOIN paypal_orders ON orders.InvoiceID = paypal_orders.PpInvoiceID ORDER BY `orders`.`InvoiceID` DESC";
+      if ($invoiceID == null) {
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`,`PaymentStatus`, `PayerName`, `AddedTimestamp`, `OrderStatus`, `Status` FROM ord_paypal_view ORDER BY `InvoiceID` DESC";
+      } else {
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`,`PaymentStatus`, `PayerName`, `AddedTimestamp`, `OrderStatus`, `Status` FROM ord_paypal_view WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -90,7 +112,7 @@ Class Order {
    */
   public function getListByUser($userID) {
     try {
-      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `OrderID` DESC";
+      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `InvoiceID` DESC";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -123,7 +145,7 @@ Class Order {
    */
   public function  getItems($orderID) {
     try {
-      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename`, `OrderItemStatus` FROM order_items WHERE `OrderID` = '$orderID'";
+      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename`, `ShippedTimestamp`, `ShippedUserID`, `OrderItemStatus`, `Status` FROM order_items WHERE `OrderID` = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

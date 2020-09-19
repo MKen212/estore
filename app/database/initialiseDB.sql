@@ -175,25 +175,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (`ProductID`) REFERENCES products (`ProductID`)
 );
 
--- Create orders with paypal view
+-- Create orders combined with paypal view
 CREATE VIEW IF NOT EXISTS ord_paypal_view AS
   SELECT * FROM orders
   LEFT JOIN paypal_orders ON `orders`.`InvoiceID` = `paypal_orders`.`PpInvoiceID`;
-
-
-/*
-
--- Create messages table
-CREATE TABLE IF NOT EXISTS messages (
-  MessageID INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  SenderID INT(11) NOT NULL,
-  ReceiverID INT(11) NOT NULL,
-  Subject VARCHAR(40) NOT NULL,
-  Body VARCHAR(500) NOT NULL,
-  MsgTimestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  MsgRead TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unread, 1=Read",
-  FOREIGN KEY (SenderID) REFERENCES users (UserID),
-  FOREIGN KEY (ReceiverID) REFERENCES users (UserID)
-);
-
-*/

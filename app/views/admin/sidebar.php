@@ -1,3 +1,5 @@
+<?php  include "../app/controllers/admin/orderBadge.php";  // Update Order Counts ?>
+
 <!-- Sidebar Menu -->
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
   <div class="sidebar-sticky">
@@ -17,11 +19,7 @@
       </li>
       <!-- Orders -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "ordersList" ? " active" : "";?>" href="admin_dashboard.php?p=ordersList"><span data-feather="package"></span>Orders</a>
-      </li>
-      <!-- Messages -->
-      <li class="nav-item">
-        <a class="nav-link" href="admin-messagesSend.php"><span data-feather="mail"></span>Messages</a>
+        <a class="nav-link<?= $_GET["p"] == "orders" ? " active" : "";?>" href="admin_dashboard.php?p=orders"><span data-feather="package"></span>Orders<?= $toSendBadge . $toRefundBadge ?></a>
       </li>
       <!-- Users-->
       <li class="nav-item">

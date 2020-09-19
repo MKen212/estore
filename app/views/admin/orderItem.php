@@ -1,8 +1,11 @@
 <tr><!--order_item_ADMIN-->
   <td><?= $record["ItemID"]; ?></td>
   <td><?= $record["ProductID"]; ?></td>
+  <td><img width="90" height="83" src="<?= $fullPath; ?>" alt="<?= $record["ImgFilename"]; ?>" /></td>
   <td><?= $record["Name"]; ?></td>
-  <td><?= symValue($record["Price"]); ?></td>
+  <td><?= $record["Price"]; ?></td>
   <td><?= $record["QtyOrdered"]; ?></td>
-  <td>TBA</td>
+  <td><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ShippedTimestamp"])) . " by " . $record["ShippedUserID"]; ?></td>
+  <td><?= statusOutput("OrderItemStatus", $record["OrderItemStatus"]) ?></td>
+  <td><?= statusOutput("Status", $record["Status"]) ?></td>
 </tr><!--/order_item_ADMIN-->
