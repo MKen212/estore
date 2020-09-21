@@ -1,4 +1,4 @@
-<?php  // Order Class, which also handles order_items
+<?php  // Order Class
 Class Order {
   private $conn;  // PDO database connection object
 
@@ -46,23 +46,6 @@ Class Order {
       return $newID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Order/add Failed: " . $err->getMessage() . "<br />");
-      return false;
-    }
-  }
-
-  /**
-   * addItems function - Add Order Items Record(s)
-   * @param string $fields  List of fields for $values
-   * @param string $values  List of values to be inserted
-   * @return int $result    True if items added or False
-   */
-  public function addItems($fields, $values) {
-    try {
-      $sql = "INSERT INTO order_items $fields VALUES $values";
-      $result = $this->conn->exec($sql);
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/addItems Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -137,22 +120,6 @@ Class Order {
       $_SESSION["message"] = msgPrep("danger", "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />");
       return false;
     }
-  }
-
-  /** getItems function - Retrieve order items for an orderID
-   * @param int $orderID    Order ID of items required
-   * @return array $result  Order Items for specified order or False
-   */
-  public function  getItems($orderID) {
-    try {
-      $sql= "SELECT `ItemID`, `ProductID`, `Name` ,`Price`, `QtyOrdered`, `ImgFilename`, `ShippedTimestamp`, `ShippedUserID`, `OrderItemStatus`, `Status` FROM order_items WHERE `OrderID` = '$orderID'";
-      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $result = $stmt->fetchAll();
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getItems Failed: " . $err->getMessage() . "<br />");
-      return false;
-    }
-  }
+  }  
 }
 ?>

@@ -1,10 +1,48 @@
 <?php  // Admin Dashboard - Order Details
 if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   <div>No Order ID provided.</div>
-<?php else : ?>
+<?php else : 
+  if (isset($_GET["updStatus"])) {  // Check if Status was clicked
+    $orderItemID = $_GET["itemID"];
+    $current = $_GET["cur"];
+    $max = count(STATUS_CODES["Status"]) - 1;
+    // $_GET=[];
+  
+    $newStatus = $current + 1;
+    if ($newStatus > $max) $newStatus = 0;
+  
+    // Update OrderItem Status
+    include_once "../app/models/orderItemClass.php";
+    $orderItem = new OrderItem();
+    $updateStatus = $orderItem->updateStatus($orderItemID, $newStatus);
+  } elseif (isset($_GET["updItemStatus"])) {  // Check if Item Status was clicked
+    $orderItemID = $_GET["itemID"];
+    $current = $_GET["cur"];
+    $max = count(STATUS_CODES["OrderItemStatus"]) - 1;
+    $sent = array_search("Sent", array_column(STATUS_CODES["OrderItemStatus"], "text"));
+    // $_GET=[];
+  
+    $newStatus = $current + 1;
+    if ($newStatus > $max) $newStatus = 0;
+
+    $shipped = false;
+    if ($newStatus == $sent) $shipped = true;
+  
+    // Update OrderItem OrderItemStatus
+    include_once "../app/models/orderItemClass.php";
+    $orderItem = new OrderItem();
+    $updateStatus = $orderItem->updateItemStatus($orderItemID, $newStatus, $shipped);
+  }
+  ?>
   <!-- Main Section - Admin Order Info -->
-  <div class="pt-3 pb-2 mb-3 border-bottom">
-    <h2>Order Details - Order ID: <?= $_GET["id"] ?></h2>
+  <div class="row pt-3 pb-2 mb-3 border-bottom">
+    <div class="col-6">
+      <h2>Order Details - Order ID: <?= $_GET["id"] ?></h2>
+    </div>
+    <div class="col-6">
+      <!-- System Messages -->
+      <?php msgShow(); ?>
+    </div>
   </div>
 
   <?php
@@ -23,6 +61,8 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   include "../app/views/admin/orderHeader.php";
 
   // Show Order Items
+  include_once "../app/models/orderItemClass.php";
+  $orderItem = new OrderItem();
   ?>
   <div class="row"><!--order_items-->
     <div class="col-sm-12">
@@ -45,7 +85,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
           <tbody>
             <?php  // Loop through Order Items and output a row per item
             $orderID = $orderDetails["OrderID"];
-            foreach (new RecursiveArrayIterator($order->getItems($orderID)) as $record) {
+            foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
               if (empty($record["ImgFilename"])) {
                 $fullPath = DEFAULTS["noImgUploaded"];
               } else {

@@ -20,7 +20,7 @@
       <div class="review-payment" id="order">
         <h2>Review Order</h2>
       </div><?php  // Show cart
-      // TODO Would normally validate Cart against stock at this point
+      // TODO Potentially validate Cart against stock at this point?
       include "../app/controllers/shop/cartList.php";
 
       // Update Cart if Shipping Details were updated

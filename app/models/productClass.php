@@ -211,14 +211,50 @@ class Product {
   }
 
   /**
-   * updateQtyAvail function - Update Quantity Available for specific product
-   * @param int $productID    Product ID of product to update
+   * updateStatus function - Update Status field of an existing product record
+   * @param int $productID   Product ID of product being updated
+   * @param int $status      New Product Status
+   * @return int $result     Number of records updated (=1) or False
+   */
+  public function updateStatus($productID, $status) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE products SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProductID` = '$productID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateFlag function - Update Flag field of an existing product record
+   * @param int $productID  Product ID of product being updated
+   * @param int $flag       New Product Flag Status
+   * @return int $result    Number of records updated (=1) or False
+   */
+  public function updateFlag($productID, $flag) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE products SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag' WHERE `ProductID` = '$productID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateFlag Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateQtyAvail function - Update Quantity Available for specific product record
+   * @param int $productID    Product ID of product being updated
    * @param int $qtyAvailChg  (+/-)Quantity to change in QtyAvail field
    * @return int $result      Number of records updated or False
    */
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {
-      $sql = "UPDATE products SET `QtyAvail` = `QtyAvail` + $qtyAvailChg WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE products SET `QtyAvail` = ('QtyAvail' + $qtyAvailChg) WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

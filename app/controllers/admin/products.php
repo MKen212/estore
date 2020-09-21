@@ -1,4 +1,34 @@
-<!-- Admin Dashboard - Products List/Edit -->
+<?php  // Admin Dashboard - Products List/Edit
+if (isset($_GET["updStatus"])) {  // Check if Status was clicked
+  $productID = $_GET["id"];
+  $current = $_GET["cur"];
+  $max = count(STATUS_CODES["Status"]) - 1;
+  $_GET=[];
+
+  $newStatus = $current + 1;
+  if ($newStatus > $max) $newStatus = 0;
+
+  // Update Product Status
+  include_once "../app/models/productClass.php";
+  $product = new Product();
+  $updateStatus = $product->updateStatus($productID, $newStatus);
+} elseif (isset($_GET["updFlag"])) {  // Check if Flag was clicked
+  $productID = $_GET["id"];
+  $current = $_GET["cur"];
+  $max = count(STATUS_CODES["Flag"]) - 1;
+  $_GET=[];
+
+  $newStatus = $current + 1;
+  if ($newStatus > $max) $newStatus = 0;
+
+  // Update Product Flag
+  include_once "../app/models/productClass.php";
+  $product = new Product();
+  $updateStatus = $product->updateFlag($productID, $newStatus);
+}
+?>
+
+<!-- Main Section - Products List -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Products</h2>
 </div>
@@ -23,6 +53,8 @@
     </div>
   </div>
   <div class="col-6">
+    <!-- System Messages -->
+    <?php msgShow(); ?>
   </div>
 </div>
 

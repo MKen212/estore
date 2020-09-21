@@ -1,4 +1,8 @@
-<!-- Admin Dashboard - Orders List/Edit -->
+<?php  // Admin Dashboard - Orders List/Edit
+
+?>
+
+<!-- Main Section - Orders List -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Orders</h2>
 </div>
@@ -20,6 +24,8 @@
     <!-- New Order Button ** NOT REQUIRED ** -->
   </div>
   <div class="col-6">
+    <!-- System Messages -->
+    <?php msgShow(); ?>
   </div>
 </div>
 

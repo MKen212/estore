@@ -36,6 +36,8 @@
         include "../app/views/shop/orderHeader.php";
 
         // Show Order Items
+        include_once "../app/models/orderItemClass.php";
+        $orderItem = new OrderItem();
         ?>
         <div class="row" style="margin-bottom:50px"><!--order_items-->
           <div class="col-sm-12 shopper-info">
@@ -54,7 +56,7 @@
                 </thead>
                 <tbody>
                   <?php  // Loop through Order Items and output a row per item
-                  foreach (new RecursiveArrayIterator($order->getItems($orderID)) as $record) {
+                  foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
                     if (empty($record["ImgFilename"])) {
                       $fullPath = DEFAULTS["noImgUploaded"];
                     } else {

@@ -205,5 +205,41 @@ class User {
       return false;
     }
   }
+
+  /**
+   * updateStatus function - Update Status field of an existing user record
+   * @param int $userID   User ID of user being updated
+   * @param int $status   New User Status
+   * @return int $result  Number of records updated (=1) or False
+   */
+  public function updateStatus($userID, $status) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE users SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `UserID` = '$userID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - User/updateStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateIsAdmin function - Update IsAdmin field of an existing user record
+   * @param int $userID   User ID of user being updated
+   * @param int $isAdmin  New User IsAdmin Status
+   * @return int $result  Number of records updated (=1) or False
+   */
+  public function updateIsAdmin($userID, $isAdmin) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE users SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin' WHERE `UserID` = '$userID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - User/updateIsAdmin Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
 }
 ?>

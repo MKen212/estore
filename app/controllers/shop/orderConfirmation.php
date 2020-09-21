@@ -73,7 +73,9 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
       }
     }
     // Save Order Items to Database
-    $addItems = $order->addItems($ordItmFields, $ordItmValues);
+    include_once "../app/models/orderItemClass.php";
+    $orderItem = new OrderItem();
+    $addItems = $orderItem->addItems($ordItmFields, $ordItmValues);
 
     if (!$addItems) {  // Database Add Items Success
       return;  // Stop further processing

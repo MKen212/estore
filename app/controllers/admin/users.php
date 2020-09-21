@@ -1,4 +1,34 @@
-<!-- Admin Dashboard - Users List/Edit -->
+<?php  // Admin Dashboard - Users List/Edit
+if (isset($_GET["updStatus"])) {  // Check if Status was clicked
+  $userID = $_GET["id"];
+  $current = $_GET["cur"];
+  $max = count(STATUS_CODES["Status"]) - 1;
+  $_GET=[];
+
+  $newStatus = $current + 1;
+  if ($newStatus > $max) $newStatus = 0;
+
+  // Update User Status
+  include_once "../app/models/userClass.php";
+  $user = new User();
+  $updateStatus = $user->updateStatus($userID, $newStatus);
+} elseif (isset($_GET["updIsAdmin"])) {  // Check if IsAdmin was clicked
+  $userID = $_GET["id"];
+  $current = $_GET["cur"];
+  $max = count(STATUS_CODES["IsAdmin"]) - 1;
+  $_GET=[];
+
+  $newStatus = $current + 1;
+  if ($newStatus > $max) $newStatus = 0;
+
+  // Update User IsAdmin
+  include_once "../app/models/userClass.php";
+  $user = new User();
+  $updateStatus = $user->updateIsAdmin($userID, $newStatus);
+}
+?>
+
+<!-- Main Section - User List -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Users</h2>
 </div>
@@ -23,6 +53,8 @@
     </div>
   </div>
   <div class="col-6">
+    <!-- System Messages -->
+    <?php msgShow(); ?>
   </div>
 </div>
 
