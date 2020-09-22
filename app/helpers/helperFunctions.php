@@ -296,8 +296,8 @@ function commaToBR($string) {
 
 /**
  * statusOutput function - Returns the HTML output relevant to the given status code
- * @param string $type           Order Status Type (from Config/StatusCodes)
- * @param int $status            Order Status Code
+ * @param string $type           Status Type (from Config/StatusCodes)
+ * @param int $status            Status Code
  * @param string $link           Optional HREF Link
  * @return string $statusOutput  Returns the HTML output for the Status Code
  */
@@ -310,9 +310,9 @@ function statusOutput($type, $status, $link = null) {
 
 /**
  * statusOptions function - Outputs Status Codes as HTML options
- * @param string $type     Order Status Type (from Config/StatusCodes)
- * @param string $selCode  Statsus Code that is marked as 'selected'
- * @return bool            Returns true on completion
+ * @param string $type  Status Type (from Config/StatusCodes)
+ * @param int $selCode  Status Code that is marked as 'selected'
+ * @return bool         Returns true on completion
  */
 function statusOptions($type, $selCode) {
   foreach (STATUS_CODES[$type] as $key => $value) {
@@ -325,4 +325,15 @@ function statusOptions($type, $selCode) {
   return true;
 }
 
+/**
+ * statusCycle function - Returns next status code or reverts to zero
+ * @param string $type  Status Type (from Config/StatusCodes)
+ * @param int $current  Current Status Code
+ * @return int $new     Next Status Code or 0
+ */
+function statusCycle($type, $current) {
+  $max = count(STATUS_CODES[$type]) - 1;
+  $new = ($current == $max) ? 0 : $current + 1;
+  return $new;
+}
 ?>

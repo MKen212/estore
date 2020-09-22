@@ -1,4 +1,4 @@
-<?php  include "../app/controllers/admin/orderBadge.php";  // Update Order Counts ?>
+<?php include "../app/controllers/admin/sidebarBadges.php";  // Update Sidebar Badges ?>
 
 <!-- Sidebar Menu -->
 <nav class="col-md-2 d-none d-md-block bg-light sidebar">
@@ -19,7 +19,11 @@
       </li>
       <!-- Orders -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "orders" ? " active" : "";?>" href="admin_dashboard.php?p=orders"><span data-feather="package"></span>Orders<?= $toSendBadge . $toRefundBadge ?></a>
+        <a class="nav-link<?= $_GET["p"] == "orders" ? " active" : "";?>" href="admin_dashboard.php?p=orders"><span data-feather="package"></span>Orders <span id="toSendBadge"><?= $toSendBadge ?></span></a>
+      </li>
+      <!-- Returns -->
+      <li class="nav-item">
+        <a class="nav-link<?= $_GET["p"] == "returns" ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<?= $toRefundBadge ?></a>
       </li>
       <!-- Users-->
       <li class="nav-item">
@@ -29,6 +33,10 @@
       <!-- Product Categories-->
       <li class="nav-item">
         <a class="nav-link" href="admin-booksIssuedAdd.php"><span data-feather="list"></span>Product Categories</a>
+      </li>
+      <!-- Product Brands-->
+      <li class="nav-item">
+        <a class="nav-link" href="admin-booksIssuedAdd.php"><span data-feather="tag"></span>Product Brands</a>
       </li>
       <!-- Shipping Rates -->
       <li class="nav-item">

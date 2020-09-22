@@ -120,6 +120,42 @@ Class Order {
       $_SESSION["message"] = msgPrep("danger", "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />");
       return false;
     }
-  }  
+  }
+
+  /**
+   * updateStatus function - Update Status field of an existing order record
+   * @param int $orderID  Order ID of order being updated
+   * @param int $status   New Order Record Status
+   * @return int $result  Number of records updated (=1) or False
+   */
+  public function updateStatus($orderID, $status) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE orders SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `OrderID` = '$orderID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateOrderStatus function - Update OrderStatus field of an existing order record
+   * @param int $orderID      Order ID of order being updated
+   * @param int $orderStatus  New OrderStatus Status
+   * @return int $result      Number of records updated (=1) or False
+   */
+  public function updateOrderStatus($orderID, $orderStatus) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE orders SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `OrderStatus` = '$orderStatus' WHERE `OrderID` = '$orderID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateOrderStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
 }
 ?>

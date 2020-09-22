@@ -30,7 +30,7 @@
         $orderDetails = $order->getDetails($orderID);
 
         // Update Shipping Instructions if none
-        if (empty($orderDetails["ShippingInstructions"])) $orderDetails["ShippingInstructions"] = "-None-";
+        if (empty($orderDetails["ShippingInstructions"])) $orderDetails["ShippingInstructions"] = "- None -";
 
         // Show Details in Order Header
         include "../app/views/shop/orderHeader.php";

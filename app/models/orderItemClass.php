@@ -67,24 +67,23 @@ Class OrderItem {
   }
 
   /**
-   * updateItemStatus function - Update OrderItemStatus field of an existing order_item record
+   * updateIsShipped function - Update IsShipped field of an existing order_item record
    * @param int $orderItemID  OrderItem ID of order item being updated
-   * @param int $itemStatus   New OrderItem Status
-   * @param bool $shipped     True/False if item was shipped (Optional)
+   * @param int $isShipped    New IsShipped Status
    * @return int $result      Number of records updated (=1) or False
    */
-  public function updateItemStatus($orderItemID, $itemStatus, $shipped = false) {
+  public function updateIsShipped($orderItemID, $isShipped) {
     try {
       $editID = $_SESSION["userID"];
-      if ($shipped == true) {
-        $sql = "UPDATE order_items SET `ShippedTimestamp` = CURRENT_TIMESTAMP(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `OrderItemStatus` = '$itemStatus' WHERE `OrderItemID` = '$orderItemID'";
-      } else {
-        $sql = "UPDATE order_items SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `OrderItemStatus` = '$itemStatus' WHERE `OrderItemID` = '$orderItemID'";
-      }      
+      if ($isShipped == 1) {  // Item Shipped {HARD CODED!}
+        $sql = "UPDATE order_items SET `ShippedTimestamp` = CURRENT_TIMESTAMP(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+      } else {  // Not Shipped
+        $sql = "UPDATE order_items SET `ShippedTimestamp` = '0000-00-00 00:00:00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+      }
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateItemStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateIsShipped Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

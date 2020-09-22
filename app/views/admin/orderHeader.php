@@ -3,8 +3,8 @@
     <h5>Order Information</h5>
     <table class="table table-sm">
       <tr><td><b>Invoice ID:</b></td><td><b><?= $orderDetails["InvoiceID"] ?></b></td></tr>
-      <tr><td>Order Status:</td><td><?= statusOutput("OrderStatus", $orderDetails["OrderStatus"]) ?></td></tr>
-      <tr><td>Record Status:</td><td><?= statusOutput("Status", $orderDetails["Status"]) ?></td></tr>
+      <tr><td>Order Status:</td><td><?= statusOutput("OrderStatus", $orderDetails["OrderStatus"], ("admin_dashboard.php?p=orderDetails&id=" . $orderDetails["OrderID"] . "&cur=" . $orderDetails["OrderStatus"] . "&updOrderStatus")) ?></td></tr>
+      <tr><td>Record Status:</td><td><?= statusOutput("Status", $orderDetails["Status"], ("admin_dashboard.php?p=orderDetails&id=" . $orderDetails["OrderID"] . "&cur=" . $orderDetails["Status"] . "&updStatus")) ?></td></tr>
       <tr><td>Items / Products:</td><td><?= ($orderDetails["ItemCount"] . " / " . $orderDetails["ProductCount"]) ?></td></tr>
       <tr><td>SubTotal:</td><td><?= symValue($orderDetails["SubTotal"]); ?></td></tr>
       <tr><td>Shipping Cost:</td><td><?= symValue($orderDetails["ShippingCost"]); ?></td></tr>

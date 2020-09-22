@@ -78,20 +78,8 @@ $statusCodes = [
       "text" => "Shipped",
       "badge" => "success",
     ],
-    3 => [
-      "text" => "Returned",
-      "badge" => "warning",
-    ],
-    4 => [
-      "text" => "Refunded",
-      "badge" => "info",
-    ],
-    5 => [
-      "text" => "Cancelled",
-      "badge" => "secondary",
-    ],
   ],
-  "OrderItemStatus" => [  // order_items Table / OrderItemStatus Field
+  "IsShipped" => [  // order_items Table / IsShipped Field
     0 => [
       "text" => "UnSent",
       "badge" => "danger",
@@ -99,10 +87,6 @@ $statusCodes = [
     1 => [
       "text" => "Sent",
       "badge" => "success",
-    ],
-    2 => [
-      "text" => "Returned",
-      "badge" => "info",
     ],
   ],
 ];

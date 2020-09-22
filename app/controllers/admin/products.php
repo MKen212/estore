@@ -1,26 +1,18 @@
 <?php  // Admin Dashboard - Products List/Edit
-if (isset($_GET["updStatus"])) {  // Check if Status was clicked
+if (isset($_GET["updStatus"])) {  // Status link was clicked
   $productID = $_GET["id"];
   $current = $_GET["cur"];
-  $max = count(STATUS_CODES["Status"]) - 1;
   $_GET=[];
-
-  $newStatus = $current + 1;
-  if ($newStatus > $max) $newStatus = 0;
-
+  $newStatus = statusCycle("Status", $current);
   // Update Product Status
   include_once "../app/models/productClass.php";
   $product = new Product();
   $updateStatus = $product->updateStatus($productID, $newStatus);
-} elseif (isset($_GET["updFlag"])) {  // Check if Flag was clicked
+} elseif (isset($_GET["updFlag"])) {  // Flag link was clicked
   $productID = $_GET["id"];
   $current = $_GET["cur"];
-  $max = count(STATUS_CODES["Flag"]) - 1;
   $_GET=[];
-
-  $newStatus = $current + 1;
-  if ($newStatus > $max) $newStatus = 0;
-
+  $newStatus = statusCycle("Flag", $current);
   // Update Product Flag
   include_once "../app/models/productClass.php";
   $product = new Product();

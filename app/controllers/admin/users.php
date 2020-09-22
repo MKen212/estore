@@ -1,26 +1,18 @@
 <?php  // Admin Dashboard - Users List/Edit
-if (isset($_GET["updStatus"])) {  // Check if Status was clicked
+if (isset($_GET["updStatus"])) {  // Status link was clicked
   $userID = $_GET["id"];
   $current = $_GET["cur"];
-  $max = count(STATUS_CODES["Status"]) - 1;
   $_GET=[];
-
-  $newStatus = $current + 1;
-  if ($newStatus > $max) $newStatus = 0;
-
+  $newStatus = statusCycle("Status", $current);
   // Update User Status
   include_once "../app/models/userClass.php";
   $user = new User();
   $updateStatus = $user->updateStatus($userID, $newStatus);
-} elseif (isset($_GET["updIsAdmin"])) {  // Check if IsAdmin was clicked
+} elseif (isset($_GET["updIsAdmin"])) {  // IsAdmin link was clicked
   $userID = $_GET["id"];
   $current = $_GET["cur"];
-  $max = count(STATUS_CODES["IsAdmin"]) - 1;
   $_GET=[];
-
-  $newStatus = $current + 1;
-  if ($newStatus > $max) $newStatus = 0;
-
+  $newStatus = statusCycle("IsAdmin", $current);
   // Update User IsAdmin
   include_once "../app/models/userClass.php";
   $user = new User();
@@ -69,7 +61,7 @@ if (isset($_GET["updStatus"])) {  // Check if Status was clicked
         <th>Name</th>
         <th>Last Edit</th>
         <th>Last Login</th>
-        <th>Admin User</th>
+        <th>Admin</th>
         <th>Status</th>
       </thead>
       <tbody>

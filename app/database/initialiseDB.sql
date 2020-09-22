@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS orders (
   `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnPaid, 1=Paid, 2=Shipped, 3=Returned, 4=Refunded, 5=Cancelled",
+  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnPaid, 1=Paid, 2=Shipped",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`InvoiceID`) REFERENCES paypal_orders (`PpInvoiceID`)
 );
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   `ShippedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `OrderItemStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnSent, 1=Sent, 2=Returned",
+  `IsShipped` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`OrderID`) REFERENCES orders (`OrderID`),
   FOREIGN KEY (`ProductID`) REFERENCES products (`ProductID`)

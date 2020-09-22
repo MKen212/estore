@@ -6,6 +6,6 @@
   <td><?= $record["Price"]; ?></td>
   <td><?= $record["QtyOrdered"]; ?></td>
   <td><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ShippedTimestamp"])) . " by " . $record["ShippedUserID"]; ?></td>
-  <td><?= statusOutput("OrderItemStatus", $record["OrderItemStatus"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["OrderItemStatus"] . "&updItemStatus")) ?></td>
-  <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+  <td><?= statusOutput("IsShipped", $record["IsShipped"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["IsShipped"] . "&updItemIsShipped")) ?></td>
+  <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["Status"] . "&updItemStatus")) ?></td>
 </tr><!--/order_item_ADMIN-->
