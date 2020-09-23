@@ -1,27 +1,27 @@
-<?php  // Admin Dashboard - Orders List/Edit
+<?php  // Admin Dashboard - Returns List/Edit
 
 ?>
 
-<!-- Main Section - Orders List -->
+<!-- Main Section - Returns List -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Orders</h2>
+  <h2>Returns</h2>
 </div>
 
 <div class="row">
-  <!-- Orders Table Search -->
+  <!-- Returns Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schOrders">
+    <form action="" method="POST" name="schReturns">
       <!-- Search -->
       <div class="input-group">
-        <input class="form-control" type="text" name="schOrder" placeholder="Search Invoice ID" autocomplete="off" />
+        <input class="form-control" type="text" name="schReturn" placeholder="Search Invoice ID" autocomplete="off" />
         <div class="input-group-append">
-          <button class="btn btn-secondary" type="submit" name="orderSearch"><span data-feather="search"></span></button>
+          <button class="btn btn-secondary" type="submit" name="returnSearch"><span data-feather="search"></span></button>
         </div>
       </div>
     </form>
   </div>
   <div class="col-2">
-    <!-- New Order Button ** NOT REQUIRED ** -->
+    <!-- New Return Button ** NOT REQUIRED ** -->
   </div>
   <div class="col-6">
     <!-- System Messages -->
@@ -29,12 +29,12 @@
   </div>
 </div>
 
-<!-- Orders Table List -->
+<!-- Returns Table List -->
 <div class="row">
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <!-- Orders Table Header -->
+        <!-- Returns Table Header -->
         <th>Invoice ID</th>
         <th>Items</th>
         <th>Products</th>
@@ -49,17 +49,17 @@
       </thead>
       <tbody>
         <?php
-        if (isset($_POST["orderSearch"])) {
-          $invoiceID = fixSearch($_POST["schOrder"]);
+        if (isset($_POST["returnSearch"])) {
+          $invoiceID = fixSearch($_POST["schReturn"]);
           $_POST=[];
         } else {
           $invoiceID = null;
         }
-        include_once "../app/models/orderClass.php";
-        $order = new Order();
-        foreach(new RecursiveArrayIterator($order->getList($invoiceID)) as $record) {
-          include "../app/views/admin/orderListItem.php";
-        }
+        //include_once "../app/models/orderClass.php";
+        //$order = new Order();
+        //foreach(new RecursiveArrayIterator($order->getList($invoiceID)) as $record) {
+        //  include "../app/views/admin/orderListItem.php";
+        //}
         ?>      
       </tbody>
     </table>

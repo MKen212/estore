@@ -34,12 +34,12 @@ class Product {
 
   /**
    * count function - Get COUNT of product records
-   * @param int $status   Product Status (0=Inactive/1=Active/9=All)
+   * @param int $status   Product Status (Optional)
    * @return int $result  Returns count of defined product records or False 
    */
-  public function count($status) {
+  public function count($status = null) {
     try {
-      if ($status == 9) {
+      if ($status == null) {  // Count ALL records
         $sql = "SELECT COUNT(*) FROM products";  
       } else {
         $sql = "SELECT COUNT(*) FROM products WHERE `Status` = '$status'";
@@ -89,15 +89,15 @@ class Product {
   }
 
   /**
-   * getPage function - Retrieve Page of product records
-   * @param bool $status    Product Status (0=Inactive/1=Active/9=Both)
+   * getPage function - Retrieve Page of product records, optionally per status
    * @param int $limit      Max number of records to return
    * @param int $offset     Offset of first record
+   * @param int $status     Product Status (Optional)
    * @return array $result  Returns defined product records or False 
    */
-  public function getPage($status, $limit, $offset) {
+  public function getPage($limit, $offset, $status = null) {
     try {
-      if ($status == 9) {
+      if ($status == null) {
         $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products LIMIT $limit OFFSET $offset";  
       } else {
         $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
@@ -112,7 +112,7 @@ class Product {
   }
 
   /**
-   * getList function - Get list of product records using prod_uncoded_view
+   * getList function - Get full list of product records using prod_uncoded_view
    * @param string $name    Product Name (Optional)
    * @return array $result  Details of all/selected products (Name order) or False
    */

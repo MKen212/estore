@@ -30,7 +30,7 @@
             <?php
             include_once "../app/models/orderClass.php";
             $order = new Order();
-            foreach(new RecursiveArrayIterator($order->getListByUser($_SESSION["userID"])) as $record) {
+            foreach(new RecursiveArrayIterator($order->getListByUser($_SESSION["userID"], 1)) as $record) {
               include "../app/views/shop/orderListItem.php";
             }
             ?>      

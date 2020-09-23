@@ -3,7 +3,7 @@
 // Update toSend count & badge
 include_once "../app/models/orderClass.php";
 $order = new Order();
-$toSendCount = $order->count(DEFAULTS["orderStatusToSend"]);
+$toSendCount = $order->countOrdStat(DEFAULTS["orderStatusToSend"]);
 if ($toSendCount > 0) {
   $toSendBadge = " <span class='badge badge-primary'>To Send: $toSendCount</span>";
 } else {

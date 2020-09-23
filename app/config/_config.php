@@ -78,6 +78,10 @@ $statusCodes = [
       "text" => "Shipped",
       "badge" => "success",
     ],
+    3 => [
+      "text" => "Cancelled",
+      "badge" => "secondary",
+    ],
   ],
   "IsShipped" => [  // order_items Table / IsShipped Field
     0 => [

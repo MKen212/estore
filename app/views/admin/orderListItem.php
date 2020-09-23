@@ -7,7 +7,7 @@
   <td><?= $record["Total"]; ?></td>
   <td><?= $record["PaymentStatus"]; ?></td>
   <td><?= $record["PayerName"]; ?></td>
-  <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
+  <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
   <td><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
   <td><?= statusOutput("Status", $record["Status"]); ?></td>
 </tr><!--/order_list_item-->

@@ -16,11 +16,11 @@ Class Order {
   }
 
   /**
-   * count function - Get COUNT of order records by OrderStatus
+   * countOrdStat function - Get COUNT of order records by OrderStatus
    * @param int $orderStatus  Order OrderStatus
    * @return int $result      Returns count of defined order records or False 
    */
-  public function count($orderStatus) {
+  public function countOrdStat($orderStatus) {
     try {
       $sql = "SELECT COUNT(*) FROM orders WHERE `OrderStatus` = '$orderStatus'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
@@ -75,9 +75,9 @@ Class Order {
   public function getList($invoiceID = null) {
     try {
       if ($invoiceID == null) {
-        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`,`PaymentStatus`, `PayerName`, `AddedTimestamp`, `OrderStatus`, `Status` FROM ord_paypal_view ORDER BY `InvoiceID` DESC";
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`, `PaymentStatus`, `PayerName`, `AddedTimestamp`, `OwnerUserID`, `OrderStatus`, `Status` FROM ord_paypal_view ORDER BY `InvoiceID` DESC";
       } else {
-        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`,`PaymentStatus`, `PayerName`, `AddedTimestamp`, `OrderStatus`, `Status` FROM ord_paypal_view WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC";
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`, `PaymentStatus`, `PayerName`, `AddedTimestamp`, `OwnerUserID`, `OrderStatus`, `Status` FROM ord_paypal_view WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -89,13 +89,18 @@ Class Order {
   }
 
   /**
-   * getListByUser function - Get list of orders for a User using ord_paypal_view
+   * getListByUser function - Get list of orders for a User (and optionally by status) using ord_paypal_view
    * @param int $userID     User ID of Orders' OwnerUserID
+   * @param int $status     Order Status (Optional)
    * @return array $result  Details of orders for User (Descending Order) or False
    */
-  public function getListByUser($userID) {
+  public function getListByUser($userID, $status = null) {
     try {
-      $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE OwnerUserID = '$userID' ORDER BY `InvoiceID` DESC";
+      if ($status == null) {
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE `OwnerUserID` = '$userID' ORDER BY `InvoiceID` DESC";
+      } else {
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`,`PaymentStatus`, `OrderStatus` FROM ord_paypal_view WHERE (`OwnerUserID` = '$userID' AND `Status` = '$status') ORDER BY `InvoiceID` DESC";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

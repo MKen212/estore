@@ -99,7 +99,7 @@ class PayPal {
   /**
    * addOrder function - Add the PayPal order to the database
    * @param object $response  Response Object from PayPal API
-   * @return bool $result     True if loaded or False
+   * @return int $result      Number of records added or False
    */
   public function addOrder($response) {
     try {
@@ -151,7 +151,7 @@ class PayPal {
   /**
    * updateCapturedOrder function - Update the Captured PayPal order in the database
    * @param object $response  Response Object from PayPal API
-   * @return bool $result     True if updated or False
+   * @return int $result      Number of records updated or False
    */
   public function updateCapturedOrder($response) {
     try{

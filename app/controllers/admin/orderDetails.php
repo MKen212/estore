@@ -21,21 +21,11 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
     $order = new Order();
     $updateStatus = $order->updateOrderStatus($orderID, $newStatus);
     // Fix Sidebar Orders Badge
-
-    // TO DO
-
-
-    $toSendCount = $order->count(DEFAULTS["orderStatusToSend"]);
-    if ($toSendCount > 0) {
-      $toSendBadge = " <span class='badge badge-primary'>To Send: $toSendCount</span>";
-    } else {
-      $toSendBadge = "";
-    }
+    $toSendCount = $order->countOrdStat(DEFAULTS["orderStatusToSend"]);
+    $toSendBadge = ($toSendCount > 0) ? " <span class='badge badge-primary'>To Send: $toSendCount</span>" : "";
     ?><script>
-    document.getElementById("toSendBadge").innerHTML = <?= $toSendBadge ?>;
+      document.getElementById("toSendBadge").innerHTML = "<?= $toSendBadge ?>";
     </script><?php
-
-    
     } elseif (isset($_GET["updItemStatus"])) {  // Item Status Link was clicked
     $orderItemID = $_GET["itemID"];
     $current = $_GET["cur"];
