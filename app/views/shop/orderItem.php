@@ -15,7 +15,10 @@
   <td class="cart_total">
     <p class="cart_total_price"><?= symValue(($record["QtyOrdered"] * $record["Price"])); ?></p>
   </td>
-  <td>
-    <p><?= statusOutput("OrderItemStatus", $record["OrderItemStatus"]); ?></p>
+  <td class="cart_shipped">
+    <p><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></p>
+  </td>
+  <td class="cart_status">
+    <p><?= statusOutput("IsShipped", $record["IsShipped"]); ?></p>
   </td>
 </tr><!--/order_item_SHOP-->

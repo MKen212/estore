@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS orders (
   `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnPaid, 1=Paid, 2=Shipped",
+  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnPaid, 1=Paid, 2=Shipped, 3=Cancelled",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`InvoiceID`) REFERENCES paypal_orders (`PpInvoiceID`)
 );
@@ -179,3 +179,22 @@ CREATE TABLE IF NOT EXISTS order_items (
 CREATE VIEW IF NOT EXISTS ord_paypal_view AS
   SELECT * FROM orders
   LEFT JOIN paypal_orders ON `orders`.`InvoiceID` = `paypal_orders`.`PpInvoiceID`;
+
+-- Create orders combined with order_items view
+CREATE VIEW IF NOT EXISTS ord_items_view AS SELECT
+  `order_items`.`OrderItemID` AS `OrderItemID`,
+  `order_items`.`OrderID` AS `OrderID`,
+  `orders`.`InvoiceID` AS `InvoiceID`,
+  `orders`.`OwnerUserID` AS `OwnerUserID`,
+  `order_items`.`ProductID` AS `ProductID`,
+  `order_items`.`Name` AS `Name`,
+  `order_items`.`Price` AS `Price`,
+  `order_items`.`WeightGrams` AS `WeightGrams`,
+  `order_items`.`QtyOrdered` AS `QtyOrdered`,
+  `order_items`.`ImgFilename` AS `ImgFilename`,
+  `order_items`.`ShippedTimestamp` AS `ShippedTimestamp`,
+  `order_items`.`IsShipped` AS `IsShipped`,
+  `orders`.`OrderStatus` AS `OrderStatus`,
+  `order_items`.`Status` AS `ItemStatus`
+  FROM order_items
+  LEFT JOIN orders ON `order_items`.`OrderID` = `orders`.`OrderID`;

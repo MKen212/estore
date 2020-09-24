@@ -39,4 +39,4 @@
       </div>
     <?php endif; ?>
   </div>
-</section><!--/order_details-->
+</section><!--/my_orders-->

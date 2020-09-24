@@ -1627,6 +1627,16 @@ h2.title {
   font-size: 18px
 }
 
+.cart_shipped {
+  color:#696763;
+  font-size: 18px;
+  width: 150px
+}
+
+.cart_status {
+  width: 80px
+}
+
 
 #cart_items .cart_info .cart_total_price {
   color: #FE980F;

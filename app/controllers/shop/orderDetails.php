@@ -51,7 +51,8 @@
                     <td class="price">Unit Price</td>
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
-                    <td >Item Status</td>
+                    <td >Date Shipped</td>
+                    <td >Status</td>
                   </tr>
                 </thead>
                 <tbody>

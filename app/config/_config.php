@@ -23,8 +23,7 @@ $defaultValues = [
   "currency" => "CHF",  // Default Currency
   "productsPerPage" => 6,  // Total Number of products displayed per page
   "paginationItems" => 5,  // Max Number of Pagination Items to display
-  "orderStatusToSend" => 1,  // Orders OrderStatus for orders to be sent
-  "orderStatusToRefund" => 3,  // Orders OrderStatus for orders to be refunded
+  "returnsAllowance" => 30,  // Number of Days after shipping user allowed to return items
 ];
 
 define("DEFAULTS", $defaultValues);
