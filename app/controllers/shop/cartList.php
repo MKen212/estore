@@ -23,12 +23,7 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
               $cart0 = $values;
               continue;
             }
-            if ($values["imgFilename"] == null || $values["imgFilename"] == "") {
-              $fullPath = DEFAULTS["noImgUploaded"];
-            } else {
-              $fullPath = DEFAULTS["productsImgPath"] . $values["productID"] . "/" . $values["imgFilename"];
-            }
-
+            $values["fullPath"] = getFilePath($values["productID"], $values["imgFilename"]);
             include "../app/views/shop/cartItem.php";
           }
         

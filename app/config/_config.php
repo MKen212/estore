@@ -70,7 +70,7 @@ $statusCodes = [
       "badge" => "danger",
     ],
     1 => [
-      "text" => "Paid",
+      "text" => "Paid",  // NOTE: Used in sideBarBadges/orderDetails to show Orders To Send
       "badge" => "primary",
     ],
     2 => [
@@ -90,6 +90,28 @@ $statusCodes = [
     1 => [
       "text" => "Sent",
       "badge" => "success",
+    ],
+  ],
+  "ReturnReason" => [  // return_items Table / ReturnReason Field
+    0 => [
+      "text" => "No Longer Needed",
+      "badge" => "secondary",
+    ],
+    1 => [
+      "text" => "Defective / Damaged",
+      "badge" => "danger",
+    ],
+    2 => [
+      "text" => "Wrong Item Sent",
+      "badge" => "danger",
+    ],
+    3 => [
+      "text" => "Incorrect Size",
+      "badge" => "warning",
+    ],
+    4 => [
+      "text" => "Incorrect Description",
+      "badge" => "warning",
     ],
   ],
 ];

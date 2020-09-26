@@ -21,7 +21,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
     $order = new Order();
     $updateStatus = $order->updateOrderStatus($orderID, $newStatus);
     // Fix Sidebar Orders Badge
-    $toSendCount = $order->countOrdStat(DEFAULTS["orderStatusToSend"]);
+    $toSendCount = $order->countOrdStat(1);  // NOTE: HardCoded based on "Paid" status in Config/$statusCodes/OrderStatus
     $toSendBadge = ($toSendCount > 0) ? " <span class='badge badge-primary'>To Send: $toSendCount</span>" : "";
     ?><script>
       document.getElementById("toSendBadge").innerHTML = "<?= $toSendBadge ?>";
@@ -98,11 +98,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
             <?php  // Loop through Order Items and output a row per item
             $orderID = $orderDetails["OrderID"];
             foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
-              if (empty($record["ImgFilename"])) {
-                $fullPath = DEFAULTS["noImgUploaded"];
-              } else {
-                $fullPath = DEFAULTS["productsImgPath"] . $record["ProductID"] . "/" . $record["ImgFilename"];
-              }
+              $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
               include "../app/views/admin/orderItem.php";
             }
             ?>

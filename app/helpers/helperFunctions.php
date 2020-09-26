@@ -37,6 +37,22 @@ function fixSearch($searchString) {
 }
 
 /**
+ * getFilePath function - Used to return full path for image or default No Image
+ * @param int $productID       Product ID for image
+ * @param string $imgFilename  Product Image Filename
+ * @return string $filePath    Full filepath to specified image
+ * 
+ */
+function getFilePath($productID, $imgFilename) {
+  if (empty($imgFilename)) {
+    $filePath = DEFAULTS["noImgUploaded"];
+  } else {
+    $filePath = DEFAULTS["productsImgPath"] . $productID . "/" . $imgFilename;
+  }
+  return $filePath;
+}
+
+/**
  * pagination function - Used to display page links
  * @param int $subPage   Current Sub Page being viewed
  * @param int $lastPage  Last Page for all records

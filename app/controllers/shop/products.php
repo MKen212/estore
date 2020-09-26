@@ -18,12 +18,8 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
   <h2 class="title text-center">Featured Items</h2>
 
   <?php  // Loop through all ACTIVE Products and output a page of the values
-  foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1)) as $values) {
-    if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
-      $fullPath = DEFAULTS["noImgUploaded"];
-    } else {
-      $fullPath = DEFAULTS["productsImgPath"] . $values["ProductID"] . "/" . $values["ImgFilename"];
-    }
+  foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1)) as $record) {
+    $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
     include "../app/views/shop/productItem.php";
   }
   ?>

@@ -1,7 +1,7 @@
 <tr><!--order_item_ADMIN-->
   <td><?= $record["ItemID"]; ?></td>
   <td><?= $record["ProductID"]; ?></td>
-  <td><img width="90" height="83" src="<?= $fullPath; ?>" alt="<?= $record["ImgFilename"]; ?>" /></td>
+  <td><img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" /></td>
   <td><?= $record["Name"]; ?></td>
   <td><?= $record["Price"]; ?></td>
   <td><?= $record["QtyOrdered"]; ?></td>

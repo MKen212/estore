@@ -105,12 +105,12 @@
                   <li><a href="login.html">Login</a></li> 
                 </ul>
               </li> 
-              <li class="dropdown"><a <?= $_GET["p"] == "login" || $_GET["p"] == "myAccount"|| $_GET["p"] == "myOrders" | $_GET["p"] == "returnsAvailable" ? 'class="active"' : null;?>href="#">Account<i class="fa fa-angle-down"></i></a>
+              <li class="dropdown"><a <?= $_GET["p"] == "login" || $_GET["p"] == "myAccount"|| $_GET["p"] == "myOrders" | $_GET["p"] == "returns" ? 'class="active"' : null;?>href="#">Account<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <?php if (isset($_SESSION["userLogin"])) : ?>
                     <li><a <?= $_GET["p"] == "myAccount" ? 'class="active"' : null;?>href="index.php?p=myAccount">My Account</a></li>
                     <li><a <?= $_GET["p"] == "myOrders" ? 'class="active"' : null;?>href="index.php?p=myOrders">My Orders</a></li>
-                    <li><a <?= $_GET["p"] == "returnsAvailable" ? 'class="active"' : null;?>href="index.php?p=returnsAvailable">Returns Available</a></li>
+                    <li><a <?= $_GET["p"] == "returns" ? 'class="active"' : null;?>href="index.php?p=returns">Returns</a></li>
                     <li><a href="index.php?p=logout">Logout</a></li>
                   <?php else : ?>
                     <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null;?>href="index.php?p=login">Login</a></li>

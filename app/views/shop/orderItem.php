@@ -1,6 +1,6 @@
 <tr><!--order_item_SHOP-->
   <td class="cart_product">
-    <img width="100" height="93" src="<?= $fullPath; ?>" alt="<?= $record["ImgFilename"]; ?>" />
+    <img width="90" height="83" src="<?= $record["FullPath"]; ?>" alt="<?= $record["ImgFilename"]; ?>" />
   </td>
   <td class="cart_description">
     <h4><?= $record["Name"]; ?></h4>

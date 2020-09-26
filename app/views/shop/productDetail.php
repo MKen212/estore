@@ -1,7 +1,7 @@
 <div class="product-details"><!--Product Details-->
   <div class="col-sm-5">
     <div class="view-product"> <!-- Main Image -->
-      <img width="270" height="250" src="<?= $fullPath; ?>" alt="<?= $values["ImgFilename"]; ?>" />
+      <img width="270" height="250" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" />
     </div>
 
     <!-- TODO  Decide if including carousel of product images -->
@@ -31,31 +31,31 @@
 
   <div class="col-sm-7">
     <div class="product-information"><!--/product-information-->
-      <?php if ($values["Flag"] == 1) : ?>
+      <?php if ($record["Flag"] == 1) : ?>
         <img src="images/shop/new.png" class="new" alt="" />
-      <?php elseif ($values["Flag"] == 2) : ?>
+      <?php elseif ($record["Flag"] == 2) : ?>
         <img src="images/shop/sale.png" class="sale" alt="" />
       <?php endif; ?>
-      <h2><?= $values["Name"]; ?></h2>
-      <p><?= $values["Description"]; ?></p>
+      <h2><?= $record["Name"]; ?></h2>
+      <p><?= $record["Description"]; ?></p>
       <!-- Removed Ratings as hard-coded image
       <img src="images/product-details/rating.png" alt="" />
       -->
       
       <form action="" method="POST" name="prodATCForm"><!-- Add To Cart Form -->
         <span>
-          <span><?= symValue($values["Price"]); ?></span>
+          <span><?= symValue($record["Price"]); ?></span>
           <label>Quantity:</label>
-          <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $values["QtyAvail"]; ?>" />
-          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $values["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
+          <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $record["QtyAvail"]; ?>" />
+          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $record["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
         </span>
       </form>
 
       <p><b>Product ID: </b><?= $selectedID; ?></p>
-      <p><b>Availability: </b><?= $values["QtyAvail"] > 0 ? $values["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
-      <p><b>Category: </b><?= $values["Category"]; ?></p>
-      <p><b>Brand: </b><?= $values["Brand"]; ?></p>
-      <p><b>Weight: </b><?= $values["WeightGrams"]; ?> grams</p>
+      <p><b>Availability: </b><?= $record["QtyAvail"] > 0 ? $record["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
+      <p><b>Category: </b><?= $record["Category"]; ?></p>
+      <p><b>Brand: </b><?= $record["Brand"]; ?></p>
+      <p><b>Weight: </b><?= $record["WeightGrams"]; ?> grams</p>
       
     </div><!--/product-information-->
   </div>

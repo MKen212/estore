@@ -81,11 +81,11 @@
           <input class="custom-file-input" type="file" name="imgFilename" id="imgFilename" />
         </div>
       </div>
-      <?php if (!empty($fullPath)) : ?>
+      <?php if (!empty($productData["FullPath"])) : ?>
         <!-- Current Image (if Editing) -->
         <div class="form-group row">
           <label class="col-form-label labFixed" for="image">Current Image:</label>
-          <img width="270" height="250" id="image" src="<?= $fullPath; ?>" alt="<?= $productData["ImgFilename"]; ?>" />
+          <img width="270" height="250" id="image" src="<?= $productData["FullPath"]; ?>" alt="<?= $productData["ImgFilename"]; ?>" />
         </div>
       <?php endif ; ?>
       <div class="form-group row mt-4">

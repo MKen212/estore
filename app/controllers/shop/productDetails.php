@@ -3,14 +3,10 @@ include_once "../app/models/productClass.php";
 $product = new Product();
 
 isset($_GET["id"]) ? $selectedID = $_GET["id"] : $selectedID = 1;
-$values = $product->getRecordView($selectedID);  // Get Product Details from View
+$record = $product->getRecordView($selectedID);  // Get Product Details from View
 
-if ($values["ImgFilename"] == null || $values["ImgFilename"] == "") {
-  $fullPath = DEFAULTS["noImgUploaded"];
-} else {
-  $fullPath = DEFAULTS["productsImgPath"] . $selectedID . "/" . $values["ImgFilename"];
-}
-$quantity = $values["QtyAvail"] > 0 ? 1 : 0;
+$record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
+$quantity = $record["QtyAvail"] > 0 ? 1 : 0;
 
 include "../app/views/shop/productDetail.php";
 

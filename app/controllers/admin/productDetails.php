@@ -23,11 +23,7 @@ if ($productData == false) {  // ProductID not found
     "subName" => "updateProduct",
     "subText" => "Update Product",
   ];
-  if (empty($productData["ImgFilename"])) {
-    $fullPath = DEFAULTS["noImgUploaded"];
-  } else {
-    $fullPath = DEFAULTS["productsImgPath"] . $id . "/" . $productData["ImgFilename"];
-  }  
+  $productData["FullPath"] = getFilePath($productData["ProductID"], $productData["ImgFilename"]);
   include "../app/views/admin/productForm.php";
 
   if (isset($_POST["updateProduct"])) {  // Update Product Record

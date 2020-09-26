@@ -1,6 +1,6 @@
 <tr><!--Cart Item-->
   <td class="cart_product">
-    <img width="100" height="93" src="<?= $fullPath; ?>" alt="<?= $values["imgFilename"]; ?>" />
+    <img width="100" height="93" src="<?= $values["fullPath"]; ?>" alt="<?= $values["imgFilename"]; ?>" />
   </td>
   <td class="cart_description">
     <h4><?= $values["name"]; ?></h4>

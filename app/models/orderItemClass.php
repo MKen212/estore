@@ -38,7 +38,7 @@ Class OrderItem {
    */
   public function getItemsByOrder($orderID) {
     try {
-      $sql= "SELECT * FROM order_items WHERE `OrderID` = '$orderID'";
+      $sql= "SELECT * FROM order_items WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -56,9 +56,9 @@ Class OrderItem {
   public function getReturnsAvailByUser($userID, $itemStatus = null) {
     try {
       if ($itemStatus == null) {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < " . DEFAULTS["returnsAllowance"] . ") AND (`OwnerUserID` = '$userID'))";
+        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < " . DEFAULTS["returnsAllowance"] . ") AND (`OwnerUserID` = '$userID')) ORDER BY `OrderItemID`";
       } else {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < " . DEFAULTS["returnsAllowance"] . ") AND (`OwnerUserID` = '$userID') AND (`ItemStatus` = '$itemStatus'))";
+        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < " . DEFAULTS["returnsAllowance"] . ") AND (`OwnerUserID` = '$userID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();

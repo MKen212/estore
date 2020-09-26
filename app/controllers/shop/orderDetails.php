@@ -58,11 +58,7 @@
                 <tbody>
                   <?php  // Loop through Order Items and output a row per item
                   foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
-                    if (empty($record["ImgFilename"])) {
-                      $fullPath = DEFAULTS["noImgUploaded"];
-                    } else {
-                      $fullPath = DEFAULTS["productsImgPath"] . $record["ProductID"] . "/" . $record["ImgFilename"];
-                    }
+                    $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
                     include "../app/views/shop/orderItem.php";
                   }
 
