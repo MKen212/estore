@@ -129,6 +129,7 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
     "price" => $price,
     "weightGrams" => $weightGrams,
     "qtyOrdered" => $qtyOrdered,
+    "qtyAvailForRtn" => $qtyOrdered,
     "imgFilename" => $ImgFilename,
     "timestamp" => date("Y-m-d H:i:s"),
   ];

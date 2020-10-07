@@ -12,7 +12,7 @@
     <input type="checkbox" name="returns[<?= $itemCount ?>][id]" value="<?= $record["OrderItemID"]; ?>" />
   </td>
   <td>
-    <input type="number" name="returns[<?= $itemCount ?>][qtyReturned]" value="0" min="0" max="<?= $record["QtyOrdered"]; ?>" />
+    <input type="number" name="returns[<?= $itemCount ?>][qtyReturned]" value="<?= $record["QtyAvailForRtn"]; ?>" min="1" max="<?= $record["QtyAvailForRtn"]; ?>" />
   </td>
   <td>
     <select name="returns[<?= $itemCount ?>][reason]">

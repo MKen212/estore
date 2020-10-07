@@ -15,7 +15,7 @@ if (isset($_POST["addProdToCart"])) {
   $qtyordered = cleanInput($_POST["qtyOrdered"], "int");
   $_POST=[];
 
-  addToCart($selectedID, $values["Name"], $values["Price"], $values["WeightGrams"], $qtyordered, $values["ImgFilename"]);
+  addToCart($selectedID, $record["Name"], $record["Price"], $record["WeightGrams"], $qtyordered, $record["ImgFilename"]);
   ?><script>
     document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"];?>;
   </script><?php

@@ -254,7 +254,7 @@ class Product {
    */
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {
-      $sql = "UPDATE products SET `QtyAvail` = ('QtyAvail' + $qtyAvailChg) WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE products SET `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

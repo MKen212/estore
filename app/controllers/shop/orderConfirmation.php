@@ -44,7 +44,7 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
         $prodQtyUpdates[$value["productID"]] += -$value["qtyOrdered"];
       } else {
         $prodQtyUpdates[$value["productID"]] = -$value["qtyOrdered"];
-      }          
+      }
       if ($key == 1) {  // Build Field List only on 1st Item
         // First Field is OrderID
         $ordItmFields .= "`OrderID`, ";

@@ -107,7 +107,7 @@ CREATE VIEW IF NOT EXISTS prod_uncoded_view AS SELECT
   LEFT JOIN prod_brands ON `products`.`ProdBrandID` = `prod_brands`.`ProdBrandID`;
 
 -- Create invoice_ID Sequence
-CREATE SEQUENCE `invoice_ID` start with 16980 maxvalue 99999999999 increment by 1;
+CREATE SEQUENCE `invoice_ID` start with 17380 maxvalue 99999999999 increment by 1;
 
 -- Create PayPal Orders table
 CREATE TABLE IF NOT EXISTS paypal_orders (
@@ -163,6 +163,7 @@ CREATE TABLE IF NOT EXISTS order_items (
   `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
   `WeightGrams` INT(11) NOT NULL DEFAULT 0,
   `QtyOrdered` INT(11) NOT NULL DEFAULT 0,
+  `QtyAvailForRtn` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `AddedToCartTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `ShippedTimestamp` TIMESTAMP DEFAULT 0,
@@ -191,6 +192,7 @@ CREATE VIEW IF NOT EXISTS ord_items_view AS SELECT
   `order_items`.`Price` AS `Price`,
   `order_items`.`WeightGrams` AS `WeightGrams`,
   `order_items`.`QtyOrdered` AS `QtyOrdered`,
+  `order_items`.`QtyAvailForRtn` AS `QtyAvailForRtn`,
   `order_items`.`ImgFilename` AS `ImgFilename`,
   `order_items`.`ShippedTimestamp` AS `ShippedTimestamp`,
   `order_items`.`IsShipped` AS `IsShipped`,
@@ -198,3 +200,41 @@ CREATE VIEW IF NOT EXISTS ord_items_view AS SELECT
   `order_items`.`Status` AS `ItemStatus`
   FROM order_items
   LEFT JOIN orders ON `order_items`.`OrderID` = `orders`.`OrderID`;
+
+-- Create returns table
+CREATE TABLE IF NOT EXISTS returns (
+  `ReturnID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `InvoiceID` INT(11) NOT NULL,
+  `ItemCount` INT(11) DEFAULT 0,
+  `ProductCount` INT(11) DEFAULT 0,
+  `Total` DECIMAL(10, 2) DEFAULT 0.00,
+  `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `ReturnStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Submitted, 1=Returned, 2=Refunded, 3=Cancelled",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  FOREIGN KEY (`InvoiceID`) REFERENCES paypal_orders (`PpInvoiceID`)
+);
+
+-- Create return_items table
+CREATE TABLE IF NOT EXISTS return_items (
+  `ReturnItemID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `ReturnID` INT(11) NOT NULL,
+  `ItemID` INT(11) NOT NULL,
+  `ProductID` INT(11) NOT NULL,
+  `Name` VARCHAR(40) NOT NULL,
+  `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+  `WeightGrams` INT(11) NOT NULL DEFAULT 0,
+  `QtyReturned` INT(11) NOT NULL DEFAULT 0,
+  `ImgFilename` VARCHAR(40) DEFAULT NULL,
+  `ReturnedTimestamp` TIMESTAMP DEFAULT 0,
+  `ReturnedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `IsReceived` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
+  `IsAddedToStock` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  FOREIGN KEY (`ReturnID`) REFERENCES returns (`ReturnID`),
+  FOREIGN KEY (`ProductID`) REFERENCES products (`ProductID`)
+);

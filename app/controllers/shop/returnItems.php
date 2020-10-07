@@ -1,7 +1,7 @@
-<?php  // Shop - Returns
+<?php  // Shop - Return Items
 
 ?>
-<section id="cart_items"><!--returns-->
+<section id="cart_items"><!--return_items-->
   <div class="container">
     <div class="heading">
 		  <h3>Returns</h3>
@@ -12,14 +12,14 @@
       <div class="register-req">
 		    <p>Please <a href="index.php?p=login">Login (or Signup)</a> to proceed.</p>
       </div>
-    <?php else :  // Display Returns Available List ?>
-      <!-- Returns Available List -->
+    <?php else :  // Display Return Items Available List ?>
+      <!-- Return Items Available List -->
       <div class="table-responsive" style="margin-bottom:75px">
         <p>The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days:</p>
-        <form action="" method="POST" name="retAvailForm" autocomplete="off">
+        <form action="index.php?p=returnConfirmation" method="POST" name="retAvailForm" autocomplete="off">
           <table class="table table-striped table-sm">
             <thead>
-              <!-- Returns Available Table Header -->
+              <!-- Return Items Available Table Header -->
               <th>Invoice ID</th>
               <th>Product ID</th>
               <th>Image</th>
@@ -57,18 +57,6 @@
           <?php endif; ?>
         </form>
       </div>
-    <?php endif; 
-    
-    if (isset($_POST["selectReturns"])) {
-     
-      // UP TO HERE - JUST HAVE RETURNS ARRAY IN POST WORKING SO NOW NEED TO PROCESS
-      // Could even add AvailForReturn field in order items that is then reduced as returns are processed
-      
-      echo "<pre>";
-      print_r($_POST);
-      echo "</pre>";
-    }
-    
-    ?>
+    <?php endif; ?>
   </div>
-</section><!--/returns-->
+</section><!--/return_items-->

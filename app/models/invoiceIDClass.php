@@ -15,6 +15,10 @@ Class InvoiceID {
     }
   }
 
+  /**
+   * getInvoiceID function - Get the next value from the invoice_ID sequence
+   * @return int $result  Next InvoiceID or False
+   */
   public function getInvoiceID() {
     try {
       $sql = "SELECT NEXT VALUE FOR `invoice_ID`";
