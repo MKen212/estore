@@ -84,11 +84,11 @@ $statusCodes = [
   ],
   "IsShipped" => [  // order_items Table / IsShipped Field
     0 => [
-      "text" => "UnSent",
+      "text" => "No",
       "badge" => "danger",
     ],
     1 => [
-      "text" => "Sent",
+      "text" => "Yes",
       "badge" => "success",
     ],
   ],
@@ -112,6 +112,26 @@ $statusCodes = [
     4 => [
       "text" => "Incorrect Description",
       "badge" => "warning",
+    ],
+  ],
+  "IsReceived" => [  // return_items Table / IsReceived Field
+    0 => [
+      "text" => "No",
+      "badge" => "danger",
+    ],
+    1 => [
+      "text" => "Yes",
+      "badge" => "success",
+    ],
+  ],
+  "IsAddedToStock" => [  // return_items Table / IsAddedToStock Field
+    0 => [
+      "text" => "No",
+      "badge" => "secondary",
+    ],
+    1 => [
+      "text" => "Yes",
+      "badge" => "success",
     ],
   ],
 ];

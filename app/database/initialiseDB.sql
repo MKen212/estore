@@ -204,6 +204,7 @@ CREATE VIEW IF NOT EXISTS ord_items_view AS SELECT
 -- Create returns table
 CREATE TABLE IF NOT EXISTS returns (
   `ReturnID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `OrderID` INT(11) NOT NULL,
   `InvoiceID` INT(11) NOT NULL,
   `ItemCount` INT(11) DEFAULT 0,
   `ProductCount` INT(11) DEFAULT 0,
@@ -214,6 +215,7 @@ CREATE TABLE IF NOT EXISTS returns (
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `ReturnStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Submitted, 1=Returned, 2=Refunded, 3=Cancelled",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  FOREIGN KEY (`OrderID`) REFERENCES orders (`OrderID`),
   FOREIGN KEY (`InvoiceID`) REFERENCES paypal_orders (`PpInvoiceID`)
 );
 
@@ -221,20 +223,17 @@ CREATE TABLE IF NOT EXISTS returns (
 CREATE TABLE IF NOT EXISTS return_items (
   `ReturnItemID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `ReturnID` INT(11) NOT NULL,
-  `ItemID` INT(11) NOT NULL,
-  `ProductID` INT(11) NOT NULL,
-  `Name` VARCHAR(40) NOT NULL,
+  `OrderItemID` INT(11) NOT NULL,
   `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
-  `WeightGrams` INT(11) NOT NULL DEFAULT 0,
   `QtyReturned` INT(11) NOT NULL DEFAULT 0,
-  `ImgFilename` VARCHAR(40) DEFAULT NULL,
-  `ReturnedTimestamp` TIMESTAMP DEFAULT 0,
-  `ReturnedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `ReturnReason` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Not Needed, 1=Damaged, 2=Wrong Item, 3=Wrong Size, 4=Wrong Desc",
+  `ReceivedTimestamp` TIMESTAMP DEFAULT 0,
+  `ReceivedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `IsReceived` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
   `IsAddedToStock` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
   FOREIGN KEY (`ReturnID`) REFERENCES returns (`ReturnID`),
-  FOREIGN KEY (`ProductID`) REFERENCES products (`ProductID`)
+  FOREIGN KEY (`OrderItemID`) REFERENCES order_items (`OrderItemID`)
 );

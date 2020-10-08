@@ -51,18 +51,18 @@ Class Order {
   }
 
   /**
-   * getOwner function - Returns the OwnerUserID for the specific OrderID
-   * @param int $orderID  Order ID for specific order
-   * @return int $result  OwnerUserID for OrderID or False
+   * getRefData function - Returns the OwnerUserID & InvoiceID for the specific OrderID
+   * @param int $orderID    Order ID for specific order
+   * @return array $result  OwnerUserID & InvoiceID for OrderID or False
    */
-  public function getOwner($orderID) {
+  public function getRefData($orderID) {
     try {
-      $sql = "SELECT `OwnerUserID` FROM orders WHERE `OrderID` = '$orderID'";
+      $sql = "SELECT `OwnerUserID`, `InvoiceID` FROM orders WHERE `OrderID` = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $result = $stmt->fetchColumn();
+      $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getOwner Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRefData Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

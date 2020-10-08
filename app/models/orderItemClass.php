@@ -48,23 +48,23 @@ Class OrderItem {
     }
   }
 
-  /** getReturnsAvailByUser function - Get list of order items available for return for a User (and optionally by status) using ord_items_view
-   * @param int $userID      User ID of Orders' OwnerUserID
+  /** getReturnsAvailByOrder function - Get list of order items available for return for an order (and optionally by status) using ord_items_view
+   * @param int $orderID     Order ID of items required
    * @param int $itemStatus  Order Item Status (Optional)
    * @return array $result   Order Items available for return for specified user or False
    */
-  public function getReturnsAvailByUser($userID, $itemStatus = null) {
+  public function getReturnsAvailByOrder($orderID, $itemStatus = null) {
     try {
       if ($itemStatus == null) {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OwnerUserID` = '$userID')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
       } else {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) < '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OwnerUserID` = '$userID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getReturnsAvailByUser Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getReturnsAvailByOrder Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

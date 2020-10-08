@@ -21,4 +21,7 @@
   <td class="cart_status">
     <p><?= statusOutput("IsShipped", $record["IsShipped"]); ?></p>
   </td>
+  <td>
+    <p><?= $record["ReturnLink"]; ?></p>
+  </td>
 </tr><!--/order_item_SHOP-->

@@ -11,7 +11,9 @@
     msgShow();  // Show any system messages coming from orderConfirmation
 
     echo "<pre>";
+    print_r($return);
     print_r($returnItems);
+    // print_r($_POST);
     echo "Count: " . count($returnItems) . "<br/>";
     echo "</pre>";
     ?>

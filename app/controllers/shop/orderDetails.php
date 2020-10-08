@@ -20,10 +20,10 @@
       include_once "../app/models/orderClass.php";
       $order = new Order();
 
-      $ownerID = $order->getOwner($orderID);
-      if ($_SESSION["userID"] != $ownerID) : // Check Order ID is owned by current user ?>
+      $refData = $order->getRefData($orderID);
+      if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order ID is owned by current user ?>
         <div class="register-req">
-		      <p>Sorry - You do not have access to Order '<?= $orderID ?>'.</p>
+		      <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div>
       <?php else :
         // Get Order Details
@@ -51,14 +51,22 @@
                     <td class="price">Unit Price</td>
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
-                    <td >Date Shipped</td>
-                    <td >Status</td>
+                    <td>Date Shipped</td>
+                    <td>Status</td>
+                    <td>Return?</td>
                   </tr>
                 </thead>
                 <tbody>
                   <?php  // Loop through Order Items and output a row per item
                   foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
                     $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
+                    // Check if item return allowed
+                    $shipInterval = date_diff(date_create("today"), date_create(substr($record["ShippedTimestamp"], 0, 10)));
+                    if ($shipInterval->days <= DEFAULTS["returnsAllowance"] && $record["QtyAvailForRtn"] > 0) {
+                      $record["ReturnLink"] = "<a class='badge' href='index.php?p=returnItems&id={$orderID}'>Available</a>";
+                    } else {
+                      $record["ReturnLink"] = "<i>Unavailable</i>";
+                    }
                     include "../app/views/shop/orderItem.php";
                   }
 
