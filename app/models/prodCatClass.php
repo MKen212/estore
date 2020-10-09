@@ -21,7 +21,7 @@ Class ProdCat {
    */
   public function getCategories() {
     try {
-      $sql = "SELECT `ProdCatID`, `Name` FROM prod_categories ORDER BY `Name`";
+      $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` ORDER BY `Name`";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

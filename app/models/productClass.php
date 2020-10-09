@@ -22,7 +22,7 @@ class Product {
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `Name` FROM products WHERE `Name` = '$name'";
+      $sql = "SELECT `Name` FROM `products` WHERE `Name` = '$name'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
       return $count;
@@ -40,9 +40,9 @@ class Product {
   public function count($status = null) {
     try {
       if ($status == null) {  // Count ALL records
-        $sql = "SELECT COUNT(*) FROM products";  
+        $sql = "SELECT COUNT(*) FROM `products`";  
       } else {
-        $sql = "SELECT COUNT(*) FROM products WHERE `Status` = '$status'";
+        $sql = "SELECT COUNT(*) FROM `products` WHERE `Status` = '$status'";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
@@ -76,7 +76,7 @@ class Product {
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
-        $sql = "INSERT INTO products (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', '$editUserID', '$flag', '$status')";
+        $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', '$editUserID', '$flag', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
         $_SESSION["message"] = "Product '$name' added successfully as Product ID '$newID'.";
@@ -98,9 +98,9 @@ class Product {
   public function getPage($limit, $offset, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products LIMIT $limit OFFSET $offset";  
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` LIMIT $limit OFFSET $offset";  
       } else {
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM products WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -119,9 +119,9 @@ class Product {
   public function getList($name = null) {
     try {
       if ($name == null) {
-        $sql = "SELECT * FROM prod_uncoded_view ORDER BY `Name`";
+        $sql = "SELECT * FROM `prod_uncoded_view` ORDER BY `Name`";
       } else {
-        $sql = "SELECT * FROM prod_uncoded_view WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
+        $sql = "SELECT * FROM `prod_uncoded_view` WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -139,7 +139,7 @@ class Product {
    */
   public function getRecordView($productID) {
     try {
-      $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Brand`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `Flag` FROM prod_uncoded_view WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `Category`, `Brand`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `Flag` FROM `prod_uncoded_view` WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -156,7 +156,7 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status` FROM products WHERE `ProductID` = '$productID'";
+      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status` FROM `products` WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -196,7 +196,7 @@ class Product {
         }
       }
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE products SET {$sqlName}`Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
+      $sql = "UPDATE `products` SET {$sqlName}`Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
       $result = $this->conn->exec($sql);
       if ($result == 1) {  // Only 1 record should be updated
         $_SESSION["message"] = "Update of Product ID '$productID' was successful.";
@@ -219,7 +219,7 @@ class Product {
   public function updateStatus($productID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE products SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -237,7 +237,7 @@ class Product {
   public function updateFlag($productID, $flag) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE products SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag' WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag' WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -254,7 +254,7 @@ class Product {
    */
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {
-      $sql = "UPDATE products SET `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

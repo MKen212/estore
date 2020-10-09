@@ -21,7 +21,7 @@ Class ProdBrand {
    */
   public function getBrands() {
     try {
-      $sql = "SELECT `ProdBrandID`, `Name` FROM prod_brands ORDER BY `Name`";
+      $sql = "SELECT `ProdBrandID`, `Name` FROM `prod_brands` ORDER BY `Name`";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

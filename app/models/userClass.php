@@ -22,7 +22,7 @@ class User {
    */
   public function exists($email) {
     try {
-      $sql = "SELECT `Email` FROM users WHERE `Email` = '$email'";
+      $sql = "SELECT `Email` FROM `users` WHERE `Email` = '$email'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $count = $stmt->rowCount();
       return $count;
@@ -50,7 +50,7 @@ class User {
         return false;
       } else {  // Insert User Record
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
-        $sql = "INSERT INTO users (`Email`, `Password`, `Name`, `IsAdmin`, `Status`) VALUES
+        $sql = "INSERT INTO `users` (`Email`, `Password`, `Name`, `IsAdmin`, `Status`) VALUES
           ('$email', '$passwordHash', '$name', '$isAdmin', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
@@ -77,7 +77,7 @@ class User {
         $_SESSION["message"] = "Incorrect Username or Password entered!";
         return false;
       } else {  // Confirm Password
-        $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM users WHERE `Email` = '$email'";
+        $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `Email` = '$email'";
         $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
         $result = $stmt->fetch();
         $passwordStatus = password_verify($password, $result["Password"]);
@@ -91,7 +91,7 @@ class User {
             $_SESSION["userName"] = $result["Name"];
             $result = null;
             // Record Login Timestamp
-            $sqlLogin = "UPDATE users SET `LoginTimestamp` = CURRENT_TIMESTAMP() WHERE `UserID` = $userID";
+            $sqlLogin = "UPDATE `users` SET `LoginTimestamp` = CURRENT_TIMESTAMP() WHERE `UserID` = $userID";
             $this->conn->exec($sqlLogin);
             return true;
           } else {  // User is inactive
@@ -128,9 +128,9 @@ class User {
   public function getList($email = null) {
     try {
       if ($email == null) {
-        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM users ORDER BY `Email`";
+        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM `users` ORDER BY `Email`";
       } else {
-        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM users WHERE `Email` LIKE '%$email%' ORDER BY `Email`";
+        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM `users` WHERE `Email` LIKE '%$email%' ORDER BY `Email`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -148,7 +148,7 @@ class User {
    */
   public function getRecord($userID) {
     try {
-      $sql = "SELECT `Email`, `Name`, `IsAdmin`, `Status` FROM users WHERE `UserID` = '$userID'";
+      $sql = "SELECT `Email`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `UserID` = '$userID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -188,7 +188,7 @@ class User {
         $sqlPassword = "`Password` = '$passwordHash', ";
       }
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE users SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
+      $sql = "UPDATE `users` SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
       if ($result == 1) {  // Only 1 record should be updated
         $_SESSION["message"] = msgPrep("success","Update of User ID: '$userID' was successful.");
@@ -215,7 +215,7 @@ class User {
   public function updateStatus($userID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE users SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `UserID` = '$userID'";
+      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -233,7 +233,7 @@ class User {
   public function updateIsAdmin($userID, $isAdmin) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE users SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin' WHERE `UserID` = '$userID'";
+      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

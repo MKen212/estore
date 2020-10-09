@@ -23,7 +23,7 @@ Class OrderItem {
    */
   public function addItems($fields, $values) {
     try {
-      $sql = "INSERT INTO order_items $fields VALUES $values";
+      $sql = "INSERT INTO `order_items` $fields VALUES $values";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -38,7 +38,7 @@ Class OrderItem {
    */
   public function getItemsByOrder($orderID) {
     try {
-      $sql= "SELECT * FROM order_items WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
+      $sql= "SELECT * FROM `order_items` WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -56,9 +56,9 @@ Class OrderItem {
   public function getReturnsAvailByOrder($orderID, $itemStatus = null) {
     try {
       if ($itemStatus == null) {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
       } else {
-        $sql = "SELECT * FROM ord_items_view WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -78,7 +78,7 @@ Class OrderItem {
   public function updateStatus($orderItemID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE order_items SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `OrderItemID` = '$orderItemID'";
+      $sql = "UPDATE `order_items` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `OrderItemID` = '$orderItemID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
@@ -97,9 +97,9 @@ Class OrderItem {
     try {
       $editID = $_SESSION["userID"];
       if ($isShipped == 1) {  // Item Shipped {HARD CODED!}
-        $sql = "UPDATE order_items SET `ShippedTimestamp` = CURRENT_TIMESTAMP(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedTimestamp` = CURRENT_TIMESTAMP(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
       } else {  // Not Shipped
-        $sql = "UPDATE order_items SET `ShippedTimestamp` = '0000-00-00 00:00:00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedTimestamp` = '0000-00-00 00:00:00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
       }
       $result = $this->conn->exec($sql);
       return $result;

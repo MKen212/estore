@@ -21,7 +21,7 @@ Class Country {
    */
   public function getCountries() {
     try {
-      $sql = "SELECT `Code`, `Name` FROM countries ORDER BY `Name`";
+      $sql = "SELECT `Code`, `Name` FROM `countries` ORDER BY `Name`";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -38,7 +38,7 @@ Class Country {
    */
   public function getShippingBand($countryCode) {
     try {
-      $sql = "SELECT `ShippingBand` FROM countries WHERE `Code` = '$countryCode'";
+      $sql = "SELECT `ShippingBand` FROM `countries` WHERE `Code` = '$countryCode'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
