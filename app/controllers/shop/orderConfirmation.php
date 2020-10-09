@@ -10,30 +10,30 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
   $ordFields = "(";
   $ordValues = "(";
   foreach ($_SESSION["cart"][0] as $key => $value) {
-    if ($key == "ppOrderID") {
-      continue;  // ppOrderID not required in orders table
-    } elseif ($key == "ppOrderStatus") {  // Last field in Cart
-      $ordFields .= "`OwnerUserID`, `EditUserID`, `OrderStatus`)";
-      $ordValues .= "'" . $_SESSION["userID"] . "', '" . $_SESSION["userID"] . "', ";
+    if ($key == "ppOrderID") {  // ppOrderID not required in orders table
+      continue;
+    } elseif ($key == "ppOrderStatus") {  // ppOrderStatus needs modifying in DB
+      $ordFields .= "`OrderStatus`, ";
       if ($value == "COMPLETED") {
-        $ordValues .= "'1')";
+        $ordValues .= "'1', ";
       } else {
-        $ordValues .= "'0')";
+        $ordValues .= "'0', ";
       }
-    } else {
+    } else {  // All other cart fields as-is
       $ordFields .= "`" . ucfirst($key) . "`, ";
       $ordValues .= "'" . $value . "', ";
     }
   }
+  $ordFields .= "`OwnerUserID`, `EditUserID`)";
+  $ordValues .= "'" . $_SESSION["userID"] . "', '" . $_SESSION["userID"] . "')";
+  
   // Save Order to Database
   include_once "../app/models/orderClass.php";
   $order = new Order();
   $addOrder = $order->add($ordFields, $ordValues);
 
-  if (!$addOrder) {  // Database Add Order Failed
-    return;  // Stop further processing
-  } else {
-    // Build New Order Items Records
+  if (!empty($addOrder)) {  // Database Add Order Success
+    // Build New Order Items Records & Updates required to Product Quantities
     $ordItmFields = "(";
     $ordItmValues = "(";
     $prodQtyUpdates = [];  // Product Quantity Updates Array
@@ -51,42 +51,35 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
         $ordItmValues .= "'" . $addOrder . "', ";
         // Rest of Fields from cart item array
         foreach ($value as $itmKey => $itmVal) {
-          if ($itmKey == "timestamp") {  // Last field in Cart Item
-            $ordItmFields .= "`AddedToCartTimestamp`, `EditUserID`)";
-            $ordItmValues .= "'" . $itmVal . "', '" . $_SESSION["userID"] . "')";
-          } else {
-            $ordItmFields .= "`" . ucfirst($itmKey) . "`, ";
-            $ordItmValues .= "'" . $itmVal . "', ";
-          }
+          $ordItmFields .= "`" . ucfirst($itmKey) . "`, ";
+          $ordItmValues .= "'" . $itmVal . "', ";
         }
+        $ordItmFields .= "`EditUserID`)";
+        $ordItmValues .= "'" . $_SESSION["userID"] . "')";
       } else {  // Build Values only on remaining items
         // First Field is OrderID
         $ordItmValues .= ", ('" . $addOrder . "', ";
         // Rest of Fields from cart item array
         foreach ($value as $itmKey => $itmVal) {
-          if ($itmKey == "timestamp") {  // Last field in Cart Item
-            $ordItmValues .= "'" . $itmVal . "', '" . $_SESSION["userID"] . "')";
-          } else {
-            $ordItmValues .= "'" . $itmVal . "', ";
-          }
+          $ordItmValues .= "'" . $itmVal . "', ";
         }
+        $ordItmValues .= "'" . $_SESSION["userID"] . "')";
       }
     }
+
     // Save Order Items to Database
     include_once "../app/models/orderItemClass.php";
     $orderItem = new OrderItem();
     $addItems = $orderItem->addItems($ordItmFields, $ordItmValues);
 
-    if (!$addItems) {  // Database Add Items Success
-      return;  // Stop further processing
-    } else{
+    if (!empty($addItems)) {  // Database Add Order Items Success
       // Update Products Quantity Available for each item
       include_once "../app/models/productClass.php";
       $product = new Product();
       foreach($prodQtyUpdates as $productID => $qtyAvailChg) {
         $prodUpdate = $product->updateQtyAvail($productID, $qtyAvailChg);
         if (!$prodUpdate) {  // Database Product Update Failed
-          return;  // Stop further processing
+          return;  // Stop further processing  TO DO Fix Error Handling
         }
       }
       // Clear the Cart & Header now that it is loaded in the database
@@ -96,11 +89,11 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
       </script><?php
       
       $_SESSION["message"] = msgPrep("success", ("THANK YOU, " . $_SESSION["userName"] . "! Your order was processed successfully. The details are as follows:<br />"));
-
-      // Show the order details
-      $_GET["id"] = $addOrder;
-      include "../app/controllers/shop/orderDetails.php";
     }
-  } 
+  }
+
+  // Show the order details
+  $_GET["id"] = $addOrder;
+  include "../app/controllers/shop/orderDetails.php";
 }
 ?>

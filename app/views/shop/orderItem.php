@@ -18,9 +18,6 @@
   <td class="cart_shipped">
     <p><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></p>
   </td>
-  <td class="cart_status">
-    <p><?= statusOutput("IsShipped", $record["IsShipped"]); ?></p>
-  </td>
   <td>
     <p><?= $record["ReturnLink"]; ?></p>
   </td>

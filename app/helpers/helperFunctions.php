@@ -131,7 +131,7 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
     "qtyOrdered" => $qtyOrdered,
     "qtyAvailForRtn" => $qtyOrdered,
     "imgFilename" => $ImgFilename,
-    "timestamp" => date("Y-m-d H:i:s"),
+    "addedToCartTimestamp" => date("Y-m-d H:i:s"),
   ];
   $_SESSION["cart"][$newItemID] = $newItem;
     

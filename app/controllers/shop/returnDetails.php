@@ -10,14 +10,35 @@
     <?php
     msgShow();  // Show any system messages coming from orderConfirmation
 
-    echo "<pre>";
-    print_r($return);
-    print_r($returnItems);
-    // print_r($_POST);
-    echo "Count: " . count($returnItems) . "<br/>";
-    echo "</pre>";
-    ?>
+    if (!isset($_GET["id"])) :  // Check ReturnID Provided ?>
+      <div class="register-req">
+		    <p>No Return ID provided.</p>
+      </div>
+    <?php else :
+      $returnID = $_GET["id"];
+      $_GET = [];
+      include_once "../app/models/returnsClass.php";
+      $returns = new Returns();
 
+      $refData = $returns->getRefData($returnID);
+      if ($_SESSION["userID"] != $refData["OwnerUserID"]) :  // Check Return is owned by current user ?>
+        <div class="register-req">
+		      <p>Sorry - You do not have access to Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
+        </div>
+      <?php else:
+        // Get Return Details
+        $returnDetails = $returns->getDetails($returnID);
+
+
+
+        // UP TO HERE - Show Return Details and ReturnItems
+
+
+      endif;
+      
+
+
+
+    endif; ?>
   </div>
 </section><!--/return_details-->
-    

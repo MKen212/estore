@@ -89,7 +89,7 @@ Class OrderItem {
 
   /**
    * updateIsShipped function - Update IsShipped field of an existing order_item record
-   * @param int $orderItemID  OrderItem ID of order item being updated
+   * @param int $orderItemID  OrderItemID of order item being updated
    * @param int $isShipped    New IsShipped Status
    * @return int $result      Number of records updated (=1) or False
    */
@@ -105,6 +105,23 @@ Class OrderItem {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateIsShipped Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateQtyAvailForRtn function - Update Quantity Available for Return for specific order item record
+   * @param int $orderItemID  OrderItemID of order item being updated
+   * @param int $qtyAvailChg  (+/-)Quantity to change in QtyAvailForRtn field
+   * @return int $result      Number of records updated or False
+   */
+  public function updateQtyAvailForRtn($orderItemID, $qtyAvailChg) {
+    try {
+      $sql = "UPDATE `order_items` SET `QtyAvailForRtn` = (`QtyAvailForRtn` + $qtyAvailChg) WHERE `OrderItemID` = '$orderItemID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateQtyAvailForRtn Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

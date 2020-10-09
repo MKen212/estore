@@ -10,7 +10,7 @@
     <?php
     msgShow();  // Show any system messages coming from orderConfirmation
 
-    if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
+    if (!isset($_GET["id"])) :  // Check OrderID Provided ?>
       <div class="register-req">
 		    <p>No Order ID provided.</p>
       </div>
@@ -21,9 +21,9 @@
       $order = new Order();
 
       $refData = $order->getRefData($orderID);
-      if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order ID is owned by current user ?>
+      if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order is owned by current user ?>
         <div class="register-req">
-		      <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
+		      <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div>
       <?php else :
         // Get Order Details
@@ -52,7 +52,6 @@
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
                     <td>Date Shipped</td>
-                    <td>Status</td>
                     <td>Return?</td>
                   </tr>
                 </thead>

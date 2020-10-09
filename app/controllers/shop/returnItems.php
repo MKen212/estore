@@ -26,7 +26,8 @@
       <?php else : ?>
         <!-- Return Items Available List -->
         <div class="table-responsive" style="margin-bottom:75px">
-          <p>The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID `<?= $refData["InvoiceID"] ?>`</b>:</p>
+          <p >The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID `<?= $refData["InvoiceID"] ?>`</b>:</p>
+          <hr />
           <form action="index.php?p=returnConfirmation" method="POST" name="retAvailForm" autocomplete="off">
             <input type="hidden" name="orderID" value="<?= $orderID ?>" />
             <input type="hidden" name="invoiceID" value="<?= $refData["InvoiceID"] ?>" />
