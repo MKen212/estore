@@ -326,6 +326,20 @@ function statusOutput($type, $status, $link = null) {
 }
 
 /**
+ * statusOutputShop function - Returns the HTML output relevant to the given status code for the Shop frontend (which uses BootStrap 3)
+ * @param string $type           Status Type (from Config/StatusCodes)
+ * @param int $status            Status Code
+ * @param string $link           Optional HREF Link
+ * @return string $statusOutput  Returns the HTML output for the Status Code
+ */
+function statusOutputShop($type, $status, $link = null) {
+  $label = STATUS_CODES[$type][$status]["badge"];
+  $text = STATUS_CODES[$type][$status]["text"];
+  $statusOutput = "<a class='label label-{$label}' href='{$link}'>{$text}</a>";
+  return $statusOutput;
+}
+
+/**
  * statusOptions function - Outputs Status Codes as HTML options
  * @param string $type  Status Type (from Config/StatusCodes)
  * @param int $selCode  Status Code that is marked as 'selected'

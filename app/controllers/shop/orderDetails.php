@@ -36,8 +36,6 @@
         include "../app/views/shop/orderHeader.php";
 
         // Show Order Items
-        include_once "../app/models/orderItemClass.php";
-        $orderItem = new OrderItem();
         ?>
         <div class="row" style="margin-bottom:50px"><!--order_items-->
           <div class="col-sm-12 shopper-info">
@@ -52,19 +50,22 @@
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
                     <td>Date Shipped</td>
-                    <td>Return?</td>
+                    <td>Return</td>
                   </tr>
                 </thead>
                 <tbody>
-                  <?php  // Loop through Order Items and output a row per item
+                  <?php
+                  include_once "../app/models/orderItemClass.php";
+                  $orderItem = new OrderItem();
+                  // Loop through Order Items and output a row per item
                   foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
                     $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
                     // Check if item return allowed
                     $shipInterval = date_diff(date_create("today"), date_create(substr($record["ShippedTimestamp"], 0, 10)));
                     if ($shipInterval->days <= DEFAULTS["returnsAllowance"] && $record["QtyAvailForRtn"] > 0) {
-                      $record["ReturnLink"] = "<a class='badge' href='index.php?p=returnItems&id={$orderID}'>Available</a>";
+                      $record["ReturnAvailable"] = 1;
                     } else {
-                      $record["ReturnLink"] = "<i>Unavailable</i>";
+                      $record["ReturnAvailable"] = 0;
                     }
                     include "../app/views/shop/orderItem.php";
                   }

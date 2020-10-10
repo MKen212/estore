@@ -32,7 +32,7 @@ Class OrderItem {
     }
   }
 
-  /** getItemsByOrder function - Retrieve order items for an orderID
+  /** getItemsByOrder function - Retrieve order items for an OrderID
    * @param int $orderID    Order ID of items required
    * @return array $result  Order Items for specified order or False
    */
@@ -43,7 +43,7 @@ Class OrderItem {
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getItems Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getItemsByOrder Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

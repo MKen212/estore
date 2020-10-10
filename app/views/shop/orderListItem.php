@@ -5,5 +5,5 @@
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
   <td><?= $record["Total"]; ?></td>
   <td><?= $record["PaymentStatus"]; ?></td>
-  <td><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
+  <td><?= statusOutputShop("OrderStatus", $record["OrderStatus"]); ?></td>
 </tr><!--/order_list_item-->

@@ -28,17 +28,49 @@
       <?php else:
         // Get Return Details
         $returnDetails = $returns->getDetails($returnID);
+        $returnDetails["ReturnsRef"] = $returnDetails["InvoiceID"] . "-RTN-" . $returnDetails["ReturnID"];  // Returns Ref Field
 
+        // Show Details in Returns Header
+        include "../app/views/shop/returnsHeader.php";
 
+        // Show Return Items
+        ?>
+        <div class="row" style="margin-bottom:50px"><!--return_items-->
+          <div class="col-sm-12 shopper-info">
+            <h5>Returned Items</h5>
+            <div class="table-responsive cart_info">
+              <table class="table table-condensed" style="margin-bottom:0px">
+                <thead>
+                  <tr class="cart_menu">
+                    <td class="image">Item</td>
+                    <td class="description"></td>
+                    <td class="price">Unit Price</td>
+                    <td class="quantity">Quantity</td>
+                    <td class="total">Item Total</td>
+                    <td>Reason</td>
+                    <td>Date Received</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  include_once "../app/models/returnItemClass.php";
+                  $returnItem = new ReturnItem();
+                  // Loop through Return Items and output a row per item
+                  foreach (new RecursiveArrayIterator($returnItem->getItemsByReturn($returnID)) as $record) {
+                    $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
 
-        // UP TO HERE - Show Return Details and ReturnItems
+                    include "../app/views/shop/returnItem.php";
+                  }
 
-
-      endif;
-      
-
-
-
+                  // Show Return Item Totals
+                  include "../app/views/shop/returnItemTotals.php";
+                  ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div><!--/return_items-->
+      <?php endif;
     endif; ?>
   </div>
 </section><!--/return_details-->

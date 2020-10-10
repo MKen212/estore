@@ -103,8 +103,8 @@ CREATE VIEW IF NOT EXISTS `prod_uncoded_view` AS SELECT
   `products`.`Flag` AS `Flag`,
   `products`.`Status` AS `Status`
   FROM `products`
-  LEFT JOIN `prod_categories` ON `products`.`ProdCatID` = `prod_categories`.`ProdCatID`
-  LEFT JOIN `prod_brands` ON `products`.`ProdBrandID` = `prod_brands`.`ProdBrandID`;
+  LEFT JOIN `prod_categories` ON `prod_categories`.`ProdCatID` = `products`.`ProdCatID`
+  LEFT JOIN `prod_brands` ON `prod_brands`.`ProdBrandID` = `products`.`ProdBrandID`;
 
 -- Create invoice_ID Sequence
 CREATE SEQUENCE `invoice_ID` start with 17380 maxvalue 99999999999 increment by 1;
@@ -179,7 +179,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
 -- Create orders combined with paypal view
 CREATE VIEW IF NOT EXISTS `ord_paypal_view` AS
   SELECT * FROM `orders`
-  LEFT JOIN `paypal_orders` ON `orders`.`InvoiceID` = `paypal_orders`.`PpInvoiceID`;
+  LEFT JOIN `paypal_orders` ON `paypal_orders`.`PpInvoiceID` = `orders`.`InvoiceID`;
 
 -- Create orders combined with order_items view
 CREATE VIEW IF NOT EXISTS `ord_items_view` AS SELECT
@@ -199,7 +199,7 @@ CREATE VIEW IF NOT EXISTS `ord_items_view` AS SELECT
   `orders`.`OrderStatus` AS `OrderStatus`,
   `order_items`.`Status` AS `ItemStatus`
   FROM `order_items`
-  LEFT JOIN `orders` ON `order_items`.`OrderID` = `orders`.`OrderID`;
+  LEFT JOIN `orders` ON `orders`.`OrderID` = `order_items`.`OrderID`;
 
 -- Create returns table
 CREATE TABLE IF NOT EXISTS `returns` (
@@ -237,3 +237,19 @@ CREATE TABLE IF NOT EXISTS `return_items` (
   FOREIGN KEY (`ReturnID`) REFERENCES `returns` (`ReturnID`),
   FOREIGN KEY (`OrderItemID`) REFERENCES `order_items` (`OrderItemID`)
 );
+
+-- Create return_items combined with order_items view
+CREATE VIEW IF NOT EXISTS `ret_ord_items_view` AS SELECT
+  `return_items`.`ReturnItemID` AS `ReturnItemID`,
+  `return_items`.`ReturnID` AS `ReturnID`,
+  `return_items`.`OrderItemID` AS `OrderItemID`,
+  `order_items`.`ProductID` AS `ProductID`,
+  `order_items`.`Name` AS `Name`,
+  `order_items`.`ImgFilename` AS `ImgFilename`,
+  `return_items`.`Price` AS `Price`,
+  `return_items`.`QtyReturned` AS `QtyReturned`,
+  `return_items`.`ReturnReason` AS `ReturnReason`,
+  `return_items`.`ReceivedTimestamp` AS `ReceivedTimestamp`,
+  `return_items`.`Status` AS `Status`
+  FROM `return_items`
+  LEFT JOIN `order_items` ON `order_items`.`OrderItemID` = `return_items`.`OrderItemID`;

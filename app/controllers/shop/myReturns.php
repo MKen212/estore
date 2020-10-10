@@ -31,7 +31,7 @@
             include_once "../app/models/returnsClass.php";
             $returns = new Returns();
             foreach(new RecursiveArrayIterator($returns->getListByUser($_SESSION["userID"], 1)) as $record) {
-              $record["ReturnsRef"] = $record["InvoiceID"] . "-RTN-" . $record["ReturnID"];  // 
+              $record["ReturnsRef"] = $record["InvoiceID"] . "-RTN-" . $record["ReturnID"];  // Returns Ref Field
               include "../app/views/shop/returnsListItem.php";
             }
             ?>      

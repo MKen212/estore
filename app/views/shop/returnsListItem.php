@@ -5,5 +5,6 @@
   <td><?= $record["ProductCount"]; ?></td>
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
   <td><?= $record["Total"]; ?></td>
-  <td><?= statusOutput("ReturnStatus", $record["ReturnStatus"]); ?></td>
+  <td><?= statusOutputShop("ReturnStatus", $record["ReturnStatus"]); ?></td>
 </tr><!--/returns_list_item-->
+<a href="" style="background:blue"></a>

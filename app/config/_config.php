@@ -24,6 +24,7 @@ $defaultValues = [
   "productsPerPage" => 6,  // Total Number of products displayed per page
   "paginationItems" => 5,  // Max Number of Pagination Items to display
   "returnsAllowance" => 30,  // Number of Days after shipping user allowed to return items
+  "returnsAddress" => "Returns Dept, eStore, Rue de Montreux 1, Lausanne 1000, Switzerland",  // Returns Address
 ];
 
 define("DEFAULTS", $defaultValues);
@@ -113,7 +114,7 @@ $statusCodes = [
   "ReturnReason" => [  // return_items Table / ReturnReason Field
     0 => [
       "text" => "No Longer Needed",
-      "badge" => "secondary",
+      "badge" => "info",
     ],
     1 => [
       "text" => "Defective / Damaged",

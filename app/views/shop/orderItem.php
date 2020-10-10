@@ -19,6 +19,6 @@
     <p><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></p>
   </td>
   <td>
-    <p><?= $record["ReturnLink"]; ?></p>
+    <p><?= $record["ReturnAvailable"] == 1 ? "<a class='btn btn-primary' style='margin-top:0px' href='index.php?p=returnItems&id=" . $orderID . "'>Available</a>" : "<i>Unavailable</i>"; ?></p>
   </td>
 </tr><!--/order_item_SHOP-->

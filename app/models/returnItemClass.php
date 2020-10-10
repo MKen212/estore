@@ -32,6 +32,21 @@ Class ReturnItem {
     }
   }
 
+  /** getItemsByReturn function - Retrieve return items for a ReturnID using ret_ord_items_view
+   * @param int $returnID   Return ID of items required
+   * @return array $result  Return Items for specified return or False
+   */
+  public function getItemsByReturn($returnID) {
+    try {
+      $sql= "SELECT * FROM `ret_ord_items_view` WHERE `ReturnID` = '$returnID' ORDER BY `ReturnItemID`";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/getItemsByReturn Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
 
 }
 ?>

@@ -3,7 +3,7 @@
     <h5>Order Information</h5>
     <table class="table table-sm">
       <tr><td><b>Invoice ID:</b></td><td><b><?= $orderDetails["InvoiceID"] ?></b></td></tr>
-      <tr><td>Order Status:</td><td><?= statusOutput("OrderStatus", $orderDetails["OrderStatus"]) ?></td></tr>
+      <tr><td>Order Status:</td><td><?= statusOutputShop("OrderStatus", $orderDetails["OrderStatus"]) ?></td></tr>
       <tr><td>Number of Items:</td><td><?= $orderDetails["ItemCount"] ?></td></tr>
       <tr><td>Number of Products:</td><td><?= $orderDetails["ProductCount"] ?></td></tr>
       <tr><td>SubTotal:</td><td><?= symValue($orderDetails["SubTotal"]) ?></td></tr>
@@ -35,4 +35,4 @@
       <tr><td>Date & Time Paid:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["CaptureTimestamp"])); ?></td></tr>
     </table>
   </div><!--/paypal_information-->
-</div><!--order_header_SHOP-->
+</div><!--/order_header_SHOP-->
