@@ -71,7 +71,7 @@ $statusCodes = [
       "badge" => "danger",
     ],
     1 => [
-      "text" => "Paid",  // NOTE: Used in sideBarBadges/orderDetails to show Orders To Process
+      "text" => "Paid",  // NOTE: Used in admin/sideBarBadges.php to show Orders To Process
       "badge" => "primary",
     ],
     2 => [
@@ -99,11 +99,11 @@ $statusCodes = [
       "badge" => "primary",
     ],
     1 => [
-      "text" => "Returned",  // NOTE: Used in sideBarBadges/returnDetails to show Returns To Process
+      "text" => "Returned",  // NOTE: Used in admin/sideBarBadges.php to show Returns To Process
       "badge" => "warning",
     ],
     2 => [
-      "text" => "Refunded",
+      "text" => "Processed",
       "badge" => "success",
     ],
     3 => [
@@ -133,6 +133,16 @@ $statusCodes = [
       "badge" => "warning",
     ],
   ],
+  "ReturnAction" => [  // return_items Table / ReturnAction Field
+    0 => [
+      "text" => "Replace",
+      "badge" => "warning",
+    ],
+    1 => [
+      "text" => "Refund",
+      "badge" => "danger",
+    ],
+  ],
   "IsReceived" => [  // return_items Table / IsReceived Field
     0 => [
       "text" => "No",
@@ -143,10 +153,10 @@ $statusCodes = [
       "badge" => "success",
     ],
   ],
-  "IsAddedToStock" => [  // return_items Table / IsAddedToStock Field
+  "IsActioned" => [  // return_items Table / IsActioned Field
     0 => [
       "text" => "No",
-      "badge" => "secondary",
+      "badge" => "danger",
     ],
     1 => [
       "text" => "Yes",

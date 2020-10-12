@@ -1,10 +1,9 @@
 <tr><!--returns_available_item-->
-  <td><?= $record["OrderItemID"]; ?></td>
-  <td><?= $record["ProductID"]; ?></td>
+  <td><?= $itemCount; ?></td>
   <td>
     <img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" />
   </td>
-  <td><?= $record["Name"]; ?></td>
+  <td><?= $record["Name"]; ?><br />Product ID: <?= $record["ProductID"]; ?></td>
   <td><?= symValue($record["Price"]); ?></td>
   <td ><?= date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></td>
   

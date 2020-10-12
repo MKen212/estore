@@ -1,4 +1,4 @@
-<tr><!--order_list_item-->
+<tr><!--order_list_item_ADMIN-->
   <td><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>"><?= $record["InvoiceID"]; ?></a></td>
   <td><?= $record["ItemCount"]; ?></td>
   <td><?= $record["ProductCount"]; ?></td>
@@ -10,4 +10,4 @@
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
   <td><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
   <td><?= statusOutput("Status", $record["Status"]); ?></td>
-</tr><!--/order_list_item-->
+</tr><!--/order_list_item_ADMIN-->

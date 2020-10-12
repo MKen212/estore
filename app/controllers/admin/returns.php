@@ -35,16 +35,13 @@
     <table class="table table-striped table-sm">
       <thead>
         <!-- Returns Table Header -->
+        <th>Returns Ref</th>
         <th>Invoice ID</th>
         <th>Items</th>
         <th>Products</th>
-        <th>Ship<br />Country</th>
-        <th>Ship<br />Type</th>
         <th>Value<br />(<?= DEFAULTS["currency"] ?>)</th>
-        <th>Payment Status</th>
-        <th>Name</th>
         <th>Date/Time Added</th>
-        <th>Order<br />Status</th>
+        <th>Return<br />Status</th>
         <th>Record<br />Status</th>
       </thead>
       <tbody>
@@ -55,11 +52,12 @@
         } else {
           $invoiceID = null;
         }
-        //include_once "../app/models/orderClass.php";
-        //$order = new Order();
-        //foreach(new RecursiveArrayIterator($order->getList($invoiceID)) as $record) {
-        //  include "../app/views/admin/orderListItem.php";
-        //}
+        include_once "../app/models/returnsClass.php";
+        $returns = new Returns();
+        foreach(new RecursiveArrayIterator($returns->getList($invoiceID)) as $record) {
+          $record["ReturnsRef"] = $record["InvoiceID"] . "-RTN-" . $record["ReturnID"];  // Returns Ref Field
+          include "../app/views/admin/returnsListItem.php";
+        }
         ?>      
       </tbody>
     </table>

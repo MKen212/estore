@@ -18,7 +18,7 @@ Class Order {
   /**
    * countOrdStat function - Get COUNT of order records by OrderStatus
    * @param int $orderStatus  Order OrderStatus
-   * @return int $result      Returns count of defined order records or False 
+   * @return int $result      Count of defined order records or False 
    */
   public function countOrdStat($orderStatus) {
     try {
@@ -27,7 +27,7 @@ Class Order {
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/count Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/countOrdStat Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -68,8 +68,8 @@ Class Order {
   }
 
   /**
-   * getList function - Get full list of orders using ord_paypal_view
-   * @param int invoiceID   Invoice ID (Optional)
+   * getList function - Get full list of orders (and optionally by InvoiceID) using ord_paypal_view
+   * @param int $invoiceID  Invoice ID (Optional)
    * @return array $result  Details of all orders (Descending Order) or False
    */
   public function getList($invoiceID = null) {

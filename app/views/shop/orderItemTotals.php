@@ -1,4 +1,4 @@
-<tr class="cart_menu"><!--orderItemTotals-->
+<tr class="cart_menu"><!--orderItemTotals_SHOP-->
   <td></td>
   <td class="description">
     <h4>Sub-Totals:</h4>
@@ -14,4 +14,4 @@
   </td>
   <td></td>
   <td></td>
-</tr><!--/orderItemTotals-->
+</tr><!--/orderItemTotals_SHOP-->

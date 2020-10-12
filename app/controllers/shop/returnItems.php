@@ -34,10 +34,9 @@
             <table class="table table-striped table-sm">
               <thead>
                 <!-- Return Items Available Table Header -->
-                <th>Item ID</th>
-                <th>Product ID</th>
+                <th>Item</th>
                 <th>Image</th>
-                <th>Name</th>
+                <th>Product Details</th>
                 <th>Unit Price</th>
                 <th>Date Shipped</th>
 
@@ -56,7 +55,7 @@
                   include "../app/views/shop/returnsAvailItem.php";
                 }
                 if ($itemCount != 0) : ?>
-                  <td colspan="6" style="text-align:right; padding-top:30px">Tick the items to return, update the quantities being returned and the reason for their return, and click:</td>
+                  <td colspan="5" style="text-align:right; padding-top:30px">Tick the items to return, update the quantities being returned and the reason for their return, and click:</td>
                   <td colspan="3" style="border-left:double">
                     <button class="btn btn-primary" type="submit" name="selectReturns">Return Selected Items</button>
                   </td>

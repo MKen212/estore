@@ -16,6 +16,23 @@ Class Returns {
   }
 
   /**
+   * countRetStat function - Get COUNT of returns records by ReturnStatus
+   * @param int $returnStatus  Returns ReturnStatus
+   * @return int $result       Count of defined order records or False 
+   */
+  public function countRetStat($returnStatus) {
+    try {
+      $sql = "SELECT COUNT(*) FROM `returns` WHERE `ReturnStatus` = '$returnStatus'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchColumn();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/countRetStat Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * add function - Add Returns Record
    * @param string $fields  List of fields for $values
    * @param string $values  List of values to be inserted
@@ -46,6 +63,27 @@ Class Returns {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Returns/getRefData Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * getList function - Get full list of returns (and optionally by InvoiceID)
+   * @param int $invoiceID  Invoice ID (Optional)
+   * @return array $result  Details of all returns (Descending Order) or False
+   */
+  public function getList($invoiceID = null) {
+    try {
+      if ($invoiceID == null) {
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `Total`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+      } else {
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `Total`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+      }
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getList Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }
@@ -85,6 +123,24 @@ Class Returns {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Returns/getDetails Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateStatus function - Update Status field of an existing returns record
+   * @param int $returnID  Return ID of return being updated
+   * @param int $status    New Return Record Status
+   * @return int $result   Number of records updated (=1) or False
+   */
+  public function updateStatus($returnID, $status) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ReturnID` = '$returnID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateStatus Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

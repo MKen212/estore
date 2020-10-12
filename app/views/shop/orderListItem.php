@@ -1,4 +1,4 @@
-<tr><!--order_list_item-->
+<tr><!--order_list_item_SHOP-->
   <td><a href="index.php?p=orderDetails&id=<?= $record["OrderID"]; ?>"><?= $record["InvoiceID"]; ?></a></td>
   <td><?= $record["ItemCount"]; ?></td>
   <td><?= $record["ProductCount"]; ?></td>
@@ -6,4 +6,4 @@
   <td><?= $record["Total"]; ?></td>
   <td><?= $record["PaymentStatus"]; ?></td>
   <td><?= statusOutputShop("OrderStatus", $record["OrderStatus"]); ?></td>
-</tr><!--/order_list_item-->
+</tr><!--/order_list_item_SHOP-->

@@ -11,7 +11,9 @@ if ($toSendCount > 0) {
 }
 
 // Update toRefund count & badge
-$toRefundCount = 2;  // TODO
+include_once "../app/models/returnsClass.php";
+$returns = new Returns();
+$toRefundCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
 if ($toRefundCount > 0) {
   $toRefundBadge = " <span class='badge badge-warning'>To Refund: $toRefundCount</span>";
 } else {

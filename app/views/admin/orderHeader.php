@@ -9,8 +9,8 @@
       <tr><td>SubTotal:</td><td><?= symValue($orderDetails["SubTotal"]); ?></td></tr>
       <tr><td>Shipping Cost:</td><td><?= symValue($orderDetails["ShippingCost"]); ?></td></tr>
       <tr><td>Total Value:</td><td><?= symValue($orderDetails["Total"]); ?></td></tr>
-      <tr><td>Date/Time Added:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["AddedTimestamp"])) . " by " ?><a href="admin_dashboard.php?p=userDetails&id=<?= $orderDetails["OwnerUserID"] ?>"><?= $orderDetails["OwnerUserID"] ?></a></td></tr>
-      <tr><td>Last Edit:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["EditTimestamp"])) . " by " ?><a href="admin_dashboard.php?p=userDetails&id=<?= $orderDetails["EditUserID"] ?>"><?= $orderDetails["EditUserID"] ?></a></td></tr>
+      <tr><td>Date/Time Added:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["AddedTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $orderDetails["OwnerUserID"] ?>"><?= $orderDetails["OwnerUserID"] ?></a></td></tr>
+      <tr><td>Last Edit:</td><td><?= date("d/m/Y @ H:i", strtotime($orderDetails["EditTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $orderDetails["EditUserID"] ?>"><?= $orderDetails["EditUserID"] ?></a></td></tr>
     </table>
   </div><!--/order_information-->
   <div class="col-sm-4"><!--shipping_information-->

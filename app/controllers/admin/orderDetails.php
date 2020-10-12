@@ -2,8 +2,9 @@
 if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   <div>No Order ID provided.</div>
 <?php else : 
+  $orderID = $_GET["id"];
+  // Process Status Changes if hyperlinks selected
   if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
-    $orderID = $_GET["id"];
     $current = $_GET["cur"];
     // $_GET=[];
     $newStatus = statusCycle("Status", $current);
@@ -12,7 +13,6 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
     $order = new Order();
     $updateStatus = $order->updateStatus($orderID, $newStatus);
   } elseif (isset($_GET["updOrderStatus"])) {  // Order Status Link was clicked
-    $orderID = $_GET["id"];
     $current = $_GET["cur"];
     // $_GET=[];
     $newStatus = statusCycle("OrderStatus", $current);
@@ -49,7 +49,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   <!-- Main Section - Admin Order Info -->
   <div class="row pt-3 pb-2 mb-3 border-bottom">
     <div class="col-6">
-      <h2>Order Details - Order ID: <?= $_GET["id"] ?></h2>
+      <h2>Order Details - Order ID: <?= $orderID ?></h2>
     </div>
     <div class="col-6">
       <!-- System Messages -->
@@ -58,7 +58,6 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   </div>
 
   <?php
-  $orderID = $_GET["id"];
   $_GET = [];
   include_once "../app/models/orderClass.php";
   $order = new Order();
@@ -73,8 +72,6 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   include "../app/views/admin/orderHeader.php";
 
   // Show Order Items
-  include_once "../app/models/orderItemClass.php";
-  $orderItem = new OrderItem();
   ?>
   <div class="row"><!--order_items-->
     <div class="col-sm-12">
@@ -83,20 +80,21 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
         <table class="table table-striped table-sm" style="margin-bottom:50px">
           <thead>
             <tr>
-              <th>Item ID</th>
-              <th>Product ID</th>
+              <th>Item</th>
               <th>Image</th>
-              <th>Description</th>
-              <th>Unit Price (<?= DEFAULTS["currency"] ?>)</th>
-              <th>Quantity</th>
+              <th>Product Details</th>
+              <th>Unit Price</th>
+              <th>Qty</th>
               <th>Date/Time Shipped</th>
               <th>Shipped</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <?php  // Loop through Order Items and output a row per item
-            $orderID = $orderDetails["OrderID"];
+            <?php
+            include_once "../app/models/orderItemClass.php";
+            $orderItem = new OrderItem();
+            // Loop through Order Items and output a row per item
             foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
               $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
               include "../app/views/admin/orderItem.php";
