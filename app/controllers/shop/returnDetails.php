@@ -48,6 +48,7 @@
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
                     <td>Reason</td>
+                    <td>Action</td>
                     <td>Date Received</td>
                   </tr>
                 </thead>

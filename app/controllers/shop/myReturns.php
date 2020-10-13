@@ -23,7 +23,7 @@
             <th>Items</th>
             <th>Products</th>
             <th>Date/Time Added</th>
-            <th>Value (<?= DEFAULTS["currency"] ?>)</th>
+            <th>Refund Value</th>
             <th>Returns Status</th>
           </thead>
           <tbody>

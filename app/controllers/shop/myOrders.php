@@ -22,7 +22,7 @@
             <th>Items</th>
             <th>Products</th>
             <th>Date/Time Added</th>
-            <th>Value (<?= DEFAULTS["currency"] ?>)</th>
+            <th>Value</th>
             <th>Payment Status</th>          
             <th>Order Status</th>
           </thead>

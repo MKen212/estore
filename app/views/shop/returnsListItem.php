@@ -4,6 +4,6 @@
   <td><?= $record["ItemCount"]; ?></td>
   <td><?= $record["ProductCount"]; ?></td>
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
-  <td><?= $record["Total"]; ?></td>
+  <td><?= symValue($record["RefundTotal"]); ?></td>
   <td><?= statusOutputShop("ReturnStatus", $record["ReturnStatus"]); ?></td>
 </tr><!--/returns_list_item_SHOP-->

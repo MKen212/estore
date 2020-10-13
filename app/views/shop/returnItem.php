@@ -1,5 +1,5 @@
 <tr><!--return_item_SHOP-->
-  <td class="cart_product">
+  <td class="cart_product" style="margin-right:-30px">
     <img width="90" height="83" src="<?= $record["FullPath"]; ?>" alt="<?= $record["ImgFilename"]; ?>" />
   </td>
   <td class="cart_description">
@@ -17,6 +17,9 @@
   </td>
   <td>
     <p><?= statusOutput("ReturnReason", $record["ReturnReason"]); ?></p>
+  </td>
+  <td>
+    <p><?= statusOutput("ReturnAction", $record["ReturnAction"]); ?></p>
   </td>
   <td class="cart_shipped">
     <p><?= $record["ReceivedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedTimestamp"])); ?></p>

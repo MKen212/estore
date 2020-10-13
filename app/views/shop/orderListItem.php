@@ -3,7 +3,7 @@
   <td><?= $record["ItemCount"]; ?></td>
   <td><?= $record["ProductCount"]; ?></td>
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
-  <td><?= $record["Total"]; ?></td>
+  <td><?= symValue($record["Total"]); ?></td>
   <td><?= $record["PaymentStatus"]; ?></td>
   <td><?= statusOutputShop("OrderStatus", $record["OrderStatus"]); ?></td>
 </tr><!--/order_list_item_SHOP-->

@@ -52,11 +52,10 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
                 <th>Product Details</th>
                 <th>Unit Price</th>
                 <th>Qty</th>
-                <th>Return Reason</th>
-                <th>Date/Time Received</th>
-                <th>Received</th>
-                <th>Returned<br />to Stock</th>
-                <th>Status</th>
+                <th>Reason<br />Action</th>
+                <th style="border-left:double">Date/Time Received<br />Date/Time Actioned</th>
+                <th>Received<br />Actioned</th>
+                <th style="border-left:double">Status</th>
               </tr>
             </thead>
             <tbody>

@@ -4,9 +4,8 @@
   <td><?= $record["Name"]; ?><br />ID: <?= $record["ProductID"]; ?></td>
   <td><?= symValue($record["Price"]); ?></td>
   <td><?= $record["QtyReturned"]; ?></td>
-  <td><?= statusOutput("ReturnReason", $record["ReturnReason"]); ?></td>
-  <td><?= $record["ReceivedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ReceivedTimestamp"])) . " by " . $record["ReceivedUserID"]; ?></td>
-  <td><?= statusOutput("IsReceived", $record["IsReceived"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsReceived"] . "&updItemIsReceived")) ?></td>
-  <td><?= statusOutput("IsAddedToStock", $record["IsAddedToStock"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsAddedToStock"] . "&updItemIsAddedToStock")) ?></td>
-  <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["Status"] . "&updItemStatus")) ?></td>
+  <td><?= statusOutput("ReturnReason", $record["ReturnReason"]); ?><br /><?= statusOutput("ReturnAction", $record["ReturnAction"]); ?></td>
+  <td style="border-left:double"><?= $record["ReceivedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ReceivedTimestamp"])) . " by " . $record["ReceivedUserID"]; ?><br /><?= $record["ActionedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ActionedTimestamp"])) . " by " . $record["ActionedUserID"]; ?></td>
+  <td><?= statusOutput("IsReceived", $record["IsReceived"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsReceived"] . "&updItemIsReceived")) ?><br /><?= statusOutput("IsActioned", $record["IsActioned"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsActioned"] . "&updItemIsActioned")) ?></td>
+  <td style="border-left:double"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["Status"] . "&updItemStatus")) ?></td>
 </tr><!--/return_item_ADMIN-->

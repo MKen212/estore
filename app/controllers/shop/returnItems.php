@@ -43,6 +43,7 @@
                 <th style="border-left:double">Return?</th>
                 <th>Quantity</th>
                 <th>Reason</th>
+                <th>Action Requested</th>
               </thead>
               <tbody>
                 <?php
@@ -55,9 +56,9 @@
                   include "../app/views/shop/returnsAvailItem.php";
                 }
                 if ($itemCount != 0) : ?>
-                  <td colspan="5" style="text-align:right; padding-top:30px">Tick the items to return, update the quantities being returned and the reason for their return, and click:</td>
+                  <td colspan="5" style="text-align:right; padding-top:30px">Tick the items to return, update the quantities being returned, the reason for<br />their return and the action requested, and then click:</td>
                   <td colspan="3" style="border-left:double">
-                    <button class="btn btn-primary" type="submit" name="selectReturns">Return Selected Items</button>
+                    <button class="btn btn-primary" style="margin-top:25px" type="submit" name="selectReturns">Return Selected Items</button>
                   </td>
                 <?php endif; ?>
               </tbody>

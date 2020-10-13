@@ -8,14 +8,17 @@ if (isset($_POST["selectReturns"])) {
     "invoiceID" => $_POST["invoiceID"],
     "itemCount" => 0,
     "productCount" => 0,
-    "total" => 0,
+    "refundTotal" => 0,
   ];
   // Loop through $_POST["returns"] to build returnItemsData array
   foreach($_POST["returns"] as $key => $value) {
     if (isset($value["orderItemID"])) {
       $returnData["itemCount"] += 1;
       $returnData["productCount"] += $value["qtyReturned"];
-      $returnData["total"] += ($value["qtyReturned"] * $value["price"]);
+      if ($value["returnAction"] == 0) {  // NOTE: HardCoded based on "Replace" status in Config/$statusCodes/ReturnAction
+        $value["price"] = 0;  // Return Item Unit Price is zero if item being replaced
+      }
+      $returnData["refundTotal"] += ($value["qtyReturned"] * $value["price"]);
       array_push($returnItemsData, $value);
     }
   }

@@ -7,7 +7,7 @@
       <tr><td>Return Status:</td><td><?= statusOutputShop("ReturnStatus", $returnDetails["ReturnStatus"]) ?></td></tr>
       <tr><td>Number of Items:</td><td><?= $returnDetails["ItemCount"] ?></td></tr>
       <tr><td>Number of Products:</td><td><?= $returnDetails["ProductCount"] ?></td></tr>
-      <tr><td>Total Value:</td><td><?= symValue($returnDetails["Total"]) ?></td></tr>
+      <tr><td>Total Refund Value:</td><td><?= symValue($returnDetails["RefundTotal"]) ?></td></tr>
       <tr><td>Date & Time Requested:</td><td><?= date("d/m/Y @ H:i", strtotime($returnDetails["AddedTimestamp"])) ?></td></tr>
     </table>
   </div><!--/returns_information-->

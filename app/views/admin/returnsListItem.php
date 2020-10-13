@@ -3,7 +3,7 @@
   <td><?= $record["InvoiceID"]; ?></td>
   <td><?= $record["ItemCount"]; ?></td>
   <td><?= $record["ProductCount"]; ?></td>
-  <td><?= $record["Total"]; ?></td>
+  <td><?= $record["RefundTotal"]; ?></td>
   <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
   <td><?= statusOutput("ReturnStatus", $record["ReturnStatus"]); ?></td>
   <td><?= statusOutput("Status", $record["Status"]); ?></td>

@@ -75,9 +75,9 @@ Class Returns {
   public function getList($invoiceID = null) {
     try {
       if ($invoiceID == null) {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `Total`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       } else {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `Total`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -97,9 +97,9 @@ Class Returns {
   public function getListByUser($userID, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `ReturnStatus` FROM `returns` WHERE `OwnerUserID` = '$userID' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE `OwnerUserID` = '$userID' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       } else {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `ReturnStatus` FROM `returns` WHERE (`OwnerUserID` = '$userID' AND `Status` = '$status') ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE (`OwnerUserID` = '$userID' AND `Status` = '$status') ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();

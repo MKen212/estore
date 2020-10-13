@@ -135,7 +135,7 @@ $statusCodes = [
   ],
   "ReturnAction" => [  // return_items Table / ReturnAction Field
     0 => [
-      "text" => "Replace",
+      "text" => "Replace",  // NOTE: Used in shop/returnConfirmation.php to update item price to zero if item being replaced
       "badge" => "warning",
     ],
     1 => [

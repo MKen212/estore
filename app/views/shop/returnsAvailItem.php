@@ -3,7 +3,7 @@
   <td>
     <img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" />
   </td>
-  <td><?= $record["Name"]; ?><br />Product ID: <?= $record["ProductID"]; ?></td>
+  <td><b><?= $record["Name"]; ?></b><br />Product ID: <?= $record["ProductID"]; ?></td>
   <td><?= symValue($record["Price"]); ?></td>
   <td ><?= date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></td>
   
@@ -17,6 +17,11 @@
   <td>
     <select name="returns[<?= $itemCount ?>][returnReason]">
       <?php statusOptions("ReturnReason", 0); ?>
+    </select>
+  </td>
+  <td>
+    <select name="returns[<?= $itemCount ?>][returnAction]">
+      <?php statusOptions("ReturnAction", 0); ?>
     </select>
   </td>
 </tr><!--/returns_available_item-->
