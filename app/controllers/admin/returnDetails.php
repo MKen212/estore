@@ -12,8 +12,48 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
     include_once "../app/models/returnsClass.php";
     $returns = new Returns();
     $updateStatus = $returns->updateStatus($returnID, $newStatus);
+  } elseif (isset($_GET["updReturnStatus"])) {  // Return Status Link was clicked
+    $current = $_GET["cur"];
+    // $_GET=[];
+    $newStatus = statusCycle("ReturnStatus", $current);
+    // Update ReturnStatus Status
+    include_once "../app/models/returnsClass.php";
+    $returns = new Returns();
+    $returns->updateReturnStatus($returnID, $newStatus);
+    // Fix Sidebar Returns Badge
+    $toProcessCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
+    $toProcessBadge = ($toProcessCount > 0) ? " <span class='badge badge-warning'>To Process: $toProcessCount</span>" : "";
+    ?><script>
+      document.getElementById("toProcessBadge").innerHTML = "<?= $toProcessBadge ?>";
+    </script><?php
+  } elseif (isset($_GET["updItemStatus"])) {  // Item Status Link was clicked
+    $returnItemID = $_GET["itemID"];
+    $current = $_GET["cur"];
+    // $_GET=[];
+    $newStatus = statusCycle("Status", $current);
+    // Update ReturnItem Status
+    include_once "../app/models/returnItemClass.php";
+    $returnItem = new ReturnItem();
+    $updateStatus = $returnItem->updateStatus($returnItemID, $newStatus);
+  } elseif (isset($_GET["updItemIsReceived"])) {  // Item Received Link was clicked
+    $returnItemID = $_GET["itemID"];
+    $current = $_GET["cur"];
+    // $_GET=[];
+    $newStatus = statusCycle("IsReceived", $current);
+    // Update OrderItem IsReceived
+    include_once "../app/models/returnItemClass.php";
+    $returnItem = new ReturnItem();
+    $updateStatus = $returnItem->updateIsReceived($returnItemID, $newStatus);
+  } elseif (isset($_GET["updItemIsActioned"])) {  // Item Actioned Link was clicked
+    $returnItemID = $_GET["itemID"];
+    $current = $_GET["cur"];
+    // $_GET=[];
+    $newStatus = statusCycle("IsActioned", $current);
+    // Update OrderItem IsActioned
+    include_once "../app/models/returnItemClass.php";
+    $returnItem = new ReturnItem();
+    $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
   }
-
   ?>
 <!-- Main Section - Admin Order Info -->
   <div class="row pt-3 pb-2 mb-3 border-bottom">
@@ -53,9 +93,8 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
                 <th>Unit Price</th>
                 <th>Qty</th>
                 <th>Reason<br />Action</th>
-                <th style="border-left:double">Date/Time Received<br />Date/Time Actioned</th>
-                <th>Received<br />Actioned</th>
-                <th style="border-left:double">Status</th>
+                <th style="border-left:double">Date/Time Received<br />Date/Time Actioned<br />Last Edit</th>
+                <th>Received<br />Actioned<br />Status</th>
               </tr>
             </thead>
             <tbody>

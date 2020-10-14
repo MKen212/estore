@@ -86,9 +86,8 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
               <th>Unit Price</th>
               <th>Qty</th>
               <th>QtyAvailRtn</th>
-              <th style="border-left:double">Date/Time Shipped</th>
-              <th>Shipped</th>
-              <th style="border-left:double">Status</th>
+              <th style="border-left:double">Date/Time Shipped<br />Last Edit</th>
+              <th>Shipped<br />Status</th>
             </tr>
           </thead>
           <tbody>

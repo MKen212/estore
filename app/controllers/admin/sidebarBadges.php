@@ -1,6 +1,6 @@
 <?php   // Admin Dashboard - Sidebar Badges
 
-// Update toSend count & badge
+// Update Orders/toSend count & badge
 include_once "../app/models/orderClass.php";
 $order = new Order();
 $toSendCount = $order->countOrdStat(1);  // NOTE: HardCoded based on "Paid" status in Config/$statusCodes/OrderStatus
@@ -10,13 +10,13 @@ if ($toSendCount > 0) {
   $toSendBadge = "";
 }
 
-// Update toRefund count & badge
+// Update Returns/toProcess count & badge
 include_once "../app/models/returnsClass.php";
 $returns = new Returns();
-$toRefundCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
-if ($toRefundCount > 0) {
-  $toRefundBadge = " <span class='badge badge-warning'>To Refund: $toRefundCount</span>";
+$toProcessCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
+if ($toProcessCount > 0) {
+  $toProcessBadge = " <span class='badge badge-warning'>To Process: $toProcessCount</span>";
 } else {
-  $toRefundBadge = "";
+  $toProcessBadge = "";
 }
 ?>

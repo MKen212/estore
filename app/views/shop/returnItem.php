@@ -16,12 +16,11 @@
     <p class="cart_total_price"><?= symValue(($record["QtyReturned"] * $record["Price"])); ?></p>
   </td>
   <td>
-    <p><?= statusOutput("ReturnReason", $record["ReturnReason"]); ?></p>
-  </td>
-  <td>
+    <p><?= statusOutput("ReturnReason", $record["ReturnReason"]); ?></p><br />
     <p><?= statusOutput("ReturnAction", $record["ReturnAction"]); ?></p>
   </td>
   <td class="cart_shipped">
-    <p><?= $record["ReceivedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedTimestamp"])); ?></p>
+    <p><?= $record["ReceivedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedTimestamp"])); ?></p><br />
+    <p><?= $record["ActionedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ActionedTimestamp"])); ?></p>
   </td>
 </tr><!--/return_item_SHOP-->

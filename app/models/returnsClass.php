@@ -145,9 +145,22 @@ Class Returns {
     }
   }
 
-
-
-
-
+  /**
+   * updateReturnStatus function - Update ReturnStatus field of an existing returns record
+   * @param int $returnID      Return ID of return being updated
+   * @param int $returnStatus  New ReturnStatus Status
+   * @return int $result       Number of records updated (=1) or False
+   */
+  public function updateReturnStatus($returnID, $returnStatus) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `ReturnStatus` = '$returnStatus' WHERE `ReturnID` = '$returnID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateReturnStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
 }
 ?>

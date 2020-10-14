@@ -47,9 +47,8 @@
                     <td class="price">Unit Price</td>
                     <td class="quantity">Quantity</td>
                     <td class="total">Item Total</td>
-                    <td>Reason</td>
-                    <td>Action</td>
-                    <td>Date Received</td>
+                    <td>Reason<br/>Action</td>
+                    <td>Date Received<br/>Date Actioned</td>
                   </tr>
                 </thead>
                 <tbody>

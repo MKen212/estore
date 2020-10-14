@@ -23,7 +23,7 @@
       </li>
       <!-- Returns -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "returns" ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<?= $toRefundBadge ?></a>
+        <a class="nav-link<?= $_GET["p"] == "returns" ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<span id="toProcessBadge"><?= $toProcessBadge ?></span></a>
       </li>
       <!-- Users-->
       <li class="nav-item">

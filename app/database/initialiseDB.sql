@@ -257,6 +257,8 @@ CREATE VIEW IF NOT EXISTS `ret_ord_items_view` AS SELECT
   `return_items`.`ReceivedUserID` AS `ReceivedUserID`,
   `return_items`.`ActionedTimestamp` AS `ActionedTimestamp`,
   `return_items`.`ActionedUserID` AS `ActionedUserID`,
+  `return_items`.`EditTimestamp` AS `EditTimestamp`,
+  `return_items`.`EditUserID` AS `EditUserID`,
   `return_items`.`IsReceived` AS `IsReceived`,
   `return_items`.`IsActioned` AS `IsActioned`,
   `return_items`.`Status` AS `Status`
