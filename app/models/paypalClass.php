@@ -9,6 +9,7 @@ use PayPalCheckoutSdk\Core\ProductionEnvironment;
 
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use PayPalCheckoutSdk\Orders\OrdersCaptureRequest;
+use PayPalCheckoutSdk\Payments\CapturesRefundRequest;
 
 class PayPal {
   private $client;  // PayPal HTTP Client Object
@@ -142,7 +143,7 @@ class PayPal {
       } else {
         throw new HttpException("No PayPal API response.", 204, null);
       }
-    } catch (ErrorException $err) {
+    } catch (HttpException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - PayPal/captureOrder Failed: " . $err->getMessage() . "<br />");
       return false;
     }
@@ -166,6 +167,72 @@ class PayPal {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - PayPal/updateCapturedOrder Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * refundPayment function - Refund a Payment on PayPal
+   * @param string $invoiceID     Invoice ID from original PayPal Order
+   * @param string $noteToPayer   Note to Payer
+   * @param string $currencyCode  Currency Code of transaction
+   * @param float $value          Value of transaction
+   * @param string $paymentID     Payment ID from original PayPal Order
+   * @param int $returnID         Return ID of return being refunded
+   * @return object $response     Returns object of the Created Refund or False
+   */
+  public function refundPayment($invoiceID, $noteToPayer,$currencyCode, $value,  $paymentID, $returnID) {
+    try {
+      if (empty($invoiceID) || empty($noteToPayer) || empty($currencyCode) || empty($value) || empty($paymentID) || empty($returnID)) throw new HttpException("Required parameters not provided.", 400, null);
+      // Build the Refund Body
+      $body = [
+        "invoice_id" => $invoiceID,
+        "note_to_payer" => $noteToPayer,
+        "amount" => [
+          "currency_code" => $currencyCode,
+          "value" => $value,
+        ]
+      ];
+
+      // Build the Refund request
+      $request = new CapturesRefundRequest($paymentID);
+      $request->prefer("return=representation");
+      $request->body = $body;
+
+      // Execute the Refund request
+      $response = (object) $this->client->execute($request);
+
+      // If response returned then load refund into database
+      if ($response) {
+        // Load into Database & Return
+        $this->addRefund($response, $returnID);
+        return $response;
+      } else {
+        throw new HttpException("No PayPal API response.", 204, null);
+      }
+    } catch (HttpException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/refundPayment Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * addRefund function - Add the PayPal refund to the database
+   * @param object $response   Response Object from PayPal API
+   * @param int $returnID      Return ID of return being refunded
+   * @return int $result       Number of records added or False
+   */
+  public function addRefund($response, $returnID) {
+    try {
+      // Update variables
+      $refundTime = date("Y-m-d H:i-s", strtotime($response->result->create_time));
+
+      // Build SQL & Execute
+      $sql = "INSERT INTO `paypal_refunds` (`PpRefundID`, `PpRefundStatus`, `PpInvoiceID`, `DbReturnID`, `CurrencyCode`, `Value`, `NoteToPayer`, `RefundTimestamp`, `RefundDebugID`) VALUES ('{$response->result->id}', '{$response->result->status}', '{$response->result->invoice_id}', '{$returnID}', '{$response->result->amount->currency_code}', '{$response->result->amount->value}', '{$response->result->note_to_payer}', '{$refundTime}', '{$response->headers["Paypal-Debug-Id"]}')";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/addRefund Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

@@ -127,7 +127,9 @@ CREATE TABLE IF NOT EXISTS `paypal_orders` (
   `CreateTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `CreateDebugID` VARCHAR(20),
   `CaptureTimestamp` TIMESTAMP DEFAULT 0,
-  `CaptureDebugID` VARCHAR(20)
+  `CaptureDebugID` VARCHAR(20),
+  KEY `PaymentID` (`PaymentID`)
+
 );
 
 -- Create orders table
@@ -176,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`)
 );
 
--- Create orders combined with paypal view
+-- Create orders combined with paypal_orders view
 CREATE VIEW IF NOT EXISTS `ord_paypal_view` AS
   SELECT * FROM `orders`
   LEFT JOIN `paypal_orders` ON `paypal_orders`.`PpInvoiceID` = `orders`.`InvoiceID`;
@@ -206,6 +208,7 @@ CREATE TABLE IF NOT EXISTS `returns` (
   `ReturnID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `OrderID` INT(11) NOT NULL,
   `InvoiceID` INT(11) NOT NULL,
+  `PaymentID` VARCHAR(20),
   `ItemCount` INT(11) DEFAULT 0,
   `ProductCount` INT(11) DEFAULT 0,
   `RefundTotal` DECIMAL(10, 2) DEFAULT 0.00,
@@ -264,3 +267,21 @@ CREATE VIEW IF NOT EXISTS `ret_ord_items_view` AS SELECT
   `return_items`.`Status` AS `Status`
   FROM `return_items`
   LEFT JOIN `order_items` ON `order_items`.`OrderItemID` = `return_items`.`OrderItemID`;
+
+-- Create PayPal Refunds table
+CREATE TABLE IF NOT EXISTS `paypal_refunds` (
+  `PpRefundID` INT(11) NOT NULL PRIMARY KEY,
+  `PpRefundStatus` VARCHAR(20) NOT NULL,
+  `PpInvoiceID` INT(11) NOT NULL,
+  `DbReturnID` INT(11) NOT NULL,
+  `CurrencyCode` VARCHAR(5) NOT NULL,
+  `Value` DECIMAL(10, 2) NOT NULL,
+  `NoteToPayer` VARCHAR(50),
+  `RefundTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `RefundDebugID` VARCHAR(20)
+);
+
+-- Create returns combined with paypal_refunds view
+CREATE VIEW IF NOT EXISTS `ret_paypal_view` AS
+  SELECT * FROM `returns`
+  LEFT JOIN `paypal_refunds` ON `paypal_refunds`.`DbReturnID` = `returns`.`ReturnID`;

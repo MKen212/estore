@@ -31,6 +31,7 @@
           <form action="index.php?p=returnConfirmation" method="POST" name="retAvailForm" autocomplete="off">
             <input type="hidden" name="orderID" value="<?= $orderID ?>" />
             <input type="hidden" name="invoiceID" value="<?= $refData["InvoiceID"] ?>" />
+            <input type="hidden" name="paymentID" value="<?= $refData["PaymentID"] ?>" />
             <table class="table table-striped table-sm">
               <thead>
                 <!-- Return Items Available Table Header -->

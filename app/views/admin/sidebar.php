@@ -19,11 +19,11 @@
       </li>
       <!-- Orders -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "orders" ? " active" : "";?>" href="admin_dashboard.php?p=orders"><span data-feather="package"></span>Orders <span id="toSendBadge"><?= $toSendBadge ?></span></a>
+        <a class="nav-link<?= $_GET["p"] == "orders" ? " active" : "";?>" href="admin_dashboard.php?p=orders"><span data-feather="package"></span>Orders <span style="margin-left:10px" id="toSendBadge"><?= $toSendBadge ?></span></a>
       </li>
       <!-- Returns -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "returns" ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<span id="toProcessBadge"><?= $toProcessBadge ?></span></a>
+        <a class="nav-link<?= $_GET["p"] == "returns" ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<span style="margin-left:10px" id="toProcessBadge"><?= $toProcessBadge ?></span></a>
       </li>
       <!-- Users-->
       <li class="nav-item">

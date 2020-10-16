@@ -1,6 +1,8 @@
 <tr><!--return_item_ADMIN-->
   <td><?= $itemCount; ?></td>
-  <td><img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" /></td>
+  <td>
+    <img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" />
+  </td>
   <td>
     <?= $record["Name"]; ?><br />
     ID: <?= $record["ProductID"]; ?>

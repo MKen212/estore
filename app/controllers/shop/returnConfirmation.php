@@ -6,6 +6,7 @@ if (isset($_POST["selectReturns"])) {
   $returnData = [
     "orderID" => $_POST["orderID"],
     "invoiceID" => $_POST["invoiceID"],
+    "paymentID" => $_POST["paymentID"],
     "itemCount" => 0,
     "productCount" => 0,
     "refundTotal" => 0,

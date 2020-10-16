@@ -51,13 +51,13 @@ Class Order {
   }
 
   /**
-   * getRefData function - Returns the OwnerUserID & InvoiceID for the specific OrderID
+   * getRefData function - Returns the OwnerUserID, InvoiceID & PaymentID for the specific OrderID using ord_paypal_view
    * @param int $orderID    Order ID for specific order
-   * @return array $result  OwnerUserID & InvoiceID for OrderID or False
+   * @return array $result  OwnerUserID, InvoiceID & PaymentID for OrderID or False
    */
   public function getRefData($orderID) {
     try {
-      $sql = "SELECT `OwnerUserID`, `InvoiceID` FROM `orders` WHERE `OrderID` = '$orderID'";
+      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `PaymentID` FROM `ord_paypal_view` WHERE `OrderID` = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
