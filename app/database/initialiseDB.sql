@@ -129,7 +129,6 @@ CREATE TABLE IF NOT EXISTS `paypal_orders` (
   `CaptureTimestamp` TIMESTAMP DEFAULT 0,
   `CaptureDebugID` VARCHAR(20),
   KEY `PaymentID` (`PaymentID`)
-
 );
 
 -- Create orders table
@@ -168,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `QtyAvailForRtn` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `AddedToCartTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `ShippedTimestamp` TIMESTAMP DEFAULT 0,
+  `ShippedDate` DATE DEFAULT '0000-00-00',
   `ShippedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
@@ -196,7 +195,7 @@ CREATE VIEW IF NOT EXISTS `ord_items_view` AS SELECT
   `order_items`.`QtyOrdered` AS `QtyOrdered`,
   `order_items`.`QtyAvailForRtn` AS `QtyAvailForRtn`,
   `order_items`.`ImgFilename` AS `ImgFilename`,
-  `order_items`.`ShippedTimestamp` AS `ShippedTimestamp`,
+  `order_items`.`ShippedDate` AS `ShippedDate`,
   `order_items`.`IsShipped` AS `IsShipped`,
   `orders`.`OrderStatus` AS `OrderStatus`,
   `order_items`.`Status` AS `ItemStatus`
@@ -231,9 +230,9 @@ CREATE TABLE IF NOT EXISTS `return_items` (
   `QtyReturned` INT(11) NOT NULL DEFAULT 0,
   `ReturnReason` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Not Needed, 1=Damaged, 2=Wrong Item, 3=Wrong Size, 4=Wrong Desc",
   `ReturnAction`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Replace, 1=Refund",
-  `ReceivedTimestamp` TIMESTAMP DEFAULT 0,
+  `ReceivedDate` DATE DEFAULT '0000-00-00',
   `ReceivedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `ActionedTimestamp` TIMESTAMP DEFAULT 0,
+  `ActionedDate` DATE DEFAULT '0000-00-00',
   `ActionedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
@@ -256,9 +255,9 @@ CREATE VIEW IF NOT EXISTS `ret_ord_items_view` AS SELECT
   `return_items`.`QtyReturned` AS `QtyReturned`,
   `return_items`.`ReturnReason` AS `ReturnReason`,
   `return_items`.`ReturnAction` AS `ReturnAction`,
-  `return_items`.`ReceivedTimestamp` AS `ReceivedTimestamp`,
+  `return_items`.`ReceivedDate` AS `ReceivedDate`,
   `return_items`.`ReceivedUserID` AS `ReceivedUserID`,
-  `return_items`.`ActionedTimestamp` AS `ActionedTimestamp`,
+  `return_items`.`ActionedDate` AS `ActionedDate`,
   `return_items`.`ActionedUserID` AS `ActionedUserID`,
   `return_items`.`EditTimestamp` AS `EditTimestamp`,
   `return_items`.`EditUserID` AS `EditUserID`,
@@ -270,10 +269,10 @@ CREATE VIEW IF NOT EXISTS `ret_ord_items_view` AS SELECT
 
 -- Create PayPal Refunds table
 CREATE TABLE IF NOT EXISTS `paypal_refunds` (
-  `PpRefundID` INT(11) NOT NULL PRIMARY KEY,
+  `DbReturnID` INT(11) NOT NULL PRIMARY KEY,
+  `PpRefundID` VARCHAR(20) NOT NULL,
   `PpRefundStatus` VARCHAR(20) NOT NULL,
   `PpInvoiceID` INT(11) NOT NULL,
-  `DbReturnID` INT(11) NOT NULL,
   `CurrencyCode` VARCHAR(5) NOT NULL,
   `Value` DECIMAL(10, 2) NOT NULL,
   `NoteToPayer` VARCHAR(50),

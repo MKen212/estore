@@ -53,6 +53,22 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
     include_once "../app/models/returnItemClass.php";
     $returnItem = new ReturnItem();
     $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
+  } elseif (isset($_POST["updReceivedDate"])) {  // Item Received Date was updated
+    $returnItemID = $_GET["itemID"];
+    $newReceivedDate = $_POST["newReceivedDate"];
+    $_POST=[];
+    // Update OrderItem ReceivedDate
+    include_once "../app/models/returnItemClass.php";
+    $returnItem = new ReturnItem();
+    $update = $returnItem->updateReceivedDate($returnItemID, $newReceivedDate);
+  } elseif (isset($_POST["updActionedDate"])) {  // Item Actioned Date was updated
+    $returnItemID = $_GET["itemID"];
+    $newActionedDate = $_POST["newActionedDate"];
+    $_POST=[];
+    // Update OrderItem ActionedDate
+    include_once "../app/models/returnItemClass.php";
+    $returnItem = new ReturnItem();
+    $update = $returnItem->updateActiondDate($returnItemID, $newActionedDate);
   } elseif (isset($_GET["refund"])) {  // Process Refund Link was clicked
     $invoiceID = $_GET["invId"];
     $noteToPayer = "Refund for Return {$invoiceID}-RTN-{$returnID}";
@@ -102,7 +118,7 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
                 <th>Unit Price</th>
                 <th>Qty</th>
                 <th>Reason<br />Action</th>
-                <th style="border-left:double">Date/Time Received<br />Date/Time Actioned<br />Last Edit</th>
+                <th style="border-left:double">Date Received<br />Date Actioned<br />Last Edit</th>
                 <th>Received<br />Actioned<br />Status</th>
               </tr>
             </thead>

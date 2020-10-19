@@ -56,9 +56,9 @@ Class OrderItem {
   public function getReturnsAvailByOrder($orderID, $itemStatus = null) {
     try {
       if ($itemStatus == null) {
-        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
       } else {
-        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedTimestamp`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -97,9 +97,9 @@ Class OrderItem {
     try {
       $editID = $_SESSION["userID"];
       if ($isShipped == 1) {  // Item Shipped {HARD CODED!}
-        $sql = "UPDATE `order_items` SET `ShippedTimestamp` = CURRENT_TIMESTAMP(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = CURRENT_DATE(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
       } else {  // Not Shipped
-        $sql = "UPDATE `order_items` SET `ShippedTimestamp` = '0000-00-00 00:00:00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
       }
       $result = $this->conn->exec($sql);
       return $result;
@@ -122,6 +122,25 @@ Class OrderItem {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateQtyAvailForRtn Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateShippedDate function - Update ShippedDate field of an existing order_item record
+   * @param int $orderItemID  OrderItemID of order item being updated
+   * @param string $newShipDate  New Shipped Date in the format (YYYY-MM-DD)
+   * @return int $result         Number of records updated (=1) or False
+   */
+  public function updateShippedDate($orderItemID, $newShipDate) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `order_items` SET `ShippedDate` = '$newShipDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `OrderItemID` = '$orderItemID'";
+      $result = $this->conn->exec($sql);
+      $_SESSION["message"] = msgPrep("success", "Date Shipped updated successfully.<br />");
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateShippedDate Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

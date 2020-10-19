@@ -11,7 +11,15 @@
   <td><?= $record["QtyOrdered"]; ?></td>
   <td><?= $record["QtyAvailForRtn"]; ?></td>
   <td style="border-left:double">
-    <?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($record["ShippedTimestamp"])) . " by " . $record["ShippedUserID"]; ?><br />
+    <?php if ($record["ShippedDate"] == "0000-00-00") : 
+      echo "- Pending - <br />";
+    else: ?>
+      <form action="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>&itemID=<?=$record["OrderItemID"]; ?>&updShippedDate" method="POST">
+        <input type="date" name="newShipDate" value=<?= $record["ShippedDate"]; ?> />
+        <input type="submit" name="updShipDate" value="Update" />
+        <?= " by " . $record["ShippedUserID"]; ?>
+      </form>
+    <?php endif; ?>
     <?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?>
   </td>
   <td>

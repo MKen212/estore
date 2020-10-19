@@ -16,7 +16,7 @@
     <p class="cart_total_price"><?= symValue(($record["QtyOrdered"] * $record["Price"])); ?></p>
   </td>
   <td class="cart_shipped">
-    <p><?= $record["ShippedTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></p>
+    <p><?= $record["ShippedDate"] == "0000-00-00" ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedDate"])); ?></p>
   </td>
   <td>
     <p><?= $record["ReturnAvailable"] == 1 ? "<a class='btn btn-primary' style='margin-top:0px' href='index.php?p=returnItems&id=" . $orderID . "'>Available</a>" : "<i>Unavailable</i>"; ?></p>

@@ -5,7 +5,7 @@
   </td>
   <td><b><?= $record["Name"]; ?></b><br />Product ID: <?= $record["ProductID"]; ?></td>
   <td><?= symValue($record["Price"]); ?></td>
-  <td ><?= date("d/m/Y", strtotime($record["ShippedTimestamp"])); ?></td>
+  <td ><?= date("d/m/Y", strtotime($record["ShippedDate"])); ?></td>
   
   <td style="border-left:double">
     <input type="checkbox" name="returns[<?= $itemCount ?>][orderItemID]" value="<?= $record["OrderItemID"]; ?>" />

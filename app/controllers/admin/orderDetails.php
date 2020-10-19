@@ -44,6 +44,14 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
     include_once "../app/models/orderItemClass.php";
     $orderItem = new OrderItem();
     $updateStatus = $orderItem->updateIsShipped($orderItemID, $newStatus);
+  } elseif (isset($_POST["updShipDate"])) {  // Item Shipped Date was updated
+    $orderItemID = $_GET["itemID"];
+    $newShipDate = $_POST["newShipDate"];
+    $_POST=[];
+    // Update OrderItem ShippedDate
+    include_once "../app/models/orderItemClass.php";
+    $orderItem = new OrderItem();
+    $update = $orderItem->updateShippedDate($orderItemID, $newShipDate);
   }
   ?>
   <!-- Main Section - Admin Order Info -->
@@ -86,7 +94,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
               <th>Unit Price</th>
               <th>Qty</th>
               <th>QtyAvailRtn</th>
-              <th style="border-left:double">Date/Time Shipped<br />Last Edit</th>
+              <th style="border-left:double">Date Shipped<br />Last Edit</th>
               <th>Shipped<br />Status</th>
             </tr>
           </thead>

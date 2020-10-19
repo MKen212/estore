@@ -76,9 +76,9 @@ Class ReturnItem {
     try {
       $editID = $_SESSION["userID"];
       if ($isReceived == 1) {  // Item Received {HARD CODED!}
-        $sql = "UPDATE `return_items` SET `ReceivedTimestamp` = CURRENT_TIMESTAMP(), `ReceivedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsReceived` = '$isReceived' WHERE `ReturnItemID` = '$returnItemID'";
+        $sql = "UPDATE `return_items` SET `ReceivedDate` = CURRENT_DATE(), `ReceivedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsReceived` = '$isReceived' WHERE `ReturnItemID` = '$returnItemID'";
       } else {  // Not Received
-        $sql = "UPDATE `return_items` SET `ReceivedTimestamp` = '0000-00-00 00:00:00', `ReceivedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsReceived` = '$isReceived' WHERE `ReturnItemID` = '$returnItemID'";
+        $sql = "UPDATE `return_items` SET `ReceivedDate` = '0000-00-00', `ReceivedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsReceived` = '$isReceived' WHERE `ReturnItemID` = '$returnItemID'";
       }
       $result = $this->conn->exec($sql);
       return $result;
@@ -98,14 +98,52 @@ Class ReturnItem {
     try {
       $editID = $_SESSION["userID"];
       if ($isActioned == 1) {  // Item Actioned {HARD CODED!}
-        $sql = "UPDATE `return_items` SET `ActionedTimestamp` = CURRENT_TIMESTAMP(), `ActionedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsActioned` = '$isActioned' WHERE `ReturnItemID` = '$returnItemID'";
+        $sql = "UPDATE `return_items` SET `ActionedDate` = CURRENT_DATE(), `ActionedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsActioned` = '$isActioned' WHERE `ReturnItemID` = '$returnItemID'";
       } else {  // Not Received
-        $sql = "UPDATE `return_items` SET `ActionedTimestamp` = '0000-00-00 00:00:00', `ActionedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsActioned` = '$isActioned' WHERE `ReturnItemID` = '$returnItemID'";
+        $sql = "UPDATE `return_items` SET `ActionedDate` = '0000-00-00', `ActionedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsActioned` = '$isActioned' WHERE `ReturnItemID` = '$returnItemID'";
       }
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateIsActioned Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateReceivedDate function - Update ReceivedDate field of an existing return_item record
+   * @param int $returnItemID        ReturnItemID of return item being updated
+   * @param string $newReceivedDate  New Received Date in format (YYYY-MM-DD)
+   * @return int $result             Number of records updated (=1) or False
+   */
+  public function updateReceivedDate($returnItemID, $newReceivedDate) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `return_items` SET `ReceivedDate` = '$newReceivedDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `ReturnItemID` = '$returnItemID'";
+      $result = $this->conn->exec($sql);
+      $_SESSION["message"] = msgPrep("success", "Date Received updated successfully.<br />");
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateReceivedDate Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateActionedDate function - Update ActionedDate field of an existing return_item record
+   * @param int $returnItemID        ReturnItemID of return item being updated
+   * @param string $newActionedDate  New Actioned Date in format (YYYY-MM-DD)
+   * @return int $result             Number of records updated (=1) or False
+   */
+  public function updateActiondDate($returnItemID, $newActionedDate) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `return_items` SET `ActionedDate` = '$newActionedDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `ReturnItemID` = '$returnItemID'";
+      $result = $this->conn->exec($sql);
+      $_SESSION["message"] = msgPrep("success", "Date Actioned updated successfully.<br />");
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateActionedDate Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

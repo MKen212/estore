@@ -61,7 +61,7 @@
                   foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
                     $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
                     // Check if item return allowed
-                    $shipInterval = date_diff(date_create("today"), date_create(substr($record["ShippedTimestamp"], 0, 10)));
+                    $shipInterval = date_diff(date_create("today"), date_create($record["ShippedDate"]));
                     if ($shipInterval->days <= DEFAULTS["returnsAllowance"] && $record["QtyAvailForRtn"] > 0) {
                       $record["ReturnAvailable"] = 1;
                     } else {
