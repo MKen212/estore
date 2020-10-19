@@ -4,7 +4,7 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProductID to 0 if not provid
 
 <!-- Main Section - Product Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Product Details - Product ID: <?= $_GET["id"] ?></h2>
+  <h2>Product Details - ID: <?= $_GET["id"] ?></h2>
 </div>
 
 <?php

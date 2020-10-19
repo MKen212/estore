@@ -156,7 +156,7 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT `ProductID`, `Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status` FROM `products` WHERE `ProductID` = '$productID'";
+      $sql = "SELECT * FROM `products` WHERE `ProductID` = '$productID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

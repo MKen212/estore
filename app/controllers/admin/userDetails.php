@@ -3,7 +3,7 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set UserID to 0 if not provided
 ?>
 <!-- Main Section - User Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>User Details - User ID: <?= $_GET["id"] ?></h2>
+  <h2>User Details - ID: <?= $_GET["id"] ?></h2>
 </div>
 
 <?php
@@ -45,3 +45,4 @@ if ($userData == false) {  // UserID not found
     </script><?php
   }
 }
+?>

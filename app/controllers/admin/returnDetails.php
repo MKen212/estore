@@ -83,7 +83,7 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
 <!-- Main Section - Admin Order Info -->
   <div class="row pt-3 pb-2 mb-3 border-bottom">
     <div class="col-6">
-      <h2>Return Details - Return ID: <?= $returnID ?></h2>
+      <h2>Return Details - ID: <?= $returnID ?></h2>
     </div>
     <div class="col-6">
       <!-- System Messages -->

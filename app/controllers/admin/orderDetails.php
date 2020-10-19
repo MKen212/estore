@@ -57,7 +57,7 @@ if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
   <!-- Main Section - Admin Order Info -->
   <div class="row pt-3 pb-2 mb-3 border-bottom">
     <div class="col-6">
-      <h2>Order Details - Order ID: <?= $orderID ?></h2>
+      <h2>Order Details - ID: <?= $orderID ?></h2>
     </div>
     <div class="col-6">
       <!-- System Messages -->
