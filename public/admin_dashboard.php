@@ -9,9 +9,10 @@ if ($_SESSION["userIsAdmin"] != 1) {  // Reject User that is not an Admin
   header("location:admin.php?p=logout");
 }
 
-
 require "../app/config/_config.php";
 require "../app/helpers/helperFunctions.php";
+require "../vendor/autoload.php";
+
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 ?>
 <!DOCTYPE html>

@@ -181,7 +181,7 @@ class PayPal {
    * @param int $returnID         Return ID of return being refunded
    * @return object $response     Returns object of the Created Refund or False
    */
-  public function refundPayment($invoiceID, $noteToPayer,$currencyCode, $value,  $paymentID, $returnID) {
+  public function refundPayment($invoiceID, $noteToPayer, $currencyCode, $value,  $paymentID, $returnID) {
     try {
       if (empty($invoiceID) || empty($noteToPayer) || empty($currencyCode) || empty($value) || empty($paymentID) || empty($returnID)) throw new HttpException("Required parameters not provided.", 400, null);
       // Build the Refund Body

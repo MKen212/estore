@@ -111,13 +111,13 @@ Class Returns {
   }
 
   /**
-   * getDetails function - Get returns record for a ReturnID
+   * getDetails function - Get combined returns record for a ReturnID using ret_paypal_view
    * @param int $returnID   Return ID for specific order
    * @return array $result  All details of return for ReturnID or False
    */
   public function getDetails($returnID) {
     try {
-      $sql = "SELECT * FROM `returns` WHERE ReturnID = '$returnID'";
+      $sql = "SELECT * FROM `ret_paypal_view` WHERE ReturnID = '$returnID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

@@ -53,6 +53,15 @@ if (!isset($_GET["id"])) :  // Check Return ID Provided ?>
     include_once "../app/models/returnItemClass.php";
     $returnItem = new ReturnItem();
     $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
+  } elseif (isset($_GET["refund"])) {  // Process Refund Link was clicked
+    $invoiceID = $_GET["invId"];
+    $noteToPayer = "Refund for Return {$invoiceID}-RTN-{$returnID}";
+    $paymentID = $_GET["payId"];
+    $value = $_GET["value"];
+    // Process Refund
+    include_once "../app/models/paypalClass.php";
+    $paypal = new PayPal();
+    $paypal->refundPayment($invoiceID, $noteToPayer, DEFAULTS["currency"], $value, $paymentID, $returnID);
   }
   ?>
 <!-- Main Section - Admin Order Info -->

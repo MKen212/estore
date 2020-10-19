@@ -24,7 +24,11 @@
       </tr>
       <tr>
         <td>Total Refund Value:</td>
-        <td><?= symValue($returnDetails["RefundTotal"]); ?> <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard.php?p=returnDetails&id=<?= $returnDetails["ReturnID"] ?>&refund">Process Refund</a></td>
+        <td><?= symValue($returnDetails["RefundTotal"]); ?>
+        <?php if (($returnDetails["RefundTotal"] > 0) && empty($returnDetails["PpRefundID"])) : ?>
+          <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard.php?p=returnDetails&id=<?= $returnDetails["ReturnID"] ?>&invId=<?= $returnDetails["InvoiceID"] ?>&payId=<?= $returnDetails["PaymentID"] ?>&value=<?= $returnDetails["RefundTotal"] ?>&refund">Process Refund</a>
+        <?php endif; ?>
+        </td>
       </tr>
       <tr>
         <td>Date/Time Added:</td>
@@ -44,6 +48,24 @@
         <td>Original Payment ID:</td>
         <td><?= $returnDetails["PaymentID"] ?></td>
       </tr>
+      <?php if (!empty($returnDetails["PpRefundID"])) : ?>
+        <tr>
+          <td>Refund ID:</td>
+          <td><?= $returnDetails["PpRefundID"] ?></td>
+        </tr>
+        <tr>
+          <td>Refund Status:</td>
+          <td><?= $returnDetails["PpRefundStatus"] ?></td>
+        </tr>
+        <tr>
+          <td>Refund Value:</td>
+          <td><?= $returnDetails["CurrencyCode"] . " " . $returnDetails["Value"] ?></td>
+        </tr>
+        <tr>
+          <td>Date & Time Refunded:</td>
+          <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["RefundTimestamp"])); ?></td>
+        </tr>
+      <?php endif; ?>
     </table>
   </div><!--/paypal_information-->
 </div><!--/returns_header_ADMIN-->
