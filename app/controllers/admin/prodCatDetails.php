@@ -34,14 +34,11 @@ if ($prodCatData == false) {  // ProdCatID not found
 
     include_once "../app/models/prodCatClass.php";
     $prodCat = new ProdCat();
-    // $updateProdCat =     // TO HERE
-    // $user->updateRecord($id, $email, $password, $name, $isAdmin, $status);
-
+    $updateProdCat = $prodCat->updateRecord($id, $name, $status);
     // Refresh page
     ?><script>
       window.location.assign("admin_dashboard.php?p=prodCatDetails&id=<?= $id ?>");
     </script><?php
   }
-
 }
 ?>

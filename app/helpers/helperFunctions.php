@@ -245,20 +245,23 @@ function shippingOptions($field, $selCode) {
 }
 
 /**
- * prodCatOptions function - Outputs all Names from prod_categories as HTML options
+ * prodCatOptions function - Outputs all ACTIVE Names from prod_categories as HTML options
  * @param string $selID  ProdCatID that is marked as 'selected'
  * @return bool          Returns true on completion
  */
 function prodCatOptions($selID) {
+  $selID != 0 ? $selIDFound = false : $selIDFound = true;
   include_once "../app/models/prodCatClass.php";
   $prodCat = new ProdCat();
-  foreach (new RecursiveArrayIterator($prodCat->getCategories()) as $value) {
+  foreach (new RecursiveArrayIterator($prodCat->getCategories(1)) as $value) {
    if ($value["ProdCatID"] == $selID) {
+     $selIDFound = true;
      echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
    } else {
      echo "<option value='" . $value["ProdCatID"] . "'>" . $value["Name"] . "</option>";
    }
   }
+  if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Category Needs Updating.");
   return true;
 }
 

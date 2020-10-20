@@ -53,8 +53,7 @@ if ($productData == false) {  // ProductID not found
     } else {
       $imgFilename = $productData["ImgFilename"];
     }
-    $isNew = $_POST["isNew"];
-    $isOnSale = $_POST["isOnSale"];
+    $flag = $_POST["flag"];
     $status = $_POST["status"];
     $_POST = [];
 
@@ -63,7 +62,7 @@ if ($productData == false) {  // ProductID not found
     // Update database entry
     include_once "../app/models/productClass.php";
     $product = new Product();
-    $updateProduct = $product->updateRecord($id, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $isNew, $isOnSale, $status);
+    $updateProduct = $product->updateRecord($id, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status);
 
     if ($updateProduct) {  // Database Entry Success
       if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload

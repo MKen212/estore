@@ -63,12 +63,11 @@ class Product {
    * @param int $weightGrams     Product Shipping Weight in Grams
    * @param int $qtyAvail        Quantity of Product Available
    * @param string $imgFilename  Filename for Product Image
-   * @param int $editUserID      User ID who added the product
    * @param int $flag            Product Flag (Optional)
    * @param int $status          Product Status (Optional)
    * @return int $newID          Product ID of added product or False
    */
-  public function add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $flag = 0, $status = 1) {
+  public function add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag = 0, $status = 1) {
     try {
       // Check Product Name does not already exist
       $count = $this->exists($name);
@@ -76,10 +75,11 @@ class Product {
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
-        $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', '$editUserID', '$flag', '$status')";
+        $editID = $_SESSION["userID"];
+        $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', CURRENT_TIMESTAMP(), '$editID', '$flag', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = "Product '$name' added successfully as Product ID '$newID'.";
+        $_SESSION["message"] = msgPrep("success", "Product '$name' added successfully as Product ID '$newID'.");
         return $newID;
       }
     } catch (PDOException $err) {
@@ -178,9 +178,9 @@ class Product {
    * @param int $quantity        Quantity of Product Added
    * @param string $imgFilename  Filename for Product Image
    * @param int $editUserID      User ID who updated the product
-   * @param int $flag            Product Flag (Optional)
-   * @param int $status          Product Status (Optional)
-   * @return int $result         Number of records updated or False
+   * @param int $flag            Product Flag
+   * @param int $status          Product Status
+   * @return int $result         Number of records updated (=1) or False
    */
   public function updateRecord($productID, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status) {
     try {
@@ -192,7 +192,7 @@ class Product {
           $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
           return false;
         } else {
-          $sqlName = "`Name` = '$name'";
+          $sqlName = "`Name` = '$name', ";
         }
       }
       $editID = $_SESSION["userID"];
@@ -254,7 +254,8 @@ class Product {
    */
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {
-      $sql = "UPDATE `products` SET `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

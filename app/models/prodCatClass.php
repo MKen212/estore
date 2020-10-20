@@ -33,12 +33,44 @@ Class ProdCat {
   }
 
   /**
+   * add function - Add Product Category Record
+   * @param string $name  Product Category Name
+   * @param int $status   Product Category Status (Optional)
+   * @return int $newID   ProdCatID of added Product Category or False
+   */
+  public function add($name, $status = 1) {
+    try {
+      // Check Product Category Name does not already exist
+      $count = $this->exists($name);
+      if ($count !=0) {  // Name is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '$name' is already in use! Please try again.");
+        return false;
+      } else {  // Insert Product Category Record
+        $editID = $_SESSION["userID"];
+        $sql = "INSERT INTO `prod_categories` (`Name`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$name', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $this->conn->exec($sql);
+        $newID = $this->conn->lastInsertId();
+        $_SESSION["message"] = msgPrep("success", "Product Category '$name' added successfully as ID '$newID'.");
+        return $newID;
+      }
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/add Failed: " . $err->getMessage());
+      return false;
+    }
+  }
+
+  /**
    * getCategories function - Retrieve all Product Category records sorted by name
+   * @param int $status     Product Category Status (Optional)
    * @return array $result  Returns all prod_categories records or False
    */
-  public function getCategories() {
+  public function getCategories($status = null) {
     try {
-      $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` ORDER BY `Name`";
+      if ($status == null) {
+        $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` ORDER BY `Name`";
+      } else {
+        $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` WHERE `Status` = '$status' ORDER BY `Name`";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -48,7 +80,7 @@ Class ProdCat {
   }
 
   /**
-   * getList function - Get list of Product Category records
+   * getList function - Get full list of Product Category records
    * @param string $name    Product Category Name (Optional)
    * @return array $result  Details of all/selected product categories (Name order) or False
    */
@@ -81,6 +113,41 @@ Class ProdCat {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getRecord Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateRecord function - Update an existing Product Category record
+   * @param int $prodCatID  Product Category ID of record being updated
+   * @param string $name    Product Category Name
+   * @param int $status     Product Category Status
+   * @return int $result    Number of records updated (=1) or False
+   */
+  public function updateRecord($prodCatID, $name, $status) {
+    try {
+      // If updating name check new Name does not already exist
+      $sqlName = "";
+      if (!empty($name)) {
+        $count = $this->exists($name);
+        if ($count != 0) {  // Name is NOT unique
+          $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '$name' is already in use! Please try again.");
+          return false;
+        } else {
+          $sqlName = "`Name` = '$name', ";
+        }
+      }
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `prod_categories` SET {$sqlName}`EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdCatID` = $prodCatID";
+      $result = $this->conn->exec($sql);
+      if ($result == 1) {  // Only 1 record should be updated
+        $_SESSION["message"] = msgPrep("success", "Update of Product Category ID '$prodCatID' was successful.");
+      } else {
+        throw new PDOException("0 or >1 record was updated.");
+      }
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

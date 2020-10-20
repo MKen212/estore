@@ -191,7 +191,7 @@ class User {
       $sql = "UPDATE `users` SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
       $result = $this->conn->exec($sql);
       if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = msgPrep("success","Update of User ID: '$userID' was successful.");
+        $_SESSION["message"] = msgPrep("success", "Update of User ID: '$userID' was successful.");
         if ($userID == $editID) {  // User has updated own record
           // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
           $_SESSION["userName"] = $name;

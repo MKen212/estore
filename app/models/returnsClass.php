@@ -75,9 +75,9 @@ Class Returns {
   public function getList($invoiceID = null) {
     try {
       if ($invoiceID == null) {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `ReturnID` DESC";
       } else {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `ReturnID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
