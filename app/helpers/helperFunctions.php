@@ -254,32 +254,35 @@ function prodCatOptions($selID) {
   include_once "../app/models/prodCatClass.php";
   $prodCat = new ProdCat();
   foreach (new RecursiveArrayIterator($prodCat->getCategories(1)) as $value) {
-   if ($value["ProdCatID"] == $selID) {
-     $selIDFound = true;
-     echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
-   } else {
+    if ($value["ProdCatID"] == $selID) {
+      $selIDFound = true;
+      echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
+    } else {
      echo "<option value='" . $value["ProdCatID"] . "'>" . $value["Name"] . "</option>";
-   }
+    }
   }
   if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Category Needs Updating.");
   return true;
 }
 
 /**
- * prodBrandOptions function - Outputs all Names from prod_brands as HTML options
+ * prodBrandOptions function - Outputs all ACTIVE Names from prod_brands as HTML options
  * @param string $selID  ProdBrandID that is marked as 'selected'
  * @return bool          Returns true on completion
  */
 function prodBrandOptions($selID) {
+  $selID !=0 ? $selIDFound = false : $selIDFound = true;
   include_once "../app/models/prodBrandClass.php";
   $prodBrand = new ProdBrand();
-  foreach (new RecursiveArrayIterator($prodBrand->getBrands()) as $value) {
-   if ($value["ProdBrandID"] == $selID) {
-     echo "<option value='" . $value["ProdBrandID"] . "' selected>" . $value["Name"] . "</option>";
-   } else {
-     echo "<option value='" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</option>";
-   }
+  foreach (new RecursiveArrayIterator($prodBrand->getBrands(1)) as $value) {
+    if ($value["ProdBrandID"] == $selID) {
+      $selIDFound = true;
+      echo "<option value='" . $value["ProdBrandID"] . "' selected>" . $value["Name"] . "</option>";
+    } else {
+      echo "<option value='" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</option>";
+    }
   }
+  if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Brand Needs Updating.");
   return true;
 }
 

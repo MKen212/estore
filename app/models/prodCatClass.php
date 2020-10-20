@@ -82,7 +82,7 @@ Class ProdCat {
   /**
    * getList function - Get full list of Product Category records
    * @param string $name    Product Category Name (Optional)
-   * @return array $result  Details of all/selected product categories (Name order) or False
+   * @return array $result  Details of all/selected Product Categories (Name order) or False
    */
   public function getList($name = null) {
     try {

@@ -16,7 +16,7 @@ $prodCat = new ProdCat();
 $prodCatData = $prodCat->getRecord($id);
 
 if ($prodCatData == false) {  // ProdCatID not found
-  echo "<div>ProdCat ID not found.</div>";
+  echo "<div>Product Category ID not found.</div>";
 } else {
   // Show ProdCat Form
   $formData = [
