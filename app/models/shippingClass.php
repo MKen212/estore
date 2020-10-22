@@ -16,23 +16,6 @@ Class Shipping {
   }
 
   /**
-   * getDistinct function - Returns the DISTINCT (Unique) values of a field
-   * @param string $field   Name of Field from table
-   * @return array $result  Distinct Values from the selected field or False
-   */
-  public function getDistinct($field) {
-    try {
-      $sql = "SELECT DISTINCT `$field` FROM `shipping`";
-      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $result = $stmt->fetchAll();
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - Shipping/getDistinct Failed: " . $err->getMessage();
-      return false;
-    }
-  }
-
-  /**
    * getShippingCost function - Returns the Shipping Cost for the chosen band, type & weight
    * @param string $band      Shipping Band
    * @param string $type      Shipping Type
@@ -47,6 +30,24 @@ Class Shipping {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = "Error - Shipping/getShippingCost Failed: " . $err->getMessage();
+      return false;
+    }
+  }
+
+  /**
+   * getPriceBandKGs function - Returns all the PriceBandKG levels for the chosen band & type in PriceBandKG order
+   * @param string $band    Shipping Band
+   * @param string $type    Shipping Type
+   * @return array $result  Shipping PriceBandKGs or False
+   */
+  public function getPriceBandKGs($band, $type) {
+    try {
+      $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE `Band` = '$band' AND `Type` = '$type' ORDER BY `PriceBandKG`";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = "Error - Shipping/getPriceBandKGs Failed: " . $err->getMessage();
       return false;
     }
   }

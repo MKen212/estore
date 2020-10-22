@@ -21,7 +21,7 @@
             <li class="single_field">
               <label>Shipping Priority:</label>
               <select name="shippingPriority">
-                <?php shippingOptions("Type", $_SESSION["cart"][0]["shippingType"]); ?>
+                <?php shipTypeOptions($_SESSION["cart"][0]["shippingType"]); ?>
               </select>
             </li>
             <li>

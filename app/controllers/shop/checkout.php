@@ -37,21 +37,20 @@
         $_SESSION["cart"][0]["ppOrderID"] = "";
         $_SESSION["cart"][0]["ppOrderStatus"] = "";
 
-        // Get Shipping Costs & Update Total Value
+        // Get Shipping Band for Shipping Country
         include_once "../app/models/countryClass.php";
         $country = new Country();
         $shippingBand = $country->getShippingBand($_SESSION["cart"][0]["shippingCountry"]);
 
-        // Update shipping PriceBandKG based on 3 bands <2kg, <5kg, <10kg or more
-        if ($_SESSION["cart"][0]["shippingWeightKG"] <= 2) {
-          $_SESSION["cart"][0]["shippingPriceBandKG"] = 2;
-        } elseif ($_SESSION["cart"][0]["shippingWeightKG"] <= 5) {
-          $_SESSION["cart"][0]["shippingPriceBandKG"] = 5;
-        } else {
-          $_SESSION["cart"][0]["shippingPriceBandKG"] = 10;
-        }
+        // Update Shipping PriceBandKG based on Band, Type and Weight
         include_once "../app/models/shippingClass.php";
-        $shipping = new Shipping();
+        $shipping = new Shipping;
+        foreach(new RecursiveArrayIterator($shipping->getPriceBandKGs($shippingBand, $_SESSION["cart"][0]["shippingType"])) as $value) {
+          $_SESSION["cart"][0]["shippingPriceBandKG"] = $value["PriceBandKG"];
+          if ($_SESSION["cart"][0]["shippingWeightKG"] <= $value["PriceBandKG"]) break;
+        }
+
+        // Get Shipping Costs & Update Total Value
         $_SESSION["cart"][0]["shippingCost"] = $shipping->getShippingCost($shippingBand, $_SESSION["cart"][0]["shippingType"], $_SESSION["cart"][0]["shippingPriceBandKG"]);
 
         $_SESSION["cart"][0]["total"] = $_SESSION["cart"][0]["subTotal"] + $_SESSION["cart"][0]["shippingCost"];

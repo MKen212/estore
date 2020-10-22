@@ -111,7 +111,7 @@ function addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $ImgFil
       "shippingWeightKG" => 0,
       "shippingPriceBandKG" => 0,
       "shippingCountry" => DEFAULTS["countryCode"],
-      "shippingType" => "Standard",
+      "shippingType" => SHIPPING_VALUES["Types"][0],
       "subTotal" => 0.00,
       "shippingCost" => 0.00,
       "total" => 0.00,
@@ -226,19 +226,16 @@ function countryOptions($selCode) {
 }
 
 /**
- * shippingOptions function - Outputs distinct values from shipping field as HTML options
- * @param string $field   Field to get distinct values from
+ * shipTypeOptions function - Outputs Shipping Types as HTML options
  * @param string $selOpt  Value that is marked as 'selected'
  * @return bool           Returns true on completion
  */
-function shippingOptions($field, $selCode) {
-  include_once "../app/models/shippingClass.php";
-  $shipping = new Shipping();
-  foreach (new RecursiveArrayIterator($shipping->getDistinct($field)) as $value) {
-   if ($value[$field] == $selCode) {
-     echo "<option value='" . $value[$field] . "' selected>" . $value[$field] . "</option>";
+function shipTypeOptions($selCode) {
+  foreach (new RecursiveArrayIterator(SHIPPING_VALUES["Types"]) as $value) {
+   if ($value == $selCode) {
+     echo "<option value='" . $value . "' selected>" . $value . "</option>";
    } else {
-     echo "<option value='" . $value[$field] . "'>" . $value[$field] . "</option>";
+     echo "<option value='" . $value . "'>" . $value . "</option>";
    }
   }
   return true;

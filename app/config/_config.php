@@ -29,9 +29,25 @@ $defaultValues = [
 
 define("DEFAULTS", $defaultValues);
 
+/* Shipping Values */
+$shippingValues = [
+  "Bands" => [  // Shipping Bands
+    "Domestic",
+    "Europe",
+    "Rest of World",
+  ],
+  "Types" => [  // Shipping Types
+    "Standard",  // Default
+    "Fast",
+    "Express",
+  ],
+];
+
+define("SHIPPING_VALUES", $shippingValues);
+
 /* Status Codes */
 $statusCodes = [
-  "Status" => [ // All Tables / Status Field
+  "Status" => [  // All Tables / Status Field
     0 => [
       "text" => "Inactive",
       "badge" => "danger",
