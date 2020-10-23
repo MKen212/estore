@@ -9,7 +9,7 @@ $userData = [
   "Email" => null,
   "Name" => null,
   "IsAdmin" => 0,
-  "Status" => 0,
+  "Status" => 1,
 ];
 
 // Show User Form

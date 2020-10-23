@@ -226,6 +226,22 @@ function countryOptions($selCode) {
 }
 
 /**
+ * shipBandOptions function - Outputs Shipping Bands as HTML options
+ * @param string $selOpt  Value that is marked as 'selected'
+ * @return bool           Returns true on completion
+ */
+function shipBandOptions($selCode) {
+  foreach (new RecursiveArrayIterator(SHIPPING_VALUES["Bands"]) as $value) {
+   if ($value == $selCode) {
+     echo "<option value='" . $value . "' selected>" . $value . "</option>";
+   } else {
+     echo "<option value='" . $value . "'>" . $value . "</option>";
+   }
+  }
+  return true;
+}
+
+/**
  * shipTypeOptions function - Outputs Shipping Types as HTML options
  * @param string $selOpt  Value that is marked as 'selected'
  * @return bool           Returns true on completion

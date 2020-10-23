@@ -7,7 +7,7 @@
 // Initialise Product Category Data
 $prodCatData = [
   "Name" => null,
-  "Status" => 0,
+  "Status" => 1,
 ];
 
 // Show ProdCat Form

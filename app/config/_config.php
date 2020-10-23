@@ -32,7 +32,7 @@ define("DEFAULTS", $defaultValues);
 /* Shipping Values */
 $shippingValues = [
   "Bands" => [  // Shipping Bands
-    "Domestic",
+    "Domestic",  // Default
     "Europe",
     "Rest of World",
   ],

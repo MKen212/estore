@@ -40,7 +40,7 @@
       </li>
       <!-- Shipping Rates -->
       <li class="nav-item">
-        <a class="nav-link<?= (($_GET["p"] == "shipRates") || ($_GET["p"] == "shipRateDetails") || ($_GET["p"] == "shipRateAdd")) ? " active" : "";?>" href="admin_dashboard.php?p=shipRates"><span data-feather="truck"></span>Shipping Rates</a>
+        <a class="nav-link<?= (($_GET["p"] == "shipping") || ($_GET["p"] == "shippingDetails") || ($_GET["p"] == "shippingAdd")) ? " active" : "";?>" href="admin_dashboard.php?p=shipping"><span data-feather="truck"></span>Shipping Rates</a>
       </li>
       <!-- Shipping Countries -->
       <li class="nav-item">

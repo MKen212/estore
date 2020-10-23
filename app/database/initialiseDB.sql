@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `shipping` (
   `PriceBandCost` DECIMAL(10, 2) DEFAULT 0.00,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  UNIQUE KEY `Band-Type-PriceBandKG` (`Band`, `Type`, `PriceBandKG`)
 );
 -- For Shipping Initial Data see see initialData.sql...
 

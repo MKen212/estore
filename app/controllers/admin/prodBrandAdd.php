@@ -7,7 +7,7 @@
 // Initialise Product Brand Data
 $prodBrandData = [
   "Name" => null,
-  "Status" => 0,
+  "Status" => 1,
 ];
 
 // Show ProdBrand Form
