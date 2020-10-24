@@ -2,7 +2,7 @@
 if (isset($_GET["updStatus"])) {  // Status link was clicked
   $shippingID = $_GET["id"];
   $current = $_GET["cur"];
-  $_GET=[];
+  $_GET = [];
   $newStatus = statusCycle("Status", $current);
   // Update Shipping Status
   include_once "../app/models/shippingClass.php";

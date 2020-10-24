@@ -4,7 +4,7 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ShippingID to 0 if not provi
 
 <!-- Main Section - Shipping Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Shipping Details - ID: <?= $_GET["id"] ?></h2>
+  <h2>Shipping Rate Details - ID: <?= $_GET["id"] ?></h2>
 </div>
 
 <?php

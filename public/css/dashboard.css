@@ -109,14 +109,49 @@
  * Input forms
  */
 
- .labFixed {
-   width: 170px;
- }
+.labFixed {
+  width: 170px;
+}
 
- .inpFixed {
-   width: 350px;
- }
+.inpFixed {
+  width: 350px;
+}
 
- .taFixed{
-   resize: none;
- }
+.taFixed{
+  resize: none;
+}
+
+/*
+ * Scrollable Tables
+ */
+
+.tableScrollable {
+  width: 100% 
+}
+
+.tableScrollable > thead,
+.tableScrollable > tbody,
+.tableScrollable > thead > tr,
+.tableScrollable > tbody > tr,
+.tableScrollable > thead > tr > th,
+.tableScrollable > tbody > tr > td {
+  display: block;
+}
+
+.tableScrollable > tbody > tr:after,
+.tableScrollable > thead > tr:after {
+  content: ' ';
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+
+.tableScrollable > tbody {
+  overflow-y: auto;
+  height: 450px;
+}
+
+.tableScrollable > tbody > tr > td,
+.tableScrollable > thead > tr > th {
+  float: left;
+}
