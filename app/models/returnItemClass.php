@@ -34,11 +34,16 @@ Class ReturnItem {
 
   /** getItemsByReturn function - Retrieve return items for a ReturnID using ret_ord_items_view
    * @param int $returnID   Return ID of items required
+   * @param int $status     Return Item Status 
    * @return array $result  Return Items for specified return or False
    */
-  public function getItemsByReturn($returnID) {
+  public function getItemsByReturn($returnID, $status = null) {
     try {
-      $sql= "SELECT * FROM `ret_ord_items_view` WHERE `ReturnID` = '$returnID' ORDER BY `ReturnItemID`";
+      if ($status == null) {
+        $sql= "SELECT * FROM `ret_ord_items_view` WHERE `ReturnID` = '$returnID' ORDER BY `ReturnItemID`";
+      } else {
+        $sql= "SELECT * FROM `ret_ord_items_view` WHERE ((`ReturnID` = '$returnID') AND (`Status` = '$status')) ORDER BY `ReturnItemID`";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

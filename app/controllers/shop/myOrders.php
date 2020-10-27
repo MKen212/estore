@@ -30,10 +30,13 @@
             <?php
             include_once "../app/models/orderClass.php";
             $order = new Order();
+            $orderCount = 0;
             foreach(new RecursiveArrayIterator($order->getListByUser($_SESSION["userID"], 1)) as $record) {
               include "../app/views/shop/orderListItem.php";
+              $orderCount += 1;
             }
-            ?>      
+            if ($orderCount == 0) echo "<tr><td colspan ='7'>No Orders to Display</td></tr>";
+            ?>
           </tbody>
         </table>
       </div>

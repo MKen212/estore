@@ -25,6 +25,10 @@
         <div class="register-req">
 		      <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div>
+      <?php elseif ($refData["Status"] == 0) :  // Check Order is not Inactive ?>
+        <div class="register-req">
+		      <p>Sorry - Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+        </div>
       <?php else :
         // Get Order Details
         $orderDetails = $order->getDetails($orderID);
@@ -57,8 +61,8 @@
                   <?php
                   include_once "../app/models/orderItemClass.php";
                   $orderItem = new OrderItem();
-                  // Loop through Order Items and output a row per item
-                  foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID)) as $record) {
+                  // Loop through ACTIVE Order Items and output a row per item
+                  foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID, 1)) as $record) {
                     $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
                     // Check if item return allowed
                     $shipInterval = date_diff(date_create("today"), date_create($record["ShippedDate"]));

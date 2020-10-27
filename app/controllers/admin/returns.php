@@ -21,7 +21,7 @@
     </form>
   </div>
   <div class="col-2">
-    <!-- New Return Button ** NOT REQUIRED ** -->
+    <!-- New Return Button ** NOT REQUIRED - Returns only added in Shop ** -->
   </div>
   <div class="col-6">
     <!-- System Messages -->

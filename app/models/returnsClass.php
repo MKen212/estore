@@ -51,13 +51,13 @@ Class Returns {
   }
 
   /**
-   * getRefData function - Returns the OwnerUserID & InvoiceID for the specific ReturnID
+   * getRefData function - Returns the OwnerUserID, InvoiceID & Status for the specific ReturnID
    * @param int $returnID   ReturnID for specific order
-   * @return array $result  OwnerUserID & InvoiceID for ReturnID or False
+   * @return array $result  OwnerUserID, InvoiceID & Status for ReturnID or False
    */
   public function getRefData($returnID) {
     try {
-      $sql = "SELECT `OwnerUserID`, `InvoiceID` FROM `returns` WHERE `ReturnID` = '$returnID'";
+      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `Status` FROM `returns` WHERE `ReturnID` = '$returnID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

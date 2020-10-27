@@ -207,7 +207,7 @@ function msgShow() {
 }
 
 /**
- * countryOptions function - Outputs all Countries as HTML options
+ * countryOptions function - Outputs all ACTIVE Countries as HTML options
  * @param string $selCode  Country Code that is marked as 'selected'
  * @return bool            Returns true on completion
  */
@@ -215,7 +215,7 @@ function countryOptions($selCode) {
   if (empty($selCode)) $selCode = DEFAULTS["countryCode"];  // Use Default if not set
   include_once "../app/models/countryClass.php";
   $country = new Country();
-  foreach (new RecursiveArrayIterator($country->getCountries()) as $value) {
+  foreach (new RecursiveArrayIterator($country->getCountries(1)) as $value) {
     if ($value["Code"] == $selCode) {
       echo "<option value='" . $value["Code"] . "' selected>" . $value["Name"] . "</option>";
     } else {
@@ -353,6 +353,7 @@ function statusOutput($type, $status, $link = null) {
  */
 function statusOutputShop($type, $status, $link = null) {
   $label = STATUS_CODES[$type][$status]["badge"];
+  if ($label == "secondary") $label = "default";  // Fix for Bootstrap 3!
   $text = STATUS_CODES[$type][$status]["text"];
   $statusOutput = "<a class='label label-{$label}' href='{$link}'>{$text}</a>";
   return $statusOutput;

@@ -23,6 +23,10 @@
         <div class="register-req">
           <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div>
+      <?php elseif ($refData["Status"] == 0) :  // Check Order is not Inactive?>
+        <div class="register-req">
+		      <p>Sorry - Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+        </div>
       <?php else : ?>
         <!-- Return Items Available List -->
         <div class="table-responsive" style="margin-bottom:75px">

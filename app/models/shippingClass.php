@@ -65,14 +65,19 @@ Class Shipping {
   }
 
   /**
-   * getPriceBandKGs function - Returns all the PriceBandKG levels for the chosen band & type in PriceBandKG order
+   * getPriceBandKGs function - Returns all the PriceBandKG levels for the chosen band & type (& optionally status) in PriceBandKG order
    * @param string $band    Shipping Band
    * @param string $type    Shipping Type
+   * @param int $status     Shipping Status (Optional)
    * @return array $result  Shipping PriceBandKGs or False
    */
-  public function getPriceBandKGs($band, $type) {
+  public function getPriceBandKGs($band, $type, $status = null) {
     try {
-      $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE `Band` = '$band' AND `Type` = '$type' ORDER BY `PriceBandKG`";
+      if ($status == null) {
+        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '$band') AND (`Type` = '$type')) ORDER BY `PriceBandKG`";
+      } else {
+        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '$band') AND (`Type` = '$type') AND (`Status` = '$status')) ORDER BY `PriceBandKG`";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;

@@ -21,7 +21,7 @@
     </form>
   </div>
   <div class="col-2">
-    <!-- New Order Button ** NOT REQUIRED ** -->
+    <!-- New Order Button ** NOT REQUIRED - Orders only added in Shop** -->
   </div>
   <div class="col-6">
     <!-- System Messages -->

@@ -30,10 +30,13 @@
             <?php
             include_once "../app/models/returnsClass.php";
             $returns = new Returns();
+            $returnsCount = 0;
             foreach(new RecursiveArrayIterator($returns->getListByUser($_SESSION["userID"], 1)) as $record) {
               $record["ReturnsRef"] = $record["InvoiceID"] . "-RTN-" . $record["ReturnID"];  // Returns Ref Field
               include "../app/views/shop/returnsListItem.php";
+              $returnsCount += 1;
             }
+            if ($returnsCount == 0) echo "<tr><td colspan ='7'>No Returns to Display</td></tr>";
             ?>      
           </tbody>
         </table>

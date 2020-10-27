@@ -45,7 +45,7 @@
         // Update Shipping PriceBandKG based on Band, Type and Weight
         include_once "../app/models/shippingClass.php";
         $shipping = new Shipping;
-        foreach(new RecursiveArrayIterator($shipping->getPriceBandKGs($shippingBand, $_SESSION["cart"][0]["shippingType"])) as $value) {
+        foreach(new RecursiveArrayIterator($shipping->getPriceBandKGs($shippingBand, $_SESSION["cart"][0]["shippingType"], 1)) as $value) {
           $_SESSION["cart"][0]["shippingPriceBandKG"] = $value["PriceBandKG"];
           if ($_SESSION["cart"][0]["shippingWeightKG"] <= $value["PriceBandKG"]) break;
         }

@@ -47,11 +47,11 @@ if (isset($_GET["updStatus"])) {  // Status link was clicked
     <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr><!-- Countries Table Header -->        
-          <th style="width:10%">Code</th>
-          <th style="width:30%">Name</th>
-          <th style="width:20%">Shipping Band</th>
-          <th style="width:25%">Last Edit</th>
-          <th style="width:15%">Status</th>
+          <th style="width:6.1835%">Code</th>
+          <th style="width:44.2540%">Name</th>
+          <th style="width:15.5889%">Shipping Band</th>
+          <th style="width:24.4904%">Last Edit</th>
+          <th style="width:9.4823%">Status</th>
         </tr>
       </thead>
       <tbody>

@@ -25,6 +25,10 @@
         <div class="register-req">
 		      <p>Sorry - You do not have access to Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div>
+      <?php elseif ($refData["Status"] == 0) :  // Check Return is not Inactive?>
+        <div class="register-req">
+		      <p>Sorry - Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+        </div>
       <?php else:
         // Get Return Details
         $returnDetails = $returns->getDetails($returnID);
@@ -56,7 +60,7 @@
                   include_once "../app/models/returnItemClass.php";
                   $returnItem = new ReturnItem();
                   // Loop through Return Items and output a row per item
-                  foreach (new RecursiveArrayIterator($returnItem->getItemsByReturn($returnID)) as $record) {
+                  foreach (new RecursiveArrayIterator($returnItem->getItemsByReturn($returnID, 1)) as $record) {
                     $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
 
                     include "../app/views/shop/returnItem.php";

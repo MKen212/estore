@@ -32,13 +32,18 @@ Class OrderItem {
     }
   }
 
-  /** getItemsByOrder function - Retrieve order items for an OrderID
+  /** getItemsByOrder function - Retrieve order items for an OrderID (optionally by Status)
    * @param int $orderID    Order ID of items required
+   * @param int $status     Order Item Status (Optional)
    * @return array $result  Order Items for specified order or False
    */
-  public function getItemsByOrder($orderID) {
+  public function getItemsByOrder($orderID, $status = null) {
     try {
-      $sql= "SELECT * FROM `order_items` WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
+      if ($status == null) {
+        $sql= "SELECT * FROM `order_items` WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
+      } else {
+        $sql= "SELECT * FROM `order_items` WHERE ((`OrderID` = '$orderID') AND (`Status` = '$status')) ORDER BY `OrderItemID`";
+      }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
@@ -48,7 +53,7 @@ Class OrderItem {
     }
   }
 
-  /** getReturnsAvailByOrder function - Get list of order items available for return for an order (and optionally by status) using ord_items_view
+  /** getReturnsAvailByOrder function - Get list of order items available for return for an order (and optionally by Status) using ord_items_view
    * @param int $orderID     Order ID of items required
    * @param int $itemStatus  Order Item Status (Optional)
    * @return array $result   Order Items available for return for specified user or False

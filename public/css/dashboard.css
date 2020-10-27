@@ -147,7 +147,7 @@
 }
 
 .tableScrollable > tbody {
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 450px;
 }
 
