@@ -15,9 +15,9 @@ $shipping = new Shipping();
 // Get Shipping Details for selected record
 $shippingData = $shipping->getRecord($id);
 
-if ($shippingData == false) {  // ShippingID not found
-  echo "<div>Shipping ID not found.</div>";
-} else {
+if ($shippingData == false) :  // ShippingID not found ?>
+  <div>Shipping ID not found.</div>
+<?php else :
   // Show Shipping Form
   $formData = [
     "subName" => "updateShipping",
@@ -48,5 +48,4 @@ if ($shippingData == false) {  // ShippingID not found
       window.location.assign("admin_dashboard.php?p=shippingDetails&id=<?= $id ?>");
     </script><?php
   }
-}
-?>
+endif; ?>

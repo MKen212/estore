@@ -15,9 +15,9 @@ $country = new Country();
 // Get Country Details for selected record
 $countryData = $country->getRecord($code);
 
-if ($countryData == false) {  // Country Code not found
-  echo "<div>Country Code not found.</div>";
-} else {
+if ($countryData == false) :  // Country Code not found ?>
+  <div>Country Code not found.</div>
+<?php else :
   // Show Country Form
   $formData = [
     "subName" => "updateCountry",
@@ -43,5 +43,4 @@ if ($countryData == false) {  // Country Code not found
       window.location.assign("admin_dashboard.php?p=countryDetails&code=<?= $code ?>");
     </script><?php
   }
-}
-?>
+endif; ?>

@@ -15,9 +15,9 @@ $prodBrand = new ProdBrand();
 // Get Product Brand Details for selected record
 $prodBrandData = $prodBrand->getRecord($id);
 
-if ($prodBrandData == false) {  // ProdBrandID not found
-  echo "<div>Product Brand ID not found.</div>";
-} else {
+if ($prodBrandData == false) :  // ProdBrandID not found ?>
+  <div>Product Brand ID not found.</div>
+<?php else :
   // Show ProdBrand Form
   $formData = [
     "subName" => "updateProdBrand",
@@ -40,5 +40,4 @@ if ($prodBrandData == false) {  // ProdBrandID not found
       window.location.assign("admin_dashboard.php?p=prodBrandDetails&id=<?= $id ?>");
     </script><?php
   }
-}
-?>
+endif; ?>

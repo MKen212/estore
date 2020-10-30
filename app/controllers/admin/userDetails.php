@@ -14,9 +14,9 @@ $user = new User();
 // Get User Details for selected record
 $userData = $user->getRecord($id);
 
-if ($userData == false) {  // UserID not found
-  echo "<div>User ID not found.</div>";
-} else {
+if ($userData == false) :  // UserID not found ?>
+  <div>User ID not found.</div>
+<?php else :
   // Show User Form
   $formData = [
     "subName" => "updateUser",
@@ -44,5 +44,4 @@ if ($userData == false) {  // UserID not found
       window.location.assign("admin_dashboard.php?p=userDetails&id=<?= $id ?>");
     </script><?php
   }
-}
-?>
+endif; ?>

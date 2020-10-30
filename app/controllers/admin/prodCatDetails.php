@@ -15,9 +15,9 @@ $prodCat = new ProdCat();
 // Get Product Category Details for selected record
 $prodCatData = $prodCat->getRecord($id);
 
-if ($prodCatData == false) {  // ProdCatID not found
-  echo "<div>Product Category ID not found.</div>";
-} else {
+if ($prodCatData == false) :  // ProdCatID not found ?>
+  <div>Product Category ID not found.</div>
+<?php else :
   // Show ProdCat Form
   $formData = [
     "subName" => "updateProdCat",
@@ -40,5 +40,4 @@ if ($prodCatData == false) {  // ProdCatID not found
       window.location.assign("admin_dashboard.php?p=prodCatDetails&id=<?= $id ?>");
     </script><?php
   }
-}
-?>
+endif; ?>
