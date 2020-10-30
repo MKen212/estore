@@ -737,6 +737,19 @@ h2.title:before{
   border-top: 0 none;
 }
 
+.category-products .panel-default .panel-heading .panel-title a.active {
+	background:none;
+	color: #FE980F;
+}
+
+.category-products .panel-default .panel-heading .panel-title a.actClear {
+  margin-left: 10px;
+  background:none;
+  color:#fdb45e;
+  text-decoration: underline;
+  text-transform: lowercase;
+}
+
 .category-products .badge {
   background:none;
   border-radius: 10px;
@@ -784,6 +797,19 @@ h2.title:before{
 .brands-name .nav-stacked li a:hover{
   background-color: #fff;
   color: #696763;
+}
+
+.brands-name .nav-stacked li a.active {
+	background:none;
+	color: #FE980F;
+}
+
+.brands-name .nav-stacked li a.actClear {
+  margin-left: 10px;
+  background:none;
+  color:#fdb45e;
+  text-decoration: underline;
+  text-transform: lowercase;
 }
 
 .shipping {
