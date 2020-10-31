@@ -9,6 +9,11 @@ if (isset($_GET["r"])) {  // Check if return page is set
 <section id="form"><!--form-->
   <div class="container">
     <div class="row">
+      <div class="col-sm-12 bg">
+        <h2 class="title text-center">Login / Sign-up</h2>
+      </div>
+    </div>
+    <div class="row">
       <div class="col-sm-4 col-sm-offset-1">
         <?php
         include "../app/views/shop/loginForm.php";

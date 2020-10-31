@@ -33,29 +33,6 @@
           <div class="logo pull-left">
             <a href="/"><img src="images/shared/logoName.png" alt="" /></a>
           </div>
-          <div class="btn-group pull-right">
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                USA
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="">Canada</a></li>
-                <li><a href="">UK</a></li>
-              </ul>
-            </div>
-            
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                DOLLAR
-                <span class="caret"></span>
-              </button>
-              <ul class="dropdown-menu">
-                <li><a href="">Canadian Dollar</a></li>
-                <li><a href="">Pound</a></li>
-              </ul>
-            </div>
-          </div>
         </div>
         <div class="col-sm-8">
           <div class="shop-menu pull-right">
@@ -66,12 +43,12 @@
                 <?php endif; ?>
                 <li><a href="index.php?p=myAccount"><i class="fa fa-user"></i> My Account</a></li>
               <?php endif; ?>
-              <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-              <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null; ?></span></a></li>
+              <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null; ?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+              <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null; ?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null; ?></span></a></li>
               <?php if (isset($_SESSION["userLogin"])) : ?>
-                <li><a <?= $_GET["p"] == "logout" ? 'class="active"' : null;?>href="index.php?p=logout"><i class="fa fa-unlock-alt"></i> Logout</a></li>
+                <li><a <?= $_GET["p"] == "logout" ? 'class="active"' : null; ?>href="index.php?p=logout"><i class="fa fa-unlock-alt"></i> Logout</a></li>
               <?php else : ?>
-                <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null;?>href="index.php?p=login"><i class="fa fa-lock"></i> Login</a></li>
+                <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null; ?>href="index.php?p=login"><i class="fa fa-lock"></i> Login</a></li>
               <?php endif; ?>
             </ul>
           </div>
@@ -83,7 +60,7 @@
   <div class="header-bottom"><!--header-bottom-->
     <div class="container">
       <div class="row">
-        <div class="col-sm-9">
+        <div class="col-sm-8">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span>
@@ -94,32 +71,31 @@
           </div>
           <div class="mainmenu pull-left">
             <ul class="nav navbar-nav collapse navbar-collapse">
-              <li><a <?= $_GET["p"] == "home" ? 'class="active"' : null;?>href="/">Home</a></li>
-              <li class="dropdown"><a <?= $_GET["p"] == "products" || $_GET["p"] == "productDetails" ? 'class="active"' : null;?>href="#">Shop<i class="fa fa-angle-down"></i></a>
+              <li><a <?= $_GET["p"] == "home" ? 'class="active"' : null; ?>href="/">Home</a></li>
+              <li class="dropdown"><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails" || $_GET["p"] == "checkout" || $_GET["p"] == "cart") ? 'class="active"' : null; ?>href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
-                  <li><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails") ? 'class="active"' : null;?>href="index.php?p=products&sp=1">Products</a></li>
-                  <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout">Checkout</a></li> 
-                  <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart">Cart</a></li> 
-                  <li><a href="login.html">Login</a></li> 
+                  <li><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails") ? 'class="active"' : null; ?>href="index.php?p=products&sp=1">Products</a></li>
+                  <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null; ?>href="index.php?p=checkout">Checkout</a></li> 
+                  <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null; ?>href="index.php?p=cart">Cart</a></li>
                 </ul>
               </li> 
-              <li class="dropdown"><a <?= $_GET["p"] == "login" || $_GET["p"] == "myAccount"|| $_GET["p"] == "myOrders" | $_GET["p"] == "myReturns" ? 'class="active"' : null;?>href="#">Account<i class="fa fa-angle-down"></i></a>
+              <li class="dropdown"><a <?= ($_GET["p"] == "login" || $_GET["p"] == "myAccount" || $_GET["p"] == "myOrders" || $_GET["p"] == "orderDetails" || $_GET["p"] == "myReturns" || $_GET["p"] == "returnDetails" || $_GET["p"] == "returnItems") ? 'class="active"' : null; ?>href="#">Account<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <?php if (isset($_SESSION["userLogin"])) : ?>
-                    <li><a <?= $_GET["p"] == "myAccount" ? 'class="active"' : null;?>href="index.php?p=myAccount">My Account</a></li>
-                    <li><a <?= $_GET["p"] == "myOrders" ? 'class="active"' : null;?>href="index.php?p=myOrders">My Orders</a></li>
-                    <li><a <?= $_GET["p"] == "myReturns" ? 'class="active"' : null;?>href="index.php?p=myReturns">My Returns</a></li>
+                    <li><a <?= $_GET["p"] == "myAccount" ? 'class="active"' : null; ?>href="index.php?p=myAccount">My Account</a></li>
+                    <li><a <?= ($_GET["p"] == "myOrders" || $_GET["p"] == "orderDetails" || $_GET["p"] == "returnItems") ? 'class="active"' : null; ?>href="index.php?p=myOrders">My Orders</a></li>
+                    <li><a <?= ($_GET["p"] == "myReturns" || $_GET["p"] == "returnDetails") ? 'class="active"' : null; ?>href="index.php?p=myReturns">My Returns</a></li>
                     <li><a href="index.php?p=logout">Logout</a></li>
                   <?php else : ?>
-                    <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null;?>href="index.php?p=login">Login</a></li>
+                    <li><a <?= $_GET["p"] == "login" ? 'class="active"' : null; ?>href="index.php?p=login">Login</a></li>
                   <?php endif; ?>
                 </ul>
               </li>
-              <li><a href="contact-us.html">Contact</a></li>
+              <li><a <?= $_GET["p"] == "contact" ? 'class="active"' : null; ?>href="index.php?p=contact">Contact</a></li>
             </ul>
           </div>
         </div>
-        <div class="col-sm-3">
+        <div class="col-sm-4">
           <div class="search_box pull-right">
             <input type="text" placeholder="Search"/>
           </div>

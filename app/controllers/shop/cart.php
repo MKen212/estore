@@ -24,13 +24,16 @@ if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
 ?>
 <section id="cart_items"><!--cart_items-->
   <div class="container">
-    <div class="heading">
-		  <h3>Shopping Cart</h3>
-		</div>
-    
-    <?php  // Display Cart
-      include "../app/controllers/shop/cartList.php";
-    ?>
+    <div class="row">
+      <div class="col-sm-12 bg">
+        <h2 class="title text-center">Shopping Cart</h2>
+      </div>
+    </div>
 
+    <div class="row">
+      <?php  // Display Cart
+        include "../app/controllers/shop/cartList.php";
+      ?>
+    </div>
   </div>
 </section><!--/cart_items-->
