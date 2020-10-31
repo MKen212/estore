@@ -33,16 +33,29 @@ class Product {
   }
 
   /**
-   * count function - Get COUNT of product records
-   * @param int $status   Product Status (Optional)
-   * @return int $result  Returns count of defined product records or False 
+   * count function - Get COUNT of product records (with optional conditions)
+   * @param int $status       Product Status (Optional)
+   * @param int $prodCatID    Product Category ID (Optional)
+   * @param int $prodBrandID  Product Brand ID (Optional)
+   * @return int $result      Returns count of defined product records or False 
    */
-  public function count($status = null) {
+  public function count($status = null, $prodCatID = null, $prodBrandID = null) {
     try {
-      if ($status == null) {  // Count ALL records
-        $sql = "SELECT COUNT(*) FROM `products`";  
+      if ($status == null && $prodCatID == null && $prodBrandID == null) {  // Count ALL records
+        $sql = "SELECT COUNT(*) FROM `products`";
       } else {
-        $sql = "SELECT COUNT(*) FROM `products` WHERE `Status` = '$status'";
+        // Build WHERE clause
+        $whereClause = "";
+        if (!empty($status)) $whereClause .= "(`Status` = '$status')";
+        if (!empty($prodCatID)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`ProdCatID` = '$prodCatID')";
+        }
+        if (!empty($prodBrandID)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+        }
+        $sql = "SELECT COUNT(*) FROM `products` WHERE ($whereClause)";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
@@ -89,18 +102,31 @@ class Product {
   }
 
   /**
-   * getPage function - Retrieve Page of product records, optionally per status
-   * @param int $limit      Max number of records to return
-   * @param int $offset     Offset of first record
-   * @param int $status     Product Status (Optional)
-   * @return array $result  Returns defined product records or False 
+   * getPage function - Retrieve Page of product records (with optional conditions)
+   * @param int $limit        Max number of records to return
+   * @param int $offset       Offset of first record
+   * @param int $status       Product Status (Optional)
+   * @param int $prodCatID    Product Category ID (Optional)
+   * @param int $prodBrandID  Product Brand ID (Optional)
+   * @return array $result    Returns defined product records or False 
    */
-  public function getPage($limit, $offset, $status = null) {
+  public function getPage($limit, $offset, $status = null, $prodCatID = null, $prodBrandID = null) {
     try {
-      if ($status == null) {
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` LIMIT $limit OFFSET $offset";  
+      if ($status == null && $prodCatID == null && $prodBrandID == null) {  // Select ALL records
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` LIMIT $limit OFFSET $offset";
       } else {
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE `Status` = '$status' LIMIT $limit OFFSET $offset";
+        // Build WHERE clause
+        $whereClause = "";
+        if (!empty($status)) $whereClause .= "(`Status` = '$status')";
+        if (!empty($prodCatID)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`ProdCatID` = '$prodCatID')";
+        }
+        if (!empty($prodBrandID)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+        }
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ($whereClause) LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();

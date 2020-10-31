@@ -66,7 +66,6 @@
                 <?php endif; ?>
                 <li><a href="index.php?p=myAccount"><i class="fa fa-user"></i> My Account</a></li>
               <?php endif; ?>
-              <li><a href=""><i class="fa fa-star"></i> Wishlist</a></li>
               <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
               <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null; ?></span></a></li>
               <?php if (isset($_SESSION["userLogin"])) : ?>
@@ -98,8 +97,7 @@
               <li><a <?= $_GET["p"] == "home" ? 'class="active"' : null;?>href="/">Home</a></li>
               <li class="dropdown"><a <?= $_GET["p"] == "products" || $_GET["p"] == "productDetails" ? 'class="active"' : null;?>href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
-                  <li><a <?= $_GET["p"] == "products" ? 'class="active"' : null;?>href="index.php?p=products&sp=1">Products</a></li>
-                  <li><a <?= $_GET["p"] == "productDetails" ? 'class="active"' : null;?>href="index.php?p=productDetails&id=1">Product Details</a></li> 
+                  <li><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails") ? 'class="active"' : null;?>href="index.php?p=products&sp=1">Products</a></li>
                   <li><a <?= $_GET["p"] == "checkout" ? 'class="active"' : null;?>href="index.php?p=checkout">Checkout</a></li> 
                   <li><a <?= $_GET["p"] == "cart" ? 'class="active"' : null;?>href="index.php?p=cart">Cart</a></li> 
                   <li><a href="login.html">Login</a></li> 

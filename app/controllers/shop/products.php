@@ -2,28 +2,32 @@
 // Get sub-page
 isset($_GET["sp"]) ? $subPage = $_GET["sp"] : $subPage = 1;
 
-// Get filter details
+// Update filter details
 if (isset($_GET["cat"])) {
   if ($_GET["cat"] == 0) {  // Unset Category Filter if 0
-    if (isset($_SESSION["prodCat"])) unset($_SESSION["prodCat"]);
+    if (isset($_SESSION["prodCatID"])) unset($_SESSION["prodCatID"]);
   } else {  // Set Category Filter
-    $_SESSION["prodCat"] = $_GET["cat"];
+    $_SESSION["prodCatID"] = $_GET["cat"];
   }
 }
 if (isset($_GET["brand"])) {
   if ($_GET["brand"] == 0) {  // Unset Brand Filter if 0
-    if (isset($_SESSION["prodBrand"])) unset($_SESSION["prodBrand"]);
+    if (isset($_SESSION["prodBrandID"])) unset($_SESSION["prodBrandID"]);
   } else {  // Set Brand Filter
-    $_SESSION["prodBrand"] = $_GET["brand"];
+    $_SESSION["prodBrandID"] = $_GET["brand"];
   }
 }
 $_GET = [];
+
+// Get filter details
+isset($_SESSION["prodCatID"]) ? $prodCatID = $_SESSION["prodCatID"] : $prodCatID = null;
+isset($_SESSION["prodBrandID"]) ? $prodBrandID = $_SESSION["prodBrandID"] : $prodBrandID = null;
 
 // Get Total Active Records and Page Details
 include_once "../app/models/productClass.php";
 $product = new Product();
 
-$totRecords = $product->count(1);
+$totRecords = $product->count(1, $prodCatID, $prodBrandID);
 $lastPage = ceil($totRecords / DEFAULTS["productsPerPage"]);
 
 if ($subPage > $lastPage) $subPage = $lastPage;
@@ -37,21 +41,27 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
       </div>
       <div class="col-sm-9 padding-right">
         <div class="featured_items"><!-- featured_items -->
-          <h2 class="title text-center">Featured Items</h2>
+          <h2 class="title text-center">Our Products</h2>
 
-          <?php  // Loop through all ACTIVE Products and output a page of the values
-          foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1)) as $record) {
-            $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-            include "../app/views/shop/productItem.php";
-          }
-          ?>
+          <?php
+          if ($totRecords == 0) :  // No records to show ?>
+            <div class="register-req">
+              <p>Sorry - No products to show.</p>
+            </div>
+          <?php else :
+            // Loop through all ACTIVE Products and output a page of the values
+            foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID)) as $record) {
+              $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
+              include "../app/views/shop/productItem.php";
+            }?>
 
-          <!-- Pagination Section -->
-          <div class="col-sm-12">
-            <ul class="pagination">
-              <?php pagination($subPage, $lastPage, "index.php?p=products&sp="); ?>
-            </ul>
-          </div>
+            <!-- Pagination Section -->
+            <div class="col-sm-12">
+              <ul class="pagination">
+                <?php pagination($subPage, $lastPage, "index.php?p=products&sp="); ?>
+              </ul>
+            </div>
+          <?php endif; ?>
         </div><!--/featured_items-->
       </div>
     </div>

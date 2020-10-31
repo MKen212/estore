@@ -1,22 +1,6 @@
 <?php  // Shop - Product Details
 if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProductID to 0 if not provided
 $selectedID = $_GET["id"];
-
-// Get filter details
-if (isset($_GET["cat"])) {
-  if ($_GET["cat"] == 0) {  // Unset Category Filter if 0
-    if (isset($_SESSION["prodCat"])) unset($_SESSION["prodCat"]);
-  } else {  // Set Category Filter
-    $_SESSION["prodCat"] = $_GET["cat"];
-  }
-}
-if (isset($_GET["brand"])) {
-  if ($_GET["brand"] == 0) {  // Unset Brand Filter if 0
-    if (isset($_SESSION["prodBrand"])) unset($_SESSION["prodBrand"]);
-  } else {  // Set Brand Filter
-    $_SESSION["prodBrand"] = $_GET["brand"];
-  }
-}
 $_GET = [];
 
 // Get Product Details from View
