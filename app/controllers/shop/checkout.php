@@ -154,6 +154,7 @@
           </script>
           <?php
         endif;
+        
         // Display Checkout Shipping Summary
         include "../app/views/shop/checkoutSummary.php";
       endif;?>

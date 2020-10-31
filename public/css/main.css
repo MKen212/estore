@@ -123,11 +123,11 @@ a#scrollUp i{
 	background:#5BBCEC;
 }
 
-.fa-linkedin:hover  {
+.fa-youtube:hover  {
 	background:#FF4518;
 }
 
-.fa-dribbble:hover  {
+.fa-linkedin:hover  {
 	background:#90C9DC;
 }
 
@@ -2546,8 +2546,8 @@ h2.title {
 }
 
 #main-contact-form .btn-primary {
-  margin-bottom: 15px;
-  margin-top: 20px;
+  margin-bottom: 50px;
+  margin-top: 0px;
 }
 
 

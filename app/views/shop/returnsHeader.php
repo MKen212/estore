@@ -1,4 +1,4 @@
-<div class="row shopper-info"><!--returns_header_SHOP-->
+<div class="shopper-info"><!--returns_header_SHOP-->
   <div class="col-sm-4"><!--returns_information-->
     <h5>Returns Information</h5>
     <table class="table table-sm">

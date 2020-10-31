@@ -1,4 +1,4 @@
-<div class="row shopper-info"><!--order_header_SHOP-->
+<div class="shopper-info"><!--order_header_SHOP-->
   <div class="col-sm-4"><!--order_information-->
     <h5>Order Information</h5>
     <table class="table table-sm">
