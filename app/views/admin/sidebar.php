@@ -25,6 +25,10 @@
       <li class="nav-item">
         <a class="nav-link<?= (($_GET["p"] == "returns") || ($_GET["p"] == "returnDetails")) ? " active" : "";?>" href="admin_dashboard.php?p=returns"><span data-feather="download"></span>Returns<span style="margin-left:10px" id="toProcessBadge"><?= $toProcessBadge ?></span></a>
       </li>
+      <!-- Messages -->
+      <li class="nav-item">
+        <a class="nav-link<?= (($_GET["p"] == "messages") || ($_GET["p"] == "messageDetails")) ? " active" : "";?>" href="admin_dashboard.php?p=messages"><span data-feather="send"></span>Messages<span style="margin-left:10px" id="toReadBadge"><?= $toReadBadge ?></span></a>
+      </li>
       <!-- Users-->
       <li class="nav-item">
         <a class="nav-link<?= (($_GET["p"] == "users") || ($_GET["p"] == "userDetails") || ($_GET["p"] == "userAdd")) ? " active" : "";?>" href="admin_dashboard.php?p=users"><span data-feather="users"></span>Users</a>

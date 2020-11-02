@@ -19,4 +19,9 @@ if ($toProcessCount > 0) {
 } else {
   $toProcessBadge = "";
 }
+
+// Update Messages/toRead count & badge
+$toReadCount = 2;
+$toReadBadge = " <span class='badge badge-info'>To Read: $toReadCount</span>";
+
 ?>

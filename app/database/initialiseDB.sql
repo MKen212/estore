@@ -110,6 +110,21 @@ CREATE VIEW IF NOT EXISTS `prod_uncoded_view` AS SELECT
 -- Create invoice_ID Sequence
 CREATE SEQUENCE `invoice_ID` start with 17380 maxvalue 99999999999 increment by 1;
 
+-- Create messages table
+CREATE TABLE IF NOT EXISTS `messages` (
+  `MessageID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `SenderName` VARCHAR(50) NOT NULL,
+  `SenderEmail` VARCHAR (50) NOT NULL,
+  `Subject` VARCHAR(50) NOT NULL,
+  `Body` VARCHAR(500) NOT NULL,
+  `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `AddedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Anonymous",
+  `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `IsRead` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unread, 1=Read",
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+);
+
 -- Create PayPal Orders table
 CREATE TABLE IF NOT EXISTS `paypal_orders` (
   `PpInvoiceID` INT(11) NOT NULL PRIMARY KEY,
