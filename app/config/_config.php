@@ -84,14 +84,22 @@ $statusCodes = [
       "badge" => "success",
     ],
   ],
-  "IsRead" => [  // messages Table / IsRead Field
+  "MessageStatus" => [  // messages Table / MessageStatus Field
     0 => [
       "text" => "Unread",
-      "badge" => "info",
+      "badge" => "danger",
     ],
     1 => [
       "text" => "Read",
-      "badge" => "light",
+      "badge" => "warning",
+    ],
+    2 => [
+      "text" => "Replied",
+      "badge" => "success",
+    ],
+    3 => [
+      "text" => "Cancelled",
+      "badge" => "secondary",
     ],
   ],
   "OrderStatus" => [  // orders Table / OrderStatus Field

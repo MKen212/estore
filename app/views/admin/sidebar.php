@@ -27,7 +27,7 @@
       </li>
       <!-- Messages -->
       <li class="nav-item">
-        <a class="nav-link<?= (($_GET["p"] == "messages") || ($_GET["p"] == "messageDetails")) ? " active" : "";?>" href="admin_dashboard.php?p=messages"><span data-feather="send"></span>Messages<span style="margin-left:10px" id="toReadBadge"><?= $toReadBadge ?></span></a>
+        <a class="nav-link<?= (($_GET["p"] == "messages") || ($_GET["p"] == "messageDetails")) ? " active" : "";?>" href="admin_dashboard.php?p=messages"><span data-feather="send"></span>Messages<span style="margin-left:10px" id="toRespondBadge"><?= $toRespondBadge ?></span></a>
       </li>
       <!-- Users-->
       <li class="nav-item">

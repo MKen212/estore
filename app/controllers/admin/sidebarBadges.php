@@ -20,8 +20,8 @@ if ($toProcessCount > 0) {
   $toProcessBadge = "";
 }
 
-// Update Messages/toRead count & badge
-$toReadCount = 2;
-$toReadBadge = " <span class='badge badge-info'>To Read: $toReadCount</span>";
+// Update Messages/toRespond count & badge
+$toRespondCount = 12;
+$toRespondBadge = " <span class='badge badge-info'>To Respond: $toRespondCount</span>";
 
 ?>

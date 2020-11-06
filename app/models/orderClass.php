@@ -70,7 +70,7 @@ Class Order {
   /**
    * getList function - Get full list of orders (and optionally by InvoiceID) using ord_paypal_view
    * @param int $invoiceID  Invoice ID (Optional)
-   * @return array $result  Details of all orders (Descending Order) or False
+   * @return array $result  Details of all orders (Descending ID Order) or False
    */
   public function getList($invoiceID = null) {
     try {
@@ -92,7 +92,7 @@ Class Order {
    * getListByUser function - Get list of orders for a User (and optionally by status) using ord_paypal_view
    * @param int $userID     User ID of Orders OwnerUserID
    * @param int $status     Order Status (Optional)
-   * @return array $result  Details of orders for User (Descending Order) or False
+   * @return array $result  Details of orders for User (Descending ID Order) or False
    */
   public function getListByUser($userID, $status = null) {
     try {

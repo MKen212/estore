@@ -12,8 +12,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `Name` VARCHAR(50) NOT NULL,
   `ShippingBand` VARCHAR(50) NOT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 -- For Country Initial Data see initialData.sql...
 
@@ -25,8 +25,8 @@ CREATE TABLE IF NOT EXISTS `shipping` (
   `PriceBandKG` INT(11) DEFAULT 0,
   `PriceBandCost` DECIMAL(10, 2) DEFAULT 0.00,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   UNIQUE KEY `Band-Type-PriceBandKG` (`Band`, `Type`, `PriceBandKG`)
 );
 -- For Shipping Initial Data see see initialData.sql...
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS `prod_categories` (
   `ProdCatID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Name` VARCHAR(40) NOT NULL UNIQUE,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 -- For Product Category Initial Data see initialData.sql...
 
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `prod_brands` (
   `ProdBrandID` INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Name` VARCHAR(40) NOT NULL UNIQUE,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 -- For Product Brand Initial Data see initialData.sql...
 
@@ -58,16 +58,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Password` VARCHAR(100) NOT NULL,
   `Name` VARCHAR(50) NOT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `LoginTimestamp` TIMESTAMP DEFAULT 0,
-  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `IsAdmin` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=No, 1=Yes',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 
 -- Load initial test users using admin.php?p=register to ensure Password Hashing
 
 -- Manually Update IsAdmin Status for test user(s)
-UPDATE `users` SET `IsAdmin` = "1" WHERE `UserID` = 1;
+UPDATE `users` SET `IsAdmin` = '1' WHERE `UserID` = 1;
 
 -- Create products table
 CREATE TABLE IF NOT EXISTS `products` (
@@ -81,9 +81,9 @@ CREATE TABLE IF NOT EXISTS `products` (
   `QtyAvail` INT(11) NOT NULL DEFAULT 0,
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `Flag` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=None, 1=New, 2=Sale",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `Flag` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=None, 1=New, 2=Sale',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   FOREIGN KEY (`ProdCatID`) REFERENCES `prod_categories` (`ProdCatID`),
   FOREIGN KEY (`ProdBrandID`) REFERENCES `prod_brands` (`ProdBrandID`)
 );
@@ -118,11 +118,14 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `Subject` VARCHAR(50) NOT NULL,
   `Body` VARCHAR(500) NOT NULL,
   `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `AddedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Anonymous",
+  `AddedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Anonymous',
+  `Reply` VARCHAR(500) DEFAULT NULL,
+  `ReplyTimestamp` TIMESTAMP DEFAULT '0000-00-00 00:00:00',
+  `ReplyUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `IsRead` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Unread, 1=Read",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active"
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `MessageStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=UnRead, 1=Read, 2=Replied, 3=Cancelled',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 
 -- Create PayPal Orders table
@@ -162,11 +165,11 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ShippingCost` DECIMAL(10, 2) DEFAULT 0.00,
   `Total` DECIMAL(10, 2) DEFAULT 0.00,
   `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=UnPaid, 1=Paid, 2=Shipped, 3=Cancelled",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `OrderStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=UnPaid, 1=Paid, 2=Shipped, 3=Cancelled',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   FOREIGN KEY (`InvoiceID`) REFERENCES `paypal_orders` (`PpInvoiceID`)
 );
 
@@ -184,11 +187,11 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `ImgFilename` VARCHAR(40) DEFAULT NULL,
   `AddedToCartTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
   `ShippedDate` DATE DEFAULT '0000-00-00',
-  `ShippedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `ShippedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `IsShipped` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `IsShipped` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=No, 1=Yes',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`),
   FOREIGN KEY (`ProductID`) REFERENCES `products` (`ProductID`)
 );
@@ -228,11 +231,11 @@ CREATE TABLE IF NOT EXISTS `returns` (
   `ProductCount` INT(11) DEFAULT 0,
   `RefundTotal` DECIMAL(10, 2) DEFAULT 0.00,
   `AddedTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `OwnerUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `ReturnStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Submitted, 1=Returned, 2=Processed, 3=Cancelled",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `ReturnStatus` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=Submitted, 1=Returned, 2=Processed, 3=Cancelled',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   FOREIGN KEY (`OrderID`) REFERENCES `orders` (`OrderID`),
   FOREIGN KEY (`InvoiceID`) REFERENCES `paypal_orders` (`PpInvoiceID`)
 );
@@ -244,17 +247,17 @@ CREATE TABLE IF NOT EXISTS `return_items` (
   `OrderItemID` INT(11) NOT NULL,
   `Price` DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
   `QtyReturned` INT(11) NOT NULL DEFAULT 0,
-  `ReturnReason` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Not Needed, 1=Damaged, 2=Wrong Item, 3=Wrong Size, 4=Wrong Desc",
-  `ReturnAction`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=Replace, 1=Refund",
+  `ReturnReason` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=Not Needed, 1=Damaged, 2=Wrong Item, 3=Wrong Size, 4=Wrong Desc',
+  `ReturnAction`  TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=Replace, 1=Refund',
   `ReceivedDate` DATE DEFAULT '0000-00-00',
-  `ReceivedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `ReceivedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `ActionedDate` DATE DEFAULT '0000-00-00',
-  `ActionedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
+  `ActionedUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
   `EditTimestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP(),
-  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT "0=Initial Creation",
-  `IsReceived` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
-  `IsActioned` TINYINT(1) NOT NULL DEFAULT 0 COMMENT "0=No, 1=Yes",
-  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT "0=Inactive, 1=Active",
+  `EditUserID` INT(11) NOT NULL DEFAULT 0 COMMENT '0=Initial Creation',
+  `IsReceived` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=No, 1=Yes',
+  `IsActioned` TINYINT(1) NOT NULL DEFAULT 0 COMMENT '0=No, 1=Yes',
+  `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active',
   FOREIGN KEY (`ReturnID`) REFERENCES `returns` (`ReturnID`),
   FOREIGN KEY (`OrderItemID`) REFERENCES `order_items` (`OrderItemID`)
 );
