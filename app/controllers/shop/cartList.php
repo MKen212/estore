@@ -31,8 +31,11 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
         ?>
       </tbody>
     </table>
-    <div style="margin-bottom:20px;">
+    <div style="text-align:right; margin-right:25px; margin-bottom:20px;">
       <a class="btn btn-default check_out" href="index.php?p=cart&mt">Empty Cart</a>
+      <?php if ($_GET["p"] == "cart") :  // Display Checkout Button if Cart Page ?>
+        <a class="btn btn-default check_out" href="index.php?p=checkout">Proceed to Checkout</a>
+      <?php endif ; ?>
     </div>
   </div>
 <?php endif;?>

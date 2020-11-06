@@ -51,7 +51,6 @@ if (isset($_POST["addProduct"])) {  // Add Products
   } else {
     $imgFilename = null;
   }
-  $editUserID = $_SESSION["userID"];
   $flag = $_POST["flag"];
   $status = $_POST["status"];
   $_POST = [];
@@ -59,7 +58,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
   // Create database entry
   include_once "../app/models/productClass.php";
   $product = new Product();
-  $newProductID = $product->add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $editUserID, $flag, $status);
+  $newProductID = $product->add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status);
 
   if ($newProductID) {  // Database Entry Success
     if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload

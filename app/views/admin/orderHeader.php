@@ -50,7 +50,7 @@
       </tr>
       <tr>
         <td>Shipping Instructions:</td>
-        <td><?= $orderDetails["ShippingInstructions"] ?></td>
+        <td><textarea style="resize:none" cols="25" rows="2" readonly><?= $orderDetails["ShippingInstructions"] ?></textarea></td>
       </tr>
       <tr>
         <td>Shipment Weight:</td>

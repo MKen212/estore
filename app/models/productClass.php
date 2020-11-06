@@ -92,7 +92,7 @@ class Product {
         $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', CURRENT_TIMESTAMP(), '$editID', '$flag', '$status')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Product '$name' added successfully as Product ID '$newID'.");
+        $_SESSION["message"] = "Product '$name' added successfully as Product ID '$newID'.";
         return $newID;
       }
     } catch (PDOException $err) {
