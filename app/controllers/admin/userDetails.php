@@ -34,7 +34,7 @@ if ($userData == false) :  // UserID not found ?>
 
     if ($email == $userData["Email"]) $email = "";  // Unset $email if same as current record
 
-    include_once "../app/models/userClass.php";
+    include_once "../app/models/userClass.php";  // TODO Check if this is needed as declared already above!
     $user = new User();
     $updateUser = $user->updateRecord($id, $email, $password, $name, $isAdmin, $status);
     unset($password);

@@ -1,18 +1,18 @@
 <?php  // Admin Dashboard - Product Category Details
 if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProdCatID to 0 if not provided
+$id = cleanInput($_GET["id"], "int");
+$_GET = [];
 ?>
 
 <!-- Main Section - Product Category Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Product Category Details - ID: <?= $_GET["id"] ?></h2>
+  <h2>Product Category Details - ID: <?= $id ?></h2>
 </div>
 
 <?php
-$id = cleanInput($_GET["id"], "int");
+// Get Product Category Details for selected record
 include_once "../app/models/prodCatClass.php";
 $prodCat = new ProdCat();
-
-// Get Product Category Details for selected record
 $prodCatData = $prodCat->getRecord($id);
 
 if ($prodCatData == false) :  // ProdCatID not found ?>

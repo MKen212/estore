@@ -90,11 +90,11 @@ $statusCodes = [
       "badge" => "danger",
     ],
     1 => [
-      "text" => "Read",
+      "text" => "Read",  // NOTE: Used in admin/sideBarBadges.php to show Messages To Respond
       "badge" => "warning",
     ],
     2 => [
-      "text" => "Replied",
+      "text" => "Replied",  // NOTE: Used in admin/messageDetails.php to set MessageStatus
       "badge" => "success",
     ],
     3 => [

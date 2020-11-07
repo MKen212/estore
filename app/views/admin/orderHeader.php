@@ -50,7 +50,7 @@
       </tr>
       <tr>
         <td>Shipping Instructions:</td>
-        <td><textarea style="resize:none" cols="25" rows="2" readonly><?= $orderDetails["ShippingInstructions"] ?></textarea></td>
+        <td><textarea class="taFixed" rows="2" readonly><?= $orderDetails["ShippingInstructions"] ?></textarea></td>
       </tr>
       <tr>
         <td>Shipment Weight:</td>
@@ -99,7 +99,7 @@
         <td><?= $orderDetails["PayerEmail"] ?></td>
       </tr>
       <tr>
-        <td>Date & Time Paid:</td>
+        <td>Date/Time Paid:</td>
         <td><?= date("d/m/Y @ H:i", strtotime($orderDetails["CaptureTimestamp"])); ?></td>
       </tr>
     </table>

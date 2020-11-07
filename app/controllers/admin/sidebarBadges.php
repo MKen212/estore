@@ -21,7 +21,9 @@ if ($toProcessCount > 0) {
 }
 
 // Update Messages/toRespond count & badge
-$toRespondCount = 12;
+include_once "../app/models/messageClass.php";
+$message = new Message();
+$toRespondCount = $message->countMsgStat(1);  // NOTE: HardCoded based on "Unread" & "Read" status in Config/$statusCodes/MessageStatus
 $toRespondBadge = " <span class='badge badge-info'>To Respond: $toRespondCount</span>";
 
 ?>

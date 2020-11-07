@@ -12,36 +12,37 @@
     <?php
     // If User is Logged In, Get User contact details
     if (isset($_SESSION["userLogin"])) {
-      $id = $_SESSION["userID"];
+      $userID = $_SESSION["userID"];
       include_once "../app/models/userClass.php";
       $user = new User();
       // Get User Details for selected record
-      $contactData = $user->getRecord($id);
+      $contactData = $user->getRecord($userID);
     } else {
+      $userID = 0;
       $contactData =  [
-        "Name" => "",
         "Email" => "",
+        "Name" => "",
       ];
     }
 
     include "../app/views/shop/contactForm.php";
 
     if (isset($_POST["sendContact"])) {  // Send Message
-      $name = cleanInput($_POST["contactName"], "string");
-      $emailFrom = cleanInput($_POST["contactEmail"], "email");
+      $senderName = cleanInput($_POST["contactName"], "string");
+      $senderEmail = cleanInput($_POST["contactEmail"], "email");
       $subject = cleanInput($_POST["contactSubject"], "string");
       $body = cleanInput($_POST["contactBody"], "string");
       $_POST = [];
 
-      // TO HERE - NEED TO ADD MESSAGES FUNCTIONALITY
-
-      $_SESSION["message"] = msgPrep("danger", "Message not sent.");
+      // Add message to Database
+      include_once "../app/models/messageClass.php";
+      $message = new Message();
+      $addMessage = $message->add($senderName, $senderEmail, $subject, $body, $userID);
 
       // Refresh page
       ?><script>
         window.location.assign("index.php?p=contact");
       </script><?php
-
     }
 
     include "../app/views/shop/contactDetails.php";

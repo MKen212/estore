@@ -52,6 +52,7 @@ if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
   $orderItem = new OrderItem();
   $update = $orderItem->updateShippedDate($orderItemID, $newShipDate);
 }
+$_GET = [];
 ?>
 <!-- Main Section - Admin Order Info -->
 <div class="row pt-3 pb-2 mb-3 border-bottom">
@@ -65,11 +66,9 @@ if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
 </div>
 
 <?php
-$_GET = [];
+// Get Order Details
 include_once "../app/models/orderClass.php";
 $order = new Order();
-
-// Get Order Details
 $orderDetails = $order->getDetails($orderID);
 
 if ($orderDetails == false) :  // OrderID not found ?>

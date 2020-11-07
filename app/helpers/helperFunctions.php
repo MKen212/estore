@@ -11,6 +11,7 @@ function cleanInput($input, $type) {
   $input = htmlspecialchars($input);
   if ($type == "string") {
     $input = trim($input);
+    $input = str_replace("\n", "^~",$input);  // Keep CRLF as ^~
     $input = stripslashes($input);
     $input = filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW);
   } elseif ($type == "int") {
@@ -20,6 +21,16 @@ function cleanInput($input, $type) {
   } elseif ($type = "email") {
     $input = filter_var($input, FILTER_SANITIZE_EMAIL);
   }
+  return $input;
+}
+
+/**
+ * fixCRLF function - Used to replace ^~ as CRLF
+ * @param string $input   Original Input
+ * @return string $input  Fixed Input
+ */
+function fixCRLF($input) {
+  $input = str_replace("^~", "\n",$input);
   return $input;
 }
 

@@ -16,13 +16,13 @@ Class Message {
   }
 
   /**
-   * countMsgStat function - Get COUNT of message records by MessageStatus
-   * @param int $messageStatus  Message MessageStatus
+   * countMsgStat function - Get COUNT of message records with MessageStatus less than or equal to defined level
+   * @param int $messageStatus  Message MessageStatus (Upper Limit)
    * @return int $result        Count of defined message records or False 
    */
   public function countMsgStat($messageStatus) {
     try {
-      $sql = "SELECT COUNT(*) FROM `messages` WHERE `MessageStatus` = '$messageStatus'";
+      $sql = "SELECT COUNT(*) FROM `messages` WHERE `MessageStatus` <= '$messageStatus'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
@@ -43,11 +43,11 @@ Class Message {
    */
   public function add($senderName, $senderEmail, $subject, $body, $addedUserID) {
     try {
-      $editID = $_SESSION["userID"];
+      isset($_SESSION["userID"]) ? $editID = $_SESSION["userID"] : $editID = 0;
       $sql = "INSERT INTO `messages` (`SenderName`, `SenderEmail`, `Subject`, `Body`, `AddedTimestamp`, `AddedUserID`, `EditTimestamp`, `EditUserID`) VALUES ('$senderName', '$senderEmail', '$subject', '$body', CURRENT_TIMESTAMP(), '$addedUserID', CURRENT_TIMESTAMP(), '$editID')";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
-      $_SESSION["message"] = msgPrep("success", "Message added successfully. We will reply shortly.");
+      $_SESSION["message"] = msgPrep("success", "Message '$subject' submitted successfully.");
       return $newID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Message/add Failed: " . $err->getMessage());
@@ -128,6 +128,11 @@ Class Message {
       $editID = $_SESSION["userID"];
       $sql = "UPDATE `messages` SET `Reply` = '$reply', `ReplyTimestamp` = CURRENT_TIMESTAMP(), `ReplyUserID` = '$replyUserID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `MessageStatus` = '$messageStatus' WHERE `MessageID` = '$messageID'";
       $result = $this->conn->exec($sql);
+      if ($result == 1) {  // Only 1 record should be updated
+        $_SESSION["message"] = msgPrep("success", "Reply to Message ID '$messageID' was successfully updated.");
+      } else {
+        throw new PDOException("0 or >1 record was updated.");
+      }
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Message/updateReply Failed: " . $err->getMessage() . "<br />");
