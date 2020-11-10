@@ -34,10 +34,10 @@
     <h5>Received Message</h5>
     <table class="table table-sm">
       <tr>
-        <td>Subject: <b><?= $messageData["Subject"]; ?></b></td>
+        <td><b>Subject: <?= $messageData["Subject"]; ?></b></td>
       </tr>
       <tr>
-        <td><textarea class="taFixed" cols="75" rows="7" readonly><?= fixCRLF($messageData["Body"]); ?></textarea></td>
+        <td><textarea class="taFixed" rows="7" readonly><?= fixCRLF($messageData["Body"]); ?></textarea></td>
       </tr>
     </table>     
   </div><!--/message-->

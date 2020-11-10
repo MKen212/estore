@@ -2,8 +2,29 @@
 isset($_GET["id"]) ? $messageID = cleanInput($_GET["id"], "int") : $messageID = 0;
 
 // Process Status Changes if hyperlinks selected
-
-
+if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
+  $current = $_GET["cur"];
+  // $_GET=[];
+  $newStatus = statusCycle("Status", $current);
+  // Update Order Status
+  include_once "../app/models/messageClass.php";
+  $message = new Message();
+  $updateStatus = $message->updateStatus($messageID, $newStatus);
+} elseif (isset($_GET["updMessageStatus"])) {  // Message Status Link was clicked
+  $current = $_GET["cur"];
+  // $_GET=[];
+  $newStatus = statusCycle("MessageStatus", $current);
+  // Update MessageStatus Status
+  include_once "../app/models/messageClass.php";
+  $message = new Message();
+  $updateStatus = $message->updateMessageStatus($messageID, $newStatus);
+  // Fix Sidebar Messages Badge
+  $toRespondCount = $message->countMsgStat(1);  // NOTE: HardCoded based on "Unread" & "Read" status in Config/$statusCodes/MessageStatus
+  $toProcessBadge = ($toRespondCount > 0) ? " <span class='badge badge-info'>To Respond: $toRespondCount</span>" : "";
+  ?><script>
+    document.getElementById("toRespondBadge").innerHTML = "<?= $toProcessBadge ?>";
+  </script><?php
+}
 $_GET = [];
 ?>
 
@@ -33,7 +54,6 @@ if ($messageData == false) :  // MessageID not found ?>
   // Update Message Record if Reply updated
   if (isset($_POST["updateReply"])) :
     // Clean Fields for DB entry
-    $_SESSION["Rep"] = $_POST;
     $reply = cleanInput($_POST["reply"], "string");
     $replyUserID = $_SESSION["userID"];
     $messageStatus = 2;  // NOTE: HardCoded based on "Replied" status in Config/$statusCodes/MessageStatus

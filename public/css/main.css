@@ -1508,7 +1508,7 @@ h2.title {
   /* margin-top: 23px; */
 }
 
-.login-form form button, .signup-form form button {
+/* .login-form form button, .signup-form form button {
   background: #FE980F;
   border: medium none;
   border-radius: 0;
@@ -1517,7 +1517,7 @@ h2.title {
   font-family: 'Roboto', sans-serif;
   margin-top: 23px;
   padding: 6px 25px;
-}
+} */
 
 .login-form label{
 
@@ -2545,7 +2545,7 @@ h2.title {
   resize:none;
 }
 
-#main-contact-form .btn-primary {
+#main-contact-form .btn-default {
   margin-bottom: 50px;
   margin-top: 0px;
 }

@@ -10,6 +10,7 @@
     } else {
       echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
     } ?>
+  </td>
   <td><?= statusOutput("MessageStatus", $record["MessageStatus"]); ?></td>
   <td><?= statusOutput("Status", $record["Status"]); ?></td>
 </tr><!--/message_list_item_ADMIN-->

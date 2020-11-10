@@ -56,6 +56,23 @@ Class Message {
   }
 
   /**
+   * getRefData function - Returns the AddedUserID & Status for the specific MessageID
+   * @param int $messageID  Message ID for specific message
+   * @return array $result  AddedUserID & Status for MessageID or False
+   */
+  public function getRefData($messageID) {
+    try {
+      $sql = "SELECT `AddedUserID`, `Status` FROM `messages` WHERE `MessageID` = '$messageID'";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetch();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Message/getRefData Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * getList function - Get full list of Message records (and optionally by Sender Email or Subject)
    * @param string $search  Sender Email or Subject (Optional)
    * @return array $result  Details of all/selected Message Records (Descending ID order) or False
@@ -80,14 +97,14 @@ Class Message {
    * getListByUser function - Get list of orders for a User (and optionally by status)
    * @param int $userID     User ID of message AddedUserID
    * @param int $status     Message Status (Optional)
-   * @return array $result  Details of messages for User (Descending ID Order) or False
+   * @return array $result  Details of messages for User (Descending AddedTimestamp Order) or False
    */
   public function getListByUser($userID, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT * FROM `messages` WHERE `AddedUserID` = '$userID' ORDER BY `MessageID` DESC";
+        $sql = "SELECT * FROM `messages` WHERE `AddedUserID` = '$userID' ORDER BY `AddedTimestamp` DESC";
       } else {
-        $sql = "SELECT * FROM `messages` WHERE (`AddedUserID` = '$userID' AND `Status` = '$status') ORDER BY `MessageID` DESC";
+        $sql = "SELECT * FROM `messages` WHERE (`AddedUserID` = '$userID' AND `Status` = '$status') ORDER BY `AddedTimestamp` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
@@ -126,7 +143,15 @@ Class Message {
   public function updateReply($messageID, $reply, $replyUserID, $messageStatus) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `messages` SET `Reply` = '$reply', `ReplyTimestamp` = CURRENT_TIMESTAMP(), `ReplyUserID` = '$replyUserID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `MessageStatus` = '$messageStatus' WHERE `MessageID` = '$messageID'";
+      // Check if this is initial reply
+      $sqlReplied = "SELECT `ReplyTimestamp` FROM `messages` WHERE `MessageID` = '$messageID'";
+      $stmtReplied = $this->conn->query($sqlReplied, PDO::FETCH_ASSOC);
+      $resultReplied = $stmtReplied->fetch();
+      if ($resultReplied["ReplyTimestamp"] == "0000-00-00 00:00:00") {
+        $sql = "UPDATE `messages` SET `Reply` = '$reply', `ReplyTimestamp` = CURRENT_TIMESTAMP(), `ReplyUserID` = '$replyUserID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `MessageStatus` = '$messageStatus' WHERE `MessageID` = '$messageID'";
+      } else {
+        $sql = "UPDATE `messages` SET `Reply` = '$reply', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `MessageStatus` = '$messageStatus' WHERE `MessageID` = '$messageID'";
+      }
       $result = $this->conn->exec($sql);
       if ($result == 1) {  // Only 1 record should be updated
         $_SESSION["message"] = msgPrep("success", "Reply to Message ID '$messageID' was successfully updated.");
@@ -154,6 +179,24 @@ Class Message {
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Message/updateStatus Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
+   * updateMessageStatus function - Update MessageStatus field of an existing message record
+   * @param int $messageID      Message ID of message being updated
+   * @param int $messageStatus  New MessageStatus Status
+   * @return int $result        Number of records updated (=1) or False
+   */
+  public function updateMessageStatus($messageID, $messageStatus) {
+    try {
+      $editID = $_SESSION["userID"];
+      $sql = "UPDATE `messages` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `MessageStatus` = '$messageStatus' WHERE `MessageID` = '$messageID'";
+      $result = $this->conn->exec($sql);
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Message/updateMessageStatus Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

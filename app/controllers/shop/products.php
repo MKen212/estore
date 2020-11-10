@@ -46,7 +46,7 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
           <?php
           if ($totRecords == 0) :  // No records to show ?>
             <div class="register-req">
-              <p>Sorry - No products to show.</p>
+              <p>Sorry - No products to show. Check Category or Brand Filters if you were expecting products to be listed.</p>
             </div>
           <?php else :
             // Loop through all ACTIVE Products and output a page of the values

@@ -29,7 +29,7 @@ $record = $product->getRecordView($selectedID);
           $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
           $quantity = $record["QtyAvail"] > 0 ? 1 : 0;
 
-          include "../app/views/shop/productDetail.php";
+          include "../app/views/shop/productDetails.php";
 
           // If Add-To-Cart POSTed then update SESSION variables
           if (isset($_POST["addProdToCart"])) :

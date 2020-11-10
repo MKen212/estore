@@ -18,7 +18,7 @@
         <?php msgShow();  // Show Result ?>
       </div>
       <div class="form-group col-md-2">
-        <input type="submit" name="sendContact" class="btn btn-primary pull-right" value="Submit">
+        <input type="submit" name="sendContact" class="btn btn-default update pull-right" value="Submit">
       </div>
     </form>
   </div>
