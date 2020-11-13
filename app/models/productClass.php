@@ -138,6 +138,24 @@ class Product {
   }
 
   /**
+   * getCarousel function - Retrieve random set of product records with specified flag
+   * @param int $limit      Max number of records to return
+   * @param int $flag       Product Flag
+   * @return array $result  Returns random flagged product records or False
+   */
+  public function getCarousel($limit, $flag) {
+    try {
+      $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE `Flag` = '$flag' ORDER BY RAND() LIMIT $limit";
+      $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
+      $result = $stmt->fetchAll();
+      return $result;
+    } catch (PDOException $err) {
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getCarousel Failed: " . $err->getMessage() . "<br />");
+      return false;
+    }
+  }
+
+  /**
    * getList function - Get full list of product records using prod_uncoded_view
    * @param string $name    Product Name (Optional)
    * @return array $result  Details of all/selected products (Name order) or False

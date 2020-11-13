@@ -46,7 +46,7 @@
       </tr>
       <tr>
         <td>Shipping Instructions:</td>
-        <td><textarea style="resize:none" rows="2" readonly><?= $orderDetails["ShippingInstructions"]; ?></textarea></td>
+        <td><textarea rows="2" readonly><?= fixCRLF($orderDetails["ShippingInstructions"]); ?></textarea></td>
       </tr>
       <tr>
         <td>Shipment Weight:</td>

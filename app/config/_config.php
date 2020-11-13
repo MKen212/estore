@@ -24,8 +24,8 @@ $defaultValues = [
   "productsPerPage" => 6,  // Total Number of products displayed per page
   "paginationItems" => 5,  // Max Number of Pagination Items to display
   "returnsAllowance" => 30,  // Number of Days after shipping user allowed to return items
-  "returnsAddress" => "Returns Dept, eStore SA, Rue de Montreux 1, Lausanne 1000, Switzerland",  // Returns Address
-  "contactAddress" => "Customer Services Dept, eStore SA, Rue de Montreux 1, Lausanne 1000, Switzerland",
+  "returnsAddress" => "Returns Dept, E-Store SA, Rue de Montreux 1, Lausanne 1000, Switzerland",  // Returns Address
+  "contactAddress" => "E-Store SA, Rue de Montreux 1, Lausanne 1000, Switzerland",
   "contactPhone" => "+41 21 123 4567",
   "contactEmail" => "info@example.com",
 ];

@@ -29,12 +29,17 @@
   <div class="header-middle"><!--header-middle-->
     <div class="container">
       <div class="row">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <div class="logo pull-left">
-            <a href="/"><img src="images/shared/logoName.png" alt="" /></a>
+            <img src="images/shared/logo.png" alt="" /><a href="index.php"> <span>e</span>-store</a>
           </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-sm-3">
+          <div class="shop-welcome">
+            <?= isset($_SESSION["userLogin"]) ? "Welcome, " . $_SESSION["userName"] : ""; ?>
+          </div>
+        </div>
+        <div class="col-sm-6">
           <div class="shop-menu pull-right">
             <ul class="nav navbar-nav">
               <?php if (isset($_SESSION["userLogin"])) : 
@@ -71,7 +76,7 @@
           </div>
           <div class="mainmenu pull-left">
             <ul class="nav navbar-nav collapse navbar-collapse">
-              <li><a <?= $_GET["p"] == "home" ? 'class="active"' : null; ?>href="/">Home</a></li>
+              <li><a <?= $_GET["p"] == "home" ? 'class="active"' : null; ?>href="index.php">Home</a></li>
               <li class="dropdown"><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails" || $_GET["p"] == "checkout" || $_GET["p"] == "cart") ? 'class="active"' : null; ?>href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <li><a <?= ($_GET["p"] == "products" || $_GET["p"] == "productDetails") ? 'class="active"' : null; ?>href="index.php?p=products&sp=1">Products</a></li>

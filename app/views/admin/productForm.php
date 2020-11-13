@@ -13,7 +13,7 @@
       <div class="form-group row">
         <label class="col-form-label labFixed" for="description">Description:</label>
         <div class="inpFixed">
-          <textarea class="form-control taFixed" name="description" id="description" rows="3" placeholder="Enter Product Description" maxlength="500" required><?= $productData["Description"]; ?></textarea>
+          <textarea class="form-control taFixed" name="description" id="description" rows="3" placeholder="Enter Product Description" maxlength="500" required><?= fixCRLF($productData["Description"]); ?></textarea>
         </div>
       </div>
       <!-- Product Category -->

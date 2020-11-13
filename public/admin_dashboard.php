@@ -23,7 +23,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   <meta name="author" content="Malarena SA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>eStore | Admin</title>
+  <title>E-Store | Admin</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="css/dashboard.css" />

@@ -1,5 +1,40 @@
 <!--Shop - Home-->
-<section id="slider"><!--slider--><!--
+<section>
+  <div class="container">
+    <div class="row">
+      <?php // Display Logged Out message and/or latest system message
+      if (isset($_SESSION["message"])) {
+        echo "<h5>Last System Message:</h5>";
+        msgShow();
+      }
+      if (isset($_GET["q"])) {
+        $_SESSION["message"] = msgPrep("success", "You are successfully logged out. Thanks for using eStore.");
+        msgShow();
+      }
+      ?>
+
+      <!-- Only used for testing
+      <div>
+        <pre>
+          <?php
+            // echo "SESSION: ";
+            // print_r($_SESSION);
+            // echo "<br />POST: ";
+            // print_r($_POST);
+            // echo "<br />GET: ";
+            // print_r($_GET);
+            // echo "<br />FILES: ";
+            // print_r($_FILES);
+            // echo "<br />SERVER: ";
+            // print_r($_SERVER);
+            // echo "<br />";
+          ?>
+        </pre>
+      </div>-->
+    </div>
+  </div>
+</section>
+<section id="slider"><!--slider-->
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
@@ -13,42 +48,37 @@
           <div class="carousel-inner">
             <div class="item active">
               <div class="col-sm-6">
-                <h1><span>E</span>-SHOPPER</h1>
-                <h2>Free E-Commerce Template</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <button type="button" class="btn btn-default get">Get it now</button>
+                <h1><span>E</span>-STORE</h1>
+                <h2>Interactive Web Store</h2>
+                <p>Fully interactive Web Store that provides an easy-to-use interface for shoppers to search and view products, add items to their shopping cart, place orders and manage any returns.</p>
+                <a class="btn btn-default get" href="index.php?p=products">Start Shopping now</a>
               </div>
               <div class="col-sm-6">
-                <img src="images/home/girl1.jpg" class="girl img-responsive" alt="" />
-                <img src="images/home/pricing.png"  class="pricing" alt="" />
+                <img src="images/shop/home1.jpg" class="homeAd img-responsive" alt="" />
               </div>
             </div>
             <div class="item">
               <div class="col-sm-6">
-                <h1><span>E</span>-SHOPPER</h1>
-                <h2>100% Responsive Design</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <button type="button" class="btn btn-default get">Get it now</button>
+                <h1><span>E</span>-STORE</h1>
+                <h2>Integrated with PayPal</h2>
+                <p>All orders can be paid for using PayPal. Even if the shopper does not have a PayPal account there are options to pay using a Debit or Credit Card.</p>
+                <a class="btn btn-default get" href="index.php?p=products">Start Shopping now</a>
               </div>
               <div class="col-sm-6">
-                <img src="images/home/girl2.jpg" class="girl img-responsive" alt="" />
-                <img src="images/home/pricing.png"  class="pricing" alt="" />
+                <img src="images/shop/home2.jpg" class="homeAd img-responsive" alt="" />
               </div>
             </div>
-            
             <div class="item">
               <div class="col-sm-6">
-                <h1><span>E</span>-SHOPPER</h1>
-                <h2>Free Ecommerce Template</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                <button type="button" class="btn btn-default get">Get it now</button>
+                <h1><span>E</span>-STORE</h1>
+                <h2>Separate Secure Admin Tool</h2>
+                <p>Administration of the products, orders, returns, messages and users, as well as the general system configuration is available via a separate secure administration tool.</p>
+                <a class="btn btn-default get" href="index.php?p=products">Start Shopping now</a>
               </div>
               <div class="col-sm-6">
-                <img src="images/home/girl3.jpg" class="girl img-responsive" alt="" />
-                <img src="images/home/pricing.png" class="pricing" alt="" />
+                <img src="images/shop/home3.jpg" class="homeAd img-responsive" alt="" />
               </div>
             </div>
-            
           </div>
           
           <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
@@ -61,41 +91,5 @@
         
       </div>
     </div>
-  </div><-->
-</section><!--/slider-->
-<section>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12">
-        <h2>eStore Home</h2>
-      </div>
-
-      <?php // Display Welcome or Logged Out and/or latest system message
-      if (isset($_SESSION["userLogin"])) echo "<h3>Welcome, {$_SESSION["userName"]}.</h3>";
-      if (isset($_GET["q"])) echo "<h3>You are successfully logged out. Thanks for using eStore.</h3>";
-      if (isset($_SESSION["message"])) {
-        echo "<h5>Last System Message:</h5>";
-        msgShow();
-      }
-      ?>
-
-      <div>
-        <pre>
-          <?php
-            echo "SESSION: ";
-            print_r($_SESSION);
-            echo "<br />POST: ";
-            print_r($_POST);
-            echo "<br />GET: ";
-            print_r($_GET);
-            echo "<br />FILES: ";
-            print_r($_FILES);
-            // echo "<br />SERVER: ";
-            // print_r($_SERVER);
-            echo "<br />";
-          ?>
-        </pre>
-      </div><!--/Home-->
-    </div>
   </div>
-</section>
+</section><!--/slider-->

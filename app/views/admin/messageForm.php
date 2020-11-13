@@ -65,7 +65,7 @@
     <form action="" method="POST" name="messageForm" autocomplete="off">
       <table class="table table-sm">
         <tr>
-          <td><textarea class="taFixed" name="reply" cols="75" rows="7" maxlength="500" required><?= fixCRLF($messageData["Reply"]); ?></textarea></td>
+          <td><textarea class="taFixed" name="reply" rows="7" maxlength="500" required><?= fixCRLF($messageData["Reply"]); ?></textarea></td>
         </tr>
         <tr>
           <td style="border-top:none"><button class="btn btn-primary" type="submit" name="updateReply">Update Reply</button></td>

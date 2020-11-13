@@ -4,7 +4,7 @@
     <form class="bill-to" action="index.php?p=checkout#ship" method="POST" name="shippingForm">
       <div class="form-one order-message"><!--shipping_instructions-->
         <h5>Shipping Instructions</h5>
-        <textarea name="shipInstructions" placeholder="Enter any notes about your order, or special instructions regarding delivery" maxlength="500"><?= $_SESSION["cart"][0]["shippingInstructions"] ?></textarea>
+        <textarea name="shipInstructions" placeholder="Enter any notes about your order, or special instructions regarding delivery" maxlength="500"><?= fixCRLF($_SESSION["cart"][0]["shippingInstructions"]); ?></textarea>
       </div><!--/shipping_instructions-->
       <div class="form-two"><!--shipping_costs-->
         <h5 style="padding-left: 40px">Shipping Details</h5>

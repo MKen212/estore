@@ -49,7 +49,7 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
               <p>Sorry - No products to show. Check Category or Brand Filters if you were expecting products to be listed.</p>
             </div>
           <?php else :
-            // Loop through all ACTIVE Products and output a page of the values
+            // Loop through all ACTIVE Products (as per filters) and output a page of the values
             foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID)) as $record) {
               $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
               include "../app/views/shop/productItem.php";
@@ -63,6 +63,11 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
             </div>
           <?php endif; ?>
         </div><!--/featured_items-->
+
+        <?php  // Show Product New/OnSale Carousel
+        include "../app/controllers/shop/productCarousel.php";
+        ?>
+        
       </div>
     </div>
   </div>
