@@ -115,7 +115,7 @@ class User {
    * @return bool  True if function success or False
    */
   public function logout() {
-    $_SESSION["message"] = "Thanks for using eStore.";
+    $_SESSION["message"] = "Thanks for using E-STORE.";
     $_SESSION["userLogin"] = false;
     return true;
   }

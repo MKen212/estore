@@ -8,7 +8,7 @@
         msgShow();
       }
       if (isset($_GET["q"])) {
-        $_SESSION["message"] = msgPrep("success", "You are successfully logged out. Thanks for using eStore.");
+        $_SESSION["message"] = msgPrep("success", "You are successfully logged out. Thanks for using E-STORE.");
         msgShow();
       }
       ?>
@@ -38,7 +38,7 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
-        <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+        <div id="slider-carousel" class="carousel slide" data-ride="carousel" data-interval="10000">
           <ol class="carousel-indicators">
             <li data-target="#slider-carousel" data-slide-to="0" class="active"></li>
             <li data-target="#slider-carousel" data-slide-to="1"></li>

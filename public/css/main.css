@@ -1273,7 +1273,7 @@ h2.title {
 .product-information {
   border: 1px solid #F7F7F0;
   overflow: hidden;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
   padding-left: 30px;
   padding-top: 40px;
   position: relative;
@@ -1749,14 +1749,17 @@ h2.title {
 
 
 .cart_delete a {
-  background:#F0F0E9;
-  color: #FFFFFF;
+  /* background:#F0F0E9; */
+  /* color: #FFFFFF; */
+  background:#F5F5ED;
+  color: #696763;
   padding: 5px 7px;
   font-size: 16px
 }
 
 .cart_delete a:hover {
-  background:#FE980F
+  background:#FE980F;
+  color: #FFFFFF;
 }
 
 

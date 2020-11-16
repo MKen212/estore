@@ -20,7 +20,7 @@
     <!-- Submit Button -->
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="login" >Sign in</button>
     <!-- Shop & New Account Links -->
-    <a class="mr-3" href="/">To eStore</a>
+    <a class="mr-3" href="/">To E-STORE</a>
     <a class="ml-3" href="admin.php?p=register">Create new account</a>
   </form>
 </div>

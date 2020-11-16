@@ -45,11 +45,11 @@
         ><td><?= commaToBR($orderDetails["Shipping"]); ?></td>
       </tr>
       <tr>
-        <td>Shipping Instructions:</td>
-        <td><textarea rows="2" readonly><?= fixCRLF($orderDetails["ShippingInstructions"]); ?></textarea></td>
+        <td>Shipping<br />Instructions:</td>
+        <td><textarea rows="3" readonly><?= fixCRLF($orderDetails["ShippingInstructions"]); ?></textarea></td>
       </tr>
       <tr>
-        <td>Shipment Weight:</td>
+        <td>Weight:</td>
         <td><?= $orderDetails["ShippingWeightKG"] ?> kg</td>
       </tr>
       <tr>

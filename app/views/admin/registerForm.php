@@ -26,8 +26,8 @@
     <!-- Submit Button -->
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="register">Register</button>
     <!-- Shop & Login Links -->
-    <a class="mr-3" href="/">To eStore</a>
-    <a class="ml-3" href="admin.php?p=login">Back to Login</a>
+    <a class="mr-3" href="/">To E-STORE</a>
+    <a class="ml-3" href="admin.php?p=login">Back to Admin Login</a>
     <br />
   </form>
 </div>

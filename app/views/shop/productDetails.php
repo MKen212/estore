@@ -13,7 +13,7 @@
         <img src="images/shop/sale.png" class="sale" alt="" />
       <?php endif; ?>
       <h2><?= $record["Name"]; ?></h2>
-      <textarea rows="2" readonly><?= fixCRLF($record["Description"]); ?></textarea>
+      <textarea rows="3" readonly><?= fixCRLF($record["Description"]); ?></textarea>
       <!-- Removed Ratings as hard-coded image
       <img src="images/product-details/rating.png" alt="" />
       -->

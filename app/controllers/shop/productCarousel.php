@@ -4,7 +4,7 @@ $product = new Product();
 ?>
 
 <div class="recommended_items"><!--recommended_items-->
-  <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
+  <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel" data-interval="8000">
     <div class="carousel-inner">
       <div class="item active">
         <h2 class="title text-center">New Products</h2>

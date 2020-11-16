@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Abel);
+
 /*
  * Feather
  */
@@ -155,4 +157,17 @@
 .tableScrollable > tbody > tr > td,
 .tableScrollable > thead > tr > th {
   float: left;
+}
+
+/* Added CSS for E-STORE Logo */
+.logo {
+  color: #B4B1AB;
+  font-family: abel;
+  font-size: 22px;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.logo span {
+  color:#FE980F;
 }

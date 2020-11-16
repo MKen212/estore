@@ -51,9 +51,9 @@
         <a class="nav-link<?= (($_GET["p"] == "countries") || ($_GET["p"] == "countryDetails") || ($_GET["p"] == "countryAdd")) ? " active" : "";?>" href="admin_dashboard.php?p=countries"><span data-feather="map"></span>Shipping Countries</a>
         <hr />
       </li>      
-      <!-- eStore -->
+      <!-- E-Store -->
       <li class="nav-item">
-        <a class="nav-link" href="index.php?p=home"><img src="/images/shared/logo.png" alt="logo" /> eStore</a>
+        <a class="nav-link logo" href="index.php?p=home"><img style="margin-right:10px" src="images/shared/logo.png" alt="logo" /><span>E</span>-STORE</a>
       </li>
     </ul>
   </div>
