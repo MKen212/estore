@@ -118,11 +118,11 @@ Class Message {
   /**
    * getRecord function - Retrieve single Message record
    * @param int $messageID  Message ID of required record
-   * @return array $result  Returns selected Message record or False 
+   * @return array $result  Returns selected Message (+Reply Username) record or False 
    */
   public function getRecord($messageID) {
     try {
-      $sql = "SELECT * FROM `messages` WHERE `MessageID` = '$messageID'";
+      $sql = "SELECT `messages`.*, `users`.`Name` AS `ReplyUsername` FROM `messages` LEFT JOIN `users` ON `users`.`UserID` = `messages`.`ReplyUserID` WHERE `MessageID` = '$messageID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

@@ -14,29 +14,13 @@
     <?= statusOutput("ReturnAction", $record["ReturnAction"]); ?>
   </td>
   <td style="border-left:double">
-    <?php if ($record["ReceivedDate"] == "0000-00-00") : 
-      echo "- Pending - <br />";
-    else: ?>
-      <form action="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"]; ?>&itemID=<?=$record["ReturnItemID"]; ?>&updReceivedDate" method="POST">
-        <input type="date" name="newReceivedDate" value=<?= $record["ReceivedDate"]; ?> />
-        <input type="submit" name="updReceivedDate" value="Update" />
-        <?= " by " . $record["ReceivedUserID"]; ?>
-      </form>
-    <?php endif;
-    if ($record["ActionedDate"] == "0000-00-00") : 
-      echo "- Pending - <br />";
-    else: ?>
-      <form action="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"]; ?>&itemID=<?=$record["ReturnItemID"]; ?>&updActioneddDate" method="POST">
-        <input type="date" name="newActionedDate" value=<?= $record["ActionedDate"]; ?> />
-        <input type="submit" name="updActionedDate" value="Update" />
-        <?= " by " . $record["ActionedUserID"]; ?>
-      </form>
-    <?php endif; ?>    
+    <input type="date" name="retItems[<?= $record["ReturnItemID"]; ?>][receivedDate]" value=<?= $record["ReceivedDate"]; ?> /><?= " by " . $record["ReceivedUserID"]; ?><br />
+    <input type="date" name="retItems[<?= $record["ReturnItemID"]; ?>][actionedDate]" value=<?= $record["ActionedDate"]; ?> /><?= " by " . $record["ActionedUserID"]; ?><br />
     <?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?>
   </td>
   <td>
-    <?= statusOutput("IsReceived", $record["IsReceived"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsReceived"] . "&updItemIsReceived")) ?><br />
-    <?= statusOutput("IsActioned", $record["IsActioned"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsActioned"] . "&updItemIsActioned")) ?><br />
-    <?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["Status"] . "&updItemStatus")) ?>
+    <?= statusOutput("IsReceived", $record["IsReceived"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsReceived"] . "&updItemIsReceived#returnItems")) ?><br />
+    <?= statusOutput("IsActioned", $record["IsActioned"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsActioned"] . "&updItemIsActioned#returnItems")) ?><br />
+    <?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["Status"] . "&updItemStatus#returnItems")) ?>
   </td>
 </tr><!--/return_item_ADMIN-->

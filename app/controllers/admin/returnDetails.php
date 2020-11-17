@@ -52,22 +52,6 @@ if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
   include_once "../app/models/returnItemClass.php";
   $returnItem = new ReturnItem();
   $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
-} elseif (isset($_POST["updReceivedDate"])) {  // Item Received Date was updated
-  $returnItemID = $_GET["itemID"];
-  $newReceivedDate = $_POST["newReceivedDate"];
-  $_POST=[];
-  // Update OrderItem ReceivedDate
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
-  $update = $returnItem->updateReceivedDate($returnItemID, $newReceivedDate);
-} elseif (isset($_POST["updActionedDate"])) {  // Item Actioned Date was updated
-  $returnItemID = $_GET["itemID"];
-  $newActionedDate = $_POST["newActionedDate"];
-  $_POST=[];
-  // Update OrderItem ActionedDate
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
-  $update = $returnItem->updateActiondDate($returnItemID, $newActionedDate);
 } elseif (isset($_GET["refund"])) {  // Process Refund Link was clicked
   $invoiceID = $_GET["invId"];
   $noteToPayer = "Refund for Return {$invoiceID}-RTN-{$returnID}";
@@ -77,6 +61,21 @@ if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
   include_once "../app/models/paypalClass.php";
   $paypal = new PayPal();
   $paypal->refundPayment($invoiceID, $noteToPayer, DEFAULTS["currency"], $value, $paymentID, $returnID);
+}
+$_GET = [];
+
+// Process ReturnItem Updates if Update Return POSTed
+if (isset($_POST["updateReturn"])){
+  include_once "../app/models/returnItemClass.php";
+  $returnItem = new ReturnItem();
+  $update = 0;
+  foreach ($_POST["retItems"] as $key => $value) {
+    if (empty($value["receivedDate"])) $value["receivedDate"] = "0000-00-00";
+    if (empty($value["actionedDate"])) $value["actionedDate"] = "0000-00-00";
+    $update += $returnItem->updateProcessedDates($key, $value["receivedDate"], $value["actionedDate"]);
+  }
+  $_POST=[];
+  if ($update > 0) $_SESSION["message"] = msgPrep("success", "Return updated successfully.<br />");
 }
 ?>
 <!-- Main Section - Admin Returns Info -->
@@ -91,11 +90,9 @@ if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
 </div>
 
 <?php
-$_GET = [];
+// Get Returns Details
 include_once "../app/models/returnsClass.php";
 $returns = new Returns();
-
-// Get Returns Details
 $returnDetails = $returns->getDetails($returnID);
 
 if ($returnDetails == false) :  // ReturnID not found ?>
@@ -109,10 +106,11 @@ if ($returnDetails == false) :  // ReturnID not found ?>
 
   // Show Returns Items
   ?>
-  <div class="row"><!--return_items-->
+  <div class="row" id="returnItems"><!--return_items-->
     <div class="col-sm-12">
       <h5>Returned Items</h5>
-        <div class="table-responsive">
+      <div class="table-responsive">
+        <form action="admin_dashboard.php?p=returnDetails&id=<?= $returnID; ?>" method="POST" name="retItemsForm" autocomplete="off">
           <table class="table table-striped table-sm" style="margin-bottom:50px">
             <thead>
               <tr>
@@ -139,9 +137,17 @@ if ($returnDetails == false) :  // ReturnID not found ?>
                 include "../app/views/admin/returnItem.php";
               }
               ?>
+              <tr>
+                <td colspan="6"></td>
+                <td colspan="2" style="border-left:double">
+                  <button class="btn btn-primary" style="margin-top:10px" type="submit" name="updateReturn">Update Return</button>
+                </td>
+              </tr>
             </tbody>
           </table>
-        </div>
+        </form>
+        
+      </div>
     </div>
   </div><!--/return_items-->
 <?php endif; ?>

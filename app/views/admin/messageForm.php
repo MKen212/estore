@@ -57,6 +57,10 @@
           } ?>
         </td>
       </tr>
+      <tr>
+        <td>Replied Username:</td>
+        <td><?= !empty($messageData["ReplyUsername"]) ? $messageData["ReplyUsername"] : ""; ?></td>
+      </tr>
     </table>
   </div><!--/reply_information-->
 

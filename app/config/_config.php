@@ -48,6 +48,28 @@ $shippingValues = [
 
 define("SHIPPING_VALUES", $shippingValues);
 
+/* Shop Product Sort Options */
+$prodSortOptions = [
+  0 => [  // Default
+    "text" => "Default",
+    "sortSQL" => "`Flag` DESC, `EditTimeStamp` DESC",
+  ],
+  1 => [
+    "text" => "Newest First",
+    "sortSQL" => "`ProductID` DESC",
+  ],
+  2 => [
+    "text" => "Price, Low to High",
+    "sortSQL" => "`Price`",
+  ],
+  3 => [
+    "text" => "Price, High to Low",
+    "sortSQL" => "`Price` DESC",
+  ],
+];
+
+define("PROD_SORT_OPTIONS", $prodSortOptions);
+
 /* Status Codes */
 $statusCodes = [
   "Status" => [  // All Tables / Status Field

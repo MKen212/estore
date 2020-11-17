@@ -2,7 +2,14 @@
 // Get sub-page
 isset($_GET["sp"]) ? $subPage = $_GET["sp"] : $subPage = 1;
 
-// Update filter details
+// Update product sort and filter details
+if (isset($_GET["sort"])) {
+  if ($_GET["sort"] == 0) {  // Unset Product Sort Option if 0
+    if (isset($_SESSION["prodSortID"])) unset($_SESSION["prodSortID"]);
+  } else {  // Set Product Sort Option
+    $_SESSION["prodSortID"] = $_GET["sort"];
+  }
+}
 if (isset($_GET["cat"])) {
   if ($_GET["cat"] == 0) {  // Unset Category Filter if 0
     if (isset($_SESSION["prodCatID"])) unset($_SESSION["prodCatID"]);
@@ -19,7 +26,8 @@ if (isset($_GET["brand"])) {
 }
 $_GET = [];
 
-// Get filter details
+// Get product sort filter details
+isset($_SESSION["prodSortID"]) ? $prodSortID = $_SESSION["prodSortID"] : $prodSortID = 0;
 isset($_SESSION["prodCatID"]) ? $prodCatID = $_SESSION["prodCatID"] : $prodCatID = null;
 isset($_SESSION["prodBrandID"]) ? $prodBrandID = $_SESSION["prodBrandID"] : $prodBrandID = null;
 
@@ -50,7 +58,7 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
             </div>
           <?php else :
             // Loop through all ACTIVE Products (as per filters) and output a page of the values
-            foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID)) as $record) {
+            foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID, $prodSortID)) as $record) {
               $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
               include "../app/views/shop/productItem.php";
             }?>

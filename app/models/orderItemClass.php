@@ -93,7 +93,7 @@ Class OrderItem {
   }
 
   /**
-   * updateIsShipped function - Update IsShipped field of an existing order_item record
+   * updateIsShipped function - Update IsShipped (and ShippedDate) fields of an existing order_item record
    * @param int $orderItemID  OrderItemID of order item being updated
    * @param int $isShipped    New IsShipped Status
    * @return int $result      Number of records updated (=1) or False
@@ -132,17 +132,20 @@ Class OrderItem {
   }
 
   /**
-   * updateShippedDate function - Update ShippedDate field of an existing order_item record
-   * @param int $orderItemID  OrderItemID of order item being updated
+   * updateShippedDate function - Update ShippedDate (and IsShipped) fields of an existing order_item record
+   * @param int $orderItemID     OrderItemID of order item being updated
    * @param string $newShipDate  New Shipped Date in the format (YYYY-MM-DD)
    * @return int $result         Number of records updated (=1) or False
    */
   public function updateShippedDate($orderItemID, $newShipDate) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `order_items` SET `ShippedDate` = '$newShipDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `OrderItemID` = '$orderItemID'";
+      if ($newShipDate == "0000-00-00" || empty($newShipDate)) {
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '0' WHERE `OrderItemID` = '$orderItemID'";
+      } else {
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '$newShipDate', `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '1' WHERE `OrderItemID` = '$orderItemID'";
+      }
       $result = $this->conn->exec($sql);
-      $_SESSION["message"] = msgPrep("success", "Date Shipped updated successfully.<br />");
       return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateShippedDate Failed: " . $err->getMessage() . "<br />");

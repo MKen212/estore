@@ -108,12 +108,15 @@ class Product {
    * @param int $status       Product Status (Optional)
    * @param int $prodCatID    Product Category ID (Optional)
    * @param int $prodBrandID  Product Brand ID (Optional)
+   * @param int $prodSortID   Product Sort Order (Optional)
    * @return array $result    Returns defined product records (Desc ID order) or False 
    */
-  public function getPage($limit, $offset, $status = null, $prodCatID = null, $prodBrandID = null) {
+  public function getPage($limit, $offset, $status = null, $prodCatID = null, $prodBrandID = null, $prodSortID = null) {
     try {
+      if (empty($prodSortID)) $prodSortID = 0;  // Default Sort Order
+      $orderBy = PROD_SORT_OPTIONS[$prodSortID]["sortSQL"];  // Get Sort SQL
       if ($status == null && $prodCatID == null && $prodBrandID == null) {  // Select ALL records
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` ORDER BY `ProductID` DESC LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` ORDER BY $orderBy LIMIT $limit OFFSET $offset";
       } else {
         // Build WHERE clause
         $whereClause = "";
@@ -126,7 +129,7 @@ class Product {
           if (!empty($whereClause)) $whereClause .= " AND ";
           $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
         }
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ($whereClause) ORDER BY `ProductID` DESC LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ($whereClause) ORDER BY $orderBy LIMIT $limit OFFSET $offset";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();

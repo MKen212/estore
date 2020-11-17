@@ -72,7 +72,7 @@ Class ReturnItem {
   }
 
   /**
-   * updateIsReceived function - Update IsReceived field of an existing return_item record
+   * updateIsReceived function - Update IsReceived (and ReceivedDate) fields of an existing return_item record
    * @param int $returnItemID  ReturnItemID of return item being updated
    * @param int $isReceived    New IsReceived Status
    * @return int $result       Number of records updated (=1) or False
@@ -94,7 +94,7 @@ Class ReturnItem {
   }
 
   /**
-   * updateIsActioned function - Update IsActioned field of an existing return_item record
+   * updateIsActioned function - Update IsActioned (and ActionedDate) fields of an existing return_item record
    * @param int $returnItemID  ReturnItemID of return item being updated
    * @param int $isActioned    New IsActioned Status
    * @return int $result       Number of records updated (=1) or False
@@ -116,39 +116,32 @@ Class ReturnItem {
   }
 
   /**
-   * updateReceivedDate function - Update ReceivedDate field of an existing return_item record
+   * updateProcessedDates function - Update ReceivedDate (and IsReceived), ActionedDate (and IsActioned) fields of an existing return_item record
    * @param int $returnItemID        ReturnItemID of return item being updated
    * @param string $newReceivedDate  New Received Date in format (YYYY-MM-DD)
-   * @return int $result             Number of records updated (=1) or False
-   */
-  public function updateReceivedDate($returnItemID, $newReceivedDate) {
-    try {
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `return_items` SET `ReceivedDate` = '$newReceivedDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `ReturnItemID` = '$returnItemID'";
-      $result = $this->conn->exec($sql);
-      $_SESSION["message"] = msgPrep("success", "Date Received updated successfully.<br />");
-      return $result;
-    } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateReceivedDate Failed: " . $err->getMessage() . "<br />");
-      return false;
-    }
-  }
-
-  /**
-   * updateActionedDate function - Update ActionedDate field of an existing return_item record
-   * @param int $returnItemID        ReturnItemID of return item being updated
    * @param string $newActionedDate  New Actioned Date in format (YYYY-MM-DD)
    * @return int $result             Number of records updated (=1) or False
    */
-  public function updateActiondDate($returnItemID, $newActionedDate) {
+  public function updateProcessedDates($returnItemID, $newReceivedDate, $newActionedDate) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `return_items` SET `ActionedDate` = '$newActionedDate', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `ReturnItemID` = '$returnItemID'";
+      $sqlReceived = "";
+      $sqlActioned = "";
+      if ($newReceivedDate == "0000-00-00" || empty($newReceivedDate)) {
+        $sqlReceived = "`ReceivedDate` = '0000-00-00', `ReceivedUserID` = '0', `IsReceived` = '0'";
+      } else {
+        $sqlReceived = "`ReceivedDate` = '$newReceivedDate', `ReceivedUserID` = '$editID', `IsReceived` = '1'";
+      }
+      if ($newActionedDate == "0000-00-00" || empty($newActionedDate)) {
+        $sqlActioned = "`ActionedDate` = '0000-00-00', `ActionedUserID` = '0', `IsActioned` = '0'";
+      } else {
+        $sqlActioned = "`ActionedDate` = '$newActionedDate', `ActionedUserID` = '$editID', `IsActioned` = '1'";
+      }
+      $sql = "UPDATE `return_items` SET $sqlReceived, $sqlActioned, `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID' WHERE `ReturnItemID` = '$returnItemID'";
       $result = $this->conn->exec($sql);
-      $_SESSION["message"] = msgPrep("success", "Date Actioned updated successfully.<br />");
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateActionedDate Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ReturnItem/updateReceivedDate Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

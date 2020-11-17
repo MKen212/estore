@@ -11,19 +11,11 @@
   <td><?= $record["QtyOrdered"]; ?></td>
   <td><?= $record["QtyAvailForRtn"]; ?></td>
   <td style="border-left:double">
-    <?php if ($record["ShippedDate"] == "0000-00-00") : 
-      echo "- Pending - <br />";
-    else: ?>
-      <form action="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>&itemID=<?=$record["OrderItemID"]; ?>&updShippedDate" method="POST">
-        <input type="date" name="newShipDate" value=<?= $record["ShippedDate"]; ?> />
-        <input type="submit" name="updShipDate" value="Update" />
-        <?= " by " . $record["ShippedUserID"]; ?>
-      </form>
-    <?php endif; ?>
+    <input type="date" name="ordItems[<?= $record["OrderItemID"]; ?>][shippedDate]" value=<?= $record["ShippedDate"]; ?> /><?= " by " . $record["ShippedUserID"]; ?><br />
     <?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?>
   </td>
   <td>
-    <?= statusOutput("IsShipped", $record["IsShipped"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["IsShipped"] . "&updItemIsShipped")) ?><br />
-    <?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["Status"] . "&updItemStatus")) ?>
+    <?= statusOutput("IsShipped", $record["IsShipped"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["IsShipped"] . "&updItemIsShipped#orderItems")) ?><br />
+    <?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=orderDetails&id=" . $record["OrderID"] . "&itemID=" . $record["OrderItemID"] . "&cur=" . $record["Status"] . "&updItemStatus#orderItems")) ?>
   </td>
-</tr><!--/order_item_ADMIN-->
+</tr><!--/order_item_ADMIN-->        

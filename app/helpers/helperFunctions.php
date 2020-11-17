@@ -269,6 +269,24 @@ function shipTypeOptions($selCode) {
 }
 
 /**
+ * prodSortFilter function - Outputs all PROD_SORT_OPTIONS as HTML links
+ * @param string $actID  PROD_SORT_OPTION that is marked as 'active'
+ * @return bool          Returns true on completion
+ */
+function prodSortFilter($actID) {
+  foreach (new RecursiveArrayIterator(PROD_SORT_OPTIONS) as $key => $value) {
+    if ($key == 0) continue;  // Do not output default sort option
+    echo "<div class='panel panel-default'><div class='panel-heading'>";
+    if ($key == $actID) {
+      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a><a class='actClear' href='index.php?p=products&sp=1&sort=0'>(Clear)</a></h4>";
+    } else {
+      echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a></h4>";
+    }
+    echo "</div></div>";
+  }
+}
+
+/**
  * prodCatOptions function - Outputs all ACTIVE Names from prod_categories as HTML options
  * @param string $selID  ProdCatID that is marked as 'selected'
  * @return bool          Returns true on completion

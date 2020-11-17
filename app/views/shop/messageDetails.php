@@ -46,6 +46,11 @@
           <td>Date/Time Replied:</td>
           <td><?= $messageData["ReplyTimestamp"] == "0000-00-00 00:00:00" ? "- Pending -" : date("d/m/Y @ H:i", strtotime($messageData["ReplyTimestamp"])); ?></td>
         </tr>
+        <tr>
+          <td>Replied By:</td>
+          <td><?= !empty($messageData["ReplyUsername"]) ? $messageData["ReplyUsername"] : ""; ?></td>
+        </tr>
+
       </table>
     </div><!--/reply_information-->
     <div class="col-sm-6"><!--reply-->
