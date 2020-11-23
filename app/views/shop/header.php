@@ -65,7 +65,7 @@
   <div class="header-bottom"><!--header-bottom-->
     <div class="container">
       <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-6">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
               <span class="sr-only">Toggle navigation</span>
@@ -101,10 +101,13 @@
             </ul>
           </div>
         </div>
-        <div class="col-sm-4">
-          <div class="search_box pull-right">
-            <input type="text" placeholder="Search"/>
-          </div>
+        <div class="col-sm-6">
+          <!-- Search -->
+          <form action="index.php?p=products" method="POST" name="schHeader">
+            <div class="search_box pull-right">
+              <input type="text" name="prodSearch" placeholder="Search Products" value="<?= isset($_SESSION["prodSearch"]) ? $_SESSION["prodSearch"] : null; ?>" autocomplete="off" /><button type="submit" name="hdrSearch"><i class="fa fa-search"></i></button><button style="border-left:thin solid" type="submit" name="hdrClear"><i class="fa fa-trash-o"></i></button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

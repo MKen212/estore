@@ -284,19 +284,30 @@ a#scrollUp i{
 .search_box input {
   background: #F0F0E9;
   border: medium none;
-  color: #B2B2B2;
+  /* color: #B2B2B2; */
+  color: #696763;
   font-family: 'roboto';
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: 14px;
   font-weight: 300;
   height: 35px;
   outline: medium none;
   padding-left: 10px;
-  width: 155px;
-  background-image: url(../images/home/searchicon.png);
+  width: 350px;
+  /*background-image: url(../images/home/searchicon.png);
   background-repeat: no-repeat;
-  background-position: 130px;
+  background-position: 130px; */
 }
 
+.search_box button {
+  background-color: #FE980F;
+  color: #FFFFFF;
+  border: medium none;
+  font-family: 'roboto';
+  font-size: 14px;
+  font-weight: 300;
+  height: 35px;
+}
 
 /*  Dropdown menu*/
 

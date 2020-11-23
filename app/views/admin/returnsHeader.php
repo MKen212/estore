@@ -25,7 +25,8 @@
       <tr>
         <td>Total Refund Value:</td>
         <td><?= symValue($returnDetails["RefundTotal"]); ?>
-        <?php if (($returnDetails["RefundTotal"] > 0) && empty($returnDetails["PpRefundID"])) : ?>
+        <?php // Only show Process Refund Button if return has value, is not already processed, has a ReturnStatus of Submitted and a Status of Active
+        if (($returnDetails["RefundTotal"] > 0) && empty($returnDetails["PpRefundID"]) && ($returnDetails["ReturnStatus"] == 1) && ($returnDetails["Status"] == 1)) :  ?>
           <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard.php?p=returnDetails&id=<?= $returnDetails["ReturnID"] ?>&invId=<?= $returnDetails["InvoiceID"] ?>&payId=<?= $returnDetails["PaymentID"] ?>&value=<?= $returnDetails["RefundTotal"] ?>&refund">Process Refund</a>
         <?php endif; ?>
         </td>

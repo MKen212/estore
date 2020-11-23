@@ -26,16 +26,17 @@ if (isset($_GET["brand"])) {
 }
 $_GET = [];
 
-// Get product sort filter details
+// Get product sort, filter and search details from $_SESSION if set
 isset($_SESSION["prodSortID"]) ? $prodSortID = $_SESSION["prodSortID"] : $prodSortID = 0;
 isset($_SESSION["prodCatID"]) ? $prodCatID = $_SESSION["prodCatID"] : $prodCatID = null;
 isset($_SESSION["prodBrandID"]) ? $prodBrandID = $_SESSION["prodBrandID"] : $prodBrandID = null;
+isset($_SESSION["prodSearch"]) ? $prodSearch = fixSearch($_SESSION["prodSearch"]) : $prodSearch = null;
 
 // Get Total Active Records and Page Details
 include_once "../app/models/productClass.php";
 $product = new Product();
 
-$totRecords = $product->count(1, $prodCatID, $prodBrandID);
+$totRecords = $product->count(1, $prodCatID, $prodBrandID, $prodSearch);
 $lastPage = ceil($totRecords / DEFAULTS["productsPerPage"]);
 
 if ($subPage > $lastPage) $subPage = $lastPage;
@@ -58,7 +59,7 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
             </div>
           <?php else :
             // Loop through all ACTIVE Products (as per filters) and output a page of the values
-            foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID, $prodSortID)) as $record) {
+            foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID, $prodSortID, $prodSearch)) as $record) {
               $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
               include "../app/views/shop/productItem.php";
             }?>

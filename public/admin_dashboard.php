@@ -43,7 +43,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
   <div class=container-fluid>
     <div class="row">
       <!-- Side -->
-      <?php include "../app/views/admin/sidebar.php";?>
+      <?php include "../app/controllers/admin/sidebar.php";?>
       <!-- Main -->
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <?php include "../app/controllers/admin/" . $_GET["p"] . ".php";?>

@@ -278,7 +278,7 @@ function prodSortFilter($actID) {
     if ($key == 0) continue;  // Do not output default sort option
     echo "<div class='panel panel-default'><div class='panel-heading'>";
     if ($key == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a><a class='actClear' href='index.php?p=products&sp=1&sort=0'>(Clear)</a></h4>";
+      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a><a class='actClear' href='index.php?p=products&sp=1&sort=0'><i class='fa fa-trash-o'></i></a></h4>";
     } else {
       echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a></h4>";
     }
@@ -318,7 +318,7 @@ function prodCatFilter($actID) {
   foreach (new RecursiveArrayIterator($prodCat->getCategories(1)) as $value) {
     echo "<div class='panel panel-default'><div class='panel-heading'>";
     if ($value["ProdCatID"] == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&cat=" . $value["ProdCatID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&cat=0'>(Clear)</a></h4>";
+      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&cat=" . $value["ProdCatID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&cat=0'><i class='fa fa-trash-o'></i></a></h4>";
     } else {
       echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&cat=" . $value["ProdCatID"] . "'>" . $value["Name"] . "</a></h4>";
     }
@@ -358,7 +358,7 @@ function prodBrandFilter($actID) {
   foreach (new RecursiveArrayIterator($prodBrand->getBrands(1)) as $value) {
     echo "<div class='panel panel-default'><div class='panel-heading'>";
     if ($value["ProdBrandID"] == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&brand=" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&brand=0'>(Clear)</a></h4>";
+      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&brand=" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&brand=0'><i class='fa fa-trash-o'></i></a></h4>";
     } else {
       echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&brand=" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</a></h4>";
     }

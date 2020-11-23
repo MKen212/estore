@@ -1,5 +1,4 @@
-<?php   // Admin Dashboard - Sidebar Badges
-
+<?php   // Admin Dashboard - Sidebar
 // Update Orders/toSend count & badge
 include_once "../app/models/orderClass.php";
 $order = new Order();
@@ -25,5 +24,8 @@ include_once "../app/models/messageClass.php";
 $message = new Message();
 $toRespondCount = $message->countMsgStat(1);  // NOTE: HardCoded based on "Unread" & "Read" status in Config/$statusCodes/MessageStatus
 $toRespondBadge = " <span class='badge badge-info'>To Respond: $toRespondCount</span>";
+
+// Display Sidebar
+include "../app/views/admin/sidebar.php";
 
 ?>

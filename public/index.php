@@ -31,7 +31,7 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 
 <body>
   <?php
-  include "../app/views/shop/header.php";
+  include "../app/controllers/shop/header.php";
 
   include "../app/controllers/shop/" . $_GET["p"] . ".php";
 

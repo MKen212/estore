@@ -34,14 +34,15 @@ class Product {
 
   /**
    * count function - Get COUNT of product records (with optional conditions)
-   * @param int $status       Product Status (Optional)
-   * @param int $prodCatID    Product Category ID (Optional)
-   * @param int $prodBrandID  Product Brand ID (Optional)
-   * @return int $result      Returns count of defined product records or False 
+   * @param int $status         Product Status (Optional)
+   * @param int $prodCatID      Product Category ID (Optional)
+   * @param int $prodBrandID    Product Brand ID (Optional)
+   * @param string $prodSearch  Product Name Search String (Optional)
+   * @return int $result        Returns count of defined product records or False 
    */
-  public function count($status = null, $prodCatID = null, $prodBrandID = null) {
+  public function count($status = null, $prodCatID = null, $prodBrandID = null, $prodSearch = null) {
     try {
-      if ($status == null && $prodCatID == null && $prodBrandID == null) {  // Count ALL records
+      if ($status == null && $prodCatID == null && $prodBrandID == null && $prodSearch == null) {  // Count ALL records
         $sql = "SELECT COUNT(*) FROM `products`";
       } else {
         // Build WHERE clause
@@ -54,6 +55,10 @@ class Product {
         if (!empty($prodBrandID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
           $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+        }
+        if (!empty($prodSearch)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`Name` LIKE '%$prodSearch%')";
         }
         $sql = "SELECT COUNT(*) FROM `products` WHERE ($whereClause)";
       }
@@ -103,19 +108,20 @@ class Product {
 
   /**
    * getPage function - Retrieve Page of product records (with optional conditions)
-   * @param int $limit        Max number of records to return
-   * @param int $offset       Offset of first record
-   * @param int $status       Product Status (Optional)
-   * @param int $prodCatID    Product Category ID (Optional)
-   * @param int $prodBrandID  Product Brand ID (Optional)
-   * @param int $prodSortID   Product Sort Order (Optional)
-   * @return array $result    Returns defined product records (Desc ID order) or False 
+   * @param int $limit          Max number of records to return
+   * @param int $offset         Offset of first record
+   * @param int $status         Product Status (Optional)
+   * @param int $prodCatID      Product Category ID (Optional)
+   * @param int $prodBrandID    Product Brand ID (Optional)
+   * @param int $prodSortID     Product Sort Order (Optional)
+   * @param string $prodSearch  Product Name Search String (Optional)
+   * @return array $result      Returns defined product records in defined order or False 
    */
-  public function getPage($limit, $offset, $status = null, $prodCatID = null, $prodBrandID = null, $prodSortID = null) {
+  public function getPage($limit, $offset, $status = null, $prodCatID = null, $prodBrandID = null, $prodSortID = null, $prodSearch = null) {
     try {
       if (empty($prodSortID)) $prodSortID = 0;  // Default Sort Order
       $orderBy = PROD_SORT_OPTIONS[$prodSortID]["sortSQL"];  // Get Sort SQL
-      if ($status == null && $prodCatID == null && $prodBrandID == null) {  // Select ALL records
+      if ($status == null && $prodCatID == null && $prodBrandID == null && $prodSearch == null) {  // Select ALL records
         $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` ORDER BY $orderBy LIMIT $limit OFFSET $offset";
       } else {
         // Build WHERE clause
@@ -128,6 +134,10 @@ class Product {
         if (!empty($prodBrandID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
           $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+        }
+        if (!empty($prodSearch)) {
+          if (!empty($whereClause)) $whereClause .= " AND ";
+          $whereClause .= "(`Name` LIKE '%$prodSearch%')";
         }
         $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ($whereClause) ORDER BY $orderBy LIMIT $limit OFFSET $offset";
       }
