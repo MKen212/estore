@@ -1,5 +1,5 @@
 <?php  // Admin - Login
-include "../app/views/admin/loginForm.php";
+include "../app/views/admin_login/loginForm.php";
 
 if (isset($_POST["login"])){  // Verify & Login User
   $email = cleanInput($_POST["estEmail"], "string");
@@ -12,10 +12,10 @@ if (isset($_POST["login"])){  // Verify & Login User
   unset($user, $password);  
   if ($login == true) {
     // Login Success
-    header("location:admin_dashboard.php?p=home");
+    redirect("admin_dashboard.php?p=home");
   } else {
     // Login Failure
-    header("location:admin.php?p=logout");
+    redirect("admin_login.php?p=logout");
   }
 }
 ?>

@@ -74,7 +74,7 @@ class User {
       // Check User exists
       $count = $this->exists($email);
       if ($count != 1) {  // User does not exist
-        $_SESSION["message"] = "Incorrect Username or Password entered!";
+        $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
         return false;
       } else {  // Confirm Password
         $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `Email` = '$email'";
@@ -95,17 +95,17 @@ class User {
             $this->conn->exec($sqlLogin);
             return true;
           } else {  // User is inactive
-            $_SESSION["message"] = "Error - User Account Inactive!";
+            $_SESSION["message"] = msgPrep("danger", "Error - User Account Inactive!");
             return false;
           }
         } else {
           // Password invalid
-          $_SESSION["message"] = "Incorrect Username or Password entered!";
+          $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
           return false;
         }
       }  
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - User/Login Failed: " . $err->getMessage();
+      $_SESSION["message"] = msgPrep("danger", "Error - User/Login Failed: " . $err->getMessage());
       return false;
     }
   }
@@ -115,8 +115,8 @@ class User {
    * @return bool  True if function success or False
    */
   public function logout() {
-    $_SESSION["message"] = "Thanks for using E-STORE.";
-    $_SESSION["userLogin"] = false;
+    unset($_SESSION["userLogin"], $_SESSION["userIsAdmin"], $_SESSION["userID"], $_SESSION["userName"]);
+    $_SESSION["message"] = msgPrep("success", "You are successfully logged out. Thanks for using E-STORE.");
     return true;
   }
 

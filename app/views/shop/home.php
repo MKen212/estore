@@ -3,12 +3,11 @@
   <div class="container">
     <div class="row">
       <?php // Display Logged Out message and/or latest system message
-      if (isset($_SESSION["message"])) {
-        echo "<h5>Last System Message:</h5>";
+      if (isset($_GET["q"])) {
         msgShow();
       }
-      if (isset($_GET["q"])) {
-        $_SESSION["message"] = msgPrep("success", "You are successfully logged out. Thanks for using E-STORE.");
+      if (isset($_SESSION["message"])) {
+        echo "<h5>Last System Message:</h5>";
         msgShow();
       }
       ?>

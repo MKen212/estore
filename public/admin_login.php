@@ -1,14 +1,22 @@
 <?php
 session_start();
-require "../app/config/_config.php";
 require "../app/helpers/helperFunctions.php";
-if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
+require "../app/config/_config.php";
+
+if (!isset($_GET["p"])) $_GET["p"] = "login";  // If page not set, use "login"
+
+// Check Valid Page is entered
+$validPages = ["login", "logout", "register"];
+if (!in_array($_GET["p"], $validPages)) {
+  $_SESSION["message"] = msgPrep("danger", "Error - Page Not Found.");
+  $_GET["p"] = "logout";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="decription" content="eStore Online Store" />
+  <meta name="description" content="E-STORE Online Store - Admin Login" />
   <meta name="author" content="Malarena SA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -29,13 +37,13 @@ if (!isset($_GET["p"])) $_GET["p"] = "login";  // If $_GET not set, page=login
         <img style="margin-right:10px" src="images/shared/logo.png" alt="" />
       </div>
       <div style="margin-top:7px;">
-        <a href="admin.php"><span>E</span>-STORE</a>
+        <a href="admin_login.php"><span>E</span>-STORE</a>
       </div>
     </div>
     <div class="row justify-content-center">
       <h1>Administration</h1>
     </div>
-    <?php include "../app/controllers/admin/" . $_GET["p"] . ".php";?>
+    <?php include "../app/controllers/admin_login/" . $_GET["p"] . ".php";?>
   </div>
 
 </body>

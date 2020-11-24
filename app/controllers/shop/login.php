@@ -34,7 +34,6 @@ if (isset($_GET["r"])) {  // Check if return page is set
             </script><?php
           } else {
             // Login Failure
-            $_SESSION["message"] = msgPrep("danger", $_SESSION["message"]);
             msgShow();
           }
         }

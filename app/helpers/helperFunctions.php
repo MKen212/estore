@@ -25,6 +25,17 @@ function cleanInput($input, $type) {
 }
 
 /**
+ * redirect function - Used to clear the output buffer and re-direct to a URL
+ * @param string $url  URL of new page to load
+ */
+function redirect($url) {
+  ob_start();
+  header("location: $url");
+  ob_end_flush();
+  exit();
+}
+
+/**
  * fixCRLF function - Used to replace ^~ as CRLF
  * @param string $input   Original Input
  * @return string $input  Fixed Input

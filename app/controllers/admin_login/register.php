@@ -1,5 +1,5 @@
 <?php  // Admin - Register New User Form
-include "../app/views/admin/registerForm.php";
+include "../app/views/admin_login/registerForm.php";
 
 if (isset($_POST["register"])) {  // Register New User
   $email = cleanInput($_POST["email"], "email");
@@ -13,8 +13,6 @@ if (isset($_POST["register"])) {  // Register New User
   unset($user, $password);
   
   // Refresh page
-  ?><script>
-    window.location.assign("admin.php?p=register");
-  </script><?php
+  redirect("admin_login.php?p=register");
 }
 ?>

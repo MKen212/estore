@@ -1,16 +1,17 @@
 <?php
 session_start();
+require "../app/helpers/helperFunctions.php";
+
 if (!isset($_SESSION["userLogin"])) {  // Reject User that is not logged in
-  $_SESSION["message"] = "Sorry - You need to Login with a Valid User Account to proceed.";
-  header("location:admin.php?p=logout");
+  $_SESSION["message"] = msgPrep("warning", "Sorry - You need to Login with a Valid User Account to proceed.");
+  redirect("admin_login.php?p=logout");
 }
 if ($_SESSION["userIsAdmin"] != 1) {  // Reject User that is not an Admin
-  $_SESSION["message"] = "Sorry - You need Admin Privileges to proceed.";
-  header("location:admin.php?p=logout");
+  $_SESSION["message"] = msgPrep("warning", "Sorry - You need Admin Privileges to proceed.");
+  redirect("admin_login.php?p=logout");
 }
 
 require "../app/config/_config.php";
-require "../app/helpers/helperFunctions.php";
 require "../vendor/autoload.php";
 
 if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
@@ -19,11 +20,11 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="decription" content="Electronic Online Store Admin" />
+  <meta name="description" content="E-STORE Online Store - Admin Dashboard" />
   <meta name="author" content="Malarena SA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-  <title>E-Store | Admin</title>
+  <title>E-Store | Admin Dashboard</title>
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css" href="css/dashboard.css" />

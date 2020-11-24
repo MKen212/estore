@@ -1,4 +1,4 @@
-<!-- Register Form -->
+<!-- Register Form - ADMIN -->
 <div class="row justify-content-center">
   <form class="form-user" action="" method="POST" name="registerForm" autocomplete="off">
     <h3 class="mb-3">User Registration Form</h3>
@@ -23,11 +23,12 @@
       </div>
       <input class="form-control" type="text" name="name" placeholder="Enter Name" required />
     </div>
+    <br />
     <!-- Submit Button -->
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="register">Register</button>
     <!-- Shop & Login Links -->
     <a class="mr-3" href="/">To E-STORE</a>
-    <a class="ml-3" href="admin.php?p=login">Back to Admin Login</a>
+    <a class="ml-3" href="admin_login.php?p=login">Back to Admin Login</a>
     <br />
   </form>
 </div>

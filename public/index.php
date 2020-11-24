@@ -1,16 +1,16 @@
 <?php
 session_start();
-require "../app/config/_config.php";
 require "../app/helpers/helperFunctions.php";
+require "../app/config/_config.php";
 require "../vendor/autoload.php";
 
-if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
+if (!isset($_GET["p"])) $_GET["p"] = "home";  // If page not set, use "home"
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="decription" content="Electronic Online Store" />
+  <meta name="description" content="E-STORE Online Store" />
   <meta name="author" content="Malarena SA" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="X-UA-Compatible" content="ie=edge" />

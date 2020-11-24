@@ -1,4 +1,4 @@
-<!-- Login Form -->
+<!-- Login Form - ADMIN -->
 <div class="row">
   <form class="form-user" action="" method="POST" name="loginForm">
     <h3 class="mb-3">Please sign in</h3>
@@ -21,6 +21,6 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="login" >Sign in</button>
     <!-- Shop & New Account Links -->
     <a class="mr-3" href="/">To E-STORE</a>
-    <a class="ml-3" href="admin.php?p=register">Create new account</a>
+    <a class="ml-3" href="admin_login.php?p=register">Create new account</a>
   </form>
 </div>
