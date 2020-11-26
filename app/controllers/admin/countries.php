@@ -1,74 +1,31 @@
 <?php  // Admin Dashboard - Countries List/Edit
-if (isset($_GET["updStatus"])) {  // Status link was clicked
-  $code = $_GET["code"];
-  $current = $_GET["cur"];
-  $_GET = [];
-  $newStatus = statusCycle("Status", $current);
-  // Update Country Status
-  include_once "../app/models/countryClass.php";
-  $country = new Country();
-  $updateStatus = $country->updateStatus($code, $newStatus);
+include_once "../app/models/countryClass.php";
+$country = new Country();
+
+// Get code if provided and process Status changes if hyperlinks clicked
+$code = null;
+if (isset($_GET["code"])) {
+  $code = cleanInput($_GET["code"], "string");
+
+  if (isset($_GET["updStatus"])) {  // Status link was clicked
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("Status", $curStatus);
+    // Update Country Status
+    $updateStatus = $country->updateStatus($code, $newStatus);
+  }
 }
+$_GET = [];
+
+// Fix Country Name Search if entered
+$name = null;
+if (isset($_POST["countrySearch"])) {
+  $name = fixSearch($_POST["schName"]);
+}
+$_POST = [];
+
+// Get List of countries
+$countryList = $country->getList($name);
+
+// Display Countries List View
+include "../app/views/admin/countriesList.php";
 ?>
-
-<!-- Main Section - Country List -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Shipping Countries</h2>
-</div>
-
-<div class="row">
-  <!-- Countries Table Search -->
-  <div class="col-4 mb-3">
-    <form action="" method="POST" name="schCountry">
-      <!-- Search -->
-      <div class="input-group">
-        <input class="form-control" type="text" name="schName" placeholder="Search Name" autocomplete="off" />
-        <div class="input-group-append">
-          <button class="btn btn-secondary" type="submit" name="countrySearch"><span data-feather="search"></span></button>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-2">
-    <!-- New Country Button -->
-    <div class="input-group">
-      <a class="btn btn-primary" href="admin_dashboard.php?p=countryAdd">Add New Country</a>
-    </div>
-  </div>
-  <div class="col-6">
-    <!-- System Messages -->
-    <?php msgShow(); ?>
-  </div>
-</div>
-
-<div class="row">
-  <!-- Countries Table List -->
-  <div class="table-responsive">
-    <table class="table table-striped table-sm tableScrollable">
-      <thead>
-        <tr><!-- Countries Table Header -->        
-          <th style="width:6.1835%">Code</th>
-          <th style="width:44.2540%">Name</th>
-          <th style="width:15.5889%">Shipping Band</th>
-          <th style="width:24.4904%">Last Edit</th>
-          <th style="width:9.4823%">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        if (isset($_POST["countrySearch"])) {
-          $search = fixSearch($_POST["schName"]);
-          $_POST = [];
-        } else {
-          $search = null;
-        }
-        include_once "../app/models/countryClass.php";
-        $country = new Country();
-        foreach(new RecursiveArrayIterator($country->getList($search)) as $record) {
-          include "../app/views/admin/countryListItem.php";
-        }
-        ?>      
-      </tbody>
-    </table>
-  </div>
-</div>

@@ -409,6 +409,16 @@ function commaToBR($string) {
 }
 
 /**
+ * returnsRef function - Returns standard Returns Ref used in all returns records
+ * @param int $invoiceID  Returns Record Original Invoice ID
+ * @param int $returnID   Returns Record ID
+ * @return string         Combined Returns Ref code
+ */
+function returnsRef($invoiceID, $returnID) {
+  return ("$invoiceID-RTN-$returnID");
+}
+
+/**
  * statusOutput function - Returns the HTML output relevant to the given status code
  * @param string $type           Status Type (from Config/StatusCodes)
  * @param int $status            Status Code

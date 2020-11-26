@@ -1,4 +1,4 @@
-<?php   // Admin Dashboard - Sidebar
+<?php  // Admin Dashboard - Sidebar
 // Update Orders/toSend count & badge
 include_once "../app/models/orderClass.php";
 $order = new Order();

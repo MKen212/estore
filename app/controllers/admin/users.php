@@ -1,84 +1,37 @@
 <?php  // Admin Dashboard - Users List/Edit
-if (isset($_GET["updStatus"])) {  // Status link was clicked
-  $userID = $_GET["id"];
-  $current = $_GET["cur"];
-  $_GET=[];
-  $newStatus = statusCycle("Status", $current);
-  // Update User Status
-  include_once "../app/models/userClass.php";
-  $user = new User();
-  $updateStatus = $user->updateStatus($userID, $newStatus);
-} elseif (isset($_GET["updIsAdmin"])) {  // IsAdmin link was clicked
-  $userID = $_GET["id"];
-  $current = $_GET["cur"];
-  $_GET=[];
-  $newStatus = statusCycle("IsAdmin", $current);
-  // Update User IsAdmin
-  include_once "../app/models/userClass.php";
-  $user = new User();
-  $updateStatus = $user->updateIsAdmin($userID, $newStatus);
+include_once "../app/models/userClass.php";
+$user = new User();
+
+// Get recordID if provided and process Status changes if hyperlinks clicked
+$userID = 0;
+if (isset($_GET["id"])) {
+  $userID = cleanInput($_GET["id"], "int");
+
+  if (isset($_GET["updStatus"])) {  // Status link was clicked
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("Status", $curStatus);
+    // Update User Status
+    $updateStatus = $user->updateStatus($userID, $newStatus);
+    
+  } elseif (isset($_GET["updIsAdmin"])) {  // IsAdmin link was clicked
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("IsAdmin", $curStatus);
+    // Update User IsAdmin
+    $updateStatus = $user->updateIsAdmin($userID, $newStatus);
+  }
 }
+$_GET = [];
+
+// Fix User Email Search if entered
+$email = null;
+if (isset($_POST["userSearch"])){
+  $email = fixSearch($_POST["schEmail"]);
+}
+$_POST = [];
+
+// Get List of users
+$userList = $user->getList($email);
+
+// Display Users List View
+include "../app/views/admin/usersList.php";
 ?>
-
-<!-- Main Section - User List -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Users</h2>
-</div>
-
-<div class="row">
-  <!-- Users Table Search -->
-  <div class="col-4 mb-3">
-    <form action="" method="POST" name="schUsers">
-      <!-- Search -->
-      <div class="input-group">
-        <input class="form-control" type="text" name="schEmail" placeholder="Search Email" autocomplete="off" />
-        <div class="input-group-append">
-          <button class="btn btn-secondary" type="submit" name="userSearch"><span data-feather="search"></span></button>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-2">
-    <!-- New User Button -->
-    <div class="input-group">
-      <a class="btn btn-primary" href="admin_dashboard.php?p=userAdd">Add New User</a>
-    </div>
-  </div>
-  <div class="col-6">
-    <!-- System Messages -->
-    <?php msgShow(); ?>
-  </div>
-</div>
-
-<div class="row">
-  <!-- Users Table List -->
-  <div class="table-responsive">
-    <table class="table table-striped table-sm">
-      <thead>
-        <!-- Users Table Header -->
-        <th>ID</th>
-        <th>Email</th>
-        <th>Name</th>
-        <th>Last Edit</th>
-        <th>Last Login</th>
-        <th>Admin</th>
-        <th>Status</th>
-      </thead>
-      <tbody>
-        <?php
-        if (isset($_POST["userSearch"])) {
-          $email = fixSearch($_POST["schEmail"]);
-          $_POST = [];
-        } else {
-          $email = null;
-        }
-        include_once "../app/models/userClass.php";
-        $user = new User();
-        foreach(new RecursiveArrayIterator($user->getList($email)) as $record) {
-          include "../app/views/admin/userListItem.php";
-        }
-        ?>      
-      </tbody>
-    </table>
-  </div>
-</div>

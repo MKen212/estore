@@ -1,7 +1,12 @@
-<div><!--Home-->
+<!-- Home - ADMIN -->
+<div class="pt-3 pb-2 mb-3 border-bottom">
+  <h2>Admin Home</h2>
+</div>
+
+<div>
   <pre>
     <?php
-      echo "SESSION: ";
+      echo "<br />SESSION: ";
       print_r($_SESSION);
       echo "<br />POST: ";
       print_r($_POST);
@@ -14,4 +19,4 @@
       echo "<br />";
     ?>
   </pre>
-</div><!--/Home-->
+</div>
