@@ -1,9 +1,8 @@
 <!-- Admin Dashboard - Product Category Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add Product Category</h2>
-</div>
+</div><?php
 
-<?php
 // Initialise Product Category Data
 $prodCatData = [
   "Name" => null,
@@ -32,5 +31,4 @@ if (isset($_POST["addProdCat"])) {  // Add ProdCat Record
   ?><script>
     window.location.assign("admin_dashboard.php?p=prodCatAdd");
   </script><?php
-}
-?>
+} ?>

@@ -1,9 +1,13 @@
+
+
+!!! TO HERE !!!
+
+
 <!-- Admin Dashboard - Product Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add Product</h2>
-</div>
+</div><?php
 
-<?php
 // Initialise Product Data
 $productData = [
   "Name" => null,
@@ -46,11 +50,7 @@ if (isset($_POST["addProduct"])) {  // Add Products
   $price = cleanInput($_POST["price"], "float");
   $weightGrams = cleanInput($_POST["weightGrams"], "int");
   $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
-  if ($_FILES["imgFilename"]["error"] == 0) {
-    $imgFilename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
-  } else {
-    $imgFilename = null;
-  }
+  $imgFilename = createFilename();
   $flag = $_POST["flag"];
   $status = $_POST["status"];
   $_POST = [];

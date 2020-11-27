@@ -20,8 +20,8 @@
     <!-- ** NOT REQUIRED - Messages should only be added in Shop ** -->
   </div>
   <!-- System Messages -->
-  <div class="col-6">
-    <?php msgShow(); ?>
+  <div class="col-6"><?php
+    msgShow(); ?>
   </div>
 </div>
 
@@ -30,25 +30,27 @@
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <th>ID</th>
-        <th>Subject</th>
-        <th>Sender Email</th>
-        <th>Sender Name</th>
-        <th>Date/Time Added</th>
-        <th>Date/Time Replied</th>
-        <th>Message<br />Status</th>
-        <th>Record<br />Status</th>
+        <tr>
+          <th>ID</th>
+          <th>Subject</th>
+          <th>Sender Email</th>
+          <th>Sender Name</th>
+          <th>Date/Time Added</th>
+          <th>Date/Time Replied</th>
+          <th>Message<br />Status</th>
+          <th>Record<br />Status</th>
+        </tr>
       </thead>
-      <tbody>
-        <?php foreach($messageList as $record) : ?>
+      <tbody><?php
+        foreach($messageList as $record) : ?>
           <tr><!-- Message Record-->
             <td><?= $record["MessageID"]; ?></td>
             <td><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"]; ?>"><?= $record["Subject"]; ?></a></td>
             <td><?= $record["SenderEmail"]; ?></td>
             <td><?= $record["SenderName"]; ?></td>
             <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["AddedUserID"]; ?></td>
-            <td>
-              <?php if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
+            <td><?php
+              if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Pending -";
               } else {
                 echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
@@ -56,8 +58,8 @@
             </td>
             <td><?= statusOutput("MessageStatus", $record["MessageStatus"]); ?></td>
             <td><?= statusOutput("Status", $record["Status"]); ?></td>
-          </tr>
-        <?php endforeach; ?>
+          </tr><?php
+        endforeach; ?>
       </tbody>
     </table>
   </div>

@@ -30,9 +30,9 @@ if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
       </div>
     </div>
 
-    <div class="row">
-      <?php  // Display Cart
-        include "../app/controllers/shop/cartList.php";
+    <div class="row"><?php
+      // Display Cart
+      include "../app/controllers/shop/cartList.php";
       ?>
     </div>
   </div>

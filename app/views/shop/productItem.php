@@ -12,12 +12,12 @@
           <p><?= $record["Name"]; ?></p>
           <a href="index.php?p=productDetails&id=<?= $record["ProductID"]; ?>" class="btn btn-default add-to-cart"><i class="fa fa-info-circle"></i>View Details</a>
         </div>
-      </div>
-      <?php if ($record["Flag"] == 1) : ?>
-        <img src="images/shop/new.png" class="new" alt="" />
-      <?php elseif ($record["Flag"] == 2) : ?>
-        <img src="images/shop/sale.png" class="sale" alt="" />
-      <?php endif; ?>
+      </div><?php
+      if ($record["Flag"] == 1) : ?>
+        <img src="images/shop/new.png" class="new" alt="" /><?php
+      elseif ($record["Flag"] == 2) : ?>
+        <img src="images/shop/sale.png" class="sale" alt="" /><?php
+      endif; ?>
     </div>
   </div>
 </div><!--/Product Item-->

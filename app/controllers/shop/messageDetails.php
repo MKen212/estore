@@ -7,16 +7,15 @@
       <div class="col-sm-12 bg">
         <h2 class="title text-center">Message Details</h2>
       </div>
-    </div>
+    </div><?php
 
-      <?php
       msgShow();  // Show any system messages coming from contact submission
 
       if (!isset($_GET["id"])) :  // Check MessageID Provided ?>
         <div class="register-req">
           <p>No Message ID provided.</p>
-        </div>
-      <?php else :
+        </div><?php
+      else :
         $messageID = $_GET["id"];
         $_GET = [];
         include_once "../app/models/messageClass.php";
@@ -26,12 +25,12 @@
         if ($_SESSION["userID"] != $refData["AddedUserID"]) :  // Check Message was added by current user ?>
           <div class="register-req">
             <p>Sorry - You do not have access to Message ID `<?= $messageID ?>`.</p>
-          </div>
-        <?php elseif ($refData["Status"] == 0) :  // Check Message is not Inactive ?>
+          </div><?php
+        elseif ($refData["Status"] == 0) :  // Check Message is not Inactive ?>
           <div class="register-req">
             <p>Sorry - Message ID `<?= $messageID ?>` is marked as 'Inactive'.</p>
-          </div>
-        <?php else :
+          </div><?php
+        else :
           // Get Message Details & Show
           $messageData = $message->getRecord($messageID);
 

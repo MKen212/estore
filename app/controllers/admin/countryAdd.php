@@ -1,9 +1,8 @@
 <!-- Admin Dashboard - Country Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add Shipping Country</h2>
-</div>
+</div><?php
 
-<?php
 // Initialise Country Data
 $countryData = [
   "Code" => null,
@@ -36,5 +35,4 @@ if (isset($_POST["addCountry"])) {  // Add Country Record
   ?><script>
     window.location.assign("admin_dashboard.php?p=countryAdd");
   </script><?php
-}
-?>
+} ?>

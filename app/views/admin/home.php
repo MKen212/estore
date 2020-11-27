@@ -4,9 +4,8 @@
 </div>
 
 <div>
-  <pre>
-    <?php
-      echo "<br />SESSION: ";
+  <pre><?php
+      echo "SESSION: ";
       print_r($_SESSION);
       echo "<br />POST: ";
       print_r($_POST);

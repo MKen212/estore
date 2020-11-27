@@ -22,8 +22,8 @@
     </div>
   </div>
   <!-- System Messages -->
-  <div class="col-6">
-    <?php msgShow(); ?>
+  <div class="col-6"><?php
+    msgShow(); ?>
   </div>
 </div>
 
@@ -32,20 +32,22 @@
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Last Edit</th>
-        <th>Status</th>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Last Edit</th>
+          <th>Status</th>
+        </tr>
       </thead>
-      <tbody>
-        <?php foreach($prodBrandList as $record) : ?>
+      <tbody><?php
+        foreach($prodBrandList as $record) : ?>
           <tr><!-- Product Brands Record -->
             <td><?= $record["ProdBrandID"]; ?></td>
             <td><a href="admin_dashboard.php?p=prodBrandDetails&id=<?= $record["ProdBrandID"]; ?>"><?= $record["Name"]; ?></a></td>
             <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
             <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodBrands&id=" . $record["ProdBrandID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
-          </tr>
-        <?php endforeach; ?>
+          </tr><?php
+        endforeach; ?>
       </tbody>
     </table>
   </div>

@@ -15,13 +15,13 @@
     <input type="number" name="returns[<?= $itemCount ?>][qtyReturned]" value="<?= $record["QtyAvailForRtn"]; ?>" min="1" max="<?= $record["QtyAvailForRtn"]; ?>" />
   </td>
   <td>
-    <select name="returns[<?= $itemCount ?>][returnReason]">
-      <?php statusOptions("ReturnReason", 0); ?>
+    <select name="returns[<?= $itemCount ?>][returnReason]"><?php
+      statusOptions("ReturnReason", 0); ?>
     </select>
   </td>
   <td>
-    <select name="returns[<?= $itemCount ?>][returnAction]">
-      <?php statusOptions("ReturnAction", 0); ?>
+    <select name="returns[<?= $itemCount ?>][returnAction]"><?php
+      statusOptions("ReturnAction", 0); ?>
     </select>
   </td>
 </tr><!--/returns_available_item-->

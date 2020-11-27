@@ -14,8 +14,8 @@
       <button class="btn btn-default update" type="submit" name="updateUser">Update</button>
     </form>
   </div><!--/Shop User form-->
-  <div>
-    <?php msgShow();  // Show Result ?>
+  <div><?php
+    msgShow();  // Show Result ?>
   </div>
 </div>
 <div class="col-sm-2"></div>

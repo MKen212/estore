@@ -26,8 +26,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="isAdmin">Admin User:</label>
       <div class="inpFixed">
-        <select class="form-control" name="isAdmin" id="isAdmin" required>
-          <?php statusOptions("IsAdmin", $userData["IsAdmin"]); ?>
+        <select class="form-control" name="isAdmin" id="isAdmin" required><?php
+          statusOptions("IsAdmin", $userData["IsAdmin"]); ?>
         </select>
       </div>
     </div>
@@ -35,8 +35,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="status">Status:</label>
       <div class="inpFixed">
-        <select class="form-control" name="status" id="status" required>
-          <?php statusOptions("Status", $userData["Status"]); ?>
+        <select class="form-control" name="status" id="status" required><?php
+          statusOptions("Status", $userData["Status"]); ?>
         </select>
       </div>
     </div>
@@ -46,8 +46,8 @@
         <button class="btn btn-primary" type="submit" name="<?= $formData["subName"]; ?>"><?= $formData["subText"]; ?></button>
       </div>
       <!-- Results -->
-      <div class="inpFixed" id="userFormResult">
-        <?php msgShow(); ?>
+      <div class="inpFixed" id="userFormResult"><?php
+        msgShow(); ?>
       </div>
     </div>
   </form>

@@ -12,21 +12,20 @@ $record = $product->getRecordView($selectedID);
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
-        <?php include "../app/views/shop/sidebar.php";?>
+      <div class="col-sm-3"><?php
+        include "../app/views/shop/sidebar.php";?>
       </div>
       <div class="col-sm-9 padding-right">
-        <div><!--product_details-->
-          <?php
+        <div><!--product_details--><?php
           if (empty($record)) :  // Check Product is found ?>
             <div class="register-req">
               <p>Sorry - Product ID '<?= $selectedID ?>' not found.</p>
-            </div>
-          <?php elseif ($record["Status"] == 0) :  // Check Product is not Inactive ?>
+            </div><?php
+          elseif ($record["Status"] == 0) :  // Check Product is not Inactive ?>
             <div class="register-req">
               <p>Sorry - Product ID '<?= $selectedID ?>' is marked as 'Inactive'.</p>
-            </div>
-          <?php else :
+            </div><?php
+          else :
             $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
             $quantity = $record["QtyAvail"] > 0 ? 1 : 0;
 
@@ -43,9 +42,9 @@ $record = $product->getRecordView($selectedID);
               </script><?php
             endif;
           endif; ?>
-        </div><!--/product_details-->
+        </div><!--/product_details--><?php
 
-        <?php  // Show Product New/OnSale Carousel
+        // Show Product New/OnSale Carousel
         include "../app/controllers/shop/productCarousel.php";
         ?>
         

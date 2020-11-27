@@ -9,15 +9,14 @@
       </div>
     </div>
 
-    <div class="row">
-      <?php
+    <div class="row"><?php
       msgShow();  // Show any system messages coming from orderConfirmation
 
       if (!isset($_GET["id"])) :  // Check OrderID Provided ?>
         <div class="register-req">
           <p>No Order ID provided.</p>
-        </div>
-      <?php else :
+        </div><?php
+      else :
         $orderID = $_GET["id"];
         $_GET = [];
         include_once "../app/models/orderClass.php";
@@ -27,14 +26,14 @@
         if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order is owned by current user ?>
           <div class="register-req">
             <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
-          </div>
-        <?php elseif ($refData["Status"] == 0) :  // Check Order is not Inactive ?>
+          </div><?php
+        elseif ($refData["Status"] == 0) :  // Check Order is not Inactive ?>
           <div class="register-req">
             <p>Sorry - Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
-          </div>
-        <?php else :
-          // Get Order Details
-          $orderDetails = $order->getDetails($orderID);
+          </div><?php
+        else :
+          // Get Order Details for selected Record
+          $orderDetails = $order->getRecord($orderID);
 
           // Update Shipping Instructions if none
           if (empty($orderDetails["ShippingInstructions"])) $orderDetails["ShippingInstructions"] = "- None -";
@@ -60,8 +59,7 @@
                       <td>Return</td>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php
+                  <tbody><?php
                     include_once "../app/models/orderItemClass.php";
                     $orderItem = new OrderItem();
                     // Loop through ACTIVE Order Items and output a row per item
@@ -78,14 +76,13 @@
                     }
 
                     // Show Order Item Totals
-                    include "../app/views/shop/orderItemTotals.php";
-                    ?>
+                    include "../app/views/shop/orderItemTotals.php"; ?>
                   </tbody>
                 </table>
               </div>
             </div>
-          </div><!--/order_items-->
-        <?php endif;
+          </div><!--/order_items--><?php
+        endif;
       endif; ?>
     </div>
   </div>

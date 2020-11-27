@@ -5,9 +5,8 @@ if (!isset($_GET["code"])) $_GET["code"] = null;  // Set CountryCode to null if 
 <!-- Main Section - Country Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Shipping Country Details - Code: <?= $_GET["code"] ?></h2>
-</div>
+</div><?php
 
-<?php
 $code = cleanInput($_GET["code"], "string");
 include_once "../app/models/countryClass.php";
 $country = new Country();
@@ -16,8 +15,8 @@ $country = new Country();
 $countryData = $country->getRecord($code);
 
 if ($countryData == false) :  // Country Code not found ?>
-  <div>Country Code not found.</div>
-<?php else :
+  <div>Country Code not found.</div><?php
+else :
   // Show Country Form
   $formData = [
     "subName" => "updateCountry",

@@ -22,8 +22,8 @@
     </div>
   </div>
   <!-- System Messages -->
-  <div class="col-6">
-    <?php msgShow(); ?>
+  <div class="col-6"><?php
+    msgShow(); ?>
   </div>
 </div>
 
@@ -32,19 +32,21 @@
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Brand</th>
-        <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
-        <th>Weight<br />(Grams)</th>
-        <th>Qty</th>
-        <th>Last Edit</th>
-        <th>Flag</th>
-        <th>Status</th>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Category</th>
+          <th>Brand</th>
+          <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
+          <th>Weight<br />(Grams)</th>
+          <th>Qty</th>
+          <th>Last Edit</th>
+          <th>Flag</th>
+          <th>Status</th>
+        </tr>
       </thead>
-      <tbody>
-        <?php foreach($productList as $record) : ?>
+      <tbody><?php
+        foreach($productList as $record) : ?>
           <tr><!-- Product Record -->
             <td><?= $record["ProductID"]; ?></td>
             <td><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"]; ?>"><?= $record["Name"]; ?></a></td>
@@ -56,8 +58,8 @@
             <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
             <td><?= statusOutput("Flag", $record["Flag"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Flag"] . "&updFlag")); ?></td>
             <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
-          </tr>
-        <?php endforeach; ?>      
+          </tr><?php
+        endforeach; ?>      
       </tbody>
     </table>
   </div>

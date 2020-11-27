@@ -9,15 +9,14 @@
       </div>
     </div>
 
-    <div class="row">
-      <?php
+    <div class="row"><?php
       msgShow();  // Show any system messages coming from orderConfirmation
 
       if (!isset($_GET["id"])) :  // Check ReturnID Provided ?>
         <div class="register-req">
           <p>No Return ID provided.</p>
-        </div>
-      <?php else :
+        </div><?php
+      else :
         $returnID = $_GET["id"];
         $_GET = [];
         include_once "../app/models/returnsClass.php";
@@ -27,14 +26,14 @@
         if ($_SESSION["userID"] != $refData["OwnerUserID"]) :  // Check Return is owned by current user ?>
           <div class="register-req">
             <p>Sorry - You do not have access to Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
-          </div>
-        <?php elseif ($refData["Status"] == 0) :  // Check Return is not Inactive?>
+          </div><?php
+        elseif ($refData["Status"] == 0) :  // Check Return is not Inactive?>
           <div class="register-req">
             <p>Sorry - Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
-          </div>
-        <?php else:
-          // Get Return Details
-          $returnDetails = $returns->getDetails($returnID);
+          </div><?php
+        else:
+          // Get Return Details for selected Record
+          $returnDetails = $returns->getRecord($returnID);
           $returnDetails["ReturnsRef"] = $returnDetails["InvoiceID"] . "-RTN-" . $returnDetails["ReturnID"];  // Returns Ref Field
 
           // Show Details in Returns Header
@@ -58,8 +57,7 @@
                       <td>Date Received<br/>Date Actioned</td>
                     </tr>
                   </thead>
-                  <tbody>
-                    <?php
+                  <tbody><?php
                     include_once "../app/models/returnItemClass.php";
                     $returnItem = new ReturnItem();
                     // Loop through Return Items and output a row per item
@@ -76,8 +74,8 @@
                 </table>
               </div>
             </div>
-          </div><!--/return_items-->
-        <?php endif;
+          </div><!--/return_items--><?php
+        endif;
       endif; ?>
     </div>
   </div>

@@ -111,18 +111,18 @@ Class Order {
   }
 
   /**
-   * getDetails function - Get combined order record for an OrderID using ord_paypal_view
+   * getRecord function - Get combined order record for an OrderID using ord_paypal_view
    * @param int $orderID    Order ID for specific order
    * @return array $result  All details of order for OrderID or False
    */
-  public function getDetails($orderID) {
+  public function getRecord($orderID) {
     try {
       $sql = "SELECT * FROM `ord_paypal_view` WHERE OrderID = '$orderID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getDetails Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRecord Failed: " . $err->getMessage() . "<br />");
       return false;
     }
   }

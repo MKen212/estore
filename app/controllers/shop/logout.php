@@ -8,4 +8,4 @@ unset($_SESSION["prodCatID"], $_SESSION["prodBrandID"]);
 
 <script>
   window.location.assign("index.php?p=home&q");
-</script><?php
+</script>

@@ -8,8 +8,7 @@
     </div>
   </div>
 
-  <div class="row">
-    <?php
+  <div class="row"><?php
     // If User is Logged In, Get User contact details
     if (isset($_SESSION["userLogin"])) {
       $userID = $_SESSION["userID"];

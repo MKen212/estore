@@ -5,8 +5,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="band">Band:</label>
       <div class="inpFixed">
-        <select class="form-control" name="band" id="band" required>
-          <?php shipBandOptions($shippingData["Band"]); ?>
+        <select class="form-control" name="band" id="band" required><?php
+          shipBandOptions($shippingData["Band"]); ?>
         </select>
       </div>
     </div>
@@ -14,8 +14,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="type">Type:</label>
       <div class="inpFixed">
-        <select class="form-control" name="type" id="type" required>
-          <?php shipTypeOptions($shippingData["Type"]); ?>
+        <select class="form-control" name="type" id="type" required><?php
+          shipTypeOptions($shippingData["Type"]); ?>
         </select>
       </div>
     </div>
@@ -37,8 +37,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="status">Status:</label>
       <div class="inpFixed">
-        <select class="form-control" name="status" id="status" required>
-          <?php statusOptions("Status", $shippingData["Status"]); ?>
+        <select class="form-control" name="status" id="status" required><?php
+          statusOptions("Status", $shippingData["Status"]); ?>
         </select>
       </div>
     </div>
@@ -48,8 +48,8 @@
         <button class="btn btn-primary" type="submit" name="<?= $formData["subName"]; ?>"><?= $formData["subText"]; ?></button>
       </div>
       <!-- Results -->
-      <div class="inpFixed" id="shippingFormResult">
-        <?php msgShow(); ?>
+      <div class="inpFixed" id="shippingFormResult"><?php
+        msgShow(); ?>
       </div>
     </div>
   </form>

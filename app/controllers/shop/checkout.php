@@ -9,17 +9,17 @@
       </div>
     </div>
     
-    <div class="row">
-      <?php  // Check Cart has Items
+    <div class="row"><?php
+      // Check Cart has Items
       if (!isset($_SESSION["cart"][0])) :?>
         <div class="register-req">
           <p>Your Shopping Cart is currently empty. Please visit our <a href="index.php?p=products">Shop</a> to proceed.</p>
-        </div>
-      <?php elseif (!isset($_SESSION["userLogin"])) :  // Check User is Logged In ?>
+        </div><?php
+      elseif (!isset($_SESSION["userLogin"])) :  // Check User is Logged In ?>
         <div class="register-req">
           <p>Please <a href="index.php?p=login&r=checkout">Login (or Signup)</a> to proceed.</p>
-        </div>
-      <?php else :  // Display Cart ?>
+        </div><?php
+      else :  // Display Cart ?>
         <div class="review-payment" id="order">
           <h2>Review Order</h2>
         </div><?php  // Show cart
@@ -149,8 +149,7 @@
                 });
               }
             }).render("#paypal-button-container");
-          </script>
-          <?php
+          </script><?php
         endif;
         
         // Display Checkout Shipping Summary

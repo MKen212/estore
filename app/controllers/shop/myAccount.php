@@ -9,13 +9,13 @@
       </div>
     </div>
 
-    <div class="row">
-      <?php  // Check User is Logged In
+    <div class="row"><?php
+      // Check User is Logged In
       if (!isset($_SESSION["userLogin"])) : ?>
         <div class="register-req">
           <p>Please <a href="index.php?p=login&r=checkout">Login (or Signup)</a> to proceed.</p>
-        </div>
-      <?php else :
+        </div><?php
+      else :
         $id = $_SESSION["userID"];
         include_once "../app/models/userClass.php";
         $user = new User();

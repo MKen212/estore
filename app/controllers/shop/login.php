@@ -14,8 +14,7 @@ if (isset($_GET["r"])) {  // Check if return page is set
       </div>
     </div>
     <div class="row">
-      <div class="col-sm-4 col-sm-offset-1">
-        <?php
+      <div class="col-sm-4 col-sm-offset-1"><?php
         include "../app/views/shop/loginForm.php";
 
         if (isset($_POST["login"])) {  // Verify & Login User
@@ -36,16 +35,15 @@ if (isset($_GET["r"])) {  // Check if return page is set
             // Login Failure
             msgShow();
           }
-        }
-        ?>
+        } ?>
       </div>
 
       <div class="col-sm-1">
         <h2 class="or">OR</h2>
       </div>
 
-      <div class="col-sm-4">
-        <?php  include "../app/views/shop/registerForm.php";
+      <div class="col-sm-4"><?php
+        include "../app/views/shop/registerForm.php";
         
         if (isset($_POST["register"])) {  // Register New User
           $email = cleanInput($_POST["email"], "email");
@@ -59,8 +57,7 @@ if (isset($_GET["r"])) {  // Check if return page is set
           unset($user, $password);
           
           msgShow();
-        }
-        ?>
+        } ?>
       </div>
 
     </div>

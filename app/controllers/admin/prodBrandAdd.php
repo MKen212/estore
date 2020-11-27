@@ -1,9 +1,8 @@
 <!-- Admin Dashboard - Product Brand Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add Product Brand</h2>
-</div>
+</div><?php
 
-<?php
 // Initialise Product Brand Data
 $prodBrandData = [
   "Name" => null,
@@ -32,5 +31,4 @@ if (isset($_POST["addProdBrand"])) {  // Add ProdBrand Record
   ?><script>
     window.location.assign("admin_dashboard.php?p=prodBrandAdd");
   </script><?php
-}
-?>
+} ?>

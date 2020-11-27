@@ -20,8 +20,8 @@
     <!-- ** NOT REQUIRED - Orders should only added in Shop ** -->
   </div>
   <!-- System Messages -->
-  <div class="col-6">
-    <?php msgShow(); ?>
+  <div class="col-6"><?php
+    msgShow(); ?>
   </div>
 </div>
 
@@ -30,20 +30,22 @@
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <th>Invoice ID</th>
-        <th>Items</th>
-        <th>Products</th>
-        <th>Ship<br />Country</th>
-        <th>Ship<br />Type</th>
-        <th>Value<br />(<?= DEFAULTS["currency"] ?>)</th>
-        <th>Payment Status</th>
-        <th>Name</th>
-        <th>Date/Time Added</th>
-        <th>Order<br />Status</th>
-        <th>Record<br />Status</th>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Items</th>
+          <th>Products</th>
+          <th>Ship<br />Country</th>
+          <th>Ship<br />Type</th>
+          <th>Value<br />(<?= DEFAULTS["currency"] ?>)</th>
+          <th>Payment Status</th>
+          <th>Name</th>
+          <th>Date/Time Added</th>
+          <th>Order<br />Status</th>
+          <th>Record<br />Status</th>
+        </tr>
       </thead>
-      <tbody>
-        <?php foreach($orderList as $record) : ?>
+      <tbody><?php
+        foreach($orderList as $record) : ?>
           <tr><!-- Order Record -->
             <td><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>"><?= $record["InvoiceID"]; ?></a></td>
             <td><?= $record["ItemCount"]; ?></td>
@@ -56,8 +58,8 @@
             <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
             <td><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
             <td><?= statusOutput("Status", $record["Status"]); ?></td>
-          </tr>
-        <?php endforeach; ?>      
+          </tr><?php
+        endforeach; ?>      
       </tbody>
     </table>
   </div>

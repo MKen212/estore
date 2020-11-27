@@ -1,72 +1,89 @@
-<div class="row"><!--returns_header_ADMIN-->
-  <div class="col-sm-6"><!--returns_information-->
-    <h5>Returns Information</h5>
-    <table class="table table-sm">
-      <tr>
-        <td><b>Returns Ref:</b></td>
-        <td><b><?= $returnDetails["ReturnsRef"] ?></b></td>
-      </tr>
-      <tr>
-        <td>Invoice ID:</td>
-        <td><a class="badge badge-info" href="admin_dashboard.php?p=orderDetails&id=<?= $returnDetails["OrderID"] ?>"><?= $returnDetails["InvoiceID"] ?></a></td>
-      </tr>
-      <tr>
-        <td>Return Status:</td>
-        <td><?= statusOutput("ReturnStatus", $returnDetails["ReturnStatus"], ("admin_dashboard.php?p=returnDetails&id=" . $returnDetails["ReturnID"] . "&cur=" . $returnDetails["ReturnStatus"] . "&updReturnStatus")) ?></td>
-      </tr>
-      <tr>
-        <td>Record Status:</td>
-        <td><?= statusOutput("Status", $returnDetails["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $returnDetails["ReturnID"] . "&cur=" . $returnDetails["Status"] . "&updStatus")) ?></td>
-      </tr>
-      <tr>
-        <td>Items / Products:</td>
-        <td><?= ($returnDetails["ItemCount"] . " / " . $returnDetails["ProductCount"]) ?></td>
-      </tr>
-      <tr>
-        <td>Total Refund Value:</td>
-        <td><?= symValue($returnDetails["RefundTotal"]); ?>
-        <?php // Only show Process Refund Button if return has value, is not already processed, has a ReturnStatus of Submitted and a Status of Active
-        if (($returnDetails["RefundTotal"] > 0) && empty($returnDetails["PpRefundID"]) && ($returnDetails["ReturnStatus"] == 1) && ($returnDetails["Status"] == 1)) :  ?>
-          <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard.php?p=returnDetails&id=<?= $returnDetails["ReturnID"] ?>&invId=<?= $returnDetails["InvoiceID"] ?>&payId=<?= $returnDetails["PaymentID"] ?>&value=<?= $returnDetails["RefundTotal"] ?>&refund">Process Refund</a>
-        <?php endif; ?>
-        </td>
-      </tr>
-      <tr>
-        <td>Date/Time Added:</td>
-        <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["AddedTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $returnDetails["OwnerUserID"] ?>"><?= $returnDetails["OwnerUserID"] ?></a></td>
-      </tr>
-      <tr>
-        <td>Last Edit:</td>
-        <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["EditTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $returnDetails["EditUserID"] ?>"><?= $returnDetails["EditUserID"] ?></a></td>
-      </tr>
-    </table>
-  </div><!--/returns_information-->
+<!-- Returns Header Details - ADMIN -->
+<div class="row pt-3 pb-2 mb-3 border-bottom">
+  <div class="col-6">
+    <h2>Return Details - ID: <?= $returnID ?></h2>
+  </div>
+  <!-- System Messages -->
+  <div class="col-6">
+    <?php msgShow(); ?>
+  </div>
+</div><?php
 
-  <div class="col-sm-6"><!--paypal_information-->
-    <h5>PayPal Information</h5>
-    <table class="table table-sm">
-      <tr>
-        <td>Original Payment ID:</td>
-        <td><?= $returnDetails["PaymentID"] ?></td>
-      </tr>
-      <?php if (!empty($returnDetails["PpRefundID"])) : ?>
+if ($returnRecord == false) :  // Return Record not found ?>
+  <div>Return ID not found.</div><?php
+else :  // Display Return Header ?>
+  <div class="row">
+    <!-- Return Information -->
+    <div class="col-sm-6">
+      <h5>Return Information</h5>
+      <table class="table table-sm">
         <tr>
-          <td>Refund ID:</td>
-          <td><?= $returnDetails["PpRefundID"] ?></td>
+          <td><b>Return Ref:</b></td>
+          <td><b><?= returnRef($returnRecord["InvoiceID"], $returnRecord["ReturnID"]); ?></b></td>
         </tr>
         <tr>
-          <td>Refund Status:</td>
-          <td><?= $returnDetails["PpRefundStatus"] ?></td>
+          <td>Invoice ID:</td>
+          <td><a class="badge badge-info" href="admin_dashboard.php?p=orderDetails&id=<?= $returnRecord["OrderID"] ?>"><?= $returnRecord["InvoiceID"] ?></a></td>
         </tr>
         <tr>
-          <td>Refund Value:</td>
-          <td><?= $returnDetails["CurrencyCode"] . " " . $returnDetails["Value"] ?></td>
+          <td>Return Status:</td>
+          <td><?= statusOutput("ReturnStatus", $returnRecord["ReturnStatus"], ("admin_dashboard.php?p=returnDetails&id=" . $returnRecord["ReturnID"] . "&cur=" . $returnRecord["ReturnStatus"] . "&updReturnStatus")) ?></td>
         </tr>
         <tr>
-          <td>Date & Time Refunded:</td>
-          <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["RefundTimestamp"])); ?></td>
+          <td>Record Status:</td>
+          <td><?= statusOutput("Status", $returnRecord["Status"], ("admin_dashboard.php?p=returnDetails&id=" . $returnRecord["ReturnID"] . "&cur=" . $returnRecord["Status"] . "&updStatus")) ?></td>
         </tr>
-      <?php endif; ?>
-    </table>
-  </div><!--/paypal_information-->
-</div><!--/returns_header_ADMIN-->
+        <tr>
+          <td>Items / Products:</td>
+          <td><?= ($returnRecord["ItemCount"] . " / " . $returnRecord["ProductCount"]) ?></td>
+        </tr>
+        <tr>
+          <td>Total Refund Value:</td>
+          <td><?= symValue($returnRecord["RefundTotal"]); ?><?php
+            // Only show Process Refund Button if return has value, is not already processed, has a ReturnStatus of Submitted and a Status of Active
+            if (($returnRecord["RefundTotal"] > 0) && empty($returnRecord["PpRefundID"]) && ($returnRecord["ReturnStatus"] == 1) && ($returnRecord["Status"] == 1)) :  ?>
+              <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard. php?p=returnDetails&id=<?= $returnRecord["ReturnID"] ?>&invId=<?= $returnRecord["InvoiceID"] ?>&payId=<?= $returnRecord["PaymentID"] ?>&value=<?= $returnRecord["RefundTotal"] ?>&refund">Process Refund</a><?php
+            endif; ?>
+          </td>
+        </tr>
+        <tr>
+          <td>Date/Time Added:</td>
+          <td><?= date("d/m/Y @ H:i", strtotime($returnRecord["AddedTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $returnRecord["OwnerUserID"] ?>"><?= $returnRecord["OwnerUserID"] ?></a></td>
+        </tr>
+        <tr>
+          <td>Last Edit:</td>
+          <td><?= date("d/m/Y @ H:i", strtotime($returnRecord["EditTimestamp"])) . " by " ?><a class="badge badge-info" href="admin_dashboard.php?p=userDetails&id=<?= $returnRecord["EditUserID"] ?>"><?= $returnRecord["EditUserID"] ?></a></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- PayPal Information -->
+    <div class="col-sm-6">
+      <h5>PayPal Information</h5>
+      <table class="table table-sm">
+        <tr>
+          <td>Original Payment ID:</td>
+          <td><?= $returnRecord["PaymentID"] ?></td>
+        </tr><?php
+        if (!empty($returnRecord["PpRefundID"])) : ?>
+          <tr>
+            <td>Refund ID:</td>
+            <td><?= $returnRecord["PpRefundID"] ?></td>
+          </tr>
+          <tr>
+            <td>Refund Status:</td>
+            <td><?= $returnRecord["PpRefundStatus"] ?></td>
+          </tr>
+          <tr>
+            <td>Refund Value:</td>
+            <td><?= $returnRecord["CurrencyCode"] . " " . $returnRecord["Value"] ?></td>
+          </tr>
+          <tr>
+            <td>Date & Time Refunded:</td>
+            <td><?= date("d/m/Y @ H:i", strtotime($returnRecord["RefundTimestamp"])); ?></td>
+          </tr><?php
+        endif; ?>
+      </table>
+    </div>
+  </div><?php
+endif; ?>

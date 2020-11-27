@@ -33,6 +33,6 @@
   </form>
 </div>
 <!-- Result -->
-<div class="row justify-content-center" id="registerFormResult">
-  <?php msgShow(); ?>
+<div class="row justify-content-center" id="registerFormResult"><?php
+  msgShow(); ?>
 </div>

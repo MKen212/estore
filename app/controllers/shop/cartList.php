@@ -2,8 +2,8 @@
 if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
   <div class="register-req">
 		<p>Your Shopping Cart is currently empty. Please visit our <a href="index.php?p=products">Shop</a> to proceed.</p>
-	</div>
-<?php else : ?>
+  </div><?php
+else : ?>
   <div class="table-responsive cart_info">
     <table class="table table-condensed" style="margin-bottom:0px">
       <thead>
@@ -16,26 +16,25 @@ if (!isset($_SESSION["cart"][0])) :  // Check Cart has items ?>
           <td></td>
         </tr>
       </thead>
-      <tbody>
-        <?php  // Loop through Cart and output a row per item
-          foreach ($_SESSION["cart"] as $key => $values) {
-            if ($key == 0) { // Get Summary Details
-              $cart0 = $values;
-              continue;
-            }
-            $values["fullPath"] = getFilePath($values["productID"], $values["imgFilename"]);
-            include "../app/views/shop/cartItem.php";
+      <tbody><?php
+        // Loop through Cart and output a row per item
+        foreach ($_SESSION["cart"] as $key => $values) {
+          if ($key == 0) { // Get Summary Details
+            $cart0 = $values;
+            continue;
           }
-        
-          include "../app/views/shop/cartTotals.php";
-        ?>
+          $values["fullPath"] = getFilePath($values["productID"], $values["imgFilename"]);
+          include "../app/views/shop/cartItem.php";
+        }
+      
+        include "../app/views/shop/cartTotals.php"; ?>
       </tbody>
     </table>
     <div style="text-align:right; margin-right:25px; margin-bottom:20px;">
-      <a class="btn btn-default check_out" href="index.php?p=cart&mt">Empty Cart</a>
-      <?php if ($_GET["p"] == "cart") :  // Display Checkout Button if Cart Page ?>
-        <a class="btn btn-default check_out" href="index.php?p=checkout">Proceed to Checkout</a>
-      <?php endif ; ?>
+      <a class="btn btn-default check_out" href="index.php?p=cart&mt">Empty Cart</a><?php
+      if ($_GET["p"] == "cart") :  // Display Checkout Button if Cart Page ?>
+        <a class="btn btn-default check_out" href="index.php?p=checkout">Proceed to Checkout</a><?php
+      endif ; ?>
     </div>
-  </div>
-<?php endif;?>
+  </div><?php
+endif;?>

@@ -12,8 +12,8 @@
     <div class="form-group row">
       <label class="col-form-label labFixed" for="status">Status:</label>
       <div class="inpFixed">
-        <select class="form-control" name="status" id="status" required>
-          <?php statusOptions("Status", $prodBrandData["Status"]); ?>
+        <select class="form-control" name="status" id="status" required><?php
+          statusOptions("Status", $prodBrandData["Status"]); ?>
         </select>
       </div>
     </div>
@@ -23,8 +23,8 @@
         <button class="btn btn-primary" type="submit" name="<?= $formData["subName"]; ?>"><?= $formData["subText"]; ?></button>
       </div>
       <!-- Results -->
-      <div class="inpFixed" id="prodBrandFormResult">
-        <?php msgShow(); ?>
+      <div class="inpFixed" id="prodBrandFormResult"><?php
+        msgShow(); ?>
       </div>
     </div>
   </form>

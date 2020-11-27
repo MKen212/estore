@@ -1,9 +1,8 @@
 <!-- Admin Dashboard - User Add -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Add User</h2>
-</div>
+</div><?php
 
-<?php
 // Initialise User Data
 $userData = [
   "Email" => null,

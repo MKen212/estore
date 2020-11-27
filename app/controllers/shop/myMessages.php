@@ -10,26 +10,27 @@
       </div>
     </div>
 
-    <div class="row">
-      <?php  // Check User is Logged In
+    <div class="row"><?php
+      // Check User is Logged In
       if (!isset($_SESSION["userLogin"])) : ?>
         <div class="register-req">
           <p>Please <a href="index.php?p=login">Login (or Signup)</a> to proceed.</p>
-        </div>
-      <?php else :  // Display Message List ?>
+        </div><?php
+      else :  // Display Message List ?>
         <!-- Messages Table List -->
         <div class="table-responsive" style="margin-bottom:75px">
           <table class="table table-striped table-sm">
             <thead>
-              <!-- Messages Table Header -->
-              <th>ID</th>
-              <th>Date/Time Sent</th>
-              <th>Subject</th>
-              <th>Date/Time Replied</th>
-              <th>Message Status</th>
+              <tr>
+                <!-- Messages Table Header -->
+                <th>ID</th>
+                <th>Date/Time Sent</th>
+                <th>Subject</th>
+                <th>Date/Time Replied</th>
+                <th>Message Status</th>
+              </tr>
             </thead>
-            <tbody>
-              <?php
+            <tbody><?php
               include_once "../app/models/messageClass.php";
               $message = new Message();
               $messageCount = 0;
@@ -41,8 +42,8 @@
               ?>
             </tbody>
           </table>
-        </div>
-      <?php endif; ?>
+        </div><?php
+      endif; ?>
     </div>
   </div>
 </section><!--/my_messages-->

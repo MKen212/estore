@@ -59,6 +59,18 @@ function fixSearch($searchString) {
 }
 
 /**
+ * createFilename function - Used to create random filename if file uploaded
+ * @return string $filename  Filename.Extension or Null
+ */
+function createFilename() {
+  $filename = null;
+  if ($_FILES["imgFilename"]["error"] == 0) {
+    $filename = md5(rand()) . "." . pathinfo($_FILES["imgFilename"]["name"], PATHINFO_EXTENSION);
+  }
+  return $filename;
+}
+
+/**
  * getFilePath function - Used to return full path for image or default No Image
  * @param int $productID       Product ID for image
  * @param string $imgFilename  Product Image Filename
@@ -409,12 +421,12 @@ function commaToBR($string) {
 }
 
 /**
- * returnsRef function - Returns standard Returns Ref used in all returns records
+ * returnRef function - Returns standard ReturnRef used for each returns record
  * @param int $invoiceID  Returns Record Original Invoice ID
  * @param int $returnID   Returns Record ID
  * @return string         Combined Returns Ref code
  */
-function returnsRef($invoiceID, $returnID) {
+function returnRef($invoiceID, $returnID) {
   return ("$invoiceID-RTN-$returnID");
 }
 

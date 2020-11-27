@@ -14,8 +14,8 @@
       <div class="form-group col-md-12">
         <textarea class="form-control" name="contactBody" id="message" rows="8" placeholder="Your Message Here" required></textarea>
       </div>
-      <div class="form-group col-md-10">
-        <?php msgShow();  // Show Result ?>
+      <div class="form-group col-md-10"><?php
+        msgShow();  // Show Result ?>
       </div>
       <div class="form-group col-md-2">
         <input type="submit" name="sendContact" class="btn btn-default update pull-right" value="Submit">

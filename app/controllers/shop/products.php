@@ -45,19 +45,17 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
 <section>
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
-        <?php include "../app/views/shop/sidebar.php";?>
+      <div class="col-sm-3"><?php
+        include "../app/views/shop/sidebar.php";?>
       </div>
       <div class="col-sm-9 padding-right">
         <div class="featured_items"><!-- featured_items -->
-          <h2 class="title text-center">Our Products</h2>
-
-          <?php
+          <h2 class="title text-center">Our Products</h2><?php
           if ($totRecords == 0) :  // No records to show ?>
             <div class="register-req">
               <p>Sorry - No products to show. Check Category or Brand Filters if you were expecting products to be listed.</p>
-            </div>
-          <?php else :
+            </div><?php
+          else :
             // Loop through all ACTIVE Products (as per filters) and output a page of the values
             foreach (new RecursiveArrayIterator($product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID, $prodSortID, $prodSearch)) as $record) {
               $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
@@ -66,14 +64,14 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
 
             <!-- Pagination Section -->
             <div class="col-sm-12">
-              <ul class="pagination">
-                <?php pagination($subPage, $lastPage, "index.php?p=products&sp="); ?>
+              <ul class="pagination"><?php
+                pagination($subPage, $lastPage, "index.php?p=products&sp="); ?>
               </ul>
-            </div>
-          <?php endif; ?>
-        </div><!--/featured_items-->
-
-        <?php  // Show Product New/OnSale Carousel
+            </div><?php
+          endif; ?>
+        </div><!--/featured_items--><?php
+        
+        // Show Product New/OnSale Carousel
         include "../app/controllers/shop/productCarousel.php";
         ?>
         

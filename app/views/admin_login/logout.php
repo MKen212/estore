@@ -1,7 +1,7 @@
 <!-- Logout Page - ADMIN -->
 <!-- Display Logout or Other messages -->
-<div class="row justify-content-center mt-3 mb-3">
-  <?php msgShow(); ?>
+<div class="row justify-content-center mt-3 mb-3"><?php
+  msgShow(); ?>
 </div>
 
 <!-- Link To Shop or Re-Login -->

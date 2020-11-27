@@ -7,17 +7,16 @@ $_GET = [];
 <!-- Main Section - Product Category Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Product Category Details - ID: <?= $id ?></h2>
-</div>
+</div><?php
 
-<?php
 // Get Product Category Details for selected record
 include_once "../app/models/prodCatClass.php";
 $prodCat = new ProdCat();
 $prodCatData = $prodCat->getRecord($id);
 
 if ($prodCatData == false) :  // ProdCatID not found ?>
-  <div>Product Category ID not found.</div>
-<?php else :
+  <div>Product Category ID not found.</div><?php
+else :
   // Show ProdCat Form
   $formData = [
     "subName" => "updateProdCat",

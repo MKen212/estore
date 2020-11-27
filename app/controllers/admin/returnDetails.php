@@ -1,153 +1,88 @@
 <?php  // Admin Dashboard - Return Details
-if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ReturnID to 0 if not provided
-$returnID = $_GET["id"];
+include_once "../app/models/returnsClass.php";
+$returns = new Returns();
+include_once "../app/models/returnItemClass.php";
+$returnItem = new ReturnItem();
+include_once "../app/models/paypalClass.php";
+$paypal = new PayPal();
 
-// Process Status Changes if hyperlinks selected
-if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
-  $current = $_GET["cur"];
-  // $_GET=[];
-  $newStatus = statusCycle("Status", $current);
-  // Update Returns Status
-  include_once "../app/models/returnsClass.php";
-  $returns = new Returns();
-  $updateStatus = $returns->updateStatus($returnID, $newStatus);
-} elseif (isset($_GET["updReturnStatus"])) {  // Return Status Link was clicked
-  $current = $_GET["cur"];
-  // $_GET=[];
-  $newStatus = statusCycle("ReturnStatus", $current);
-  // Update ReturnStatus Status
-  include_once "../app/models/returnsClass.php";
-  $returns = new Returns();
-  $returns->updateReturnStatus($returnID, $newStatus);
-  // Fix Sidebar Returns Badge
-  $toProcessCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
-  $toProcessBadge = ($toProcessCount > 0) ? " <span class='badge badge-warning'>To Process: $toProcessCount</span>" : "";
-  ?><script>
-    document.getElementById("toProcessBadge").innerHTML = "<?= $toProcessBadge ?>";
-  </script><?php
-} elseif (isset($_GET["updItemStatus"])) {  // Item Status Link was clicked
-  $returnItemID = $_GET["itemID"];
-  $current = $_GET["cur"];
-  // $_GET=[];
-  $newStatus = statusCycle("Status", $current);
-  // Update ReturnItem Status
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
-  $updateStatus = $returnItem->updateStatus($returnItemID, $newStatus);
-} elseif (isset($_GET["updItemIsReceived"])) {  // Item Received Link was clicked
-  $returnItemID = $_GET["itemID"];
-  $current = $_GET["cur"];
-  // $_GET=[];
-  $newStatus = statusCycle("IsReceived", $current);
-  // Update OrderItem IsReceived
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
-  $updateStatus = $returnItem->updateIsReceived($returnItemID, $newStatus);
-} elseif (isset($_GET["updItemIsActioned"])) {  // Item Actioned Link was clicked
-  $returnItemID = $_GET["itemID"];
-  $current = $_GET["cur"];
-  // $_GET=[];
-  $newStatus = statusCycle("IsActioned", $current);
-  // Update OrderItem IsActioned
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
-  $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
-} elseif (isset($_GET["refund"])) {  // Process Refund Link was clicked
-  $invoiceID = $_GET["invId"];
-  $noteToPayer = "Refund for Return {$invoiceID}-RTN-{$returnID}";
-  $paymentID = $_GET["payId"];
-  $value = $_GET["value"];
-  // Process Refund
-  include_once "../app/models/paypalClass.php";
-  $paypal = new PayPal();
-  $paypal->refundPayment($invoiceID, $noteToPayer, DEFAULTS["currency"], $value, $paymentID, $returnID);
+// Get recordID if provided and process Status changes if hyperlinks clicked
+$returnID = 0;
+if (isset($_GET["id"])) {
+  $returnID = cleanInput($_GET["id"], "int");
+
+  if (isset($_GET["updStatus"])) {  // Record Status Link was clicked
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("Status", $curStatus);
+    // Update Returns Status
+    $updateStatus = $returns->updateStatus($returnID, $newStatus);
+
+  } elseif (isset($_GET["updReturnStatus"])) {  // Return Status Link was clicked
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("ReturnStatus", $curStatus);
+    // Update ReturnStatus Status
+    $returns->updateReturnStatus($returnID, $newStatus);
+
+    // Fix Sidebar Returns Badge
+    $toProcessCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
+    $toProcessBadge = ($toProcessCount > 0) ? " <span class='badge badge-warning'>To Process: $toProcessCount</span>" : "";
+    ?><script>
+      document.getElementById("toProcessBadge").innerHTML = "<?= $toProcessBadge ?>";
+    </script><?php
+
+  } elseif (isset($_GET["updItemStatus"])) {  // Item Status Link was clicked
+    $returnItemID = cleanInput($_GET["itemID"], "int");
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("Status", $curStatus);
+    // Update ReturnItem Status
+    $updateStatus = $returnItem->updateStatus($returnItemID, $newStatus);
+
+  } elseif (isset($_GET["updItemIsReceived"])) {  // Item Received Link was clicked
+    $returnItemID = cleanInput($_GET["itemID"], "int");
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("IsReceived", $curStatus);
+    // Update OrderItem IsReceived
+    $updateStatus = $returnItem->updateIsReceived($returnItemID, $newStatus);
+
+  } elseif (isset($_GET["updItemIsActioned"])) {  // Item Actioned Link was clicked
+    $returnItemID = cleanInput($_GET["itemID"], "int");
+    $curStatus = cleanInput($_GET["cur"], "int");
+    $newStatus = statusCycle("IsActioned", $curStatus);
+    // Update OrderItem IsActioned
+    $updateStatus = $returnItem->updateIsActioned($returnItemID, $newStatus);
+
+  } elseif (isset($_GET["refund"])) {  // Process Refund Link was clicked
+    $invoiceID = cleanInput($_GET["invId"], "int");
+    $noteToPayer = "Refund for Return {$invoiceID}-RTN-{$returnID}";
+    $paymentID = cleanInput($_GET["payId"], "string");
+    $value = cleanInput($_GET["value"], "float");
+    // Process Refund
+    $paypal->refundPayment($invoiceID, $noteToPayer, DEFAULTS["currency"], $value, $paymentID, $returnID);
+  }
 }
 $_GET = [];
 
 // Process ReturnItem Updates if Update Return POSTed
 if (isset($_POST["updateReturn"])){
-  include_once "../app/models/returnItemClass.php";
-  $returnItem = new ReturnItem();
   $update = 0;
   foreach ($_POST["retItems"] as $key => $value) {
     if (empty($value["receivedDate"])) $value["receivedDate"] = "0000-00-00";
     if (empty($value["actionedDate"])) $value["actionedDate"] = "0000-00-00";
     $update += $returnItem->updateProcessedDates($key, $value["receivedDate"], $value["actionedDate"]);
   }
-  $_POST=[];
   if ($update > 0) $_SESSION["message"] = msgPrep("success", "Return updated successfully.<br />");
 }
+$_POST = [];
+
+// Get Returns Details for selected Record
+$returnRecord = $returns->getRecord($returnID);
+
+// Show Details in Returns Header
+include "../app/views/admin/returnsHeader.php";
+
+// Get List of return items for selected order
+$returnItemsList = $returnItem->getItemsByReturn($returnID);
+
+// Display Return Items List View
+include "../app/views/admin/returnItemsList.php";
 ?>
-<!-- Main Section - Admin Returns Info -->
-<div class="row pt-3 pb-2 mb-3 border-bottom">
-  <div class="col-6">
-    <h2>Return Details - ID: <?= $returnID ?></h2>
-  </div>
-  <div class="col-6">
-    <!-- System Messages -->
-    <?php msgShow(); ?>
-  </div>
-</div>
-
-<?php
-// Get Returns Details
-include_once "../app/models/returnsClass.php";
-$returns = new Returns();
-$returnDetails = $returns->getDetails($returnID);
-
-if ($returnDetails == false) :  // ReturnID not found ?>
-  <div>Return ID not found.</div>
-<?php else :
-  // Generate ReturnsRef
-  $returnDetails["ReturnsRef"] = $returnDetails["InvoiceID"] . "-RTN-" . $returnDetails["ReturnID"];
-
-  // Show Details in Returns Header
-  include "../app/views/admin/returnsHeader.php";
-
-  // Show Returns Items
-  ?>
-  <div class="row" id="returnItems"><!--return_items-->
-    <div class="col-sm-12">
-      <h5>Returned Items</h5>
-      <div class="table-responsive">
-        <form action="admin_dashboard.php?p=returnDetails&id=<?= $returnID; ?>" method="POST" name="retItemsForm" autocomplete="off">
-          <table class="table table-striped table-sm" style="margin-bottom:50px">
-            <thead>
-              <tr>
-                <th>Item</th>
-                <th>Image</th>
-                <th>Product Details</th>
-                <th>Unit Price</th>
-                <th>Qty</th>
-                <th>Reason<br />Action</th>
-                <th style="border-left:double">Date Received<br />Date Actioned<br />Last Edit</th>
-                <th>Received<br />Actioned<br />Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              include_once "../app/models/returnItemClass.php";
-              $returnItem = new ReturnItem();
-              // Loop through Return Items and output a row per item
-              $itemCount = 0;
-              foreach (new RecursiveArrayIterator($returnItem->getItemsByReturn($returnID)) as $record) {
-                $itemCount +=1;
-                $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-
-                include "../app/views/admin/returnItem.php";
-              }
-              ?>
-              <tr>
-                <td colspan="6"></td>
-                <td colspan="2" style="border-left:double">
-                  <button class="btn btn-primary" style="margin-top:10px" type="submit" name="updateReturn">Update Return</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-        
-      </div>
-    </div>
-  </div><!--/return_items-->
-<?php endif; ?>

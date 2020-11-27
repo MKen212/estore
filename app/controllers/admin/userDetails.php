@@ -4,9 +4,8 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set UserID to 0 if not provided
 <!-- Main Section - User Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>User Details - ID: <?= $_GET["id"] ?></h2>
-</div>
+</div><?php
 
-<?php
 $id = cleanInput($_GET["id"], "int");
 include_once "../app/models/userClass.php";
 $user = new User();
@@ -15,8 +14,8 @@ $user = new User();
 $userData = $user->getRecord($id);
 
 if ($userData == false) :  // UserID not found ?>
-  <div>User ID not found.</div>
-<?php else :
+  <div>User ID not found.</div><?php
+else :
   // Show User Form
   $formData = [
     "subName" => "updateUser",

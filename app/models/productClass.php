@@ -17,15 +17,15 @@ class Product {
 
   /**
    * exists function - Check if Product Name already exists in DB
-   * @param string $name  Product Name
-   * @return int $count   Count of Product Records with selected Name or False
+   * @param string $name     Product Name
+   * @return int $productID  Product ID of record with selected Name or False
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `Name` FROM `products` WHERE `Name` = '$name'";
+      $sql = "SELECT `ProductID` FROM `products` WHERE `Name` = '$name'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
+      $productID = $stmt->fetchColumn();
+      return $productID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Product/exists Failed: " . $err->getMessage());
       return false;
@@ -88,8 +88,8 @@ class Product {
   public function add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag = 0, $status = 1) {
     try {
       // Check Product Name does not already exist
-      $count = $this->exists($name);
-      if ($count != 0) {  // Name is NOT unique
+      $exists = $this->exists($name);
+      if ($exists != 0) {  // Name is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
@@ -241,19 +241,14 @@ class Product {
    */
   public function updateRecord($productID, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status) {
     try {
-      // If updating name check new Name does not already exist
-      $sqlName = "";
-      if (!empty($name)) {
-        $count = $this->exists($name);
-        if ($count != 0) {  // Name is NOT unique
-          $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
-          return false;
-        } else {
-          $sqlName = "`Name` = '$name', ";
-        }
+      // Check new Name does not already exist (other than in existing record)
+      $exists = $this->exists($name);
+      if ($exists != $productID) {  // Name is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
+        return false;
       }
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `products` SET {$sqlName}`Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
+      $sql = "UPDATE `products` SET `Name` = '$name', `Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
       $result = $this->conn->exec($sql);
       if ($result == 1) {  // Only 1 record should be updated
         $_SESSION["message"] = "Update of Product ID '$productID' was successful.";

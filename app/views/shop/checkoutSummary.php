@@ -13,14 +13,14 @@
           <br />
           <li class="single_field">
             <label>"Ship To" Country:</label>
-            <select name="shipToCountry" required>
-              <?php countryOptions($_SESSION["cart"][0]["shippingCountry"]); ?>
+            <select name="shipToCountry" required><?php
+              countryOptions($_SESSION["cart"][0]["shippingCountry"]); ?>
             </select>
           </li>
           <li class="single_field">
             <label>Shipping Priority:</label>
-            <select name="shippingPriority">
-              <?php shipTypeOptions($_SESSION["cart"][0]["shippingType"]); ?>
+            <select name="shippingPriority"><?php
+              shipTypeOptions($_SESSION["cart"][0]["shippingType"]); ?>
             </select>
           </li>
           <li>
@@ -31,8 +31,8 @@
     </form>
   </div><!--/ship-->
 
-  <div class="col-sm-4" id="pay"><!--totals-->
-    <?php if (isset($_POST["updateShipping"])) : ?>
+  <div class="col-sm-4" id="pay"><!--totals--><?php
+    if (isset($_POST["updateShipping"])) : ?>
       <form class="total_area" action="index.php?p=checkout#pay" method="POST" name="checkoutForm">
         <h5>Payment Summary</h5>
         <ul>
@@ -42,7 +42,7 @@
         </ul>
         <div id="paypal-button-container"></div>
         <div id="paypal-processing" style="padding-left: 40px"></div>
-      </form>
-    <?php endif; ?>
+      </form><?php
+    endif; ?>
   </div><!--/totals-->
 </div>

@@ -22,8 +22,8 @@
     </div>
   </div>
   <!-- System Messages -->
-  <div class="col-6">
-    <?php msgShow(); ?>
+  <div class="col-6"><?php
+    msgShow(); ?>
   </div>
 </div>
 
@@ -32,33 +32,34 @@
   <div class="table-responsive">
     <table class="table table-striped table-sm">
       <thead>
-        <th>ID</th>
-        <th>Email</th>
-        <th>Name</th>
-        <th>Last Edit</th>
-        <th>Last Login</th>
-        <th>Admin</th>
-        <th>Status</th>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Name</th>
+          <th>Last Edit</th>
+          <th>Last Login</th>
+          <th>Admin</th>
+          <th>Status</th>
+        </tr>
       </thead>
-      <tbody>
-        <?php foreach($userList as $record) : ?>
+      <tbody><?php
+        foreach($userList as $record) : ?>
           <tr><!-- User Record -->
             <td><?= $record["UserID"]; ?></td>
             <td><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"]; ?></a></td>
             <td><?= $record["Name"]; ?></td>
             <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td>
-              <?php if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
+            <td><?php 
+              if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Never -";
-               } else {
+              } else {
                 echo date("d/m/Y @ H:i", strtotime($record["LoginTimestamp"])); 
-
-               } ?>
+              } ?>
             </td>  
             <td><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")); ?></td>
             <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
-          </tr>
-        <?php endforeach; ?>      
+          </tr><?php
+        endforeach; ?>      
       </tbody>
     </table>
   </div>

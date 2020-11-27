@@ -5,9 +5,8 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ShippingID to 0 if not provi
 <!-- Main Section - Shipping Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Shipping Rate Details - ID: <?= $_GET["id"] ?></h2>
-</div>
+</div><?php
 
-<?php
 $id = cleanInput($_GET["id"], "int");
 include_once "../app/models/shippingClass.php";
 $shipping = new Shipping();
@@ -16,8 +15,8 @@ $shipping = new Shipping();
 $shippingData = $shipping->getRecord($id);
 
 if ($shippingData == false) :  // ShippingID not found ?>
-  <div>Shipping ID not found.</div>
-<?php else :
+  <div>Shipping ID not found.</div><?php
+else :
   // Show Shipping Form
   $formData = [
     "subName" => "updateShipping",

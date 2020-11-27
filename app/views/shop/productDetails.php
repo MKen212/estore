@@ -6,12 +6,12 @@
   </div>
 
   <div class="col-sm-7">
-    <div class="product-information"><!--/product-information-->
-      <?php if ($record["Flag"] == 1) : ?>
-        <img src="images/shop/new.png" class="new" alt="" />
-      <?php elseif ($record["Flag"] == 2) : ?>
-        <img src="images/shop/sale.png" class="sale" alt="" />
-      <?php endif; ?>
+    <div class="product-information"><!--/product-information--><?php
+      if ($record["Flag"] == 1) : ?>
+        <img src="images/shop/new.png" class="new" alt="" /><?php
+      elseif ($record["Flag"] == 2) : ?>
+        <img src="images/shop/sale.png" class="sale" alt="" /><?php
+      endif; ?>
       <h2><?= $record["Name"]; ?></h2>
       <textarea rows="3" readonly><?= fixCRLF($record["Description"]); ?></textarea>
       <!-- Removed Ratings as hard-coded image

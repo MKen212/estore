@@ -5,9 +5,8 @@ if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProdBrandID to 0 if not prov
 <!-- Main Section - Product Brand Details -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Product Brand Details - ID: <?= $_GET["id"] ?></h2>
-</div>
+</div><?php
 
-<?php
 $id = cleanInput($_GET["id"], "int");
 include_once "../app/models/prodBrandClass.php";
 $prodBrand = new ProdBrand();
@@ -16,8 +15,8 @@ $prodBrand = new ProdBrand();
 $prodBrandData = $prodBrand->getRecord($id);
 
 if ($prodBrandData == false) :  // ProdBrandID not found ?>
-  <div>Product Brand ID not found.</div>
-<?php else :
+  <div>Product Brand ID not found.</div><?php
+else :
   // Show ProdBrand Form
   $formData = [
     "subName" => "updateProdBrand",
