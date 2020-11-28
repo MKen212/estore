@@ -1,81 +1,66 @@
+<?php  // Admin Dashboard - Product Add
+include_once "../app/models/productClass.php";
+$product = new Product();
+include_once "../app/models/uploadImgClass.php";
+$uploadImg = new UploadImg();
 
+// Add Product Record if Add POSTed
+if (isset($_POST["addProduct"])) {
+  $initialChecks = 0;
+  // If Image File included - Perform initial checks on file
+  if ($_FILES["imgFilename"]["error"] != 4) {  // File was Uploaded
+    $initialChecks = $uploadImg->initialChecks();
+  }
 
-!!! TO HERE !!!
+  // Only continue with add if no file uploaded or initial checks passed
+  if ($_FILES["imgFilename"]["error"] == 4 || $initialChecks == true) {
+    $name = cleanInput($_POST["name"], "string");
+    $description = cleanInput($_POST["description"], "string");
+    $prodCatID = cleanInput($_POST["prodCatID"], "int");
+    $prodBrandID = cleanInput($_POST["prodBrandID"], "int");
+    $price = cleanInput($_POST["price"], "float");
+    $weightGrams = cleanInput($_POST["weightGrams"], "int");
+    $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
+    $imgFilename = createFilename();
+    $flag = cleanInput($_POST["flag"], "int");
+    $status = cleanInput($_POST["status"], "int");
 
+    // Create database entry
+    $newProductID = $product->add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status);
 
-<!-- Admin Dashboard - Product Add -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add Product</h2>
-</div><?php
+    if ($newProductID) {  // Database Entry Success
+      $_POST = [];
+      if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload
+        $newUpload = $uploadImg->addProductImg($newProductID, $imgFilename);
+      } else {  // No Image File included
+        $_SESSION["message"] = msgPrep("success", ($_SESSION["message"] . " No Image to upload."));
+      }
+      $_FILES = [];
+    }
+  }
+}
 
-// Initialise Product Data
-$productData = [
-  "Name" => null,
-  "Description" => null,
-  "ProdCatID" => 0,
-  "ProdBrandID" => 0,
-  "Price" => null,
-  "WeightGrams" => null,
-  "QtyAvail" => null,
-  "Flag" => 1,
-  "Status" => 1,
+// Initialise Product Record
+$productRecord = [
+  "Name" => postValue("name"),
+  "Description" => postValue("description"),
+  "ProdCatID" => postValue("prodCatID"),
+  "ProdBrandID" => postValue("prodBrandID"),
+  "Price" => postValue("price"),
+  "WeightGrams" => postValue("weightGrams"),
+  "QtyAvail" => postValue("qtyAvail"),
+  "Flag" => postValue("flag", 1),
+  "Status" => postValue("status", 1),
 ];
 
-// Display Product Add Form
+// Prep Product Form Data
 $formData = [
+  "formUsage" => "Add",
+  "formTitle" => "Add Product",
   "subName" => "addProduct",
   "subText" => "Add Product",
 ];
+
+// Show Product Form
 include "../app/views/admin/productForm.php";
-
-if (isset($_POST["addProduct"])) {  // Add Products
-  // If Image File included - Perform initial checks on file
-  if ($_FILES["imgFilename"]["error"] != 4) {  // File was Uploaded
-    include_once "../app/models/uploadImgClass.php";
-    $uploadImg = new UploadImg();
-    $initialChecks = $uploadImg->initialChecks();
-    if ($initialChecks != true) {
-      ?><script>
-        window.location.assign("admin_dashboard.php?p=productAdd");
-      </script><?php
-      return;
-    }
-  }
-
-  // Initial checks passed or no file uploaded - Clean Fields for DB entry
-  $name = cleanInput($_POST["name"], "string");
-  $description = cleanInput($_POST["description"], "string");
-  $prodCatID = $_POST["prodCatID"];
-  $prodBrandID = $_POST["prodBrandID"];
-  $price = cleanInput($_POST["price"], "float");
-  $weightGrams = cleanInput($_POST["weightGrams"], "int");
-  $qtyAvail = cleanInput($_POST["qtyAvail"], "int");
-  $imgFilename = createFilename();
-  $flag = $_POST["flag"];
-  $status = $_POST["status"];
-  $_POST = [];
-
-  // Create database entry
-  include_once "../app/models/productClass.php";
-  $product = new Product();
-  $newProductID = $product->add($name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status);
-
-  if ($newProductID) {  // Database Entry Success
-    if ($_FILES["imgFilename"]["error"] == 0) {  // Image File included - Create dir & upload
-      include_once "../app/models/uploadImgClass.php";
-      $uploadImg = new UploadImg();
-      $newUpload = $uploadImg->addProductImg($newProductID, $imgFilename);
-      $_FILES = [];
-    } else {  // No Image File included
-      $_SESSION["message"] = msgPrep("success", ($_SESSION["message"] . " No Image to upload."));
-    }
-  } else {  // Database Entry Failed
-    // $_SESSION["message"] = msgPrep("danger", $_SESSION["message"]);  // Not Required as included in productClass
-  }
-
-  // Refresh page
-  ?><script>
-    window.location.assign("admin_dashboard.php?p=productAdd");
-  </script><?php
-}
 ?>

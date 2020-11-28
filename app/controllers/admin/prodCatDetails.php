@@ -1,42 +1,35 @@
 <?php  // Admin Dashboard - Product Category Details
-if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProdCatID to 0 if not provided
-$id = cleanInput($_GET["id"], "int");
-$_GET = [];
-?>
-
-<!-- Main Section - Product Category Details -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Product Category Details - ID: <?= $id ?></h2>
-</div><?php
-
-// Get Product Category Details for selected record
 include_once "../app/models/prodCatClass.php";
 $prodCat = new ProdCat();
-$prodCatData = $prodCat->getRecord($id);
 
-if ($prodCatData == false) :  // ProdCatID not found ?>
-  <div>Product Category ID not found.</div><?php
-else :
-  // Show ProdCat Form
-  $formData = [
-    "subName" => "updateProdCat",
-    "subText" => "Update Category",
-  ];
-  include "../app/views/admin/prodCatForm.php";
+// Get recordID if provided
+$prodCatID = 0;
+if (isset($_GET["id"])) {
+  $prodCatID = cleanInput($_GET["id"], "int");
+}
+$_GET = [];
 
-  if (isset($_POST["updateProdCat"])) {  // Update ProdCat Record
-    $name = cleanInput($_POST["name"], "string");
-    $status = $_POST["status"];
-    $_POST = [];
+// Update ProdCat Record if Update POSTed
+if (isset($_POST["updateProdCat"])) {
+  $name = cleanInput($_POST["name"], "string");
+  $status = cleanInput($_POST["status"], "int");
 
-    if ($name == $prodCatData["Name"]) $name = "";  // Unset $name if same as current record
+  // Update database entry
+  $updateProdCat = $prodCat->updateRecord($prodCatID, $name, $status);
+}
+$_POST = [];
 
-    include_once "../app/models/prodCatClass.php";
-    $prodCat = new ProdCat();
-    $updateProdCat = $prodCat->updateRecord($id, $name, $status);
-    // Refresh page
-    ?><script>
-      window.location.assign("admin_dashboard.php?p=prodCatDetails&id=<?= $id ?>");
-    </script><?php
-  }
-endif; ?>
+// Get Product Category Details for selected record
+$prodCatRecord = $prodCat->getRecord($prodCatID);
+
+// Prep ProdCat Form Data
+$formData = [
+  "formUsage" => "Update",
+  "formTitle" => "Product Category Details - ID: " . $prodCatID,
+  "subName" => "updateProdCat",
+  "subText" => "Update Category",
+];
+
+// Show ProdCat Form
+include "../app/views/admin/prodCatForm.php";
+?>

@@ -9,7 +9,7 @@
       </li>
       <!-- Home -->
       <li class="nav-item">
-        <a class="nav-link<?= $_GET["p"] == "home" ? " active" : "";?>" href="admin_dashboard.php?p=home"><span data-feather="home"></span>Home</a>
+        <a class="nav-link<?= ($_GET["p"] == "home") ? " active" : "";?>" href="admin_dashboard.php?p=home"><span data-feather="home"></span>Home</a>
       </li>
       <!-- Products -->
       <li class="nav-item">

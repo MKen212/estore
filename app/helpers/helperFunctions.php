@@ -118,7 +118,7 @@ function pagination($subPage, $lastPage, $url) {
   
   if ($leftScroll) echo '<li><a href="'. $url . $leftScroll . '">&laquo</a></li>';
   for ($counter = $firstItem; $counter <= $lastItem; $counter++) {
-    $class = $counter==$subPage ? ' class="active"' : null;
+    $class = ($counter==$subPage) ? ' class="active"' : null;
     echo '<li' . $class . '><a href="' . $url . $counter . '">' . $counter . '</a></li>';
   }
   if ($rightScroll) echo '<li><a href="' . $url . $rightScroll . '">&raquo</a></li>';
@@ -355,7 +355,7 @@ function prodCatFilter($actID) {
  * @return bool          Returns true on completion
  */
 function prodBrandOptions($selID) {
-  $selID !=0 ? $selIDFound = false : $selIDFound = true;
+  $selID != 0 ? $selIDFound = false : $selIDFound = true;
   include_once "../app/models/prodBrandClass.php";
   $prodBrand = new ProdBrand();
   foreach (new RecursiveArrayIterator($prodBrand->getBrands(1)) as $value) {
@@ -392,13 +392,14 @@ function prodBrandFilter($actID) {
 /**
  * postValue function - Returns the value in a $_POST key field IF it's set
  * @param string $key            Name of $_POST["key"] to return
- * @return string $_POST["key"]  Returns $_POST key value or NULL
+ * @param string $default        Default value to return if "key" NOT set (optional)
+ * @return string $_POST["key"]  Returns $_POST["key"] value or default/NULL
  */
-function postValue($key) {
+function postValue($key, $default = null) {
   if (isset($_POST["$key"])) {
     return $_POST["$key"];
   } else {
-    return null;
+    return $default;
   }
 }
 

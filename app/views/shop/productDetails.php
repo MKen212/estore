@@ -23,12 +23,12 @@
           <span><?= symValue($record["Price"]); ?></span>
           <label>Quantity:</label>
           <input type="number" name="qtyOrdered" value="<?= $quantity;?>" min="<?= $quantity;?>" max="<?= $record["QtyAvail"]; ?>" />
-          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= $record["QtyAvail"] <= 0 ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
+          <button type="submit" name="addProdToCart" class="btn btn-default add-to-cart" style="margin-bottom:6px"<?= ($record["QtyAvail"] <= 0) ? " disabled" : null;?>><i class="fa fa-shopping-cart"></i>Add to cart</button>
         </span>
       </form>
 
       <p><b>Product ID: </b><?= $selectedID; ?></p>
-      <p><b>Availability: </b><?= $record["QtyAvail"] > 0 ? $record["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
+      <p><b>Availability: </b><?= ($record["QtyAvail"] > 0) ? $record["QtyAvail"] . " In Stock" : "OUT OF STOCK";?></p>
       <p><b>Category: </b><?= $record["Category"]; ?></p>
       <p><b>Brand: </b><?= $record["Brand"]; ?></p>
       <p><b>Weight: </b><?= $record["WeightGrams"]; ?> grams</p>

@@ -89,7 +89,7 @@ class Product {
     try {
       // Check Product Name does not already exist
       $exists = $this->exists($name);
-      if ($exists != 0) {  // Name is NOT unique
+      if (!empty($exists)) {  // Name is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
@@ -241,21 +241,22 @@ class Product {
    */
   public function updateRecord($productID, $name, $description, $prodCatID, $prodBrandID, $price, $weightGrams, $qtyAvail, $imgFilename, $flag, $status) {
     try {
-      // Check new Name does not already exist (other than in existing record)
+      // Check new Name does not already exist (other than in current record)
       $exists = $this->exists($name);
-      if ($exists != $productID) {  // Name is NOT unique
+      if (!empty($exists) && $exists != $productID) {  // Name is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
         return false;
+      } else {  // Update Product Record
+        $editID = $_SESSION["userID"];
+        $sql = "UPDATE `products` SET `Name` = '$name', `Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
+        $result = $this->conn->exec($sql);
+        if ($result == 1) {  // Only 1 record should be updated
+          $_SESSION["message"] = "Update of Product ID '$productID' was successful.";
+        } else {
+          throw new PDOException("0 or >1 record was updated.");
+        }
+        return $result;
       }
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `products` SET `Name` = '$name', `Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
-      $result = $this->conn->exec($sql);
-      if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = "Update of Product ID '$productID' was successful.";
-      } else {
-        throw new PDOException("0 or >1 record was updated.");
-      }
-      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Product/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;

@@ -1,34 +1,34 @@
-<!-- Admin Dashboard - Product Category Add -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add Product Category</h2>
-</div><?php
+<?php // Admin Dashboard - Product Category Add
+include_once "../app/models/prodCatClass.php";
+$prodCat = new ProdCat();
 
-// Initialise Product Category Data
-$prodCatData = [
-  "Name" => null,
-  "Status" => 1,
+// Add Product Category Record if Add POSTed
+if (isset($_POST["addProdCat"])) {
+  $name = cleanInput($_POST["name"], "string");
+  $status = cleanInput($_POST["status"], "int");
+
+  // Create database entry
+  $newProdCatID = $prodCat->add($name, $status);
+
+  if ($newProdCatID) {  // Database Entry Success}
+    $_POST = [];
+  }
+}
+
+// Initialise Product Category Record
+$prodCatRecord = [
+  "Name" => postValue("name"),
+  "Status" => postValue("status", 1),
 ];
 
-// Show ProdCat Form
+// Prep ProdCat Form Data
 $formData = [
+  "formUsage" => "Add",
+  "formTitle" => "Add Product Category",
   "subName" => "addProdCat",
   "subText" => "Add Category",
 ];
+
+// Show Product Category Form
 include "../app/views/admin/prodCatForm.php";
-
-if (isset($_POST["addProdCat"])) {  // Add ProdCat Record
-  // Clean Fields for DB Entry
-  $name = cleanInput($_POST["name"], "string");
-  $status = $_POST["status"];
-  $_POST = [];
-
-  // Create database entry
-  include_once "../app/models/prodCatClass.php";
-  $prodCat = new ProdCat();
-  $newProdCatID = $prodCat->add($name, $status);
-
-  // Refresh page
-  ?><script>
-    window.location.assign("admin_dashboard.php?p=prodCatAdd");
-  </script><?php
-} ?>
+?>

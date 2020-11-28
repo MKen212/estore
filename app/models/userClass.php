@@ -18,14 +18,14 @@ class User {
   /**
    * exists function - Check if User Email already exists in DB
    * @param string $email  User Email
-   * @return int $count    Count of User Records with selected Email or False
+   * @return int $userID   User ID of record with selected Email or False
    */
   public function exists($email) {
     try {
-      $sql = "SELECT `Email` FROM `users` WHERE `Email` = '$email'";
+      $sql = "SELECT `UserID` FROM `users` WHERE `Email` = '$email'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
+      $userID = $stmt->fetchColumn();
+      return $userID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - User/exists Failed: " . $err->getMessage());
       return false;
@@ -43,9 +43,9 @@ class User {
    */
   public function register($email, $password, $name, $isAdmin = 0, $status = 1) {
     try {
-      // Check User does not already exist
-      $count = $this->exists($email);
-      if ($count != 0) {  // Email is NOT unique
+      // Check User Email does not already exist
+      $exists = $this->exists($email);
+      if (!empty($exists)) {  // Email is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Email Address '$email' is already in use! Please try again.");
         return false;
       } else {  // Insert User Record
@@ -72,8 +72,8 @@ class User {
   public function login($email, $password) {
     try {
       // Check User exists
-      $count = $this->exists($email);
-      if ($count != 1) {  // User does not exist
+      $exists = $this->exists($email);
+      if (empty($exists)) {  // User does not exist
         $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
         return false;
       } else {  // Confirm Password
@@ -170,36 +170,32 @@ class User {
    */
   public function updateRecord($userID, $email, $password, $name, $isAdmin, $status) {
     try {
-      // If updating email check new Email does not already exist
-      $sqlEmail = "";
-      if (!empty($email)) {
-        $count = $this->exists($email);
-        if ($count != 0) {  // Email is NOT unique
-          $_SESSION["message"] = msgPrep("danger", "Error - Email Address '$email' is already in use! Please try again.");
-          return false;
+      // Check new Email does not already exist (other than in current record)
+      $exists = $this->exists($email);
+      if (!empty($exists) && $exists != $userID) {  // Email is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Email Address '$email' is already in use! Please try again.");
+        return false;
+      } else {  // Update User Record
+        // Only hash password if new one provided
+        $sqlPassword = "";
+        if (!empty($password)) {
+          $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
+          $sqlPassword = "`Password` = '$passwordHash', ";
+        }
+        $editID = $_SESSION["userID"];
+        $sql = "UPDATE `users` SET `Email` = '$email', {$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
+        $result = $this->conn->exec($sql);
+        if ($result == 1) {  // Only 1 record should be updated
+          $_SESSION["message"] = msgPrep("success", "Update of User ID: '$userID' was successful.");
+          if ($userID == $editID) {  // User has updated own record
+            // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
+            $_SESSION["userName"] = $name;
+          }
         } else {
-          $sqlEmail = "`Email` = '$email', ";
+          throw new PDOException("0 or >1 record was updated.");
         }
+        return $result;
       }
-      // Only hash password if new one provided
-      $sqlPassword = "";
-      if (!empty($password)) {
-        $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
-        $sqlPassword = "`Password` = '$passwordHash', ";
-      }
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `users` SET {$sqlEmail}{$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
-      $result = $this->conn->exec($sql);
-      if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = msgPrep("success", "Update of User ID: '$userID' was successful.");
-        if ($userID == $editID) {  // User has updated own record
-          // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
-          $_SESSION["userName"] = $name;
-        }
-      } else {
-        throw new PDOException("0 or >1 record was updated.");
-      }
-      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - User/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;

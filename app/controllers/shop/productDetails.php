@@ -27,7 +27,7 @@ $record = $product->getRecordView($selectedID);
             </div><?php
           else :
             $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-            $quantity = $record["QtyAvail"] > 0 ? 1 : 0;
+            $quantity = ($record["QtyAvail"] > 0) ? 1 : 0;
 
             include "../app/views/shop/productDetails.php";
 

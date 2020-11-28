@@ -1,41 +1,40 @@
-<!-- Admin Dashboard - User Add -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add User</h2>
-</div><?php
+<?php  // Admin Dashboard - User Add
+include_once "../app/models/userClass.php";
+$user = new User();
 
-// Initialise User Data
-$userData = [
-  "Email" => null,
-  "Name" => null,
-  "IsAdmin" => 0,
-  "Status" => 1,
-];
-
-// Show User Form
-$formData = [
-  "subName" => "addUser",
-  "subText" => "Add User",
-];
-include "../app/views/admin/userForm.php";
-
-if (isset($_POST["addUser"])) {  // Add User Record
-  // Clean Fields for DB entry
+// Add User Record if Add POSTed
+if (isset($_POST["addUser"])) {
   $email = cleanInput($_POST["email"], "email");
   $password = cleanInput($_POST["password"], "password");
   $name = cleanInput($_POST["name"], "string");
-  $isAdmin = $_POST["isAdmin"];
-  $status = $_POST["status"];
-  $_POST = [];
+  $isAdmin = cleanInput($_POST["isAdmin"], "int");
+  $status = cleanInput($_POST["status"], "int");
 
   // Create database entry
-  include_once "../app/models/userClass.php";
-  $user = new User();
   $newUserID = $user->register($email, $password, $name, $isAdmin, $status);
   unset($password);
 
-  // Refresh page
-  ?><script>
-    window.location.assign("admin_dashboard.php?p=userAdd");
-  </script><?php
+  if ($newUserID) {  //  Database Entry Success
+    $_POST = [];
+  }
 }
+
+// Initialise User Record
+$userRecord = [
+  "Email" => postValue("email"),
+  "Name" => postValue("name"),
+  "IsAdmin" => postValue("isAdmin", 0),
+  "Status" => postValue("status", 1),
+];
+
+// Prep User Form Data
+$formData = [
+  "formUsage" => "Add",
+  "formTitle" => "Add User",
+  "subName" => "addUser",
+  "subText" => "Add User",
+];
+
+// Show User Form
+include "../app/views/admin/userForm.php";
 ?>

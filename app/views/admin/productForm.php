@@ -1,7 +1,7 @@
 <!-- Product Details Form - ADMIN -->
 <div class="row pt-3 pb-2 mb-3 border-bottom">
   <div class="col-6">
-    <h2>Product Details - ID: <?= $productID ?></h2>
+    <h2><?= $formData["formTitle"]; ?></h2>
   </div>
   <!-- System Messages -->
   <div class="col-6"><?php
@@ -9,7 +9,7 @@
   </div>
 </div><?php
 
-if ($productRecord == false) :  // Product Record not found ?>
+if (empty($productRecord)) :  // Product Record not found ?>
   <div>Product ID not found.</div><?php
 else :  // Display Product Form ?>
   <form class="ml-3" action="" enctype="multipart/form-data" method="POST" name="productForm" autocomplete="off">
@@ -94,11 +94,15 @@ else :  // Display Product Form ?>
             <label class="custom-file-label" for="imgFilename">Choose file</label>
             <input class="custom-file-input" type="file" name="imgFilename" id="imgFilename" />
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-form-label labFixed" for="image">Current Image:</label>
-          <img width="270" height="250" id="image" src="<?= getFilePath($productRecord["ProductID"], $productRecord["ImgFilename"]); ?>" alt="<?= $productRecord["ImgFilename"]; ?>" />
-        </div>
+        </div><?php
+        if ($formData["formUsage"] == "Update") : ?>
+          <!-- Current Image -->
+          <div class="form-group row">
+            <label class="col-form-label labFixed" for="image">Current Image:</label>
+            <img width="270" height="250" id="image" src="<?= getFilePath($productRecord["ProductID"], $productRecord["ImgFilename"]); ?>" alt="<?= $productRecord["ImgFilename"]; ?>" />
+          </div><?php
+        endif;
+        ?>
         <div class="form-group row mt-4">
           <!-- Submit Button -->
           <div class="col-form-label labFixed">

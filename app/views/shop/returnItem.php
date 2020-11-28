@@ -20,7 +20,7 @@
     <p><?= statusOutput("ReturnAction", $record["ReturnAction"]); ?></p>
   </td>
   <td class="cart_shipped">
-    <p><?= $record["ReceivedDate"] == "0000-00-00" ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedDate"])); ?></p><br />
-    <p><?= $record["ActionedDate"] == "0000-00-00" ? "- Pending -" : date("d/m/Y", strtotime($record["ActionedDate"])); ?></p>
+    <p><?= ($record["ReceivedDate"] == "0000-00-00") ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedDate"])); ?></p><br />
+    <p><?= ($record["ActionedDate"] == "0000-00-00") ? "- Pending -" : date("d/m/Y", strtotime($record["ActionedDate"])); ?></p>
   </td>
 </tr><!--/return_item_SHOP-->

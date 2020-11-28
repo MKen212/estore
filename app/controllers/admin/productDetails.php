@@ -4,7 +4,6 @@ $product = new Product();
 include_once "../app/models/uploadImgClass.php";
 $uploadImg = new UploadImg();
 
-
 // Get recordID if provided
 $productID = 0;
 if (isset($_GET["id"])) {
@@ -12,7 +11,7 @@ if (isset($_GET["id"])) {
 }
 $_GET = [];
 
-// Update Product Record if Update POSTed
+// Update Product Record & Upload new image if Update POSTed
 if (isset($_POST["updateProduct"])) {
   $initialChecks = 0;
   // If Image File included - Perform initial checks on file
@@ -53,10 +52,14 @@ $_FILES = [];
 // Get Product Details for selected record
 $productRecord = $product->getRecord($productID);
 
-// Show Product Form
+// Prep Product Form Data
 $formData = [
+  "formUsage" => "Update",
+  "formTitle" => "Product Details - ID: " . $productID,
   "subName" => "updateProduct",
   "subText" => "Update Product",
 ];
+
+// Show Product Form
 include "../app/views/admin/productForm.php";
 ?>
