@@ -28,36 +28,34 @@
 <div class="row">
   <!-- Messages Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Subject</th>
-          <th>Sender Email</th>
-          <th>Sender Name</th>
-          <th>Date/Time Added</th>
-          <th>Date/Time Replied</th>
-          <th>Message<br />Status</th>
-          <th>Record<br />Status</th>
+          <th style="width: 14%"><br />Date/Time Added</th>
+          <th style="width: 26%"><br />Subject</th>
+          <th style="width: 18%"><br />Sender Email</th>
+          <th style="width: 11%"><br />Sender Name</th>
+          <th style="width: 18%"><br />Date/Time Replied</th>
+          <th style="width: 7%">Message<br />Status</th>
+          <th style="width: 6%">Record<br />Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($messageList as $record) : ?>
           <tr><!-- Message Record-->
-            <td><?= $record["MessageID"]; ?></td>
-            <td><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"]; ?>"><?= $record["Subject"]; ?></a></td>
-            <td><?= $record["SenderEmail"]; ?></td>
-            <td><?= $record["SenderName"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["AddedUserID"]; ?></td>
-            <td><?php
+            <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
+            <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"]; ?>"><?= $record["Subject"]; ?></a></td>
+            <td style="width: 18%"><?= $record["SenderEmail"]; ?></td>
+            <td style="width: 11%"><?= $record["SenderName"]; ?></td>
+            <td style="width: 18%"><?php
               if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Pending -";
               } else {
                 echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
               } ?>
             </td>
-            <td><?= statusOutput("MessageStatus", $record["MessageStatus"]); ?></td>
-            <td><?= statusOutput("Status", $record["Status"]); ?></td>
+            <td style="width: 7%"><?= statusOutput("MessageStatus", $record["MessageStatus"]); ?></td>
+            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]); ?></td>
           </tr><?php
         endforeach; ?>
       </tbody>

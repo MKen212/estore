@@ -28,36 +28,36 @@
 <div class="row">
   <!-- Orders Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>Invoice ID</th>
-          <th>Items</th>
-          <th>Products</th>
-          <th>Ship<br />Country</th>
-          <th>Ship<br />Type</th>
-          <th>Value<br />(<?= DEFAULTS["currency"] ?>)</th>
-          <th>Payment Status</th>
-          <th>Name</th>
-          <th>Date/Time Added</th>
-          <th>Order<br />Status</th>
-          <th>Record<br />Status</th>
+          <th style="width: 8%"><br />Invoice ID</th>
+          <th style="width: 5%"><br />Items</th>
+          <th style="width: 8%"><br />Products</th>
+          <th style="width: 7%">Ship<br />Country</th>
+          <th style="width: 7%">Ship<br />Type</th>
+          <th style="width: 7%">Value<br />(<?= DEFAULTS["currency"] ?>)</th>
+          <th style="width: 12%"><br />Payment Status</th>
+          <th style="width: 14%"><br />Name</th>
+          <th style="width: 19%"><br />Date/Time Added</th>
+          <th style="width: 7%">Order<br />Status</th>
+          <th style="width: 6%">Record<br />Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($orderList as $record) : ?>
           <tr><!-- Order Record -->
-            <td><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>"><?= $record["InvoiceID"]; ?></a></td>
-            <td><?= $record["ItemCount"]; ?></td>
-            <td><?= $record["ProductCount"]; ?></td>
-            <td><?= $record["ShippingCountry"]; ?></td>
-            <td><?= $record["ShippingType"]; ?></td>
-            <td><?= $record["Total"]; ?></td>
-            <td><?= $record["PaymentStatus"]; ?></td>
-            <td><?= $record["PayerName"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
-            <td><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
-            <td><?= statusOutput("Status", $record["Status"]); ?></td>
+            <td style="width: 8%"><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"]; ?>"><?= $record["InvoiceID"]; ?></a></td>
+            <td style="width: 5%"><?= $record["ItemCount"]; ?></td>
+            <td style="width: 8%"><?= $record["ProductCount"]; ?></td>
+            <td style="width: 7%"><?= $record["ShippingCountry"]; ?></td>
+            <td style="width: 7%"><?= $record["ShippingType"]; ?></td>
+            <td style="width: 7%"><?= $record["Total"]; ?></td>
+            <td style="width: 12%"><?= $record["PaymentStatus"]; ?></td>
+            <td style="width: 14%"><?= $record["PayerName"]; ?></td>
+            <td style="width: 19%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
+            <td style="width: 7%"><?= statusOutput("OrderStatus", $record["OrderStatus"]); ?></td>
+            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]); ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>

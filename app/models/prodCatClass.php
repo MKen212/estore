@@ -18,7 +18,7 @@ Class ProdCat {
   /**
    * exists function - Check if Product Category Name already exists in DB
    * @param string $name     Product Category Name
-   * @return int $ProdCatID  ProdCat ID of record with selected Name or False
+   * @return int $prodCatID  ProdCatID of record with selected Name or False
    */
   public function exists($name) {
     try {

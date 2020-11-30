@@ -11,7 +11,7 @@
 
 if (empty($prodCatRecord)) :  // ProdCat Record not found ?>
   <div>Product Category ID not found.</div><?php
-else :  // Display Product Cateory Form ?>
+else :  // Display Product Category Form ?>
   <form class="ml-3" action="" method="POST" name="prodCatForm" autocomplete="off">
     <!-- Name -->
     <div class="form-group row">
@@ -34,10 +34,7 @@ else :  // Display Product Cateory Form ?>
       <div class="col-form-label labFixed">
         <button class="btn btn-primary" type="submit" name="<?= $formData["subName"]; ?>"><?= $formData["subText"]; ?></button>
       </div>
-      <!-- Results -->
-      <div class="inpFixed" id="prodCatFormResult"><?php
-        msgShow(); ?>
-      </div>
+      <div class="inpFixed"></div>
     </div>
   </form><?php
 endif; ?>

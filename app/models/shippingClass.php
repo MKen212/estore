@@ -20,14 +20,14 @@ Class Shipping {
    * @param string $band      Shipping Band
    * @param string $type      Shipping Type
    * @param int $priceBandKG  Shipping Price Band up to KG
-   * @return int $count       Count of shipping records with selected Band-Type-PriceBandKG combination or False
+   * @return int $shippingID  ShippingID of record with selected Band-Type-PriceBandKG combination or False
    */
   public function exists($band, $type, $priceBandKG) {
     try {
-      $sql = "SELECT `Band`, `Type`, `PriceBandKG` FROM `shipping` WHERE (`Band` = '$band' AND `Type` = '$type' AND `PriceBandKG` = '$priceBandKG')";
+      $sql = "SELECT `ShippingID` FROM `shipping` WHERE (`Band` = '$band' AND `Type` = '$type' AND `PriceBandKG` = '$priceBandKG')";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
+      $shippingID = $stmt->fetchColumn();
+      return $shippingID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Shipping/exists Failed: " . $err->getMessage());
       return false;
@@ -45,9 +45,9 @@ Class Shipping {
    */
   public function add($band, $type, $priceBandKG, $priceBandCost, $status = 1) {
     try {
-      // Check Shipping record does not already exist
-      $count = $this->exists($band, $type, $priceBandKG);
-      if ($count !=0) {  // Band-Type-PriceBandKG combination is NOT unique
+      // Check Shipping record with defined Band-Type-PriceBandKG combination does not already exist
+      $exists = $this->exists($band, $type, $priceBandKG);
+      if (!empty($exists)) {  // Band-Type-PriceBandKG combination is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '$band-$type-$priceBandKG' combination is already in use! Please try again.");
         return false;
       } else {  // Insert Shipping Record
@@ -156,26 +156,22 @@ Class Shipping {
    */
   public function updateRecord($shippingID, $band, $type, $priceBandKG, $priceBandCost, $status) {
     try {
-      // If updating band/type/priceBandKG check new Band-Type-PriceBandKG combination does not already exist
-      $sqlBTP = "";
-      if (!empty($band) && !empty($type) && !empty($priceBandKG)) {
-        $count = $this->exists($band, $type, $priceBandKG);
-        if ($count != 0) {  // Band-Type-PriceBandKG combination is NOT unique
-          $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '$band-$type-$priceBandKG' combination is already in use! Please try again.");
-          return false;
-        } else {
-          $sqlBTP = "`Band` = '$band', `Type` = '$type', `PriceBandKG` = '$priceBandKG', ";
-        }
-      }
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `shipping` SET {$sqlBTP}`PriceBandCost` = '$priceBandCost', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ShippingID` = '$shippingID'";
-      $result = $this->conn->exec($sql);
-      if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = msgPrep("success", "Update of Shipping ID '$shippingID' was successful.");
+      // Check Band-Type-PriceBandKG combination does not already exist (other than in current record)
+      $exists = $this->exists($band, $type, $priceBandKG);
+      if (!empty($exists) && $exists != $shippingID) {  // Band-Type-PriceBandKG combination is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '$band-$type-$priceBandKG' combination is already in use! Please try again.");
+        return false;
       } else {
-        throw new PDOException("0 or >1 record was updated.");
+        $editID = $_SESSION["userID"];
+        $sql = "UPDATE `shipping` SET `Band` = '$band', `Type` = '$type', `PriceBandKG` = '$priceBandKG', `PriceBandCost` = '$priceBandCost', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ShippingID` = '$shippingID'";
+        $result = $this->conn->exec($sql);
+        if ($result == 1) {  // Only 1 record should be updated
+          $_SESSION["message"] = msgPrep("success", "Update of Shipping ID '$shippingID' was successful.");
+        } else {
+          throw new PDOException("0 or >1 record was updated.");
+        }
+        return $result;
       }
-      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Shipping/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;

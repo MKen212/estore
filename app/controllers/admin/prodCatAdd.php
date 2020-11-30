@@ -1,4 +1,4 @@
-<?php // Admin Dashboard - Product Category Add
+<?php  // Admin Dashboard - Product Category Add
 include_once "../app/models/prodCatClass.php";
 $prodCat = new ProdCat();
 
@@ -10,7 +10,7 @@ if (isset($_POST["addProdCat"])) {
   // Create database entry
   $newProdCatID = $prodCat->add($name, $status);
 
-  if ($newProdCatID) {  // Database Entry Success}
+  if ($newProdCatID) {  // Database Entry Success
     $_POST = [];
   }
 }

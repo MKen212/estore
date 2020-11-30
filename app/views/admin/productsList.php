@@ -30,34 +30,32 @@
 <div class="row">
   <!-- Products Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Category</th>
-          <th>Brand</th>
-          <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
-          <th>Weight<br />(Grams)</th>
-          <th>Qty</th>
-          <th>Last Edit</th>
-          <th>Flag</th>
-          <th>Status</th>
+          <th style="width: 27%"><br />Name</th>
+          <th style="width: 12%"><br />Category</th>
+          <th style="width: 12%"><br />Brand</th>
+          <th style="width: 7%">Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
+          <th style="width: 7%">Weight<br />(Grams)</th>
+          <th style="width: 6%"><br />Qty</th>
+          <th style="width: 16%"><br />Last Edit</th>
+          <th style="width: 6%"><br />Flag</th>
+          <th style="width: 7%"><br />Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($productList as $record) : ?>
           <tr><!-- Product Record -->
-            <td><?= $record["ProductID"]; ?></td>
-            <td><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"]; ?>"><?= $record["Name"]; ?></a></td>
-            <td><?= $record["Category"]; ?></td>
-            <td><?= $record["Brand"]; ?></td>
-            <td><?= $record["Price"]; ?></td>
-            <td><?= $record["WeightGrams"]; ?></td>
-            <td><?= $record["QtyAvail"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td><?= statusOutput("Flag", $record["Flag"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Flag"] . "&updFlag")); ?></td>
-            <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 27%"><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"]; ?>"><?= $record["Name"]; ?></a></td>
+            <td style="width: 12%"><?= $record["Category"]; ?></td>
+            <td style="width: 12%"><?= $record["Brand"]; ?></td>
+            <td style="width: 7%"><?= $record["Price"]; ?></td>
+            <td style="width: 7%"><?= $record["WeightGrams"]; ?></td>
+            <td style="width: 6%"><?= $record["QtyAvail"]; ?></td>
+            <td style="width: 16%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+            <td style="width: 6%"><?= statusOutput("Flag", $record["Flag"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Flag"] . "&updFlag")); ?></td>
+            <td style="width: 7%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>

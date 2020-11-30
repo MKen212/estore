@@ -30,34 +30,32 @@
 <div class="row">
   <!-- Users Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Email</th>
-          <th>Name</th>
-          <th>Last Edit</th>
-          <th>Last Login</th>
-          <th>Admin</th>
-          <th>Status</th>
+          <th style="width: 25%">Email</th>
+          <th style="width: 16%">Name</th>
+          <th style="width: 21%">Last Edit</th>
+          <th style="width: 21%">Last Login</th>
+          <th style="width: 8%">Admin</th>
+          <th style="width: 9%">Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($userList as $record) : ?>
           <tr><!-- User Record -->
-            <td><?= $record["UserID"]; ?></td>
-            <td><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"]; ?></a></td>
-            <td><?= $record["Name"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td><?php 
+            <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"]; ?></a></td>
+            <td style="width: 16%"><?= $record["Name"]; ?></td>
+            <td style="width: 21%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+            <td style="width: 21%"><?php 
               if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Never -";
               } else {
                 echo date("d/m/Y @ H:i", strtotime($record["LoginTimestamp"])); 
               } ?>
             </td>  
-            <td><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")); ?></td>
-            <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 8%"><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")); ?></td>
+            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>

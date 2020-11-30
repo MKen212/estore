@@ -17,15 +17,15 @@ Class Country {
 
   /**
    * exists function - Check if Country Code already exists in DB
-   * @param string $countryCode  Country Code
-   * @return int $count          Count of countries records with selected code or False
+   * @param string $code     Country Code
+   * @return int $countryID  CountryID of record with selected Country Code or False
    */
-  public function exists($countryCode) {
+  public function exists($code) {
     try {
-      $sql = "SELECT `Code` FROM `countries` WHERE `Code` = '$countryCode'";
+      $sql = "SELECT `CountryID` FROM `countries` WHERE `Code` = '$code'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
+      $countryID = $stmt->fetchColumn();
+      return $countryID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Country/exists Failed: " . $err->getMessage());
       return false;
@@ -34,25 +34,26 @@ Class Country {
 
   /**
    * add function - Add Country Record
-   * @param string $countryCode   Country Code
+   * @param string $code          Country Code
    * @param string $name          Country Name
    * @param string $shippingBand  Country Shipping Band
    * @param int $status           Country Status (Optional)
-   * @return int $result          Number of records added (=1) or False
+   * @return int $newID           CountryID of added Country or False
    */
-  public function add($countryCode, $name, $shippingBand, $status = 1) {
+  public function add($code, $name, $shippingBand, $status = 1) {
     try {
       // Check Country Code does not already exist
-      $count = $this->exists($countryCode);
-      if ($count !=0) {  // Country Code is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$countryCode' is already in use! Please try again.");
+      $exists = $this->exists($code);
+      if (!empty($exists)) {  // Country Code is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$code' is already in use! Please try again.");
         return false;
       } else {  // Insert Country Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `countries` (`Code`, `Name`, `ShippingBand`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$countryCode', '$name', '$shippingBand', CURRENT_TIMESTAMP(), '$editID', '$status')";
-        $result = $this->conn->exec($sql);
-        $_SESSION["message"] = msgPrep("success", "Country '$countryCode - $name' added successfully.");
-        return $result;
+        $sql = "INSERT INTO `countries` (`Code`, `Name`, `ShippingBand`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$code', '$name', '$shippingBand', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $this->conn->exec($sql);
+        $newID = $this->conn->lastInsertId();
+        $_SESSION["message"] = msgPrep("success", "Country '$code - $name' added successfully as ID '$newID'.");
+        return $newID;
       }
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Country/add Failed: " . $err->getMessage());
@@ -83,12 +84,12 @@ Class Country {
 
   /**
    * getShippingCode function - Retrieve the Shipping Band for a specified Country
-   * @param string $countryCode  Code for Country to search
-   * @return string $result      Returns the Shipping Band or False
+   * @param string $code     Code for Country to search
+   * @return string $result  Returns the Shipping Band or False
    */
-  public function getShippingBand($countryCode) {
+  public function getShippingBand($code) {
     try {
-      $sql = "SELECT `ShippingBand` FROM `countries` WHERE `Code` = '$countryCode'";
+      $sql = "SELECT `ShippingBand` FROM `countries` WHERE `Code` = '$code'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
@@ -121,12 +122,12 @@ Class Country {
 
   /**
    * getRecord function - Retrieve single Country record
-   * @param int $countryCode  Country Code of required record
+   * @param int $countryID    Country ID of required record
    * @return array $result    Returns selected Country record or False 
    */
-  public function getRecord($countryCode) {
+  public function getRecord($countryID) {
     try {
-      $sql = "SELECT * FROM `countries` WHERE `Code` = '$countryCode'";
+      $sql = "SELECT * FROM `countries` WHERE `CountryID` = '$countryID'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
@@ -138,37 +139,31 @@ Class Country {
 
   /**
    * updateRecord function - Update an existing Country record
-   * @param int $countryCode      Country Code of record being updated
-   * @param int $updCode          Updated Country Code
+   * @param int $countryID        Country ID of record being updated
+   * @param int $code             Country Code of record being updated
    * @param string $name          Country Name
    * @param string $shippingBand  Country Shipping Band
    * @param int $status           Country Status
    * @return int $result          Number of records updated (=1) or False
    */
-  public function updateRecord($countryCode, $updCode, $name, $shippingBand, $status) {
+  public function updateRecord($countryID, $code, $name, $shippingBand, $status) {
     try {
-      // If updating Country Code check new Code does not already exist
-      $sqlCode = "";
-      $msgCode = "";
-      if (!empty($updCode)) {
-        $count = $this->exists($updCode);
-        if ($count != 0) {  // Updated Country Code is NOT unique
-          $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$updCode' is already in use! Please try again.");
-          return false;
-        } else {
-          $sqlCode = "`Code` = '$updCode', ";
-          $msgCode = " to '$updCode'";
-        }
-      }
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `countries` SET {$sqlCode}`Name` = '$name', `ShippingBand` = '$shippingBand', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `Code` = '$countryCode'";
-      $result = $this->conn->exec($sql);
-      if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = msgPrep("success", "Update of Country Code '$countryCode'$msgCode was successful.");
+      // Check new Country Code does not already exist (other than in current record)
+      $exists = $this->exists($code);
+      if (!empty($exists) && $exists != $countryID) {  // Code is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$code' is already in use! Please try again.");
+        return false;
       } else {
-        throw new PDOException("0 or >1 record was updated.");
+        $editID = $_SESSION["userID"];
+        $sql = "UPDATE `countries` SET `Code` = '$code', `Name` = '$name', `ShippingBand` = '$shippingBand', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `CountryID` = '$countryID'";
+        $result = $this->conn->exec($sql);
+        if ($result == 1) {  // Only 1 record should be updated
+          $_SESSION["message"] = msgPrep("success", "Update of Country ID '$countryID' was successful.");
+        } else {
+          throw new PDOException("0 or >1 record was updated.");
+        }
+        return $result;
       }
-      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - Country/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;
@@ -177,14 +172,14 @@ Class Country {
 
   /**
    * updateStatus function - Update Status field of an existing Country record
-   * @param int $countryCode  Country Code of record being updated
+   * @param int $countryID    Country ID of record being updated
    * @param int $status       New Country Code Status
    * @return int $result      Number of records updated (=1) or False
    */
-  public function updateStatus($countryCode, $status) {
+  public function updateStatus($countryID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `countries` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `Code` = '$countryCode'";
+      $sql = "UPDATE `countries` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `CountryID` = '$countryID'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {

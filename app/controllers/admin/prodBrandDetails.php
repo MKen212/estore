@@ -1,42 +1,35 @@
 <?php  // Admin Dashboard - Product Brand Details
-if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProdBrandID to 0 if not provided
-?>
-
-<!-- Main Section - Product Brand Details -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Product Brand Details - ID: <?= $_GET["id"] ?></h2>
-</div><?php
-
-$id = cleanInput($_GET["id"], "int");
 include_once "../app/models/prodBrandClass.php";
 $prodBrand = new ProdBrand();
 
+// Get recordID if provided
+$prodBrandID = 0;
+if (isset($_GET["id"])) {
+  $prodBrandID = cleanInput($_GET["id"], "int");
+}
+$_GET = [];
+
+// Update ProdBrand Record if Update POSTed
+if (isset($_POST["updateProdBrand"])) {
+  $name = cleanInput($_POST["name"], "string");
+  $status = cleanInput($_POST["status"], "int");
+
+  // Update database entry
+  $updateProdbrand = $prodBrand->updateRecord($prodBrandID, $name, $status);
+}
+$_POST = [];
+
 // Get Product Brand Details for selected record
-$prodBrandData = $prodBrand->getRecord($id);
+$prodBrandRecord = $prodBrand->getRecord($prodBrandID);
 
-if ($prodBrandData == false) :  // ProdBrandID not found ?>
-  <div>Product Brand ID not found.</div><?php
-else :
-  // Show ProdBrand Form
-  $formData = [
-    "subName" => "updateProdBrand",
-    "subText" => "Update Brand",
-  ];
-  include "../app/views/admin/prodBrandForm.php";
+// Prep ProdBrand Form
+$formData = [
+  "formUsage" => "Update",
+  "formTitle" => "Product Brand Details - ID: " . $prodBrandID,
+  "subName" => "updateProdBrand",
+  "subText" => "Update Brand",
+];
 
-  if (isset($_POST["updateProdBrand"])) {  // Update ProdBrand Record
-    $name = cleanInput($_POST["name"], "string");
-    $status = $_POST["status"];
-    $_POST = [];
-
-    if ($name == $prodBrandData["Name"]) $name = "";  // Unset $name if same as current record
-
-    include_once "../app/models/prodBrandClass.php";
-    $prodBrand = new ProdBrand();
-    $updateProdbrand = $prodBrand->updateRecord($id, $name, $status);
-    // Refresh page
-    ?><script>
-      window.location.assign("admin_dashboard.php?p=prodBrandDetails&id=<?= $id ?>");
-    </script><?php
-  }
-endif; ?>
+// Show ProdBrand Form
+include "../app/views/admin/prodBrandForm.php";
+?>

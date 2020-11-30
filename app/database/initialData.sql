@@ -1,5 +1,8 @@
 /* Table Initial Data SQL Statements for estore*/
 
+
+// TO HERE FIXING COUNTRIES WITH SPECIAL CHARACTERS
+
 -- Countries data
 -- NOTE This assumes CH is Local "Domestic" Country. Change as required
 INSERT INTO countries (`Code`, `Name`, `ShippingBand`) VALUES

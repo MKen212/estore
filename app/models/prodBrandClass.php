@@ -17,15 +17,15 @@ Class ProdBrand {
 
   /**
    * exists function - Check if Product Brand Name already exists in DB
-   * @param string $name  Product Brand Name
-   * @return int $count   Count of prod_brands records with selected Name or False
+   * @param string $name       Product Brand Name
+   * @return int $prodBrandID  ProdBrandID of record with selected Name or False
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `Name` FROM `prod_brands` WHERE `Name` = '$name'";
+      $sql = "SELECT `ProdBrandID` FROM `prod_brands` WHERE `Name` = '$name'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
-      $count = $stmt->rowCount();
-      return $count;
+      $prodBrandID = $stmt->fetchColumn();
+      return $prodBrandID;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/exists Failed: " . $err->getMessage());
       return false;
@@ -41,8 +41,8 @@ Class ProdBrand {
   public function add($name, $status = 1) {
     try {
       // Check Product Brand Name does not already exist
-      $count = $this->exists($name);
-      if ($count !=0) {  // Name is NOT unique
+      $exists = $this->exists($name);
+      if (!empty($exists)) {  // Name is NOT unique
         $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '$name' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Brand Record
@@ -126,26 +126,22 @@ Class ProdBrand {
    */
   public function updateRecord($prodBrandID, $name, $status) {
     try {
-      // If updating name check new Name does not already exist
-      $sqlName = "";
-      if (!empty($name)) {
-        $count = $this->exists($name);
-        if ($count != 0) {  // Name is NOT unique
-          $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '$name' is already in use! Please try again.");
-          return false;
-        } else {
-          $sqlName = "`Name` = '$name', ";
-        }
-      }
-      $editID = $_SESSION["userID"];
-      $sql = "UPDATE `prod_brands` SET {$sqlName}`EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdBrandID` = $prodBrandID";
-      $result = $this->conn->exec($sql);
-      if ($result == 1) {  // Only 1 record should be updated
-        $_SESSION["message"] = msgPrep("success", "Update of Product Brand ID '$prodBrandID' was successful.");
+      // Check new Name does not already exist (other than in current record)
+      $exists = $this->exists($name);
+      if (!empty($exists) && $exists != $prodBrandID) {  // Name is NOT unique
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '$name' is already in use! Please try again.");
+        return false;
       } else {
-        throw new PDOException("0 or >1 record was updated.");
+        $editID = $_SESSION["userID"];
+        $sql = "UPDATE `prod_brands` SET `Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdBrandID` = $prodBrandID";
+        $result = $this->conn->exec($sql);
+        if ($result == 1) {  // Only 1 record should be updated
+          $_SESSION["message"] = msgPrep("success", "Update of Product Brand ID '$prodBrandID' was successful.");
+        } else {
+          throw new PDOException("0 or >1 record was updated.");
+        }
+        return $result;
       }
-      return $result;
     } catch (PDOException $err) {
       $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/updateRecord Failed: " . $err->getMessage() . "<br />");
       return false;

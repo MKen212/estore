@@ -28,30 +28,30 @@
 <div class="row">
   <!-- Returns Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>Return Ref</th>
-          <th>Invoice ID</th>
-          <th>Items</th>
-          <th>Products</th>
-          <th>Value<br />(<?= DEFAULTS["currency"] ?>)</th>
-          <th>Date/Time Added</th>
-          <th>Return<br />Status</th>
-          <th>Record<br />Status</th>
+          <th style="width: 15%"><br />Return Ref</th>
+          <th style="width: 12%"><br />Invoice ID</th>
+          <th style="width: 7%"><br />Items</th>
+          <th style="width: 11%"><br />Products</th>
+          <th style="width: 9%">Value<br />(<?= DEFAULTS["currency"] ?>)</th>
+          <th style="width: 26%"><br />Date/Time Added</th>
+          <th style="width: 11%">Return<br />Status</th>
+          <th style="width: 9%">Record<br />Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($returnsList as $record) : ?>
           <tr><!-- Returns Record -->
-            <td><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"]; ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]); ?></a></td>
-            <td><?= $record["InvoiceID"]; ?></td>
-            <td><?= $record["ItemCount"]; ?></td>
-            <td><?= $record["ProductCount"]; ?></td>
-            <td><?= $record["RefundTotal"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
-            <td><?= statusOutput("ReturnStatus", $record["ReturnStatus"]); ?></td>
-            <td><?= statusOutput("Status", $record["Status"]); ?></td>
+            <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"]; ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]); ?></a></td>
+            <td style="width: 12%"><?= $record["InvoiceID"]; ?></td>
+            <td style="width: 7%"><?= $record["ItemCount"]; ?></td>
+            <td style="width: 11%"><?= $record["ProductCount"]; ?></td>
+            <td style="width: 9%"><?= $record["RefundTotal"]; ?></td>
+            <td style="width: 26%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
+            <td style="width: 11%"><?= statusOutput("ReturnStatus", $record["ReturnStatus"]); ?></td>
+            <td style="width: 9%"><?= statusOutput("Status", $record["Status"]); ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>

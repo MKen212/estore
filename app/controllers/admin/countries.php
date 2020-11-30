@@ -2,16 +2,16 @@
 include_once "../app/models/countryClass.php";
 $country = new Country();
 
-// Get code if provided and process Status changes if hyperlinks clicked
-$code = null;
-if (isset($_GET["code"])) {
-  $code = cleanInput($_GET["code"], "string");
+// Get recordID if provided and process Status changes if hyperlinks clicked
+$countryID = 0;
+if (isset($_GET["id"])) {
+  $countryID = cleanInput($_GET["id"], "int");
 
   if (isset($_GET["updStatus"])) {  // Status link was clicked
     $curStatus = cleanInput($_GET["cur"], "int");
     $newStatus = statusCycle("Status", $curStatus);
     // Update Country Status
-    $updateStatus = $country->updateStatus($code, $newStatus);
+    $updateStatus = $country->updateStatus($countryID, $newStatus);
   }
 }
 $_GET = [];

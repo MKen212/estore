@@ -1,34 +1,34 @@
-<!-- Admin Dashboard - Product Brand Add -->
-<div class="pt-3 pb-2 mb-3 border-bottom">
-  <h2>Add Product Brand</h2>
-</div><?php
+<?php  // Admin Dashboard - Product Brand Add
+include_once "../app/models/prodBrandClass.php";
+$prodBrand = new ProdBrand();
+
+// Add Product Brand Record if Add POSTed
+if (isset($_POST["addProdBrand"])) {
+  $name = cleanInput($_POST["name"], "string");
+  $status = cleanInput($_POST["status"], "int");
+
+  // Create database entry
+  $newProdBrandID = $prodBrand->add($name, $status);
+
+  if ($newProdBrandID) {  // Database Entry Success
+    $_POST = [];
+  }
+}
 
 // Initialise Product Brand Data
-$prodBrandData = [
-  "Name" => null,
-  "Status" => 1,
+$prodBrandRecord = [
+  "Name" => postValue("name"),
+  "Status" => postValue("status", 1),
 ];
 
-// Show ProdBrand Form
+// Prep ProdBrand Form
 $formData = [
+  "formUsage" => "Add",
+  "formTitle" => "Add Product Brand",
   "subName" => "addProdBrand",
   "subText" => "Add Brand",
 ];
+
+// Show Product Brand Form
 include "../app/views/admin/prodBrandForm.php";
-
-if (isset($_POST["addProdBrand"])) {  // Add ProdBrand Record
-  // Clean Fields for DB Entry
-  $name = cleanInput($_POST["name"], "string");
-  $status = $_POST["status"];
-  $_POST = [];
-
-  // Create database entry
-  include_once "../app/models/prodBrandClass.php";
-  $prodBrand = new ProdBrand();
-  $newProdBrandID = $prodBrand->add($name, $status);
-
-  // Refresh page
-  ?><script>
-    window.location.assign("admin_dashboard.php?p=prodBrandAdd");
-  </script><?php
-} ?>
+?>

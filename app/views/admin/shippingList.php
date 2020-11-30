@@ -30,30 +30,28 @@
 <div class="row">
   <!-- Shipping Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Reference</th>
-          <th>Band</th>
-          <th>Type</th>
-          <th>Band Weight<br />(Kg)</th>
-          <th>Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
-          <th>Last Edit</th>
-          <th>Status</th>
+          <th style="width: 15%"><br />Reference</th>
+          <th style="width: 15%"><br />Band</th>
+          <th style="width: 11%"><br />Type</th>
+          <th style="width: 13%">Band Weight<br />(Kg)</th>
+          <th style="width: 10%">Price<br />(<?= DEFAULTS["currency"]; ?>)</th>
+          <th style="width: 27%"><br />Last Edit</th>
+          <th style="width: 9%"><br />Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($shippingList as $record) : ?>
           <tr><!-- Shipping Record -->
-            <td><?= $record["ShippingID"]; ?></td>
-            <td><a href="admin_dashboard.php?p=shippingDetails&id=<?= $record["ShippingID"]; ?>"><?= (substr($record["Band"], 0, 3) . "-" . substr($record["Type"], 0, 3) . "-" . $record["PriceBandKG"]);  // Shipping Ref ?></a></td>
-            <td><?= $record["Band"]; ?></td>
-            <td><?= $record["Type"]; ?></td>
-            <td><?= $record["PriceBandKG"]; ?></td>
-            <td><?= $record["PriceBandCost"]; ?></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=shipping&id=" . $record["ShippingID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 15%"><a href="admin_dashboard.php?p=shippingDetails&id=<?= $record["ShippingID"]; ?>"><?= (substr($record["Band"], 0, 3) . "-" . substr($record["Type"], 0, 3) . "-" . $record["PriceBandKG"]);  // Shipping Ref ?></a></td>
+            <td style="width: 15%"><?= $record["Band"]; ?></td>
+            <td style="width: 11%"><?= $record["Type"]; ?></td>
+            <td style="width: 13%"><?= $record["PriceBandKG"]; ?></td>
+            <td style="width: 10%"><?= $record["PriceBandCost"]; ?></td>
+            <td style="width: 27%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=shipping&id=" . $record["ShippingID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
           </tr><?php
         endforeach; ?>
       </tbody>

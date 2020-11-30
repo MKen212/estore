@@ -30,22 +30,20 @@
 <div class="row">
   <!-- ProdBrands Table List -->
   <div class="table-responsive">
-    <table class="table table-striped table-sm">
+    <table class="table table-striped table-sm tableScrollable">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Last Edit</th>
-          <th>Status</th>
+          <th style="width: 50%">Name</th>
+          <th style="width: 35%">Last Edit</th>
+          <th style="width: 15%">Status</th>
         </tr>
       </thead>
       <tbody><?php
         foreach($prodBrandList as $record) : ?>
           <tr><!-- Product Brands Record -->
-            <td><?= $record["ProdBrandID"]; ?></td>
-            <td><a href="admin_dashboard.php?p=prodBrandDetails&id=<?= $record["ProdBrandID"]; ?>"><?= $record["Name"]; ?></a></td>
-            <td><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodBrands&id=" . $record["ProdBrandID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 50%"><a href="admin_dashboard.php?p=prodBrandDetails&id=<?= $record["ProdBrandID"]; ?>"><?= $record["Name"]; ?></a></td>
+            <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+            <td style="width: 15%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodBrands&id=" . $record["ProdBrandID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
           </tr><?php
         endforeach; ?>
       </tbody>
