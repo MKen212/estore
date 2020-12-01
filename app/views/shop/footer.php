@@ -1,6 +1,6 @@
-<!-- Shop Footer -->
+<!-- Footer - SHOP -->
 <footer id="footer">
-  <div class="footer-top">
+  <div class="footer-top"><!--footer_top-->
     <div class="container">
       <div class="row">
         <div class="col-sm-2">
@@ -47,9 +47,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </div><!--/footer_top-->
 
-  <div class="footer-bottom">
+  <div class="footer-bottom"><!--footer_bottom-->
     <div class="container">
       <div class="row">
         <p class="pull-left">Copyright © <?= date("Y"); ?> E-Store SA. All rights reserved.</p>
@@ -58,6 +58,5 @@
         </p>
       </div>
     </div>
-  </div>
-  
-</footer><!--/Footer-->
+  </div><!--/footer_bottom-->
+</footer>

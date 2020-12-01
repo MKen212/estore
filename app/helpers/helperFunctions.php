@@ -292,24 +292,6 @@ function shipTypeOptions($selCode) {
 }
 
 /**
- * prodSortFilter function - Outputs all PROD_SORT_OPTIONS as HTML links
- * @param string $actID  PROD_SORT_OPTION that is marked as 'active'
- * @return bool          Returns true on completion
- */
-function prodSortFilter($actID) {
-  foreach (new RecursiveArrayIterator(PROD_SORT_OPTIONS) as $key => $value) {
-    if ($key == 0) continue;  // Do not output default sort option
-    echo "<div class='panel panel-default'><div class='panel-heading'>";
-    if ($key == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a><a class='actClear' href='index.php?p=products&sp=1&sort=0'><i class='fa fa-trash-o'></i></a></h4>";
-    } else {
-      echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&sort=" . $key . "'>" . $value["text"] . "</a></h4>";
-    }
-    echo "</div></div>";
-  }
-}
-
-/**
  * prodCatOptions function - Outputs all ACTIVE Names from prod_categories as HTML options
  * @param string $selID  ProdCatID that is marked as 'selected'
  * @return bool          Returns true on completion
@@ -331,25 +313,6 @@ function prodCatOptions($selID) {
 }
 
 /**
- * prodCatFilter function - Outputs all ACTIVE Names from prod_categories as HTML links
- * @param string $actID  ProdCatID that is marked as 'active'
- * @return bool          Returns true on completion
- */
-function prodCatFilter($actID) {
-  include_once "../app/models/prodCatClass.php";
-  $prodCat = new ProdCat();
-  foreach (new RecursiveArrayIterator($prodCat->getCategories(1)) as $value) {
-    echo "<div class='panel panel-default'><div class='panel-heading'>";
-    if ($value["ProdCatID"] == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&cat=" . $value["ProdCatID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&cat=0'><i class='fa fa-trash-o'></i></a></h4>";
-    } else {
-      echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&cat=" . $value["ProdCatID"] . "'>" . $value["Name"] . "</a></h4>";
-    }
-    echo "</div></div>";
-  }
-}
-
-/**
  * prodBrandOptions function - Outputs all ACTIVE Names from prod_brands as HTML options
  * @param string $selID  ProdBrandID that is marked as 'selected'
  * @return bool          Returns true on completion
@@ -368,25 +331,6 @@ function prodBrandOptions($selID) {
   }
   if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Brand Needs Updating.");
   return true;
-}
-
-/**
- * prodBrandFilter function - Outputs all ACTIVE Names from prod_brands as HTML links
- * @param string $actID  ProdBrandID that is marked as 'active'
- * @return bool          Returns true on completion
- */
-function prodBrandFilter($actID) {
-  include_once "../app/models/prodBrandClass.php";
-  $prodBrand = new ProdBrand();
-  foreach (new RecursiveArrayIterator($prodBrand->getBrands(1)) as $value) {
-    echo "<div class='panel panel-default'><div class='panel-heading'>";
-    if ($value["ProdBrandID"] == $actID) {
-      echo "<h4 class='panel-title'><a class='active' href='index.php?p=products&sp=1&brand=" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</a><a class='actClear' href='index.php?p=products&sp=1&brand=0'><i class='fa fa-trash-o'></i></a></h4>";
-    } else {
-      echo "<h4 class='panel-title'><a href='index.php?p=products&sp=1&brand=" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</a></h4>";
-    }
-    echo "</div></div>";
-  }
 }
 
 /**

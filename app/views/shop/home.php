@@ -1,35 +1,40 @@
-<!--Shop - Home-->
+<!-- Home - SHOP -->
 <section>
   <div class="container">
-    <div class="row"><?php // Display Logged Out message and/or latest system message
+    <div class="row"><?php
+      // Display Logged Out message, if logged out
       if (isset($_GET["q"])) {
         msgShow();
       }
+      // Display latest system message, if set
       if (isset($_SESSION["message"])) {
         echo "<h5>Last System Message:</h5>";
         msgShow();
-      } ?>
-
-      <!-- Only used for testing -->
-      <div>
-        <pre><?php
-          echo "SESSION: ";
-          print_r($_SESSION);
-          echo "<br />POST: ";
-          print_r($_POST);
-          echo "<br />GET: ";
-          print_r($_GET);
-          echo "<br />FILES: ";
-          print_r($_FILES);
-          // echo "<br />SERVER: ";
-          // print_r($_SERVER);
-          // echo "<br />"; ?>
-        </pre>
-      </div><!-- -->
+      }
+      // Display Testing Information if in Testing Mode
+      if (DEFAULTS["testing"] == true) : ?>
+        <div>
+          <pre><?php
+            echo "SESSION: ";
+            print_r($_SESSION);
+            echo "<br />POST: ";
+            print_r($_POST);
+            echo "<br />GET: ";
+            print_r($_GET);
+            echo "<br />FILES: ";
+            print_r($_FILES);
+            // echo "<br />SERVER: ";
+            // print_r($_SERVER);
+            // echo "<br />"; ?>
+          </pre>
+        </div><?php
+      endif;?>
     </div>
   </div>
 </section>
-<section id="slider"><!--slider-->
+
+<!--slider_carousel-->
+<section id="slider">
   <div class="container">
     <div class="row">
       <div class="col-sm-12">
@@ -87,4 +92,4 @@
       </div>
     </div>
   </div>
-</section><!--/slider-->
+</section><!--/slider_carousel-->

@@ -19,7 +19,7 @@ if (isset($_POST["addCountry"])) {
 } 
 
 // Initialise Country Data
-$countryData = [
+$countryRecord = [
   "Code" => postValue("code"),
   "Name" => postValue("name"),
   "ShippingBand" => postValue("shippingBand"),

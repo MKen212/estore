@@ -16,6 +16,7 @@ define("PAYPALAPI", $ppAPIDetails);
 
 /* Default Values */
 $defaultValues = [
+  "testing" => true,  // Flag to set whether to show test information
   "maxUploadSize" => 2000000,  // Maximum PHP upload file size in bytes - see phpInfo
   "productsImgPath" => "uploads/imgProducts/",  // Path to product images
   "noImgUploaded" => "images/shared/noImage.jpg" ,  // Default Image if no image file uploaded

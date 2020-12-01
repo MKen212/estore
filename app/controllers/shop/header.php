@@ -17,5 +17,4 @@ if (isset($_POST["hdrClear"])) {
 
 // Display Header
 include "../app/views/shop/header.php";
-
 ?>

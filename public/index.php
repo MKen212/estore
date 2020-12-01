@@ -29,8 +29,9 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If page not set, use "home"
   <script src="https://www.paypal.com/sdk/js?client-id=<?= PAYPALAPI["clientID"] ?>&currency=<?= DEFAULTS["currency"] ?>"></script>
 </head><!--/head-->
 
-<body>
-  <?php include "../app/controllers/shop/header.php";
+<body><?php
+  
+  include "../app/controllers/shop/header.php";
 
   include "../app/controllers/shop/" . $_GET["p"] . ".php";
 

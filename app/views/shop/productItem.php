@@ -1,8 +1,9 @@
-<div class="col-sm-4"><!--Product Item-->
+<!-- Product Item - SHOP -->
+<div class="col-sm-4">
   <div class="product-image-wrapper">
     <div class="single-products">
       <div class="productinfo text-center">
-        <img width="270" height="250" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"]; ?>" />
+        <img width="270" height="250" src="<?= getFilePath($record["ProductID"], $record["ImgFilename"]); ?>" alt="<?= $record["ImgFilename"]; ?>" />
         <h2><?= symValue($record["Price"]); ?></h2>
         <p><?= $record["Name"]; ?></p>
       </div>
@@ -20,4 +21,4 @@
       endif; ?>
     </div>
   </div>
-</div><!--/Product Item-->
+</div>
