@@ -1,4 +1,4 @@
-<div class="signup-form"><!--Shop register form-->
+<div class="signup-form"><!--Shop Register form-->
   <h5>New User Sign-up</h5>
   <form action="" method="POST" name="registerForm" autocomplete="off">
     <input type="email" name="email" placeholder="Enter Email Address" required />
@@ -6,4 +6,4 @@
     <input type="text" name="name" placeholder="Enter Name" required />
     <button class="btn btn-default" type="submit" name="register">Sign-up</button>
   </form>
-</div><!--/Shop register form-->
+</div><!--/Shop Register form-->

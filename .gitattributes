@@ -1,0 +1,2 @@
+# Using `.gitattributes` file to force linguist to set all `.php` files as PHP:
+*.php linguist-language=PHP

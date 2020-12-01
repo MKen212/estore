@@ -5,4 +5,4 @@
     <input type="password" name="estPassword" placeholder="Enter Password" required />
     <button class="btn btn-default" type="submit" name="login">Login</button>
   </form>
-</div><!--/login form-->
+</div><!--/Shop login form-->
