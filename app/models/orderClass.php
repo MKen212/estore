@@ -11,7 +11,7 @@ Class Order {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ Class Order {
    */
   public function countOrdStat($orderStatus) {
     try {
-      $sql = "SELECT COUNT(*) FROM `orders` WHERE `OrderStatus` = '$orderStatus'";
+      $sql = "SELECT COUNT(*) FROM `orders` WHERE `OrderStatus` = '{$orderStatus}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/countOrdStat Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/countOrdStat Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -40,12 +40,12 @@ Class Order {
    */
   public function add($fields, $values) {
     try {
-      $sql = "INSERT INTO `orders` $fields VALUES $values";
+      $sql = "INSERT INTO `orders` {$fields} VALUES {$values}";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
       return $newID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/add Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -57,12 +57,12 @@ Class Order {
    */
   public function getRefData($orderID) {
     try {
-      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `PaymentID`, `Status` FROM `ord_paypal_view` WHERE `OrderID` = '$orderID'";
+      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `PaymentID`, `Status` FROM `ord_paypal_view` WHERE `OrderID` = '{$orderID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRefData Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRefData Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -77,13 +77,13 @@ Class Order {
       if ($invoiceID == null) {
         $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`, `PaymentStatus`, `PayerName`, `AddedTimestamp`, `OwnerUserID`, `OrderStatus`, `Status` FROM `ord_paypal_view` ORDER BY `InvoiceID` DESC";
       } else {
-        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`, `PaymentStatus`, `PayerName`, `AddedTimestamp`, `OwnerUserID`, `OrderStatus`, `Status` FROM `ord_paypal_view` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `InvoiceID` DESC";
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `ShippingCountry`, `ShippingType`, `Total`, `PaymentStatus`, `PayerName`, `AddedTimestamp`, `OwnerUserID`, `OrderStatus`, `Status` FROM `ord_paypal_view` WHERE `InvoiceID` LIKE '%{$invoiceID}%' ORDER BY `InvoiceID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getList Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -97,15 +97,15 @@ Class Order {
   public function getListByUser($userID, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `PaymentStatus`, `OrderStatus` FROM `ord_paypal_view` WHERE `OwnerUserID` = '$userID' ORDER BY `InvoiceID` DESC";
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `PaymentStatus`, `OrderStatus` FROM `ord_paypal_view` WHERE `OwnerUserID` = '{$userID}' ORDER BY `InvoiceID` DESC";
       } else {
-        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `PaymentStatus`, `OrderStatus` FROM `ord_paypal_view` WHERE (`OwnerUserID` = '$userID' AND `Status` = '$status') ORDER BY `InvoiceID` DESC";
+        $sql = "SELECT `OrderID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `Total`, `PaymentStatus`, `OrderStatus` FROM `ord_paypal_view` WHERE (`OwnerUserID` = '{$userID}' AND `Status` = '{$status}') ORDER BY `InvoiceID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getListByUser Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getListByUser Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -117,12 +117,12 @@ Class Order {
    */
   public function getRecord($orderID) {
     try {
-      $sql = "SELECT * FROM `ord_paypal_view` WHERE OrderID = '$orderID'";
+      $sql = "SELECT * FROM `ord_paypal_view` WHERE OrderID = '{$orderID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -136,11 +136,11 @@ Class Order {
   public function updateStatus($orderID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `orders` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `OrderID` = '$orderID'";
+      $sql = "UPDATE `orders` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `OrderID` = '{$orderID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -154,11 +154,11 @@ Class Order {
   public function updateOrderStatus($orderID, $orderStatus) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `orders` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `OrderStatus` = '$orderStatus' WHERE `OrderID` = '$orderID'";
+      $sql = "UPDATE `orders` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `OrderStatus` = '{$orderStatus}' WHERE `OrderID` = '{$orderID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateOrderStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Order/updateOrderStatus Failed: {$err->getMessage()}");
       return false;
     }
   }

@@ -11,7 +11,7 @@ class Product {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ class Product {
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `ProductID` FROM `products` WHERE `Name` = '$name'";
+      $sql = "SELECT `ProductID` FROM `products` WHERE `Name` = '{$name}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $productID = $stmt->fetchColumn();
       return $productID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -47,26 +47,26 @@ class Product {
       } else {
         // Build WHERE clause
         $whereClause = "";
-        if (!empty($status)) $whereClause .= "(`Status` = '$status')";
+        if (!empty($status)) $whereClause .= "(`Status` = '{$status}')";
         if (!empty($prodCatID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`ProdCatID` = '$prodCatID')";
+          $whereClause .= "(`ProdCatID` = '{$prodCatID}')";
         }
         if (!empty($prodBrandID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+          $whereClause .= "(`ProdBrandID` = '{$prodBrandID}')";
         }
         if (!empty($prodSearch)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`Name` LIKE '%$prodSearch%')";
+          $whereClause .= "(`Name` LIKE '%{$prodSearch}%')";
         }
-        $sql = "SELECT COUNT(*) FROM `products` WHERE ($whereClause)";
+        $sql = "SELECT COUNT(*) FROM `products` WHERE ({$whereClause})";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/count Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/count Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -90,18 +90,18 @@ class Product {
       // Check Product Name does not already exist
       $exists = $this->exists($name);
       if (!empty($exists)) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '{$name}' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status`) VALUES ('$name', '$description', '$prodCatID', '$prodBrandID', '$price', '$weightGrams', '$qtyAvail', '$imgFilename', CURRENT_TIMESTAMP(), '$editID', '$flag', '$status')";
+        $sql = "INSERT INTO `products` (`Name`, `Description`, `ProdCatID`, `ProdBrandID`, `Price`, `WeightGrams`, `QtyAvail`, `ImgFilename`, `EditTimestamp`, `EditUserID`, `Flag`, `Status`) VALUES ('{$name}', '{$description}', '{$prodCatID}', '{$prodBrandID}', '{$price}', '{$weightGrams}', '{$qtyAvail}', '{$imgFilename}', CURRENT_TIMESTAMP(), '{$editID}', '{$flag}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = "Product '$name' added successfully as Product ID '$newID'.";
+        $_SESSION["message"] = "Product '{$name}' added successfully as Product ID '{$newID}'.";
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/add Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -122,30 +122,30 @@ class Product {
       if (empty($prodSortID)) $prodSortID = 0;  // Default Sort Order
       $orderBy = PROD_SORT_OPTIONS[$prodSortID]["sortSQL"];  // Get Sort SQL
       if ($status == null && $prodCatID == null && $prodBrandID == null && $prodSearch == null) {  // Select ALL records
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` ORDER BY $orderBy LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` ORDER BY {$orderBy} LIMIT {$limit} OFFSET {$offset}";
       } else {
         // Build WHERE clause
         $whereClause = "";
-        if (!empty($status)) $whereClause .= "(`Status` = '$status')";
+        if (!empty($status)) $whereClause .= "(`Status` = '{$status}')";
         if (!empty($prodCatID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`ProdCatID` = '$prodCatID')";
+          $whereClause .= "(`ProdCatID` = '{$prodCatID}')";
         }
         if (!empty($prodBrandID)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`ProdBrandID` = '$prodBrandID')";
+          $whereClause .= "(`ProdBrandID` = '{$prodBrandID}')";
         }
         if (!empty($prodSearch)) {
           if (!empty($whereClause)) $whereClause .= " AND ";
-          $whereClause .= "(`Name` LIKE '%$prodSearch%')";
+          $whereClause .= "(`Name` LIKE '%{$prodSearch}%')";
         }
-        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ($whereClause) ORDER BY $orderBy LIMIT $limit OFFSET $offset";
+        $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE ({$whereClause}) ORDER BY {$orderBy} LIMIT {$limit} OFFSET {$offset}";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/getPage Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getPage Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -158,12 +158,12 @@ class Product {
    */
   public function getCarousel($limit, $flag) {
     try {
-      $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE `Flag` = '$flag' ORDER BY RAND() LIMIT $limit";
+      $sql = "SELECT `ImgFilename`, `Price`, `Name`, `ProductID`, `Flag` FROM `products` WHERE `Flag` = '{$flag}' ORDER BY RAND() LIMIT {$limit}";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/getCarousel Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getCarousel Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -178,13 +178,13 @@ class Product {
       if ($name == null) {
         $sql = "SELECT * FROM `prod_uncoded_view` ORDER BY `Name`";
       } else {
-        $sql = "SELECT * FROM `prod_uncoded_view` WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
+        $sql = "SELECT * FROM `prod_uncoded_view` WHERE `Name` LIKE '%{$name}%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/getList Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -196,12 +196,12 @@ class Product {
    */
   public function getRecordView($productID) {
     try {
-      $sql = "SELECT * FROM `prod_uncoded_view` WHERE `ProductID` = '$productID'";
+      $sql = "SELECT * FROM `prod_uncoded_view` WHERE `ProductID` = {'$productID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecordView Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecordView Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -213,12 +213,12 @@ class Product {
    */
   public function getRecord($productID) {
     try {
-      $sql = "SELECT * FROM `products` WHERE `ProductID` = '$productID'";
+      $sql = "SELECT * FROM `products` WHERE `ProductID` = '{$productID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -244,21 +244,21 @@ class Product {
       // Check new Name does not already exist (other than in current record)
       $exists = $this->exists($name);
       if (!empty($exists) && $exists != $productID) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Name '{$name}' is already in use! Please try again.");
         return false;
       } else {  // Update Product Record
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `products` SET `Name` = '$name', `Description` = '$description', `ProdCatID` = '$prodCatID', `ProdBrandID` = '$prodBrandID', `Price` = '$price', `WeightGrams` = '$weightGrams',  `QtyAvail` = '$qtyAvail', `ImgFilename` = '$imgFilename', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag', `Status` = '$status' WHERE `ProductID` = $productID";
+        $sql = "UPDATE `products` SET `Name` = '{$name}', `Description` = '{$description}', `ProdCatID` = '{$prodCatID}', `ProdBrandID` = '{$prodBrandID}', `Price` = '{$price}', `WeightGrams` = '{$weightGrams}',  `QtyAvail` = '{$qtyAvail}', `ImgFilename` = '{$imgFilename}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Flag` = '{$flag}', `Status` = '{$status}' WHERE `ProductID` = {$productID}";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = "Update of Product ID '$productID' was successful.";
+          $_SESSION["message"] = "Update of Product ID '{$productID}' was successful.";
         } else {
           throw new PDOException("0 or >1 record was updated.");
         }
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -272,11 +272,11 @@ class Product {
   public function updateStatus($productID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ProductID` = '{$productID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -290,11 +290,11 @@ class Product {
   public function updateFlag($productID, $flag) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Flag` = '$flag' WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Flag` = '{$flag}' WHERE `ProductID` = '{$productID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateFlag Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateFlag Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -308,11 +308,11 @@ class Product {
   public function updateQtyAvail($productID, $qtyAvailChg) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `QtyAvail` = (`QtyAvail` + $qtyAvailChg) WHERE `ProductID` = '$productID'";
+      $sql = "UPDATE `products` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `QtyAvail` = (`QtyAvail` + {$qtyAvailChg}) WHERE `ProductID` = '{$productID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateQtyAvail Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Product/updateQtyAvail Failed: {$err->getMessage()}");
       return false;
     }
   }

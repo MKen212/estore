@@ -11,7 +11,7 @@ Class ProdCat {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ Class ProdCat {
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `ProdCatID` FROM `prod_categories` WHERE `Name` = '$name'";
+      $sql = "SELECT `ProdCatID` FROM `prod_categories` WHERE `Name` = '{$name}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $prodCatID = $stmt->fetchColumn();
       return $prodCatID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -43,18 +43,18 @@ Class ProdCat {
       // Check Product Category Name does not already exist
       $exists = $this->exists($name);
       if (!empty($exists)) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '{$name}' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Category Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `prod_categories` (`Name`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$name', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $sql = "INSERT INTO `prod_categories` (`Name`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('{$name}', CURRENT_TIMESTAMP(), '{$editID}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Product Category '$name' added successfully as ID '$newID'.");
+        $_SESSION["message"] = msgPrep("success", "Product Category '{$name}' added successfully as ID '{$newID}'.");
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/add Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -69,13 +69,13 @@ Class ProdCat {
       if ($status == null) {
         $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` ORDER BY `Name`";
       } else {
-        $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` WHERE `Status` = '$status' ORDER BY `Name`";
+        $sql = "SELECT `ProdCatID`, `Name` FROM `prod_categories` WHERE `Status` = '{$status}' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getCategories Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getCategories Failed: {$err->getMessage()}");
     }
   }
 
@@ -89,13 +89,13 @@ Class ProdCat {
       if ($name == null) {
         $sql = "SELECT * FROM `prod_categories` ORDER BY `Name`";
       } else {
-        $sql = "SELECT * FROM `prod_categories` WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
+        $sql = "SELECT * FROM `prod_categories` WHERE `Name` LIKE '%{$name}%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getList Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -107,12 +107,12 @@ Class ProdCat {
    */
   public function getRecord($prodCatID) {
     try {
-      $sql = "SELECT * FROM `prod_categories` WHERE `ProdCatID` = '$prodCatID'";
+      $sql = "SELECT * FROM `prod_categories` WHERE `ProdCatID` = '{$prodCatID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -129,21 +129,21 @@ Class ProdCat {
       // Check new Name does not already exist (other than in current record)
       $exists = $this->exists($name);
       if (!empty($exists) && $exists != $prodCatID) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Category Name '{$name}' is already in use! Please try again.");
         return false;
       } else {
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `prod_categories` SET `Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdCatID` = $prodCatID";
+        $sql = "UPDATE `prod_categories` SET `Name` = '{$name}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ProdCatID` = {$prodCatID}";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = msgPrep("success", "Update of Product Category ID '$prodCatID' was successful.");
+          $_SESSION["message"] = msgPrep("success", "Update of Product Category ID '{$prodCatID}' was successful.");
         } else {
           throw new PDOException("0 or >1 record was updated.");
         }
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -157,11 +157,11 @@ Class ProdCat {
   public function updateStatus($prodCatID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `prod_categories` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdCatID` = '$prodCatID'";
+      $sql = "UPDATE `prod_categories` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ProdCatID` = '{$prodCatID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdCat/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }

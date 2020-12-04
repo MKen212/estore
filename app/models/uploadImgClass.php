@@ -20,7 +20,7 @@ class UploadImg {
         throw new UploadException($_FILES["imgFilename"]["error"]);
       }
     } catch (UploadException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - UploadImg/initialChecks Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - UploadImg/initialChecks Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -50,7 +50,7 @@ class UploadImg {
       }
       return true;
     } catch (Exception $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - UploadImg/addProductImg Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - UploadImg/addProductImg Failed: {$err->getMessage()}");
       return false;
     }
   }

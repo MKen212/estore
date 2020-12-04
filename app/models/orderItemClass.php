@@ -11,7 +11,7 @@ Class OrderItem {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -23,11 +23,11 @@ Class OrderItem {
    */
   public function addItems($fields, $values) {
     try {
-      $sql = "INSERT INTO `order_items` $fields VALUES $values";
+      $sql = "INSERT INTO `order_items` {$fields} VALUES {$values}";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/addItems Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/addItems Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -40,15 +40,15 @@ Class OrderItem {
   public function getItemsByOrder($orderID, $status = null) {
     try {
       if ($status == null) {
-        $sql= "SELECT * FROM `order_items` WHERE `OrderID` = '$orderID' ORDER BY `OrderItemID`";
+        $sql= "SELECT * FROM `order_items` WHERE `OrderID` = '{$orderID}' ORDER BY `OrderItemID`";
       } else {
-        $sql= "SELECT * FROM `order_items` WHERE ((`OrderID` = '$orderID') AND (`Status` = '$status')) ORDER BY `OrderItemID`";
+        $sql= "SELECT * FROM `order_items` WHERE ((`OrderID` = '{$orderID}') AND (`Status` = '{$status}')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getItemsByOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getItemsByOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -61,15 +61,15 @@ Class OrderItem {
   public function getReturnsAvailByOrder($orderID, $itemStatus = null) {
     try {
       if ($itemStatus == null) {
-        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '{$orderID}')) ORDER BY `OrderItemID`";
       } else {
-        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '$orderID') AND (`ItemStatus` = '$itemStatus')) ORDER BY `OrderItemID`";
+        $sql = "SELECT * FROM `ord_items_view` WHERE ((DATEDIFF(NOW(), `ShippedDate`) <= '" . DEFAULTS["returnsAllowance"] . "') AND (`QtyAvailForRtn` > '0') AND (`OrderID` = '{$orderID}') AND (`ItemStatus` = '{$itemStatus}')) ORDER BY `OrderItemID`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getReturnsAvailByOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/getReturnsAvailByOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -83,11 +83,11 @@ Class OrderItem {
   public function updateStatus($orderItemID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `order_items` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `OrderItemID` = '$orderItemID'";
+      $sql = "UPDATE `order_items` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `OrderItemID` = '{$orderItemID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -102,14 +102,14 @@ Class OrderItem {
     try {
       $editID = $_SESSION["userID"];
       if ($isShipped == 1) {  // Item Shipped {HARD CODED!}
-        $sql = "UPDATE `order_items` SET `ShippedDate` = CURRENT_DATE(), `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = CURRENT_DATE(), `ShippedUserID` = '{$editID}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsShipped` = '{$isShipped}' WHERE `OrderItemID` = '{$orderItemID}'";
       } else {  // Not Shipped
-        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '$isShipped' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsShipped` = '{$isShipped}' WHERE `OrderItemID` = '{$orderItemID}'";
       }
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateIsShipped Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateIsShipped Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -122,11 +122,11 @@ Class OrderItem {
    */
   public function updateQtyAvailForRtn($orderItemID, $qtyAvailChg) {
     try {
-      $sql = "UPDATE `order_items` SET `QtyAvailForRtn` = (`QtyAvailForRtn` + $qtyAvailChg) WHERE `OrderItemID` = '$orderItemID'";
+      $sql = "UPDATE `order_items` SET `QtyAvailForRtn` = (`QtyAvailForRtn` + {$qtyAvailChg}) WHERE `OrderItemID` = '{$orderItemID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateQtyAvailForRtn Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateQtyAvailForRtn Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -141,14 +141,14 @@ Class OrderItem {
     try {
       $editID = $_SESSION["userID"];
       if ($newShipDate == "0000-00-00" || empty($newShipDate)) {
-        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '0' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '0000-00-00', `ShippedUserID` = '0', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsShipped` = '0' WHERE `OrderItemID` = '{$orderItemID}'";
       } else {
-        $sql = "UPDATE `order_items` SET `ShippedDate` = '$newShipDate', `ShippedUserID` = '$editID', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsShipped` = '1' WHERE `OrderItemID` = '$orderItemID'";
+        $sql = "UPDATE `order_items` SET `ShippedDate` = '{$newShipDate}', `ShippedUserID` = '{$editID}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsShipped` = '1' WHERE `OrderItemID` = '{$orderItemID}'";
       }
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateShippedDate Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - OrderItem/updateShippedDate Failed: {$err->getMessage()}");
       return false;
     }
   }

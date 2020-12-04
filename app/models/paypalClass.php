@@ -31,7 +31,7 @@ class PayPal {
       }
       $this->client = new PayPalHttpClient($environment);
     } catch (HttpException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/construct Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/construct Failed: {$err->getMessage()}");
       return false;
     }
 
@@ -41,7 +41,7 @@ class PayPal {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/DB Connection Failed: {$err->getMessage()}");
       return false;
     }
     return true;
@@ -92,7 +92,7 @@ class PayPal {
         throw new HttpException("No PayPal API response.", 204, null);
       }
     } catch (HttpException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/createOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/createOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -112,7 +112,7 @@ class PayPal {
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/addOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/addOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -144,7 +144,7 @@ class PayPal {
         throw new HttpException("No PayPal API response.", 204, null);
       }
     } catch (HttpException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/captureOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/captureOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -162,11 +162,11 @@ class PayPal {
       $captureTime = date("Y-m-d H:i-s", strtotime($response->result->update_time));
 
       // Build SQL & Execute
-      $sql = "UPDATE `paypal_orders` SET `PpOrderStatus` = '{$response->result->status}', `Shipping` = '$shipping', `PaymentID` ='{$response->result->purchase_units[0]->payments->captures[0]->id}', `PaymentStatus` ='{$response->result->purchase_units[0]->payments->captures[0]->status}', `PaymentCurrency` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->currency_code}', `PaymentValue` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->value}', `PayerID` = '{$response->result->payer->payer_id}', `PayerName` ='$payerName', `PayerEmail` ='{$response->result->payer->email_address}', `CaptureTimestamp` ='$captureTime', `CaptureDebugID` = '{$response->headers["Paypal-Debug-Id"]}' WHERE `PpOrderID` = '{$response->result->id}'";
+      $sql = "UPDATE `paypal_orders` SET `PpOrderStatus` = '{$response->result->status}', `Shipping` = '{$shipping}', `PaymentID` ='{$response->result->purchase_units[0]->payments->captures[0]->id}', `PaymentStatus` ='{$response->result->purchase_units[0]->payments->captures[0]->status}', `PaymentCurrency` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->currency_code}', `PaymentValue` ='{$response->result->purchase_units[0]->payments->captures[0]->amount->value}', `PayerID` = '{$response->result->payer->payer_id}', `PayerName` ='$payerName', `PayerEmail` ='{$response->result->payer->email_address}', `CaptureTimestamp` ='$captureTime', `CaptureDebugID` = '{$response->headers["Paypal-Debug-Id"]}' WHERE `PpOrderID` = '{$response->result->id}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/updateCapturedOrder Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/updateCapturedOrder Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -211,7 +211,7 @@ class PayPal {
         throw new HttpException("No PayPal API response.", 204, null);
       }
     } catch (HttpException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/refundPayment Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/refundPayment Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -232,7 +232,7 @@ class PayPal {
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/addRefund Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - PayPal/addRefund Failed: {$err->getMessage()}");
       return false;
     }
   }

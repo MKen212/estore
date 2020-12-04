@@ -11,7 +11,7 @@ Class ProdBrand {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ Class ProdBrand {
    */
   public function exists($name) {
     try {
-      $sql = "SELECT `ProdBrandID` FROM `prod_brands` WHERE `Name` = '$name'";
+      $sql = "SELECT `ProdBrandID` FROM `prod_brands` WHERE `Name` = '{$name}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $prodBrandID = $stmt->fetchColumn();
       return $prodBrandID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -43,18 +43,18 @@ Class ProdBrand {
       // Check Product Brand Name does not already exist
       $exists = $this->exists($name);
       if (!empty($exists)) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '{$name}' is already in use! Please try again.");
         return false;
       } else {  // Insert Product Brand Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `prod_brands` (`Name`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$name', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $sql = "INSERT INTO `prod_brands` (`Name`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('{$name}', CURRENT_TIMESTAMP(), '{$editID}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Product Brand '$name' added successfully as ID '$newID'.");
+        $_SESSION["message"] = msgPrep("success", "Product Brand '{$name}' added successfully as ID '{$newID}'.");
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/add Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -69,13 +69,13 @@ Class ProdBrand {
       if ($status == null) {
         $sql = "SELECT `ProdBrandID`, `Name` FROM `prod_brands` ORDER BY `Name`";
       } else {
-        $sql = "SELECT `ProdBrandID`, `Name` FROM `prod_brands` WHERE `Status` = '$status' ORDER BY `Name`";
+        $sql = "SELECT `ProdBrandID`, `Name` FROM `prod_brands` WHERE `Status` = '{$status}' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getBrands Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getBrands Failed: {$err->getMessage()}");
     }
   }
 
@@ -89,13 +89,13 @@ Class ProdBrand {
       if ($name == null) {
         $sql = "SELECT * FROM `prod_brands` ORDER BY `Name`";
       } else {
-        $sql = "SELECT * FROM `prod_brands` WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
+        $sql = "SELECT * FROM `prod_brands` WHERE `Name` LIKE '%{$name}%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getList Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -107,12 +107,12 @@ Class ProdBrand {
    */
   public function getRecord($prodBrandID) {
     try {
-      $sql = "SELECT * FROM `prod_brands` WHERE `ProdBrandID` = '$prodBrandID'";
+      $sql = "SELECT * FROM `prod_brands` WHERE `ProdBrandID` = '{$prodBrandID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -129,21 +129,21 @@ Class ProdBrand {
       // Check new Name does not already exist (other than in current record)
       $exists = $this->exists($name);
       if (!empty($exists) && $exists != $prodBrandID) {  // Name is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '$name' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Product Brand Name '{$name}' is already in use! Please try again.");
         return false;
       } else {
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `prod_brands` SET `Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdBrandID` = $prodBrandID";
+        $sql = "UPDATE `prod_brands` SET `Name` = '{$name}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ProdBrandID` = {$prodBrandID}";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = msgPrep("success", "Update of Product Brand ID '$prodBrandID' was successful.");
+          $_SESSION["message"] = msgPrep("success", "Update of Product Brand ID '{$prodBrandID}' was successful.");
         } else {
           throw new PDOException("0 or >1 record was updated.");
         }
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -157,11 +157,11 @@ Class ProdBrand {
   public function updateStatus($prodBrandID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `prod_brands` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ProdBrandID` = '$prodBrandID'";
+      $sql = "UPDATE `prod_brands` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ProdBrandID` = '{$prodBrandID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - ProdBrand/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }

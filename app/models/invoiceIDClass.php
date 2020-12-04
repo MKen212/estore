@@ -11,7 +11,7 @@ Class InvoiceID {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      echo "Error - InvoiceID/DB Connection Failed: " . $err->getMessage() . "<br />";
+      $_SESSION["message"] = msgPrep("danger", "Error - InvoiceID/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -26,7 +26,7 @@ Class InvoiceID {
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = "Error - InvoiceID/getInvoiceID Failed: " . $err->getMessage();
+      $_SESSION["message"] =  msgPrep("danger", "Error - InvoiceID/getInvoiceID Failed: {$err->getMessage()}");
       return false;
     }
   }

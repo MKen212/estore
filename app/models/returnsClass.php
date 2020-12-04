@@ -11,7 +11,7 @@ Class Returns {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ Class Returns {
    */
   public function countRetStat($returnStatus) {
     try {
-      $sql = "SELECT COUNT(*) FROM `returns` WHERE `ReturnStatus` = '$returnStatus'";
+      $sql = "SELECT COUNT(*) FROM `returns` WHERE `ReturnStatus` = '{$returnStatus}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/countRetStat Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/countRetStat Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -40,12 +40,12 @@ Class Returns {
    */
   public function add($fields, $values) {
     try {
-      $sql = "INSERT INTO `returns` $fields VALUES $values";
+      $sql = "INSERT INTO `returns` {$fields} VALUES {$values}";
       $this->conn->exec($sql);
       $newID = $this->conn->lastInsertId();
       return $newID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/add Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -57,12 +57,12 @@ Class Returns {
    */
   public function getRefData($returnID) {
     try {
-      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `Status` FROM `returns` WHERE `ReturnID` = '$returnID'";
+      $sql = "SELECT `OwnerUserID`, `InvoiceID`, `Status` FROM `returns` WHERE `ReturnID` = '{$returnID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getRefData Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getRefData Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -77,13 +77,13 @@ Class Returns {
       if ($invoiceID == null) {
         $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` ORDER BY `ReturnID` DESC";
       } else {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%$invoiceID%' ORDER BY `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `RefundTotal`, `AddedTimestamp`, `OwnerUserID`, `ReturnStatus`, `Status` FROM `returns` WHERE `InvoiceID` LIKE '%{$invoiceID}%' ORDER BY `ReturnID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getList Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -97,15 +97,15 @@ Class Returns {
   public function getListByUser($userID, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE `OwnerUserID` = '$userID' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE `OwnerUserID` = '{$userID}' ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       } else {
-        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE (`OwnerUserID` = '$userID' AND `Status` = '$status') ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
+        $sql = "SELECT `ReturnID`, `InvoiceID`, `ItemCount`, `ProductCount`, `AddedTimestamp`, `RefundTotal`, `ReturnStatus` FROM `returns` WHERE (`OwnerUserID` = '{$userID}' AND `Status` = '{$status}') ORDER BY `InvoiceID` DESC, `ReturnID` DESC";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getListByUser Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getListByUser Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -117,12 +117,12 @@ Class Returns {
    */
   public function getRecord($returnID) {
     try {
-      $sql = "SELECT * FROM `ret_paypal_view` WHERE ReturnID = '$returnID'";
+      $sql = "SELECT * FROM `ret_paypal_view` WHERE ReturnID = '{$returnID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -136,11 +136,11 @@ Class Returns {
   public function updateStatus($returnID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ReturnID` = '$returnID'";
+      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ReturnID` = '{$returnID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -154,11 +154,11 @@ Class Returns {
   public function updateReturnStatus($returnID, $returnStatus) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `ReturnStatus` = '$returnStatus' WHERE `ReturnID` = '$returnID'";
+      $sql = "UPDATE `returns` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `ReturnStatus` = '{$returnStatus}' WHERE `ReturnID` = '{$returnID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateReturnStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Returns/updateReturnStatus Failed: {$err->getMessage()}");
       return false;
     }
   }

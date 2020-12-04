@@ -11,7 +11,7 @@ Class Country {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ Class Country {
    */
   public function exists($code) {
     try {
-      $sql = "SELECT `CountryID` FROM `countries` WHERE `Code` = '$code'";
+      $sql = "SELECT `CountryID` FROM `countries` WHERE `Code` = '{$code}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $countryID = $stmt->fetchColumn();
       return $countryID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -45,18 +45,18 @@ Class Country {
       // Check Country Code does not already exist
       $exists = $this->exists($code);
       if (!empty($exists)) {  // Country Code is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$code' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '{$code}' is already in use! Please try again.");
         return false;
       } else {  // Insert Country Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `countries` (`Code`, `Name`, `ShippingBand`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$code', '$name', '$shippingBand', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $sql = "INSERT INTO `countries` (`Code`, `Name`, `ShippingBand`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('{$code}', '{$name}', '{$shippingBand}', CURRENT_TIMESTAMP(), '{$editID}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Country '$code - $name' added successfully as ID '$newID'.");
+        $_SESSION["message"] = msgPrep("success", "Country '{$code} - {$name}' added successfully as ID '{$newID}'.");
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/add Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -71,13 +71,13 @@ Class Country {
       if ($status == null) {
         $sql = "SELECT `Code`, `Name` FROM `countries` ORDER BY `Name`";
       } else {
-        $sql = "SELECT `Code`, `Name` FROM `countries` WHERE `Status` = '$status' ORDER BY `Name`";
+        $sql = "SELECT `Code`, `Name` FROM `countries` WHERE `Status` = '{$status}' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/getCountries Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/getCountries Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -89,12 +89,12 @@ Class Country {
    */
   public function getShippingBand($code) {
     try {
-      $sql = "SELECT `ShippingBand` FROM `countries` WHERE `Code` = '$code'";
+      $sql = "SELECT `ShippingBand` FROM `countries` WHERE `Code` = '{$code}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/getShippingBand Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/getShippingBand Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -109,13 +109,13 @@ Class Country {
       if ($name == null) {
         $sql = "SELECT * FROM `countries` ORDER BY `Name`";
       } else {
-        $sql = "SELECT * FROM `countries` WHERE `Name` LIKE '%$name%' ORDER BY `Name`";
+        $sql = "SELECT * FROM `countries` WHERE `Name` LIKE '%{$name}%' ORDER BY `Name`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/getList Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -127,12 +127,12 @@ Class Country {
    */
   public function getRecord($countryID) {
     try {
-      $sql = "SELECT * FROM `countries` WHERE `CountryID` = '$countryID'";
+      $sql = "SELECT * FROM `countries` WHERE `CountryID` = '{$countryID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -151,21 +151,21 @@ Class Country {
       // Check new Country Code does not already exist (other than in current record)
       $exists = $this->exists($code);
       if (!empty($exists) && $exists != $countryID) {  // Code is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '$code' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Country Code '{$code}' is already in use! Please try again.");
         return false;
       } else {
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `countries` SET `Code` = '$code', `Name` = '$name', `ShippingBand` = '$shippingBand', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `CountryID` = '$countryID'";
+        $sql = "UPDATE `countries` SET `Code` = '{$code}', `Name` = '{$name}', `ShippingBand` = '{$shippingBand}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `CountryID` = '{$countryID}'";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = msgPrep("success", "Update of Country ID '$countryID' was successful.");
+          $_SESSION["message"] = msgPrep("success", "Update of Country ID '{$countryID}' was successful.");
         } else {
           throw new PDOException("0 or >1 record was updated.");
         }
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -179,11 +179,11 @@ Class Country {
   public function updateStatus($countryID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `countries` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `CountryID` = '$countryID'";
+      $sql = "UPDATE `countries` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `CountryID` = '{$countryID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Country/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Country/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }  

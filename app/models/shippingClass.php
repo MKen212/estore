@@ -11,7 +11,7 @@ Class Shipping {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -24,12 +24,12 @@ Class Shipping {
    */
   public function exists($band, $type, $priceBandKG) {
     try {
-      $sql = "SELECT `ShippingID` FROM `shipping` WHERE (`Band` = '$band' AND `Type` = '$type' AND `PriceBandKG` = '$priceBandKG')";
+      $sql = "SELECT `ShippingID` FROM `shipping` WHERE (`Band` = '{$band}' AND `Type` = '{$type}' AND `PriceBandKG` = '{$priceBandKG}')";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $shippingID = $stmt->fetchColumn();
       return $shippingID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -48,18 +48,18 @@ Class Shipping {
       // Check Shipping record with defined Band-Type-PriceBandKG combination does not already exist
       $exists = $this->exists($band, $type, $priceBandKG);
       if (!empty($exists)) {  // Band-Type-PriceBandKG combination is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '$band-$type-$priceBandKG' combination is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '{$band}-{$type}-{$priceBandKG}' combination is already in use! Please try again.");
         return false;
       } else {  // Insert Shipping Record
         $editID = $_SESSION["userID"];
-        $sql = "INSERT INTO `shipping` (`Band`, `Type`, `PriceBandKG`, `PriceBandCost`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('$band', '$type', '$priceBandKG', '$priceBandCost', CURRENT_TIMESTAMP(), '$editID', '$status')";
+        $sql = "INSERT INTO `shipping` (`Band`, `Type`, `PriceBandKG`, `PriceBandCost`, `EditTimestamp`, `EditUserID`, `Status`) VALUES ('{$band}', '{$type}', '{$priceBandKG}', '{$priceBandCost}', CURRENT_TIMESTAMP(), '{$editID}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Shipping Rate for '$band-$type-$priceBandKG' combination added successfully as ID '$newID'.");
+        $_SESSION["message"] = msgPrep("success", "Shipping Rate for '{$band}-{$type}-{$priceBandKG}' combination added successfully as ID '{$newID}'.");
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/add Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/add Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -74,15 +74,15 @@ Class Shipping {
   public function getPriceBandKGs($band, $type, $status = null) {
     try {
       if ($status == null) {
-        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '$band') AND (`Type` = '$type')) ORDER BY `PriceBandKG`";
+        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '{$band}') AND (`Type` = '{$type}')) ORDER BY `PriceBandKG`";
       } else {
-        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '$band') AND (`Type` = '$type') AND (`Status` = '$status')) ORDER BY `PriceBandKG`";
+        $sql = "SELECT `PriceBandKG` FROM `shipping` WHERE ((`Band` = '{$band}') AND (`Type` = '{$type}') AND (`Status` = '{$status}')) ORDER BY `PriceBandKG`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getPriceBandKGs Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getPriceBandKGs Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -96,12 +96,12 @@ Class Shipping {
    */
   public function getShippingCost($band, $type, $priceBandKG) {
     try {
-      $sql = "SELECT `PriceBandCost` FROM `shipping` WHERE `Band` = '$band' AND `Type` = '$type' AND `PriceBandKG` = '$priceBandKG'";
+      $sql = "SELECT `PriceBandCost` FROM `shipping` WHERE `Band` = {'$band}' AND `Type` = '{$type}' AND `PriceBandKG` = '{$priceBandKG}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getShippingCost Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getShippingCost Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -116,13 +116,13 @@ Class Shipping {
       if ($search == null) {
         $sql = "SELECT * FROM `shipping` ORDER BY `Band`, `Type` DESC, `PriceBandKG`";
       } else {
-        $sql = "SELECT * FROM `shipping` WHERE (`Band` LIKE '%$search%' OR `Type` LIKE '%$search%') ORDER BY `Band`, `Type` DESC, `PriceBandKG`";
+        $sql = "SELECT * FROM `shipping` WHERE (`Band` LIKE '%{$search}%' OR `Type` LIKE '%{$search}%') ORDER BY `Band`, `Type` DESC, `PriceBandKG`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getList Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -134,12 +134,12 @@ Class Shipping {
    */
   public function getRecord($shippingID) {
     try {
-      $sql = "SELECT * FROM `shipping` WHERE `ShippingID` = '$shippingID'";
+      $sql = "SELECT * FROM `shipping` WHERE `ShippingID` = '{$shippingID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -159,21 +159,21 @@ Class Shipping {
       // Check Band-Type-PriceBandKG combination does not already exist (other than in current record)
       $exists = $this->exists($band, $type, $priceBandKG);
       if (!empty($exists) && $exists != $shippingID) {  // Band-Type-PriceBandKG combination is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '$band-$type-$priceBandKG' combination is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Shipping Rate for '{$band}-{$type}-{$priceBandKG}' combination is already in use! Please try again.");
         return false;
       } else {
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `shipping` SET `Band` = '$band', `Type` = '$type', `PriceBandKG` = '$priceBandKG', `PriceBandCost` = '$priceBandCost', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ShippingID` = '$shippingID'";
+        $sql = "UPDATE `shipping` SET `Band` = '{$band}', `Type` = '{$type}', `PriceBandKG` = '{$priceBandKG}', `PriceBandCost` = '{$priceBandCost}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ShippingID` = '{$shippingID}'";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = msgPrep("success", "Update of Shipping ID '$shippingID' was successful.");
+          $_SESSION["message"] = msgPrep("success", "Update of Shipping ID '{$shippingID}' was successful.");
         } else {
           throw new PDOException("0 or >1 record was updated.");
         }
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -187,11 +187,11 @@ Class Shipping {
   public function updateStatus($shippingID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `shipping` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `ShippingID` = '$shippingID'";
+      $sql = "UPDATE `shipping` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `ShippingID` = '{$shippingID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - Shipping/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }

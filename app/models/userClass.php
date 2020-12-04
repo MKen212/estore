@@ -11,7 +11,7 @@ class User {
       $this->conn = new PDO($connString, DBSERVER["username"], DBSERVER["password"]);
       $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/DB Connection Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/DB Connection Failed: {$err->getMessage()}");
     }
   }
 
@@ -22,12 +22,12 @@ class User {
    */
   public function exists($email) {
     try {
-      $sql = "SELECT `UserID` FROM `users` WHERE `Email` = '$email'";
+      $sql = "SELECT `UserID` FROM `users` WHERE `Email` = '{$email}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $userID = $stmt->fetchColumn();
       return $userID;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/exists Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - User/exists Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -46,19 +46,19 @@ class User {
       // Check User Email does not already exist
       $exists = $this->exists($email);
       if (!empty($exists)) {  // Email is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Email Address '$email' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Email Address '{$email}' is already in use! Please try again.");
         return false;
       } else {  // Insert User Record
         $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
         $sql = "INSERT INTO `users` (`Email`, `Password`, `Name`, `IsAdmin`, `Status`) VALUES
-          ('$email', '$passwordHash', '$name', '$isAdmin', '$status')";
+          ('{$email}', '{$passwordHash}', '{$name}', '{$isAdmin}', '{$status}')";
         $this->conn->exec($sql);
         $newID = $this->conn->lastInsertId();
-        $_SESSION["message"] = msgPrep("success", "Registration of '$email' was successful.");
+        $_SESSION["message"] = msgPrep("success", "Registration of '{$email}' was successful.");
         return $newID;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/register Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/register Failed: {$err->getMessage()}");
       return false;      
     }
   }
@@ -77,7 +77,7 @@ class User {
         $_SESSION["message"] = msgPrep("danger", "Incorrect Username or Password entered!");
         return false;
       } else {  // Confirm Password
-        $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `Email` = '$email'";
+        $sql = "SELECT `UserID`, `Password`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `Email` = '{$email}'";
         $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
         $result = $stmt->fetch();
         $passwordStatus = password_verify($password, $result["Password"]);
@@ -91,7 +91,7 @@ class User {
             $_SESSION["userName"] = $result["Name"];
             $result = null;
             // Record Login Timestamp
-            $sqlLogin = "UPDATE `users` SET `LoginTimestamp` = CURRENT_TIMESTAMP() WHERE `UserID` = $userID";
+            $sqlLogin = "UPDATE `users` SET `LoginTimestamp` = CURRENT_TIMESTAMP() WHERE `UserID` = '{$userID}'";
             $this->conn->exec($sqlLogin);
             return true;
           } else {  // User is inactive
@@ -105,7 +105,7 @@ class User {
         }
       }  
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/Login Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - User/Login Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -130,13 +130,13 @@ class User {
       if ($email == null) {
         $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM `users` ORDER BY `Email`";
       } else {
-        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM `users` WHERE `Email` LIKE '%$email%' ORDER BY `Email`";
+        $sql = "SELECT `UserID`, `Email`, `Name`, `EditTimestamp`, `EditUserID`, `LoginTimestamp`, `IsAdmin`, `Status` FROM `users` WHERE `Email` LIKE '%{$email}%' ORDER BY `Email`";
       }
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchAll();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/getList Failed: " . $err->getMessage());
+      $_SESSION["message"] = msgPrep("danger", "Error - User/getList Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -148,12 +148,12 @@ class User {
    */
   public function getRecord($userID) {
     try {
-      $sql = "SELECT `Email`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `UserID` = '$userID'";
+      $sql = "SELECT `Email`, `Name`, `IsAdmin`, `Status` FROM `users` WHERE `UserID` = '{$userID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/getRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/getRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -173,20 +173,20 @@ class User {
       // Check new Email does not already exist (other than in current record)
       $exists = $this->exists($email);
       if (!empty($exists) && $exists != $userID) {  // Email is NOT unique
-        $_SESSION["message"] = msgPrep("danger", "Error - Email Address '$email' is already in use! Please try again.");
+        $_SESSION["message"] = msgPrep("danger", "Error - Email Address '{$email}' is already in use! Please try again.");
         return false;
       } else {  // Update User Record
         // Only hash password if new one provided
         $sqlPassword = "";
         if (!empty($password)) {
           $passwordHash = password_hash($password, PASSWORD_ARGON2ID);
-          $sqlPassword = "`Password` = '$passwordHash', ";
+          $sqlPassword = "`Password` = '{$passwordHash}', ";
         }
         $editID = $_SESSION["userID"];
-        $sql = "UPDATE `users` SET `Email` = '$email', {$sqlPassword}`Name` = '$name', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin', `Status` = '$status' WHERE `UserID` = '$userID'";
+        $sql = "UPDATE `users` SET `Email` = '{$email}', {$sqlPassword}`Name` = '{$name}', `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsAdmin` = '{$isAdmin}', `Status` = '{$status}' WHERE `UserID` = '{$userID}'";
         $result = $this->conn->exec($sql);
         if ($result == 1) {  // Only 1 record should be updated
-          $_SESSION["message"] = msgPrep("success", "Update of User ID: '$userID' was successful.");
+          $_SESSION["message"] = msgPrep("success", "Update of User ID: '{$userID}' was successful.");
           if ($userID == $editID) {  // User has updated own record
             // $_SESSION["userIsAdmin"] = $isAdmin;  // Don't change this until next login
             $_SESSION["userName"] = $name;
@@ -197,7 +197,7 @@ class User {
         return $result;
       }
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/updateRecord Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/updateRecord Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -211,11 +211,11 @@ class User {
   public function updateStatus($userID, $status) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `Status` = '$status' WHERE `UserID` = '$userID'";
+      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `Status` = '{$status}' WHERE `UserID` = '{$userID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/updateStatus Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/updateStatus Failed: {$err->getMessage()}");
       return false;
     }
   }
@@ -229,11 +229,11 @@ class User {
   public function updateIsAdmin($userID, $isAdmin) {
     try {
       $editID = $_SESSION["userID"];
-      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '$editID', `IsAdmin` = '$isAdmin' WHERE `UserID` = '$userID'";
+      $sql = "UPDATE `users` SET `EditTimestamp` = CURRENT_TIMESTAMP(), `EditUserID` = '{$editID}', `IsAdmin` = '{$isAdmin}' WHERE `UserID` = '{$userID}'";
       $result = $this->conn->exec($sql);
       return $result;
     } catch (PDOException $err) {
-      $_SESSION["message"] = msgPrep("danger", "Error - User/updateIsAdmin Failed: " . $err->getMessage() . "<br />");
+      $_SESSION["message"] = msgPrep("danger", "Error - User/updateIsAdmin Failed: {$err->getMessage()}");
       return false;
     }
   }
