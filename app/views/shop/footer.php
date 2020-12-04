@@ -42,7 +42,7 @@
         <div class="col-sm-4">
           <div class="address">
             <img src="images/shop/map.png" alt="" />
-            <p><?= commaToBR(DEFAULTS["contactAddress"]); ?></p>
+            <p><?= commaToBR(DEFAULTS["contactAddress"]) ?></p>
           </div>
         </div>
       </div>
@@ -52,7 +52,7 @@
   <div class="footer-bottom"><!--footer_bottom-->
     <div class="container">
       <div class="row">
-        <p class="pull-left">Copyright © <?= date("Y"); ?> E-Store SA. All rights reserved.</p>
+        <p class="pull-left">Copyright © <?= date("Y") ?> E-Store SA. All rights reserved.</p>
         <p class="pull-right">
           Built & Developed By <span><a target="_blank" href="https://www.malarena.com">Malarena SA</a></span> (using HTML shop design from <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span>)
         </p>

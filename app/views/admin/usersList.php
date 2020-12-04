@@ -6,7 +6,7 @@
 <div class="row">
   <!-- Users Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schUsers">
+    <form action="" method="post" name="schUsers">
       <div class="input-group">
         <input class="form-control" type="text" name="schEmail" placeholder="Search Email" autocomplete="off" />
         <div class="input-group-append">
@@ -44,9 +44,9 @@
       <tbody><?php
         foreach($userList as $record) : ?>
           <tr><!-- User Record -->
-            <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"]; ?></a></td>
-            <td style="width: 16%"><?= $record["Name"]; ?></td>
-            <td style="width: 21%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
+            <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"] ?></a></td>
+            <td style="width: 16%"><?= $record["Name"] ?></td>
+            <td style="width: 21%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
             <td style="width: 21%"><?php 
               if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Never -";
@@ -54,8 +54,8 @@
                 echo date("d/m/Y @ H:i", strtotime($record["LoginTimestamp"])); 
               } ?>
             </td>  
-            <td style="width: 8%"><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")); ?></td>
-            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 8%"><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")) ?></td>
+            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>

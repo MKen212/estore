@@ -24,11 +24,11 @@
         $refData = $message->getRefData($messageID);
         if ($_SESSION["userID"] != $refData["AddedUserID"]) :  // Check Message was added by current user ?>
           <div class="register-req">
-            <p>Sorry - You do not have access to Message ID `<?= $messageID ?>`.</p>
+            <p>Sorry - You do not have access to Message ID '<?= $messageID ?>'.</p>
           </div><?php
         elseif ($refData["Status"] == 0) :  // Check Message is not Inactive ?>
           <div class="register-req">
-            <p>Sorry - Message ID `<?= $messageID ?>` is marked as 'Inactive'.</p>
+            <p>Sorry - Message ID '<?= $messageID ?>' is marked as 'Inactive'.</p>
           </div><?php
         else :
           // Get Message Details & Show

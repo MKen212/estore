@@ -9,7 +9,7 @@
   </div>
 </div><?php
 
-if ($messageRecord == false) :  // Message Record not found ?>
+if (empty($messageRecord)) :  // Message Record not found ?>
   <div>Message ID not found.</div><?php
 else :  // Display Message Form ?>
   <div class="row">
@@ -49,11 +49,11 @@ else :  // Display Message Form ?>
       <h5>Received Message</h5>
       <table class="table table-sm">
         <tr>
-          <td><b>Subject: <?= $messageRecord["Subject"]; ?></b></td>
+          <td><b>Subject: <?= $messageRecord["Subject"] ?></b></td>
         </tr>
         <tr>
           <td>
-            <textarea class="taFixed" rows="7" readonly><?= fixCRLF($messageRecord["Body"]); ?></textarea>
+            <textarea class="taFixed" rows="7" readonly><?= fixCRLF($messageRecord["Body"]) ?></textarea>
           </td>
         </tr>
       </table>     
@@ -77,7 +77,7 @@ else :  // Display Message Form ?>
         </tr>
         <tr>
           <td>Replied Username:</td>
-          <td><?= !empty($messageRecord["ReplyUsername"]) ? $messageRecord["ReplyUsername"] : ""; ?></td>
+          <td><?= (!empty($messageRecord["ReplyUsername"])) ? $messageRecord["ReplyUsername"] : "" ?></td>
         </tr>
       </table>
     </div>
@@ -85,11 +85,11 @@ else :  // Display Message Form ?>
     <!-- Reply -->
     <div class="col-sm-6">
       <h5>Reply</h5>
-      <form action="" method="POST" name="messageForm" autocomplete="off">
+      <form action="" method="post" name="messageForm" autocomplete="off">
         <table class="table table-sm">
           <tr>
             <td>
-              <textarea class="taFixed" name="reply" rows="7" maxlength="500" required><?= fixCRLF($messageRecord["Reply"]); ?></textarea>
+              <textarea class="taFixed" name="reply" rows="7" maxlength="500" required><?= fixCRLF($messageRecord["Reply"]) ?></textarea>
             </td>
           </tr>
           <tr>

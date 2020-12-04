@@ -23,18 +23,18 @@
         $refData = $order->getRefData($orderID);
         if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order ID is owned by current user ?>
           <div class="register-req">
-            <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
+            <p>Sorry - You do not have access to Order ID '<?= $orderID ?>' with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
           </div><?php
         elseif ($refData["Status"] == 0) :  // Check Order is not Inactive?>
           <div class="register-req">
-            <p>Sorry - Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+            <p>Sorry - Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
           </div><?php
         else : ?>
           <!-- Return Items Available List -->
           <div class="table-responsive" style="margin-bottom:75px">
-            <p >The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID `<?= $refData["InvoiceID"] ?>`</b>:</p>
+            <p >The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID '<?= $refData["InvoiceID"] ?>'</b>:</p>
             <hr />
-            <form action="index.php?p=returnConfirmation" method="POST" name="retAvailForm" autocomplete="off">
+            <form action="index.php?p=returnConfirmation" method="post" name="retAvailForm" autocomplete="off">
               <input type="hidden" name="orderID" value="<?= $orderID ?>" />
               <input type="hidden" name="invoiceID" value="<?= $refData["InvoiceID"] ?>" />
               <input type="hidden" name="paymentID" value="<?= $refData["PaymentID"] ?>" />

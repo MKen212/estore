@@ -7,7 +7,7 @@ else :  // Display Return Items for Return ?>
     <div class="col-sm-12">
       <h5>Returned Items</h5>
       <div class="table-responsive">
-        <form action="admin_dashboard.php?p=returnDetails&id=<?= $returnID; ?>" method="POST" name="retItemsForm" autocomplete="off">
+        <form action="admin_dashboard.php?p=returnDetails&id=<?= $returnID ?>" method="post" name="retItemsForm" autocomplete="off">
           <table class="table table-striped table-sm" style="margin-bottom:50px">
             <thead>
               <tr>
@@ -26,21 +26,21 @@ else :  // Display Return Items for Return ?>
               foreach ($returnItemsList as $record) :
                 $itemCount +=1; ?>
                 <tr><!-- Return Item -->
-                  <td><?= $itemCount; ?></td>
+                  <td><?= $itemCount ?></td>
                   <td>
-                    <img width="90" height="83" src="<?= getFilePath($record["ProductID"], $record["ImgFilename"]); ?>" alt="<?= $record["ImgFilename"]; ?>" />
+                    <img width="90" height="83" src="<?= getFilePath($record["ProductID"], $record["ImgFilename"]) ?>" alt="<?= $record["ImgFilename"] ?>" />
                   </td>
-                  <td><?= $record["Name"] . "<br />ID: " . $record["ProductID"]; ?></td>
-                  <td><?= symValue($record["Price"]); ?></td>
-                  <td><?= $record["QtyReturned"]; ?></td>
+                  <td><?= $record["Name"] . "<br />ID: " . $record["ProductID"] ?></td>
+                  <td><?= symValue($record["Price"]) ?></td>
+                  <td><?= $record["QtyReturned"] ?></td>
                   <td>
-                    <?= statusOutput("ReturnReason", $record["ReturnReason"]); ?><br />
-                    <?= statusOutput("ReturnAction", $record["ReturnAction"]); ?>
+                    <?= statusOutput("ReturnReason", $record["ReturnReason"]) ?><br />
+                    <?= statusOutput("ReturnAction", $record["ReturnAction"]) ?>
                   </td>
                   <td style="border-left:double">
-                    <input type="date" name="retItems[<?= $record["ReturnItemID"]; ?>][receivedDate]" value=<?= $record["ReceivedDate"]; ?> /><?= " by " . $record["ReceivedUserID"]; ?><br />
-                    <input type="date" name="retItems[<?= $record["ReturnItemID"]; ?>][actionedDate]" value=<?= $record["ActionedDate"]; ?> /><?= " by " . $record["ActionedUserID"]; ?><br />
-                    <?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?>
+                    <input type="date" name="retItems[<?= $record["ReturnItemID"] ?>][receivedDate]" value=<?= $record["ReceivedDate"] ?> /><?= " by " . $record["ReceivedUserID"] ?><br />
+                    <input type="date" name="retItems[<?= $record["ReturnItemID"];?>][actionedDate]" value=<?= $record["ActionedDate"] ?> /><?= " by " . $record["ActionedUserID"] ?><br />
+                    <?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?>
                   </td>
                   <td>
                     <?= statusOutput("IsReceived", $record["IsReceived"], ("admin_dashboard.php?p=returnDetails&id=" . $record["ReturnID"] . "&itemID=" . $record["ReturnItemID"] . "&cur=" . $record["IsReceived"] . "&updItemIsReceived#returnItems")) ?><br />

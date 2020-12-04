@@ -27,7 +27,7 @@ $countryRecord = $country->getRecord($countryID);
 // Prep Country Form Data
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "Shipping Country Details - ID: " . $countryID,
+  "formTitle" => "Shipping Country Details - ID: {$countryID}",
   "subName" => "updateCountry",
   "subText" => "Update Country",
 ];

@@ -1,6 +1,6 @@
 <!-- Register Form - ADMIN -->
 <div class="row justify-content-center">
-  <form class="form-user" action="" method="POST" name="registerForm" autocomplete="off">
+  <form class="form-user" action="" method="post" name="registerForm" autocomplete="off">
     <h3 class="mb-3">User Registration Form</h3>
     <!-- Email -->
     <div class="input-group">

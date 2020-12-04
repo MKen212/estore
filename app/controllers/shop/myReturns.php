@@ -36,7 +36,7 @@
               $returns = new Returns();
               $returnsCount = 0;
               foreach(new RecursiveArrayIterator($returns->getListByUser($_SESSION["userID"], 1)) as $record) {
-                $record["ReturnsRef"] = $record["InvoiceID"] . "-RTN-" . $record["ReturnID"];  // Returns Ref Field
+                $record["ReturnsRef"] = "{$record["InvoiceID"]}-RTN-{$record["ReturnID"]}";  // Returns Ref Field
                 include "../app/views/shop/returnsListItem.php";
                 $returnsCount += 1;
               }

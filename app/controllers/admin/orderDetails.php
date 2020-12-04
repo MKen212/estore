@@ -23,8 +23,9 @@ if (isset($_GET["id"])) {
 
     // Fix Sidebar Orders Badge
     $toSendCount = $order->countOrdStat(1);  // NOTE: HardCoded based on "Paid" status in Config/$statusCodes/OrderStatus
-    $toSendBadge = ($toSendCount > 0) ? " <span class='badge badge-primary'>To Send: $toSendCount</span>" : "";
-    ?><script>
+    $toSendBadge = ($toSendCount > 0) ? " <span class='badge badge-primary'>To Send: {$toSendCount}</span>" : "";
+    // Update SideBar ToSend ?>
+    <script>
       document.getElementById("toSendBadge").innerHTML = "<?= $toSendBadge ?>";
     </script><?php
 

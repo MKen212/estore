@@ -25,8 +25,9 @@ if (isset($_GET["id"])) {
 
     // Fix Sidebar Returns Badge
     $toProcessCount = $returns->countRetStat(1);  // NOTE: HardCoded based on "Returned" status in Config/$statusCodes/ReturnStatus
-    $toProcessBadge = ($toProcessCount > 0) ? " <span class='badge badge-warning'>To Process: $toProcessCount</span>" : "";
-    ?><script>
+    $toProcessBadge = ($toProcessCount > 0) ? " <span class='badge badge-warning'>To Process: {$toProcessCount}</span>" : "";
+    // Update SideBar ToProcess ?>
+    <script>
       document.getElementById("toProcessBadge").innerHTML = "<?= $toProcessBadge ?>";
     </script><?php
 

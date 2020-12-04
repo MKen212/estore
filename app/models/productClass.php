@@ -196,7 +196,7 @@ class Product {
    */
   public function getRecordView($productID) {
     try {
-      $sql = "SELECT * FROM `prod_uncoded_view` WHERE `ProductID` = {'$productID}'";
+      $sql = "SELECT * FROM `prod_uncoded_view` WHERE `ProductID` = '{$productID}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetch();
       return $result;

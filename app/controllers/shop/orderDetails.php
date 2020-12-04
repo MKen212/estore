@@ -1,89 +1,39 @@
 <?php  // Shop - Order Details
+include_once "../app/models/orderClass.php";
+$order = new Order();
+include_once "../app/models/orderItemClass.php";
+$orderItem = new OrderItem();
 
+// Get recordID if provided
+$orderID = 0;
+if (isset($_GET["id"])) {
+  $orderID = cleanInput($_GET["id"], "int");
+}
+$_GET = [];
+
+// Check Order is owned by current user and currently Active & then get Record
+$isOwner = false;
+$isActive = false;
+$refData = $order->getRefData($orderID);
+if ($_SESSION["userID"] == $refData["OwnerUserID"]) {
+  $isOwner = true;
+  if ($refData["Status"] == 1) {
+    $isActive = true;
+    // Get Order Details for selected Record
+    $orderRecord = $order->getRecord($orderID);
+    // Get List of ACTIVE order items for selected order
+    $orderItemList = $orderItem->getItemsByOrder($orderID, 1);
+    // Loop through Item List to check if each item return is allowed
+    foreach ($orderItemList as $key => $value) {
+      $orderItemList[$key]["ReturnAvailable"] = false;
+      $shipInterval = date_diff(date_create("today"), date_create($value["ShippedDate"]));
+      if ($shipInterval->days <= DEFAULTS["returnsAllowance"] && $value["QtyAvailForRtn"] > 0) {
+        $orderItemList[$key]["ReturnAvailable"] = true;
+      }
+    }
+  }
+}
+
+// Show Details in Order Details View - For all orders
+include "../app/views/shop/orderDetails.php";
 ?>
-<section id="cart_items"><!--order_details-->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 bg">
-        <h2 class="title text-center">Order Details</h2>
-      </div>
-    </div>
-
-    <div class="row"><?php
-      msgShow();  // Show any system messages coming from orderConfirmation
-
-      if (!isset($_GET["id"])) :  // Check OrderID Provided ?>
-        <div class="register-req">
-          <p>No Order ID provided.</p>
-        </div><?php
-      else :
-        $orderID = $_GET["id"];
-        $_GET = [];
-        include_once "../app/models/orderClass.php";
-        $order = new Order();
-
-        $refData = $order->getRefData($orderID);
-        if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order is owned by current user ?>
-          <div class="register-req">
-            <p>Sorry - You do not have access to Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
-          </div><?php
-        elseif ($refData["Status"] == 0) :  // Check Order is not Inactive ?>
-          <div class="register-req">
-            <p>Sorry - Order ID `<?= $orderID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
-          </div><?php
-        else :
-          // Get Order Details for selected Record
-          $orderDetails = $order->getRecord($orderID);
-
-          // Update Shipping Instructions if none
-          if (empty($orderDetails["ShippingInstructions"])) $orderDetails["ShippingInstructions"] = "- None -";
-
-          // Show Details in Order Header
-          include "../app/views/shop/orderHeader.php";
-
-          // Show Order Items
-          ?>
-          <div class="row" style="margin-bottom:50px"><!--order_items-->
-            <div class="col-sm-12 shopper-info">
-              <h5>Ordered Items</h5>
-              <div class="table-responsive cart_info">
-                <table class="table table-condensed" style="margin-bottom:0px">
-                  <thead>
-                    <tr class="cart_menu">
-                      <td class="image">Item</td>
-                      <td class="description"></td>
-                      <td class="price">Unit Price</td>
-                      <td class="quantity">Quantity</td>
-                      <td class="total">Item Total</td>
-                      <td>Date Shipped</td>
-                      <td>Return</td>
-                    </tr>
-                  </thead>
-                  <tbody><?php
-                    include_once "../app/models/orderItemClass.php";
-                    $orderItem = new OrderItem();
-                    // Loop through ACTIVE Order Items and output a row per item
-                    foreach (new RecursiveArrayIterator($orderItem->getItemsByOrder($orderID, 1)) as $record) {
-                      $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-                      // Check if item return allowed
-                      $shipInterval = date_diff(date_create("today"), date_create($record["ShippedDate"]));
-                      if ($shipInterval->days <= DEFAULTS["returnsAllowance"] && $record["QtyAvailForRtn"] > 0) {
-                        $record["ReturnAvailable"] = 1;
-                      } else {
-                        $record["ReturnAvailable"] = 0;
-                      }
-                      include "../app/views/shop/orderItem.php";
-                    }
-
-                    // Show Order Item Totals
-                    include "../app/views/shop/orderItemTotals.php"; ?>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div><!--/order_items--><?php
-        endif;
-      endif; ?>
-    </div>
-  </div>
-</section><!--/order_details-->

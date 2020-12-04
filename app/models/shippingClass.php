@@ -96,7 +96,7 @@ Class Shipping {
    */
   public function getShippingCost($band, $type, $priceBandKG) {
     try {
-      $sql = "SELECT `PriceBandCost` FROM `shipping` WHERE `Band` = {'$band}' AND `Type` = '{$type}' AND `PriceBandKG` = '{$priceBandKG}'";
+      $sql = "SELECT `PriceBandCost` FROM `shipping` WHERE `Band` = '{$band}' AND `Type` = '{$type}' AND `PriceBandKG` = '{$priceBandKG}'";
       $stmt = $this->conn->query($sql, PDO::FETCH_ASSOC);
       $result = $stmt->fetchColumn();
       return $result;

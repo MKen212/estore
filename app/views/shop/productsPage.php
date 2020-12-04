@@ -18,7 +18,7 @@
             // Loop through Products and output a page of the items
             foreach ($productPage as $record) {
               include "../app/views/shop/productItem.php";
-            }?>
+            } ?>
             <!-- Pagination Section -->
             <div class="col-sm-12">
               <ul class="pagination"><?php

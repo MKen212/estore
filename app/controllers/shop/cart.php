@@ -1,39 +1,30 @@
 <?php  // Shop - Shopping Cart
+
+// Process Cart changes if hyperlinks clicked
 if (isset($_GET["mt"])) {  // User has Opted to Empty Cart
   unset($_SESSION["cart"]);
-  ?><script>
+  // Update Header / Cart Items ?>
+  <script>
     document.getElementById("cartItems").innerHTML = null;
   </script><?php 
-}
-
-if (isset($_GET["delItem"])) {  // User has Opted to Delete an Item
+} elseif (isset($_GET["delItem"])) {  // User has Opted to Delete an Item from their cart
   $delID = $_GET["id"];
   if (!array_key_exists($delID, $_SESSION["cart"])) {  // Check ItemID exists
     $message = msgPrep("danger", "Item ID '{$delID}' not found in Cart.");
-    echo $message;
+    msgShow();
   } else {
     removeFromCart($delID);
-    unset($_GET["id"]);
-    // Refresh page
-    ?><script>
-      window.location.assign("index.php?p=cart");
+    // Update Header / Cart Items ?>
+    <script>
+      document.getElementById("cartItems").innerHTML = <?= (isset($_SESSION["cart"])) ? $_SESSION["cart"][0]["itemCount"] : "null" ?>;
     </script><?php
   }
 }
+$_GET = [];
 
+// Set whether Proceed to Checkout Button is displayed in cartList
+$checkoutButton = true;
+
+// Show Cart
+include "../app/views/shop/cartSummary.php";
 ?>
-<section id="cart_items"><!--cart_items-->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 bg">
-        <h2 class="title text-center">Shopping Cart</h2>
-      </div>
-    </div>
-
-    <div class="row"><?php
-      // Display Cart
-      include "../app/controllers/shop/cartList.php";
-      ?>
-    </div>
-  </div>
-</section><!--/cart_items-->

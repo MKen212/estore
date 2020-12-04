@@ -25,7 +25,7 @@ $prodCatRecord = $prodCat->getRecord($prodCatID);
 // Prep ProdCat Form Data
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "Product Category Details - ID: " . $prodCatID,
+  "formTitle" => "Product Category Details - ID: {$prodCatID}",
   "subName" => "updateProdCat",
   "subText" => "Update Category",
 ];

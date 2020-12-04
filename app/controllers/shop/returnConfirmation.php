@@ -38,10 +38,10 @@ if (empty($returnItemsData)) {
   $retValues = "(";
   foreach ($returnData as $key => $value) {
     $retFields .= "`" . ucfirst($key) . "`, ";
-    $retValues .= "'" . $value . "', ";
+    $retValues .= "'{$value}', ";
   }
   $retFields .= "`OwnerUserID`, `EditUserID`)";
-  $retValues .= "'" . $_SESSION["userID"] . "', '" . $_SESSION["userID"] . "')";
+  $retValues .= "'{$_SESSION["userID"]}', '{$_SESSION["userID"]}')";
 
   // Save Return to Database
   include_once "../app/models/returnsClass.php";
@@ -57,19 +57,19 @@ if (empty($returnItemsData)) {
       $ordItmAvailUpdates[$value["orderItemID"]] = -$value["qtyReturned"];
       if ($key == 0) {  // Build Field List only on 1st Item
         $retItmFields .= "`ReturnID`, ";
-        $retItmValues .= "'" . $addReturns . "', ";
+        $retItmValues .= "'{$addReturns}', ";
         foreach ($value as $itmKey => $itmVal) {
           $retItmFields .= "`" . ucfirst($itmKey) . "`, ";
-          $retItmValues .= "'" . $itmVal . "', ";
+          $retItmValues .= "'{$itmVal}', ";
         }
         $retItmFields .= "`EditUserID`)";
-        $retItmValues .= "'" . $_SESSION["userID"] . "')";
+        $retItmValues .= "'{$_SESSION["userID"]}')";
       } else {  // Build Values only on remaining items
-        $retItmValues .= ", ('" . $addReturns . "', ";
+        $retItmValues .= ", ('{$addReturns}', ";
         foreach ($value as $itmKey => $itmVal) {
-          $retItmValues .= "'" . $itmVal . "', ";
+          $retItmValues .= "'{$itmVal}', ";
         }
-        $retItmValues .= "'" . $_SESSION["userID"] . "')";
+        $retItmValues .= "'{$_SESSION["userID"]}')";
       }
     }
 

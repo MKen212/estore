@@ -2,10 +2,10 @@
   <div class="contact-info">
     <h2 class="title text-center">Contact Info</h2>
     <address class="text-center">
-      <p>Customer Services Dept<br /><?= commaToBR(DEFAULTS["contactAddress"]); ?></p>
+      <p>Customer Services Dept<br /><?= commaToBR(DEFAULTS["contactAddress"]) ?></p>
       <br />
-      <p><a href="tel:<?= DEFAULTS["contactPhone"]; ?>"><i class="fa fa-phone"></i> <?= DEFAULTS["contactPhone"]; ?></a></p>
-      <p><a href="mailto:<?= DEFAULTS["contactEmail"]; ?>"><i class="fa fa-envelope"></i> <?= DEFAULTS["contactEmail"]; ?></a></p>
+      <p><a href="tel:<?= DEFAULTS["contactPhone"] ?>"><i class="fa fa-phone"></i> <?= DEFAULTS["contactPhone"] ?></a></p>
+      <p><a href="mailto:<?= DEFAULTS["contactEmail"] ?>"><i class="fa fa-envelope"></i> <?= DEFAULTS["contactEmail"] ?></a></p>
     </address>
     <div class="social-networks">
       <h2 class="title text-center">Social Networking</h2>

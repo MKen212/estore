@@ -28,7 +28,7 @@ $shippingRecord = $shipping->getRecord($shippingID);
 // Prep Shipping Form Data
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "Shipping Rate Details - ID: " . $shippingID,
+  "formTitle" => "Shipping Rate Details - ID: {$shippingID}",
   "subName" => "updateShipping",
   "subText" => "Update Rate",
 ];

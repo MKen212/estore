@@ -1,10 +1,16 @@
 <?php  // Shop - Order Confirmation
+include_once "../app/models/orderClass.php";
+$order = new Order();
+include_once "../app/models/orderItemClass.php";
+$orderItem = new OrderItem();
+include_once "../app/models/productClass.php";
+$product = new Product();
+
+$newOrderID = 0;
+
 // Check Cart contains a confirmed order
 if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
   $_SESSION["message"] = msgPrep("danger", "Error - Unable to process order as your Cart is empty or your Order is not yet confirmed.<br />");
-  // Revert to Home Screen ?><script>
-    window.location.assign("index.php?p=home");
-  </script><?php
 } else {
   // Build New Order Record
   $ordFields = "(";
@@ -21,18 +27,16 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
       }
     } else {  // All other cart fields as-is
       $ordFields .= "`" . ucfirst($key) . "`, ";
-      $ordValues .= "'" . $value . "', ";
+      $ordValues .= "'{$value}', ";
     }
   }
   $ordFields .= "`OwnerUserID`, `EditUserID`)";
-  $ordValues .= "'" . $_SESSION["userID"] . "', '" . $_SESSION["userID"] . "')";
+  $ordValues .= "'{$_SESSION["userID"]}', '{$_SESSION["userID"]}')";
   
   // Save Order to Database
-  include_once "../app/models/orderClass.php";
-  $order = new Order();
-  $addOrder = $order->add($ordFields, $ordValues);
+  $newOrderID = $order->add($ordFields, $ordValues);
 
-  if (!empty($addOrder)) {  // Database Add Order Success
+  if (!empty($newOrderID)) {  // Database Add Order Success
     // Build New Order Items Records & Updates required to Product Quantities
     $ordItmFields = "(";
     $ordItmValues = "(";
@@ -48,34 +52,31 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
       if ($key == 1) {  // Build Field List only on 1st Item
         // First Field is OrderID
         $ordItmFields .= "`OrderID`, ";
-        $ordItmValues .= "'" . $addOrder . "', ";
+        $ordItmValues .= "'{$newOrderID}', ";
         // Rest of Fields from cart item array
         foreach ($value as $itmKey => $itmVal) {
           $ordItmFields .= "`" . ucfirst($itmKey) . "`, ";
-          $ordItmValues .= "'" . $itmVal . "', ";
+          $ordItmValues .= "'{$itmVal}', ";
         }
         $ordItmFields .= "`EditUserID`)";
-        $ordItmValues .= "'" . $_SESSION["userID"] . "')";
+        $ordItmValues .= "'{$_SESSION["userID"]}')";
       } else {  // Build Values only on remaining items
         // First Field is OrderID
-        $ordItmValues .= ", ('" . $addOrder . "', ";
+        $ordItmValues .= ", ('{$newOrderID}', ";
         // Rest of Fields from cart item array
         foreach ($value as $itmKey => $itmVal) {
-          $ordItmValues .= "'" . $itmVal . "', ";
+          $ordItmValues .= "'{$itmVal}', ";
         }
-        $ordItmValues .= "'" . $_SESSION["userID"] . "')";
+        $ordItmValues .= "'{$_SESSION["userID"]}')";
       }
     }
 
     // Save Order Items to Database
-    include_once "../app/models/orderItemClass.php";
-    $orderItem = new OrderItem();
     $addItems = $orderItem->addItems($ordItmFields, $ordItmValues);
 
     if (!empty($addItems)) {  // Database Add Order Items Success
       // Update Products Quantity Available for each item
-      include_once "../app/models/productClass.php";
-      $product = new Product();
+      
       foreach($prodQtyUpdates as $productID => $qtyAvailChg) {
         $prodUpdate = $product->updateQtyAvail($productID, $qtyAvailChg);
         if (!$prodUpdate) {  // Database Product Update Failed
@@ -83,17 +84,17 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
         }
       }
       // Clear the Cart & Header now that it is loaded in the database
-      unset($_SESSION["cart"]);
-      ?><script>
-        document.getElementById("cartItems").innerHTML = "";
+      unset($_SESSION["cart"]);?>
+      <script>
+        document.getElementById("cartItems").innerHTML = null;
       </script><?php
       
-      $_SESSION["message"] = msgPrep("success", ("THANK YOU, " . $_SESSION["userName"] . "! Your order was processed successfully. The details are as follows:<br />"));
+      $_SESSION["message"] = msgPrep("success", ("THANK YOU, {$_SESSION["userName"]}! Your order was processed successfully. The details are as follows:<br />"));
     }
   }
-
-  // Show the order details
-  $_GET["id"] = $addOrder;
-  include "../app/controllers/shop/orderDetails.php";
 }
+
+// Show the new order details
+$_GET["id"] = $newOrderID;
+include "../app/controllers/shop/orderDetails.php";
 ?>

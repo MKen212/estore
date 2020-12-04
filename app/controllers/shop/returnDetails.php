@@ -25,16 +25,16 @@
         $refData = $returns->getRefData($returnID);
         if ($_SESSION["userID"] != $refData["OwnerUserID"]) :  // Check Return is owned by current user ?>
           <div class="register-req">
-            <p>Sorry - You do not have access to Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
+            <p>Sorry - You do not have access to Return ID '<?= $returnID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
           </div><?php
         elseif ($refData["Status"] == 0) :  // Check Return is not Inactive?>
           <div class="register-req">
-            <p>Sorry - Return ID `<?= $returnID ?>` for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+            <p>Sorry - Return ID '<?= $returnID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
           </div><?php
         else:
           // Get Return Details for selected Record
           $returnDetails = $returns->getRecord($returnID);
-          $returnDetails["ReturnsRef"] = $returnDetails["InvoiceID"] . "-RTN-" . $returnDetails["ReturnID"];  // Returns Ref Field
+          $returnDetails["ReturnsRef"] = "{$returnDetails["InvoiceID"]}-RTN-{$returnDetails["ReturnID"]}";  // Returns Ref Field
 
           // Show Details in Returns Header
           include "../app/views/shop/returnsHeader.php";

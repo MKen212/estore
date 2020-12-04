@@ -19,11 +19,12 @@ if (isset($_GET["id"])) {
     // Update MessageStatus Status
     $updateStatus = $message->updateMessageStatus($messageID, $newStatus);
 
-    // Fix Sidebar Messages To Process Badge
+    // Fix Sidebar Messages To Respond Badge
     $toRespondCount = $message->countMsgStat(1);  // NOTE: HardCoded based on "Unread" & "Read" status in Config/$statusCodes/MessageStatus
-    $toProcessBadge = ($toRespondCount > 0) ? " <span class='badge badge-info'>To Respond: $toRespondCount</span>" : "";
-    ?><script>
-      document.getElementById("toRespondBadge").innerHTML = "<?= $toProcessBadge ?>";
+    $toRespondBadge = ($toRespondCount > 0) ? " <span class='badge badge-info'>To Respond: {$toRespondCount}</span>" : "";
+    // Update SideBar ToRespond ?>
+    <script>
+      document.getElementById("toRespondBadge").innerHTML = "<?= $toRespondBadge ?>";
     </script><?php
   }
 }

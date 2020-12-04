@@ -55,7 +55,7 @@ $productRecord = $product->getRecord($productID);
 // Prep Product Form Data
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "Product Details - ID: " . $productID,
+  "formTitle" => "Product Details - ID: {$productID}",
   "subName" => "updateProduct",
   "subText" => "Update Product",
 ];

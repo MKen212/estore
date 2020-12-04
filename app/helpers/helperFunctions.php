@@ -116,12 +116,12 @@ function pagination($subPage, $lastPage, $url) {
     $lastItem = $rightScroll - 1;
   }  
   
-  if ($leftScroll) echo '<li><a href="'. $url . $leftScroll . '">&laquo</a></li>';
+  if ($leftScroll) echo "<li><a href='{$url}{$leftScroll}'>&laquo</a></li>";
   for ($counter = $firstItem; $counter <= $lastItem; $counter++) {
-    $class = ($counter==$subPage) ? ' class="active"' : null;
-    echo '<li' . $class . '><a href="' . $url . $counter . '">' . $counter . '</a></li>';
+    $class = ($counter == $subPage) ? " class='active'" : null;
+    echo "<li{$class}><a href='{$url}{$counter}'>{$counter}</a></li>";
   }
-  if ($rightScroll) echo '<li><a href="' . $url . $rightScroll . '">&raquo</a></li>';
+  if ($rightScroll) echo "<li><a href='{$url}{$rightScroll}'>&raquo</a></li>";
   
   return true;
 }
@@ -219,11 +219,11 @@ function removeFromCart($itemID) {
  */
 function msgPrep($type, $msg) {
   if ($type == "success") {
-    $prepdMsg = '<div class="alert alert-success">' . $msg . '</div>';
+    $prepdMsg = "<div class='alert alert-success'>{$msg}</div>";
   } elseif ($type == "warning") {
-    $prepdMsg = '<div class="alert alert-warning">' . $msg . '</div>';
+    $prepdMsg = "<div class='alert alert-warning'>{$msg}</div>";
   } elseif ($type == "danger") {
-    $prepdMsg = '<div class="alert alert-danger">' . $msg . '</div>';
+    $prepdMsg = "<div class='alert alert-danger'>{$msg}</div>";
   }
   return $prepdMsg;
 }
@@ -251,9 +251,9 @@ function countryOptions($selCode) {
   $country = new Country();
   foreach (new RecursiveArrayIterator($country->getCountries(1)) as $value) {
     if ($value["Code"] == $selCode) {
-      echo "<option value='" . $value["Code"] . "' selected>" . $value["Name"] . "</option>";
+      echo "<option value='{$value["Code"]}' selected>{$value["Name"]}</option>";
     } else {
-      echo "<option value='" . $value["Code"] . "'>" . $value["Name"] . "</option>";
+      echo "<option value='{$value["Code"]}'>{$value["Name"]}</option>";
     }
   }
   return true;
@@ -265,11 +265,11 @@ function countryOptions($selCode) {
  * @return bool           Returns true on completion
  */
 function shipBandOptions($selCode) {
-  foreach (new RecursiveArrayIterator(SHIPPING_VALUES["Bands"]) as $value) {
+  foreach (SHIPPING_VALUES["Bands"] as $value) {
    if ($value == $selCode) {
-     echo "<option value='" . $value . "' selected>" . $value . "</option>";
+     echo "<option value='{$value}' selected>{$value}</option>";
    } else {
-     echo "<option value='" . $value . "'>" . $value . "</option>";
+     echo "<option value='{$value}'>{$value}</option>";
    }
   }
   return true;
@@ -281,11 +281,11 @@ function shipBandOptions($selCode) {
  * @return bool           Returns true on completion
  */
 function shipTypeOptions($selCode) {
-  foreach (new RecursiveArrayIterator(SHIPPING_VALUES["Types"]) as $value) {
+  foreach (SHIPPING_VALUES["Types"] as $value) {
    if ($value == $selCode) {
-     echo "<option value='" . $value . "' selected>" . $value . "</option>";
+     echo "<option value='{$value}' selected>{$value}</option>";
    } else {
-     echo "<option value='" . $value . "'>" . $value . "</option>";
+     echo "<option value='{$value}'>{$value}</option>";
    }
   }
   return true;
@@ -303,9 +303,9 @@ function prodCatOptions($selID) {
   foreach (new RecursiveArrayIterator($prodCat->getCategories(1)) as $value) {
     if ($value["ProdCatID"] == $selID) {
       $selIDFound = true;
-      echo "<option value='" . $value["ProdCatID"] . "' selected>" . $value["Name"] . "</option>";
+      echo "<option value='{$value["ProdCatID"]}' selected>{$value["Name"]}</option>";
     } else {
-     echo "<option value='" . $value["ProdCatID"] . "'>" . $value["Name"] . "</option>";
+     echo "<option value='{$value["ProdCatID"]}'>{$value["Name"]}</option>";
     }
   }
   if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Category Needs Updating.");
@@ -324,9 +324,9 @@ function prodBrandOptions($selID) {
   foreach (new RecursiveArrayIterator($prodBrand->getBrands(1)) as $value) {
     if ($value["ProdBrandID"] == $selID) {
       $selIDFound = true;
-      echo "<option value='" . $value["ProdBrandID"] . "' selected>" . $value["Name"] . "</option>";
+      echo "<option value='{$value["ProdBrandID"]}' selected>{$value["Name"]}</option>";
     } else {
-      echo "<option value='" . $value["ProdBrandID"] . "'>" . $value["Name"] . "</option>";
+      echo "<option value='{$value["ProdBrandID"]}'>{$value["Name"]}</option>";
     }
   }
   if ($selIDFound == false) $_SESSION["message"] = msgPrep("warning", "Product Brand Needs Updating.");
@@ -353,7 +353,7 @@ function postValue($key, $default = null) {
  * @return string       Returns the Default currency + value
  */
 function symValue($value) {
-  return DEFAULTS["currency"] . " " . number_format($value, 2);
+  return (DEFAULTS["currency"] . " " . number_format($value, 2));
 }
 
 /**
@@ -362,7 +362,7 @@ function symValue($value) {
  * @return string         Retuns the updated string
  */
 function commaToBR($string) {
-  return str_replace(", ", "<br />", $string);
+  return (str_replace(", ", "<br />", $string));
 }
 
 /**
@@ -413,9 +413,9 @@ function statusOutputShop($type, $status, $link = null) {
 function statusOptions($type, $selCode) {
   foreach (STATUS_CODES[$type] as $key => $value) {
     if ($key == $selCode) {
-      echo "<option value='" . $key . "' selected>" . $value["text"] . "</option>";
+      echo "<option value='{$key}' selected>{$value["text"]}</option>";
     } else {
-      echo "<option value='" . $key . "'>" . $value["text"] . "</option>";
+      echo "<option value='{$key}'>{$value["text"]}</option>";
     }
   }
   return true;

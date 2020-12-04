@@ -6,7 +6,7 @@
 <div class="row">
   <!-- Countries Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schCountry">
+    <form action="" method="post" name="schCountry">
       <div class="input-group">
         <input class="form-control" type="text" name="schName" placeholder="Search Name" autocomplete="off" />
         <div class="input-group-append">
@@ -43,11 +43,11 @@
       <tbody><?php
         foreach($countryList as $record) : ?>
           <tr><!-- Country Record -->
-            <td style="width: 6%"><?= $record["Code"]; ?></td>
-            <td style="width: 44%"><a href="admin_dashboard.php?p=countryDetails&id=<?= $record["CountryID"]; ?>"><?= $record["Name"]; ?></a></td>
-            <td style="width: 16%"><?= $record["ShippingBand"]; ?></td>
-            <td style="width: 25%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td colspan="2" style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=countries&id=" . $record["CountryID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 6%"><?= $record["Code"] ?></td>
+            <td style="width: 44%"><a href="admin_dashboard.php?p=countryDetails&id=<?= $record["CountryID"] ?>"><?= $record["Name"] ?></a></td>
+            <td style="width: 16%"><?= $record["ShippingBand"] ?></td>
+            <td style="width: 25%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+            <td colspan="2" style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=countries&id=" . $record["CountryID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
           </tr><?php
         endforeach; ?>
       </tbody>

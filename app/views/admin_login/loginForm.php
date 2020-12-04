@@ -1,6 +1,6 @@
 <!-- Login Form - ADMIN -->
 <div class="row">
-  <form class="form-user" action="" method="POST" name="loginForm">
+  <form class="form-user" action="" method="post" name="loginForm">
     <h3 class="mb-3">Please sign in</h3>
     <!-- Email -->
     <div class="input-group">

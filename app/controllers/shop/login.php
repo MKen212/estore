@@ -29,7 +29,7 @@ if (isset($_GET["r"])) {  // Check if return page is set
           if ($login == true) {
             // Login Success
             ?><script>
-              window.location.assign("index.php?p=<?= $returnPage; ?>");
+              window.location.assign("index.php?p=<?= $returnPage ?>");
             </script><?php
           } else {
             // Login Failure

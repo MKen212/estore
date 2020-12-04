@@ -9,7 +9,7 @@
   </div>
 </div><?php
 
-if ($orderRecord == false) :  // Order Record not found ?>
+if (empty($orderRecord)) :  // Order Record not found ?>
   <div>Order ID not found.</div><?php
 else :  // Display Order Header ?>
   <div class="row">
@@ -35,15 +35,15 @@ else :  // Display Order Header ?>
         </tr>
         <tr>
           <td>SubTotal:</td>
-          <td><?= symValue($orderRecord["SubTotal"]); ?></td>
+          <td><?= symValue($orderRecord["SubTotal"]) ?></td>
         </tr>
         <tr>
           <td>Shipping Cost:</td>
-          <td><?= symValue($orderRecord["ShippingCost"]); ?></td>
+          <td><?= symValue($orderRecord["ShippingCost"]) ?></td>
         </tr>
         <tr>
           <td>Total Value:</td>
-          <td><?= symValue($orderRecord["Total"]); ?></td>
+          <td><?= symValue($orderRecord["Total"]) ?></td>
         </tr>
         <tr>
           <td>Date/Time Added:</td>
@@ -62,7 +62,7 @@ else :  // Display Order Header ?>
       <table class="table table-sm">
         <tr>
           <td>Ship To:</td>
-          <td><?= commaToBR($orderRecord["Shipping"]); ?></td>
+          <td><?= commaToBR($orderRecord["Shipping"]) ?></td>
         </tr>
         <tr>
           <td>Shipping<br />Instructions:</td>
@@ -72,8 +72,8 @@ else :  // Display Order Header ?>
                 echo "- None -";
               } else {
                 echo fixCRLF($orderRecord["ShippingInstructions"]);
-              }
-            ?></textarea>
+              } ?>
+            </textarea>
           </td>
         </tr>
         <tr>
@@ -109,7 +109,7 @@ else :  // Display Order Header ?>
         </tr>
         <tr>
           <td>Payment Value:</td>
-          <td><?= $orderRecord["PaymentCurrency"] . " " . $orderRecord["PaymentValue"]?></td>
+          <td><?= ($orderRecord["PaymentCurrency"] . " " . $orderRecord["PaymentValue"]) ?></td>
         </tr>
         <tr>
           <td>Payer ID:</td>
@@ -125,7 +125,7 @@ else :  // Display Order Header ?>
         </tr>
         <tr>
           <td>Date/Time Paid:</td>
-          <td><?= date("d/m/Y @ H:i", strtotime($orderRecord["CaptureTimestamp"])); ?></td>
+          <td><?= date("d/m/Y @ H:i", strtotime($orderRecord["CaptureTimestamp"])) ?></td>
         </tr>
       </table>
     </div>

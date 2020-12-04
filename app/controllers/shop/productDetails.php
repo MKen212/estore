@@ -1,54 +1,50 @@
 <?php  // Shop - Product Details
-if (!isset($_GET["id"])) $_GET["id"] = "0";  // Set ProductID to 0 if not provided
-$selectedID = $_GET["id"];
-$_GET = [];
-
-// Get Product Details from View
 include_once "../app/models/productClass.php";
 $product = new Product();
 
-$record = $product->getRecordView($selectedID);
+// Get Product Filters and Search Data
+include "../app/controllers/shop/productFilters.php";
+
+// Get recordID if provided 
+$productID = 0;
+if (isset($_GET["id"])) {
+  $productID = cleanInput($_GET["id"], "int");
+}
+$_GET = [];
+
+// If Add-To-Cart POSTed then update SESSION variables
+if (isset($_POST["addProdToCart"])) {
+  $name = cleanInput($_POST["name"], "string");
+  $price = cleanInput($_POST["price"], "float");
+  $weightGrams = cleanInput($_POST["weightGrams"], "int");
+  $qtyOrdered = cleanInput($_POST["qtyOrdered"], "int");
+  $imgFilename = cleanInput($_POST["imgFilename"], "string");
+
+  // Add Product to Cart
+  addToCart($productID, $name, $price, $weightGrams, $qtyOrdered, $imgFilename);
+
+  // Update Header / Cart Items ?>
+  <script>
+    document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"] ?>;
+  </script><?php
+}
+$_POST = [];
+
+// Get Selected Product Details
+$productRecord = $product->getRecordView($productID);
+// Update Qty Allowed to Order based on Qty Available
+if (!empty($productRecord)) {
+  if ($productRecord["QtyAvail"] > 0) {
+    $productRecord["QtyAllowed"] = 1;
+  } else {
+    $productRecord["QtyAllowed"] = 0;
+  }
+}
+
+// Get Product Carousel data (Random selection of 3 New & 3 Sale products)
+$newProducts = $product->getCarousel(3, 1);
+$saleProducts = $product->getCarousel(3, 2);
+
+// Show Product Details View
+include "../app/views/shop/productDetails.php";
 ?>
-<section>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-3"><?php
-        include "../app/views/shop/sidebar.php";?>
-      </div>
-      <div class="col-sm-9 padding-right">
-        <div><!--product_details--><?php
-          if (empty($record)) :  // Check Product is found ?>
-            <div class="register-req">
-              <p>Sorry - Product ID '<?= $selectedID ?>' not found.</p>
-            </div><?php
-          elseif ($record["Status"] == 0) :  // Check Product is not Inactive ?>
-            <div class="register-req">
-              <p>Sorry - Product ID '<?= $selectedID ?>' is marked as 'Inactive'.</p>
-            </div><?php
-          else :
-            $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-            $quantity = ($record["QtyAvail"] > 0) ? 1 : 0;
-
-            include "../app/views/shop/productDetails.php";
-
-            // If Add-To-Cart POSTed then update SESSION variables
-            if (isset($_POST["addProdToCart"])) :
-              $qtyordered = cleanInput($_POST["qtyOrdered"], "int");
-              $_POST=[];
-
-              addToCart($selectedID, $record["Name"], $record["Price"], $record["WeightGrams"], $qtyordered, $record["ImgFilename"]);
-              ?><script>
-                document.getElementById("cartItems").innerHTML = <?= $_SESSION["cart"][0]["itemCount"];?>;
-              </script><?php
-            endif;
-          endif; ?>
-        </div><!--/product_details--><?php
-
-        // Show Product New/OnSale Carousel
-        include "../app/controllers/shop/productCarousel.php";
-        ?>
-        
-      </div>
-    </div>
-  </div>
-</section>

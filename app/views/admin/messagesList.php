@@ -6,7 +6,7 @@
 <div class="row">
   <!-- Messsages Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schMessages">
+    <form action="" method="post" name="schMessages">
       <div class="input-group">
         <input class="form-control" type="text" name="schEmailorSubj" placeholder="Search Email or Subject" autocomplete="off" />
         <div class="input-group-append">
@@ -43,10 +43,10 @@
       <tbody><?php
         foreach($messageList as $record) : ?>
           <tr><!-- Message Record-->
-            <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])); ?></td>
-            <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"]; ?>"><?= $record["Subject"]; ?></a></td>
-            <td style="width: 18%"><?= $record["SenderEmail"]; ?></td>
-            <td style="width: 11%"><?= $record["SenderName"]; ?></td>
+            <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) ?></td>
+            <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"] ?>"><?= $record["Subject"] ?></a></td>
+            <td style="width: 18%"><?= $record["SenderEmail"] ?></td>
+            <td style="width: 11%"><?= $record["SenderName"] ?></td>
             <td style="width: 18%"><?php
               if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
                 echo "- Pending -";
@@ -54,8 +54,8 @@
                 echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
               } ?>
             </td>
-            <td style="width: 7%"><?= statusOutput("MessageStatus", $record["MessageStatus"]); ?></td>
-            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]); ?></td>
+            <td style="width: 7%"><?= statusOutput("MessageStatus", $record["MessageStatus"]) ?></td>
+            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]) ?></td>
           </tr><?php
         endforeach; ?>
       </tbody>

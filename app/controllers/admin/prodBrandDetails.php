@@ -25,7 +25,7 @@ $prodBrandRecord = $prodBrand->getRecord($prodBrandID);
 // Prep ProdBrand Form
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "Product Brand Details - ID: " . $prodBrandID,
+  "formTitle" => "Product Brand Details - ID: {$prodBrandID}",
   "subName" => "updateProdBrand",
   "subText" => "Update Brand",
 ];

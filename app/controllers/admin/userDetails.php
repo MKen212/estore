@@ -29,7 +29,7 @@ $userRecord = $user->getRecord($userID);
 // Prep User Form Data
 $formData = [
   "formUsage" => "Update",
-  "formTitle" => "User Details - ID: " . $userID,
+  "formTitle" => "User Details - ID: {$userID}",
   "subName" => "updateUser",
   "subText" => "Update User",
 ];

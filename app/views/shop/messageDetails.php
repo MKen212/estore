@@ -29,10 +29,10 @@
       <h5>Received Message</h5>
       <table class="table table-sm">
         <tr>
-          <td><b>Subject: <?= $messageData["Subject"]; ?></b></td>
+          <td><b>Subject: <?= $messageData["Subject"] ?></b></td>
         </tr>
         <tr>
-          <td><textarea rows="7" readonly><?= fixCRLF($messageData["Body"]); ?></textarea></td>
+          <td><textarea rows="7" readonly><?= fixCRLF($messageData["Body"]) ?></textarea></td>
         </tr>
       </table>
     </div><!--/message-->
@@ -44,11 +44,11 @@
       <table class="table table-sm">
         <tr>
           <td>Date/Time Replied:</td>
-          <td><?= ($messageData["ReplyTimestamp"] == "0000-00-00 00:00:00") ? "- Pending -" : date("d/m/Y @ H:i", strtotime($messageData["ReplyTimestamp"])); ?></td>
+          <td><?= ($messageData["ReplyTimestamp"] == "0000-00-00 00:00:00") ? "- Pending -" : date("d/m/Y @ H:i", strtotime($messageData["ReplyTimestamp"])) ?></td>
         </tr>
         <tr>
           <td>Replied By:</td>
-          <td><?= !empty($messageData["ReplyUsername"]) ? $messageData["ReplyUsername"] : ""; ?></td>
+          <td><?= (!empty($messageData["ReplyUsername"])) ? $messageData["ReplyUsername"] : "" ?></td>
         </tr>
 
       </table>
@@ -57,7 +57,7 @@
       <h5>Reply</h5>
       <table class="table table-sm">
         <tr>
-          <td><textarea rows="7" readonly><?= fixCRLF($messageData["Reply"]); ?></textarea></td>
+          <td><textarea rows="7" readonly><?= fixCRLF($messageData["Reply"]) ?></textarea></td>
         </tr>
       </table>
     </div><!--/reply-->

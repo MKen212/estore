@@ -130,7 +130,7 @@ Class ReturnItem {
       if ($newReceivedDate == "0000-00-00" || empty($newReceivedDate)) {
         $sqlReceived = "`ReceivedDate` = '0000-00-00', `ReceivedUserID` = '0', `IsReceived` = '0'";
       } else {
-        $sqlReceived = "`ReceivedDate` = {'$newReceivedDate}', `ReceivedUserID` = '{$editID}', `IsReceived` = '1'";
+        $sqlReceived = "`ReceivedDate` = '{$newReceivedDate}', `ReceivedUserID` = '{$editID}', `IsReceived` = '1'";
       }
       if ($newActionedDate == "0000-00-00" || empty($newActionedDate)) {
         $sqlActioned = "`ActionedDate` = '0000-00-00', `ActionedUserID` = '0', `IsActioned` = '0'";

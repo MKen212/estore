@@ -9,7 +9,7 @@
   </div>
 </div><?php
 
-if ($returnRecord == false) :  // Return Record not found ?>
+if (empty($returnRecord)) :  // Return Record not found ?>
   <div>Return ID not found.</div><?php
 else :  // Display Return Header ?>
   <div class="row">
@@ -19,7 +19,7 @@ else :  // Display Return Header ?>
       <table class="table table-sm">
         <tr>
           <td><b>Return Ref:</b></td>
-          <td><b><?= returnRef($returnRecord["InvoiceID"], $returnRecord["ReturnID"]); ?></b></td>
+          <td><b><?= returnRef($returnRecord["InvoiceID"], $returnRecord["ReturnID"]) ?></b></td>
         </tr>
         <tr>
           <td>Invoice ID:</td>
@@ -39,7 +39,7 @@ else :  // Display Return Header ?>
         </tr>
         <tr>
           <td>Total Refund Value:</td>
-          <td><?= symValue($returnRecord["RefundTotal"]); ?><?php
+          <td><?= symValue($returnRecord["RefundTotal"]) ?><?php
             // Only show Process Refund Button if return has value, is not already processed, has a ReturnStatus of Submitted and a Status of Active
             if (($returnRecord["RefundTotal"] > 0) && empty($returnRecord["PpRefundID"]) && ($returnRecord["ReturnStatus"] == 1) && ($returnRecord["Status"] == 1)) :  ?>
               <a class="badge badge-primary" style="margin-left:15px" href="admin_dashboard. php?p=returnDetails&id=<?= $returnRecord["ReturnID"] ?>&invId=<?= $returnRecord["InvoiceID"] ?>&payId=<?= $returnRecord["PaymentID"] ?>&value=<?= $returnRecord["RefundTotal"] ?>&refund">Process Refund</a><?php
@@ -80,7 +80,7 @@ else :  // Display Return Header ?>
           </tr>
           <tr>
             <td>Date & Time Refunded:</td>
-            <td><?= date("d/m/Y @ H:i", strtotime($returnRecord["RefundTimestamp"])); ?></td>
+            <td><?= date("d/m/Y @ H:i", strtotime($returnRecord["RefundTimestamp"])) ?></td>
           </tr><?php
         endif; ?>
       </table>

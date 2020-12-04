@@ -6,7 +6,7 @@
 <div class="row">
   <!-- ProdCats Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schProdCats">
+    <form action="" method="post" name="schProdCats">
       <div class="input-group">
         <input class="form-control" type="text" name="schName" placeholder="Search Name" autocomplete="off" />
         <div class="input-group-append">
@@ -41,9 +41,9 @@
       <tbody><?php
         foreach($prodCatList as $record) : ?>
           <tr><!-- Product Categories Record-->
-            <td style="width: 50%"><a href="admin_dashboard.php?p=prodCatDetails&id=<?= $record["ProdCatID"]; ?>"><?= $record["Name"]; ?></a></td>
-            <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"]; ?></td>
-            <td style="width: 15%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodCats&id=" . $record["ProdCatID"] . "&cur=" . $record["Status"] . "&updStatus")); ?></td>
+            <td style="width: 50%"><a href="admin_dashboard.php?p=prodCatDetails&id=<?= $record["ProdCatID"] ?>"><?= $record["Name"] ?></a></td>
+            <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+            <td style="width: 15%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodCats&id=" . $record["ProdCatID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
           </tr><?php
         endforeach ; ?>
       </tbody>

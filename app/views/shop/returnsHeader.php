@@ -41,7 +41,7 @@
       </tr>
       <tr>
         <td>Returns Address:</td>
-        <td><?= commaToBR(DEFAULTS["returnsAddress"]); ?></td>
+        <td><?= commaToBR(DEFAULTS["returnsAddress"]) ?></td>
       </tr>
       <tr>
         <td colspan="2">Please include the '<b>Returns Ref</b>' code on the label.</td>
@@ -71,7 +71,7 @@
         </tr>
         <tr>
           <td>Date & Time Refunded:</td>
-          <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["RefundTimestamp"])); ?></td>
+          <td><?= date("d/m/Y @ H:i", strtotime($returnDetails["RefundTimestamp"])) ?></td>
         </tr><?php
       endif; ?>
     </table>

@@ -6,7 +6,7 @@
 <div class="row">
   <!-- Returns Table Search -->
   <div class="col-4 mb-3">
-    <form action="" method="POST" name="schReturns">
+    <form action="" method="post" name="schReturns">
       <div class="input-group">
         <input class="form-control" type="text" name="schReturn" placeholder="Search Invoice ID" autocomplete="off" />
         <div class="input-group-append">
@@ -44,14 +44,14 @@
       <tbody><?php
         foreach($returnsList as $record) : ?>
           <tr><!-- Returns Record -->
-            <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"]; ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]); ?></a></td>
-            <td style="width: 12%"><?= $record["InvoiceID"]; ?></td>
-            <td style="width: 7%"><?= $record["ItemCount"]; ?></td>
-            <td style="width: 11%"><?= $record["ProductCount"]; ?></td>
-            <td style="width: 9%"><?= $record["RefundTotal"]; ?></td>
-            <td style="width: 26%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"]; ?></td>
-            <td style="width: 11%"><?= statusOutput("ReturnStatus", $record["ReturnStatus"]); ?></td>
-            <td style="width: 9%"><?= statusOutput("Status", $record["Status"]); ?></td>
+            <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"] ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]) ?></a></td>
+            <td style="width: 12%"><?= $record["InvoiceID"] ?></td>
+            <td style="width: 7%"><?= $record["ItemCount"] ?></td>
+            <td style="width: 11%"><?= $record["ProductCount"] ?></td>
+            <td style="width: 9%"><?= $record["RefundTotal"] ?></td>
+            <td style="width: 26%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"] ?></td>
+            <td style="width: 11%"><?= statusOutput("ReturnStatus", $record["ReturnStatus"]) ?></td>
+            <td style="width: 9%"><?= statusOutput("Status", $record["Status"]) ?></td>
           </tr><?php
         endforeach; ?>      
       </tbody>
