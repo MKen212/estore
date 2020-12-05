@@ -45,7 +45,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($productList as $record) : ?>
+        foreach ($productList as $record) : ?>
           <tr><!-- Product Record -->
             <td style="width: 27%"><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"] ?>"><?= $record["Name"] ?></a></td>
             <td style="width: 12%"><?= $record["Category"] ?></td>

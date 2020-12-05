@@ -39,7 +39,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($prodCatList as $record) : ?>
+        foreach ($prodCatList as $record) : ?>
           <tr><!-- Product Categories Record-->
             <td style="width: 50%"><a href="admin_dashboard.php?p=prodCatDetails&id=<?= $record["ProdCatID"] ?>"><?= $record["Name"] ?></a></td>
             <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>

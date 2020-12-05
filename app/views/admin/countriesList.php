@@ -41,7 +41,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($countryList as $record) : ?>
+        foreach ($countryList as $record) : ?>
           <tr><!-- Country Record -->
             <td style="width: 6%"><?= $record["Code"] ?></td>
             <td style="width: 44%"><a href="admin_dashboard.php?p=countryDetails&id=<?= $record["CountryID"] ?>"><?= $record["Name"] ?></a></td>

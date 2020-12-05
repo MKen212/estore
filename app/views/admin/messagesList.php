@@ -41,7 +41,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($messageList as $record) : ?>
+        foreach ($messageList as $record) : ?>
           <tr><!-- Message Record-->
             <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) ?></td>
             <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"] ?>"><?= $record["Subject"] ?></a></td>

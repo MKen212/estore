@@ -43,7 +43,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($shippingList as $record) : ?>
+        foreach ($shippingList as $record) : ?>
           <tr><!-- Shipping Record -->
             <td style="width: 15%"><a href="admin_dashboard.php?p=shippingDetails&id=<?= $record["ShippingID"] ?>"><?= (substr($record["Band"], 0, 3) . "-" . substr($record["Type"], 0, 3) . "-" . $record["PriceBandKG"])  // Shipping Ref ?></a></td>
             <td style="width: 15%"><?= $record["Band"] ?></td>

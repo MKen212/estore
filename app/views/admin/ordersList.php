@@ -45,7 +45,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($orderList as $record) : ?>
+        foreach ($orderList as $record) : ?>
           <tr><!-- Order Record -->
             <td style="width: 8%"><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"] ?>"><?= $record["InvoiceID"] ?></a></td>
             <td style="width: 5%"><?= $record["ItemCount"] ?></td>

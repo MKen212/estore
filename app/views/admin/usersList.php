@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($userList as $record) : ?>
+        foreach ($userList as $record) : ?>
           <tr><!-- User Record -->
             <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"] ?></a></td>
             <td style="width: 16%"><?= $record["Name"] ?></td>

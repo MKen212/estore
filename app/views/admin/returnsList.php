@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach($returnsList as $record) : ?>
+        foreach ($returnsList as $record) : ?>
           <tr><!-- Returns Record -->
             <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"] ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]) ?></a></td>
             <td style="width: 12%"><?= $record["InvoiceID"] ?></td>

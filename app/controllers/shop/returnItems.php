@@ -1,85 +1,29 @@
 <?php  // Shop - Return Items
+include_once "../app/models/orderClass.php";
+$order = new Order();
+include_once "../app/models/orderItemClass.php";
+$orderItem = new OrderItem();
 
+// Get recordID if provided
+$orderID = 0;
+if (isset($_GET["id"])) {
+  $orderID = cleanInput($_GET["id"], "int");
+}
+$_GET = [];
+
+// Check Order is owned by current user and currently Active & then get Returns Available
+$isOwner = false;
+$isActive = false;
+$refData = $order->getRefData($orderID);
+if ($_SESSION["userID"] == $refData["OwnerUserID"]) {
+  $isOwner = true;
+  if ($refData["Status"] == 1) {
+    $isActive = true;
+    // Get List of ACTIVE order items available for return selected order
+    $returnsAvailList = $orderItem->getReturnsAvailByOrder($orderID, 1);
+  }
+}
+
+// Show Details in Returns Available List View
+include "../app/views/shop/returnsAvailList.php";
 ?>
-<section id="cart_items"><!--return_items-->
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-12 bg">
-        <h2 class="title text-center">Returns Available</h2>
-      </div>
-    </div>
-
-    <div class="row"><?php
-      if (!isset($_GET["id"])) :  // Check Order ID Provided ?>
-        <div class="register-req">
-          <p>No Order ID provided.</p>
-        </div><?php
-      else :
-        $orderID = $_GET["id"];
-        $_GET = [];
-        include_once "../app/models/orderClass.php";
-        $order = new Order();
-
-        $refData = $order->getRefData($orderID);
-        if ($_SESSION["userID"] != $refData["OwnerUserID"]) : // Check Order ID is owned by current user ?>
-          <div class="register-req">
-            <p>Sorry - You do not have access to Order ID '<?= $orderID ?>' with Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
-          </div><?php
-        elseif ($refData["Status"] == 0) :  // Check Order is not Inactive?>
-          <div class="register-req">
-            <p>Sorry - Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
-          </div><?php
-        else : ?>
-          <!-- Return Items Available List -->
-          <div class="table-responsive" style="margin-bottom:75px">
-            <p >The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID '<?= $refData["InvoiceID"] ?>'</b>:</p>
-            <hr />
-            <form action="index.php?p=returnConfirmation" method="post" name="retAvailForm" autocomplete="off">
-              <input type="hidden" name="orderID" value="<?= $orderID ?>" />
-              <input type="hidden" name="invoiceID" value="<?= $refData["InvoiceID"] ?>" />
-              <input type="hidden" name="paymentID" value="<?= $refData["PaymentID"] ?>" />
-              <table class="table table-striped table-sm">
-                <thead>
-                  <tr>
-                    <!-- Return Items Available Table Header -->
-                    <th>Item</th>
-                    <th>Image</th>
-                    <th>Product Details</th>
-                    <th>Unit Price</th>
-                    <th>Date Shipped</th>
-
-                    <th style="border-left:double">Return?</th>
-                    <th>Quantity</th>
-                    <th>Reason</th>
-                    <th>Action Requested</th>
-                  </tr>
-                </thead>
-                <tbody><?php
-                  include_once "../app/models/orderItemClass.php";
-                  $orderItem = new OrderItem();
-                  $itemCount = 0;
-                  foreach(new RecursiveArrayIterator($orderItem->getReturnsAvailByOrder($orderID, 1)) as $record) {
-                    $itemCount += 1;
-                    $record["FullPath"] = getFilePath($record["ProductID"], $record["ImgFilename"]);
-                    include "../app/views/shop/returnsAvailItem.php";
-                  }
-                  if ($itemCount != 0) : ?>
-                    <td colspan="5" style="text-align:right; padding-top:30px">Tick the items to return, update the quantities being returned, the reason for<br />their return and the action requested, and then click:</td>
-                    <td colspan="3" style="border-left:double">
-                      <button class="btn btn-primary" style="margin-top:25px" type="submit" name="selectReturns">Return Selected Items</button>
-                    </td><?php
-                  endif; ?>
-                </tbody>
-              </table><?php
-              if ($itemCount == 0) : ?>
-                <div class="register-req">
-                  <p>Sorry, there are no items available for return for this order.</p>
-                </div><?php
-              endif; ?>
-            </form>
-          </div><?php
-        endif; 
-      endif; ?>
-    </div>
-  </div>
-</section><!--/return_items-->

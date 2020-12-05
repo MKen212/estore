@@ -199,7 +199,7 @@ function removeFromCart($itemID) {
     // Re-Build Cart
     $newCart = [];
     $newKey = 0;
-    foreach($_SESSION["cart"] as $value) {
+    foreach ($_SESSION["cart"] as $value) {
       $newCart[$newKey] = $value;
       if ($newKey != 0) $newCart[$newKey]["itemID"] = $newKey;  // Fix Item ID
       $newKey++;

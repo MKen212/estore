@@ -76,8 +76,7 @@ if (empty($_SESSION["cart"]) || empty($_SESSION["cart"][0]["ppOrderID"])) {
 
     if (!empty($addItems)) {  // Database Add Order Items Success
       // Update Products Quantity Available for each item
-      
-      foreach($prodQtyUpdates as $productID => $qtyAvailChg) {
+      foreach ($prodQtyUpdates as $productID => $qtyAvailChg) {
         $prodUpdate = $product->updateQtyAvail($productID, $qtyAvailChg);
         if (!$prodUpdate) {  // Database Product Update Failed
           return;  // Stop further processing  TO DO Fix Error Handling

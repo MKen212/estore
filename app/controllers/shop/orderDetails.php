@@ -34,6 +34,6 @@ if ($_SESSION["userID"] == $refData["OwnerUserID"]) {
   }
 }
 
-// Show Details in Order Details View - For all orders
+// Show Details in Order Details View
 include "../app/views/shop/orderDetails.php";
 ?>

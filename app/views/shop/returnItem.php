@@ -1,6 +1,7 @@
-<tr><!--return_item_SHOP-->
+<!-- Return Item - SHOP -->
+<tr>
   <td class="cart_product" style="margin-right:-30px">
-    <img width="90" height="83" src="<?= $record["FullPath"] ?>" alt="<?= $record["ImgFilename"] ?>" />
+    <img width="90" height="83" src="<?= getFilePath($record["ProductID"], $record["ImgFilename"]) ?>" alt="<?= $record["ImgFilename"] ?>" />
   </td>
   <td class="cart_description">
     <h4><?= $record["Name"] ?></h4>
@@ -23,4 +24,4 @@
     <p><?= ($record["ReceivedDate"] == "0000-00-00") ? "- Pending -" : date("d/m/Y", strtotime($record["ReceivedDate"])) ?></p><br />
     <p><?= ($record["ActionedDate"] == "0000-00-00") ? "- Pending -" : date("d/m/Y", strtotime($record["ActionedDate"])) ?></p>
   </td>
-</tr><!--/return_item_SHOP-->
+</tr>

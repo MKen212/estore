@@ -2,7 +2,7 @@
 include_once "../app/models/orderClass.php";
 $order = new Order();
 
-//  Get logged in userID
+// Get logged in userID
 $userID = 0;
 if (isset($_SESSION["userLogin"])) {
   $userID = $_SESSION["userID"];

@@ -19,7 +19,7 @@
   <td class="cart_shipped">
     <p><?= ($record["ShippedDate"] == "0000-00-00") ? "- Pending -" : date("d/m/Y", strtotime($record["ShippedDate"])) ?></p>
   </td>
-  <td>
+  <td class="cart_status">
     <p><?= ($record["ReturnAvailable"] == true) ? "<a class='btn btn-primary' style='margin-top:0px' href='index.php?p=returnItems&id=" . $orderID . "'>Available</a>" : "<i>Unavailable</i>"; ?></p>
   </td>
 </tr>

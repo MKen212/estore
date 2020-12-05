@@ -23,7 +23,7 @@ if (isset($_POST["updateShipping"])) {
   $shippingBand = $country->getShippingBand($_SESSION["cart"][0]["shippingCountry"]);
 
   // Update Shipping PriceBandKG based on Band, Type and Weight
-  foreach($shipping->getPriceBandKGs($shippingBand, $_SESSION["cart"][0]["shippingType"], 1) as $value) {
+  foreach ($shipping->getPriceBandKGs($shippingBand, $_SESSION["cart"][0]["shippingType"], 1) as $value) {
     $_SESSION["cart"][0]["shippingPriceBandKG"] = $value["PriceBandKG"];
     if ($_SESSION["cart"][0]["shippingWeightKG"] <= $value["PriceBandKG"]) break;
   }

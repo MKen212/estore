@@ -34,7 +34,7 @@
               include_once "../app/models/messageClass.php";
               $message = new Message();
               $messageCount = 0;
-              foreach(new RecursiveArrayIterator($message->getListByUser($_SESSION["userID"], 1)) as $record) {
+              foreach (new RecursiveArrayIterator($message->getListByUser($_SESSION["userID"], 1)) as $record) {
                 include "../app/views/shop/messageListItem.php";
                 $messageCount += 1;
               }
