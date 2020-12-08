@@ -30,7 +30,7 @@
             <tbody><?php
               if (empty($returnsList)) :  // No Returns Records Found ?>
                 <tr>
-                  <td colspan ='7'>No Returns to Display</td>
+                  <td colspan="7">No Returns to Display</td>
                 </tr><?php
               else : 
                 foreach ($returnsList as $record) : ?>

@@ -30,7 +30,7 @@
             <tbody><?php              
               if (empty($orderList)) :  // No Order Records Found ?>
                 <tr>
-                  <td colspan ='7'>No Orders to Display</td>
+                  <td colspan="7">No Orders to Display</td>
                 </tr><?php
               else :
                 foreach ($orderList as $record) : ?>

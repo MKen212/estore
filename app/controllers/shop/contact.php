@@ -1,4 +1,37 @@
 <?php  // Shop - Contact
+include_once "../app/models/userClass.php";
+$user = new User();
+include_once "../app/models/messageClass.php";
+$message = new Message();
+
+
+// TO HERE - NEED TO WORK LIKE PRODUCT ADD - POST THEN PREP RECORD
+
+
+// If User is Logged In, Get User contact details
+$userID = 0;
+$contactData =  [
+  "Email" => "",
+  "Name" => "",
+];
+if (isset($_SESSION["userLogin"])) {
+  $userID = $_SESSION["userID"];  
+  // Get User Details for selected record
+  $contactData = $user->getRecord($userID);
+}
+
+// Add Message Record if Contact Form POSTed
+if (isset($_POST["sendContact"])) {
+  $senderName = cleanInput($_POST["contactName"], "string");
+  $senderEmail = cleanInput($_POST["contactEmail"], "email");
+  $subject = cleanInput($_POST["contactSubject"], "string");
+  $body = cleanInput($_POST["contactBody"], "string");
+
+  // Add message to Database
+  $newMessageID = $message->add($senderName, $senderEmail, $subject, $body, $userID);
+}
+$_POST = [];
+
 
 ?>
 <div id="contact-page" class="container"><!--contact-page-->
@@ -9,40 +42,11 @@
   </div>
 
   <div class="row"><?php
-    // If User is Logged In, Get User contact details
-    if (isset($_SESSION["userLogin"])) {
-      $userID = $_SESSION["userID"];
-      include_once "../app/models/userClass.php";
-      $user = new User();
-      // Get User Details for selected record
-      $contactData = $user->getRecord($userID);
-    } else {
-      $userID = 0;
-      $contactData =  [
-        "Email" => "",
-        "Name" => "",
-      ];
-    }
+    
 
     include "../app/views/shop/contactForm.php";
 
-    if (isset($_POST["sendContact"])) {  // Send Message
-      $senderName = cleanInput($_POST["contactName"], "string");
-      $senderEmail = cleanInput($_POST["contactEmail"], "email");
-      $subject = cleanInput($_POST["contactSubject"], "string");
-      $body = cleanInput($_POST["contactBody"], "string");
-      $_POST = [];
-
-      // Add message to Database
-      include_once "../app/models/messageClass.php";
-      $message = new Message();
-      $addMessage = $message->add($senderName, $senderEmail, $subject, $body, $userID);
-
-      // Refresh page
-      ?><script>
-        window.location.assign("index.php?p=contact");
-      </script><?php
-    }
+    
 
     include "../app/views/shop/contactDetails.php";
     ?>

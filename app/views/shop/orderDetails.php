@@ -14,7 +14,7 @@
     </div><?php
     if (empty($refData)) :  // Order Record not found ?>
       <div class="row register-req">
-        <p>Order ID not found.</p>
+        <p>Order ID '<?= $orderID ?>' not found.</p>
       </div><?php
     elseif ($isOwner != true) : // Order is not owned by current user ?>
       <div class="row register-req">
@@ -151,7 +151,7 @@
               <tbody><?php
                 if (empty($orderItemList)) :  // No Order Item Records Found ?>
                   <tr>
-                    <td colspan ='7'>No Items to Display</td>
+                    <td colspan="7">No Items to Display</td>
                   </tr><?php
                 else :
                   foreach ($orderItemList as $record) {

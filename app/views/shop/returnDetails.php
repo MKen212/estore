@@ -14,7 +14,7 @@
     </div><?php
       if (empty($refData)) :  // Returns Record not found ?>
         <div class="row register-req">
-          <p>Return ID not found.</p>
+          <p>Return ID '<?= $returnID ?>' not found.</p>
         </div><?php
       elseif ($isOwner != true) : // Return is not owned by current user ?>
         <div class="row register-req">
@@ -131,7 +131,7 @@
                 <tbody><?php
                   if (empty($returnItemList)) :  // No Return Item Records Found ?>
                     <tr>
-                      <td colspan ='7'>No Items to Display</td>
+                      <td colspan="7">No Items to Display</td>
                     </tr><?php
                   else :
                     foreach ($returnItemList as $record) {
