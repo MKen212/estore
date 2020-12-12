@@ -78,11 +78,11 @@ $_POST = [];
 // Get Returns Details for selected Record
 $returnRecord = $returns->getRecord($returnID);
 
+// Get List of return items for selected order
+$returnItemList = $returnItem->getItemsByReturn($returnID);
+
 // Show Details in Returns Header
 include "../app/views/admin/returnsHeader.php";
-
-// Get List of return items for selected order
-$returnItemsList = $returnItem->getItemsByReturn($returnID);
 
 // Display Return Items List View
 include "../app/views/admin/returnItemsList.php";

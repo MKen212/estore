@@ -43,17 +43,23 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($shippingList as $record) : ?>
-          <tr><!-- Shipping Record -->
-            <td style="width: 15%"><a href="admin_dashboard.php?p=shippingDetails&id=<?= $record["ShippingID"] ?>"><?= (substr($record["Band"], 0, 3) . "-" . substr($record["Type"], 0, 3) . "-" . $record["PriceBandKG"])  // Shipping Ref ?></a></td>
-            <td style="width: 15%"><?= $record["Band"] ?></td>
-            <td style="width: 11%"><?= $record["Type"] ?></td>
-            <td style="width: 13%"><?= $record["PriceBandKG"] ?></td>
-            <td style="width: 10%"><?= $record["PriceBandCost"] ?></td>
-            <td style="width: 27%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
-            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=shipping&id=" . $record["ShippingID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+        if (empty($shippingList)) :  // No Shipping Records Found ?>
+          <tr>
+            <td colspan="7">No Shipping Rates to Display</td>
           </tr><?php
-        endforeach; ?>
+        else :
+          foreach ($shippingList as $record) : ?>
+            <tr><!-- Shipping Record -->
+              <td style="width: 15%"><a href="admin_dashboard.php?p=shippingDetails&id=<?= $record["ShippingID"] ?>"><?= (substr($record["Band"], 0, 3) . "-" . substr($record["Type"], 0, 3) . "-" . $record["PriceBandKG"])  // Shipping Ref ?></a></td>
+              <td style="width: 15%"><?= $record["Band"] ?></td>
+              <td style="width: 11%"><?= $record["Type"] ?></td>
+              <td style="width: 13%"><?= $record["PriceBandKG"] ?></td>
+              <td style="width: 10%"><?= $record["PriceBandCost"] ?></td>
+              <td style="width: 27%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+              <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=shipping&id=" . $record["ShippingID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

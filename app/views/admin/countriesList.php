@@ -41,15 +41,21 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($countryList as $record) : ?>
-          <tr><!-- Country Record -->
-            <td style="width: 6%"><?= $record["Code"] ?></td>
-            <td style="width: 44%"><a href="admin_dashboard.php?p=countryDetails&id=<?= $record["CountryID"] ?>"><?= $record["Name"] ?></a></td>
-            <td style="width: 16%"><?= $record["ShippingBand"] ?></td>
-            <td style="width: 25%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
-            <td colspan="2" style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=countries&id=" . $record["CountryID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+        if (empty($countryList)) :  // No Country Records Found ?>
+          <tr>
+            <td colspan="5">No Countries to Display</td>
           </tr><?php
-        endforeach; ?>
+        else :
+          foreach ($countryList as $record) : ?>
+            <tr><!-- Country Record -->
+              <td style="width: 6%"><?= $record["Code"] ?></td>
+              <td style="width: 44%"><a href="admin_dashboard.php?p=countryDetails&id=<?= $record["CountryID"] ?>"><?= $record["Name"] ?></a></td>
+              <td style="width: 16%"><?= $record["ShippingBand"] ?></td>
+              <td style="width: 25%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+              <td colspan="2" style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=countries&id=" . $record["CountryID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

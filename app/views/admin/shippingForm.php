@@ -35,14 +35,14 @@ else :  // Display Shipping Form ?>
     <div class="form-group row">
       <label class="col-form-label labFixed" for="priceBandKG">Band Weight (Kg):</label>
       <div class="inpFixed">
-        <input class="form-control" type="number" name="priceBandKG" id="priceBandKG" placeholder="Enter Band Weight in Kilograms" min="0" value="<?= $shippingRecord["PriceBandKG"] ?>" required />
+        <input class="form-control" type="number" name="priceBandKG" id="priceBandKG" placeholder="Enter Band Weight in Kilograms" min="0" max="2147483647" value="<?= $shippingRecord["PriceBandKG"] ?>" required />
       </div>
     </div>
     <!-- PriceBandCost -->
     <div class="form-group row">
       <label class="col-form-label labFixed" for="priceBandCost">Price (<?= DEFAULTS["currency"] ?>):</label>
       <div class="inpFixed">
-        <input class="form-control" type="number" name="priceBandCost" id="priceBandCost" placeholder="Enter Price in <?= DEFAULTS["currency"] ?>" min="0" step="0.01" value="<?= $shippingRecord["PriceBandCost"] ?>" required />
+        <input class="form-control" type="number" name="priceBandCost" id="priceBandCost" placeholder="Enter Price in <?= DEFAULTS["currency"] ?>" min="0" max="99999999.99" step="0.01" value="<?= $shippingRecord["PriceBandCost"] ?>" required />
       </div>
     </div>
     <!-- Status -->

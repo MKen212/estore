@@ -41,9 +41,9 @@ if (!empty($productRecord)) {
   }
 }
 
-// Get Product Carousel data (Random selection of 3 New & 3 Sale products)
-$newProducts = $product->getCarousel(3, 1);
-$saleProducts = $product->getCarousel(3, 2);
+// Get Product Carousel data (Random selection of 3 New & 3 Sale ACTIVE products)
+$newProducts = $product->getCarousel(3, 1, 1);
+$saleProducts = $product->getCarousel(3, 2, 1);
 
 // Show Product Details View
 include "../app/views/shop/productDetails.php";

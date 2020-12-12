@@ -19,7 +19,7 @@ else :  // Display Product Form ?>
         <div class="form-group row">
           <label class="col-form-label labFixed" for="name">Name:</label>
           <div class="inpFixed">
-            <input class="form-control" type="text" name="name" id="name" placeholder="Enter Product Name" value="<?= $productRecord["Name"] ?>" required autofocus />
+            <input class="form-control" type="text" name="name" id="name" maxlength="40" placeholder="Enter Product Name" value="<?= $productRecord["Name"] ?>" required autofocus />
           </div>
         </div>
         <!-- Description -->
@@ -47,21 +47,21 @@ else :  // Display Product Form ?>
         <div class="form-group row">
           <label class="col-form-label labFixed" for="price">Price (<?= DEFAULTS["currency"] ?>):</label>
           <div class="inpFixed">
-            <input class="form-control" type="number" name="price" id="price" placeholder="Enter Price in <?= DEFAULTS["currency"] ?>" min="0" step="0.01" value="<?= $productRecord["Price"] ?>" required />
+            <input class="form-control" type="number" name="price" id="price" placeholder="Enter Price in <?= DEFAULTS["currency"] ?>" min="0" max="99999999.99" step="0.01" value="<?= $productRecord["Price"] ?>" required />
           </div>
         </div>
         <!-- Weight in Grams -->
         <div class="form-group row">
           <label class="col-form-label labFixed" for="weightGrams">Weight (Grams):</label>
           <div class="inpFixed">
-            <input class="form-control" type="number" name="weightGrams" id="weightGrams" placeholder="Enter Shipping Weight in Grams" min="0" value="<?= $productRecord["WeightGrams"] ?>" required />
+            <input class="form-control" type="number" name="weightGrams" id="weightGrams" placeholder="Enter Shipping Weight in Grams" min="0" max="2147483647" value="<?= $productRecord["WeightGrams"] ?>" required />
           </div>
         </div>
         <!-- Quantity Available -->
         <div class="form-group row">
           <label class="col-form-label labFixed" for="qtyAvail">Quantity Available:</label>
           <div class="inpFixed">
-            <input class="form-control" type="number" name="qtyAvail" id="qtyAvail" placeholder="Enter Quantity Available" min="0" value="<?= $productRecord["QtyAvail"] ?>" required />
+            <input class="form-control" type="number" name="qtyAvail" id="qtyAvail" placeholder="Enter Quantity Available" min="0" max="2147483647" value="<?= $productRecord["QtyAvail"] ?>" required />
           </div>
         </div>
           <!-- Flag -->

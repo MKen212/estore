@@ -31,7 +31,7 @@
               <!-- Shipping Instructions -->
               <div class="form-one order-message">
                 <h5>Shipping Instructions</h5>
-                <textarea name="shipInstructions" placeholder="Enter any notes about your order, or special instructions regarding delivery" maxlength="500"><?= fixCRLF($_SESSION["cart"][0]["shippingInstructions"]) ?></textarea>
+                <textarea name="shipInstructions" maxlength="500" placeholder="Enter any notes about your order, or special instructions regarding delivery"><?= fixCRLF($_SESSION["cart"][0]["shippingInstructions"]) ?></textarea>
               </div>
               <!-- Shipping Details -->
               <div class="form-two">

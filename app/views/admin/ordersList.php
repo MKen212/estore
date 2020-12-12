@@ -45,21 +45,27 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($orderList as $record) : ?>
-          <tr><!-- Order Record -->
-            <td style="width: 8%"><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"] ?>"><?= $record["InvoiceID"] ?></a></td>
-            <td style="width: 5%"><?= $record["ItemCount"] ?></td>
-            <td style="width: 8%"><?= $record["ProductCount"] ?></td>
-            <td style="width: 7%"><?= $record["ShippingCountry"];?></td>
-            <td style="width: 7%"><?= $record["ShippingType"] ?></td>
-            <td style="width: 7%"><?= $record["Total"] ?></td>
-            <td style="width: 12%"><?= $record["PaymentStatus"] ?></td>
-            <td style="width: 14%"><?= $record["PayerName"] ?></td>
-            <td style="width: 19%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"] ?></td>
-            <td style="width: 7%"><?= statusOutput("OrderStatus", $record["OrderStatus"]) ?></td>
-            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]) ?></td>
+        if (empty($orderList)) :  // No Order Records Found ?>
+          <tr>
+            <td colspan="11">No Orders to Display</td>
           </tr><?php
-        endforeach; ?>      
+        else :
+          foreach ($orderList as $record) : ?>
+            <tr><!-- Order Record -->
+              <td style="width: 8%"><a href="admin_dashboard.php?p=orderDetails&id=<?= $record["OrderID"] ?>"><?= $record["InvoiceID"] ?></a></td>
+              <td style="width: 5%"><?= $record["ItemCount"] ?></td>
+              <td style="width: 8%"><?= $record["ProductCount"] ?></td>
+              <td style="width: 7%"><?= $record["ShippingCountry"];?></td>
+              <td style="width: 7%"><?= $record["ShippingType"] ?></td>
+              <td style="width: 7%"><?= $record["Total"] ?></td>
+              <td style="width: 12%"><?= $record["PaymentStatus"] ?></td>
+              <td style="width: 14%"><?= $record["PayerName"] ?></td>
+              <td style="width: 19%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"] ?></td>
+              <td style="width: 7%"><?= statusOutput("OrderStatus", $record["OrderStatus"]) ?></td>
+              <td style="width: 6%"><?= statusOutput("Status", $record["Status"]) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

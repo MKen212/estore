@@ -41,23 +41,29 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($messageList as $record) : ?>
-          <tr><!-- Message Record-->
-            <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) ?></td>
-            <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"] ?>"><?= $record["Subject"] ?></a></td>
-            <td style="width: 18%"><?= $record["SenderEmail"] ?></td>
-            <td style="width: 11%"><?= $record["SenderName"] ?></td>
-            <td style="width: 18%"><?php
-              if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
-                echo "- Pending -";
-              } else {
-                echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
-              } ?>
-            </td>
-            <td style="width: 7%"><?= statusOutput("MessageStatus", $record["MessageStatus"]) ?></td>
-            <td style="width: 6%"><?= statusOutput("Status", $record["Status"]) ?></td>
+        if (empty($messageList)) :  // No Message Records Found ?>
+          <tr>
+            <td colspan="7">No Messages to Display</td>
           </tr><?php
-        endforeach; ?>
+        else :
+          foreach ($messageList as $record) : ?>
+            <tr><!-- Message Record-->
+              <td style="width: 14%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) ?></td>
+              <td style="width: 26%"><a href="admin_dashboard.php?p=messageDetails&id=<?= $record["MessageID"] ?>"><?= $record["Subject"] ?></a></td>
+              <td style="width: 18%"><?= $record["SenderEmail"] ?></td>
+              <td style="width: 11%"><?= $record["SenderName"] ?></td>
+              <td style="width: 18%"><?php
+                if ($record["ReplyTimestamp"] == "0000-00-00 00:00:00") {
+                  echo "- Pending -";
+                } else {
+                  echo date("d/m/Y @ H:i", strtotime($record["ReplyTimestamp"])) . " by " . $record["ReplyUserID"];
+                } ?>
+              </td>
+              <td style="width: 7%"><?= statusOutput("MessageStatus", $record["MessageStatus"]) ?></td>
+              <td style="width: 6%"><?= statusOutput("Status", $record["Status"]) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

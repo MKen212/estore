@@ -24,7 +24,7 @@ else :  // Display Country Form ?>
     <div class="form-group row">
       <label class="col-form-label labFixed" for="name">Name:</label>
       <div class="inpFixed">
-        <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name" value="<?= $countryRecord["Name"] ?>" required />
+        <input class="form-control" type="text" name="name" id="name" maxlength="50" placeholder="Enter Name" value="<?= $countryRecord["Name"] ?>" required />
       </div>
     </div>
     <!-- ShippingBand -->

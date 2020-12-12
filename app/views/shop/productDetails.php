@@ -20,14 +20,16 @@
           else : ?>
             <!-- Product Details -->
             <div class="product-details">
+              <!-- Product Image -->
               <div class="col-sm-5">
-                <div class="view-product"><!--main-Image-->
+                <div class="view-product">
                   <img width="270" height="250" src="<?= getFilePath($productRecord["ProductID"], $productRecord["ImgFilename"]) ?>" alt="<?= $productRecord["ImgFilename"] ?>" />
-                </div><!--/main-Image-->
+                </div>
               </div>
 
+              <!-- Product Information -->
               <div class="col-sm-7">
-                <div class="product-information"><!--/product-information--><?php
+                <div class="product-information"><?php
                   // Add New/Sale Flags if set
                   if ($productRecord["Flag"] == 1) : ?>
                     <img src="images/shop/new.png" class="new" alt="" /><?php
@@ -53,7 +55,7 @@
                   <p><b>Category: </b><?= $productRecord["Category"] ?></p>
                   <p><b>Brand: </b><?= $productRecord["Brand"] ?></p>
                   <p><b>Weight: </b><?= $productRecord["WeightGrams"] ?> grams</p>
-                </div><!--/product-information-->
+                </div>
               </div>
             </div><?php
           endif; ?>

@@ -17,7 +17,7 @@ else :  // Display Product Brand Form ?>
     <div class="form-group row">
       <label class="col-form-label labFixed" for="name">Name:</label>
       <div class="inpFixed">
-        <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name" value="<?= $prodBrandRecord["Name"] ?>" required />
+        <input class="form-control" type="text" name="name" id="name" maxlength="40" placeholder="Enter Name" value="<?= $prodBrandRecord["Name"] ?>" required />
       </div>
     </div>
     <!-- Status -->

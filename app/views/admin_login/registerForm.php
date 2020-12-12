@@ -7,7 +7,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text form-labels">Email:</span>
       </div>
-      <input class="form-control" type="email" name="email" placeholder="Enter Email Address" required autofocus />
+      <input class="form-control" type="email" name="email" maxlength="50" placeholder="Enter Email Address" value="<?= $newUserRecord["Email"] ?>" required autofocus />
     </div>
     <!-- Password -->
     <div class="input-group">
@@ -21,7 +21,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text form-labels">Name:</span>
       </div>
-      <input class="form-control" type="text" name="name" placeholder="Enter Name" required />
+      <input class="form-control" type="text" name="name" maxlength="50" placeholder="Enter Name" value="<?= $newUserRecord["Name"] ?>" required />
     </div>
     <br />
     <!-- Submit Button -->

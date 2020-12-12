@@ -42,18 +42,24 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($returnsList as $record) : ?>
-          <tr><!-- Returns Record -->
-            <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"] ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]) ?></a></td>
-            <td style="width: 12%"><?= $record["InvoiceID"] ?></td>
-            <td style="width: 7%"><?= $record["ItemCount"] ?></td>
-            <td style="width: 11%"><?= $record["ProductCount"] ?></td>
-            <td style="width: 9%"><?= $record["RefundTotal"] ?></td>
-            <td style="width: 26%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"] ?></td>
-            <td style="width: 11%"><?= statusOutput("ReturnStatus", $record["ReturnStatus"]) ?></td>
-            <td style="width: 9%"><?= statusOutput("Status", $record["Status"]) ?></td>
+        if (empty($returnsList)) :  // No Return Records Found ?>
+          <tr>
+            <td colspan="8">No Returns to Display</td>
           </tr><?php
-        endforeach; ?>      
+        else :
+          foreach ($returnsList as $record) : ?>
+            <tr><!-- Returns Record -->
+              <td style="width: 15%"><a href="admin_dashboard.php?p=returnDetails&id=<?= $record["ReturnID"] ?>"><?= returnRef($record["InvoiceID"], $record["ReturnID"]) ?></a></td>
+              <td style="width: 12%"><?= $record["InvoiceID"] ?></td>
+              <td style="width: 7%"><?= $record["ItemCount"] ?></td>
+              <td style="width: 11%"><?= $record["ProductCount"] ?></td>
+              <td style="width: 9%"><?= $record["RefundTotal"] ?></td>
+              <td style="width: 26%"><?= date("d/m/Y @ H:i", strtotime($record["AddedTimestamp"])) . " by " . $record["OwnerUserID"] ?></td>
+              <td style="width: 11%"><?= statusOutput("ReturnStatus", $record["ReturnStatus"]) ?></td>
+              <td style="width: 9%"><?= statusOutput("Status", $record["Status"]) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

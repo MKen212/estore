@@ -7,7 +7,7 @@
       <div class="input-group-prepend">
         <span class="input-group-text form-labels">Email:</span>
       </div>
-      <input class="form-control" type="email" name="estEmail" placeholder="Enter Email Address" required autofocus />
+      <input class="form-control" type="email" name="estEmail" maxlength="50" placeholder="Enter Email Address" required autofocus />
     </div>
     <!-- Password -->
     <div class="input-group">

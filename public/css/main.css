@@ -1108,6 +1108,9 @@ h2.title {
 }
 
 .recommended_items {
+  padding-top: 10px;
+  margin-bottom: 10px;
+  background-color:#fff8ef;
   overflow: hidden;
 }
 
@@ -1342,6 +1345,7 @@ h2.title {
   outline: medium none;
   text-align: center;
   width: 50px;
+  margin-bottom: 5px;
 }
 
 .product-information span label {
@@ -1349,6 +1353,10 @@ h2.title {
   font-family: 'Roboto', sans-serif;
   font-weight: 700;
   margin-right: 5px;
+}
+
+.product-information span button {
+  margin-right: 15px;
 }
 
 .share {

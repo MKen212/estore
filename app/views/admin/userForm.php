@@ -17,7 +17,7 @@ else :  // Display User Form ?>
     <div class="form-group row">
       <label class="col-form-label labFixed" for="email">Email:</label>
       <div class="inpFixed">
-        <input class="form-control" type="email" name="email" id="email" placeholder="Enter Email Address" value="<?= $userRecord["Email"] ?>" required autofocus />
+        <input class="form-control" type="email" name="email" id="email" maxlength="50" placeholder="Enter Email Address" value="<?= $userRecord["Email"] ?>" required autofocus />
       </div>
     </div>
     <!-- Password -->
@@ -31,7 +31,7 @@ else :  // Display User Form ?>
     <div class="form-group row">
       <label class="col-form-label labFixed" for="name">Name:</label>
       <div class="inpFixed">
-        <input class="form-control" type="text" name="name" id="name" placeholder="Enter Name" value="<?= $userRecord["Name"] ?>" required />
+        <input class="form-control" type="text" name="name" id="name" maxlength="50" placeholder="Enter Name" value="<?= $userRecord["Name"] ?>" required />
       </div>
     </div>
     <!-- IsAdmin -->

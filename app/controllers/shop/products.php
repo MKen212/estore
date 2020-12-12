@@ -25,9 +25,9 @@ $curOffset = (($subPage - 1) * DEFAULTS["productsPerPage"]);
 // Get Page of ACTIVE Products, as per selected filters
 $productPage = $product->getPage(DEFAULTS["productsPerPage"], $curOffset, 1, $prodCatID, $prodBrandID, $prodSortID, $prodSearch);
 
-// Get Product Carousel data (Random selection of 3 New & 3 Sale products)
-$newProducts = $product->getCarousel(3, 1);
-$saleProducts = $product->getCarousel(3, 2);
+// Get Product Carousel data (Random selection of 3 New & 3 Sale ACTIVE products)
+$newProducts = $product->getCarousel(3, 1, 1);
+$saleProducts = $product->getCarousel(3, 2, 1);
 
 // Display Products Page View
 include "../app/views/shop/productsPage.php";

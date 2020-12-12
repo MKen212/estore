@@ -1,18 +1,28 @@
 <?php  // Admin - Register New User Form
-include "../app/views/admin_login/registerForm.php";
+include_once "../app/models/userClass.php";
+$user = new User();
 
-if (isset($_POST["register"])) {  // Register New User
+// Register New User if Regiser POSTed
+if (isset($_POST["register"])) {
   $email = cleanInput($_POST["email"], "email");
   $password = cleanInput($_POST["password"], "password");
   $name = cleanInput($_POST["name"], "string");
-  $_POST = [];
-
-  include_once "../app/models/userClass.php";
-  $user = new User();
-  $newUser = $user->register($email, $password, $name);
-  unset($user, $password);
   
-  // Refresh page
-  redirect("admin_login.php?p=register");
+  // Create database entry
+  $newUserID = $user->register($email, $password, $name);
+  unset($user, $password, $_POST["password"]);
+  
+  if ($newUserID) {  // Database Entry Success
+    $_POST = [];
+  }
 }
+
+// Initialise New User Record
+$newUserRecord = [
+  "Email" => postValue("email"),
+  "Name" => postValue("name"),
+];
+
+// Show Register User Form
+include "../app/views/admin_login/registerForm.php";
 ?>

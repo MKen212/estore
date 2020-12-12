@@ -1,6 +1,7 @@
 <!-- My Messages List - SHOP -->
 <section id="cart_items">
   <div class="container">
+    <!-- Title Block -->
     <div class="row">
       <div class="col-sm-12 bg">
         <h2 class="title text-center">My Messages</h2>

@@ -39,13 +39,19 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($prodBrandList as $record) : ?>
-          <tr><!-- Product Brands Record -->
-            <td style="width: 50%"><a href="admin_dashboard.php?p=prodBrandDetails&id=<?= $record["ProdBrandID"] ?>"><?= $record["Name"] ?></a></td>
-            <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
-            <td style="width: 15%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodBrands&id=" . $record["ProdBrandID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+        if (empty($prodBrandList)) :  // No Product Brand Records Found ?>
+          <tr>
+            <td colspan="3">No Product Brands to Display</td>
           </tr><?php
-        endforeach; ?>
+        else :
+          foreach ($prodBrandList as $record) : ?>
+            <tr><!-- Product Brands Record -->
+              <td style="width: 50%"><a href="admin_dashboard.php?p=prodBrandDetails&id=<?= $record["ProdBrandID"] ?>"><?= $record["Name"] ?></a></td>
+              <td style="width: 35%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+              <td style="width: 15%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=prodBrands&id=" . $record["ProdBrandID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

@@ -45,19 +45,25 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($productList as $record) : ?>
-          <tr><!-- Product Record -->
-            <td style="width: 27%"><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"] ?>"><?= $record["Name"] ?></a></td>
-            <td style="width: 12%"><?= $record["Category"] ?></td>
-            <td style="width: 12%"><?= $record["Brand"] ?></td>
-            <td style="width: 7%"><?= $record["Price"] ?></td>
-            <td style="width: 7%"><?= $record["WeightGrams"] ?></td>
-            <td style="width: 6%"><?= $record["QtyAvail"]; ?></td>
-            <td style="width: 16%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
-            <td style="width: 6%"><?= statusOutput("Flag", $record["Flag"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Flag"] . "&updFlag")) ?></td>
-            <td style="width: 7%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+        if (empty($productList)) :  // No Product Records Found ?>
+          <tr>
+            <td colspan="9">No Products to Display</td>
           </tr><?php
-        endforeach; ?>      
+        else :
+          foreach ($productList as $record) : ?>
+            <tr><!-- Product Record -->
+              <td style="width: 27%"><a href="admin_dashboard.php?p=productDetails&id=<?= $record["ProductID"] ?>"><?= $record["Name"] ?></a></td>
+              <td style="width: 12%"><?= $record["Category"] ?></td>
+              <td style="width: 12%"><?= $record["Brand"] ?></td>
+              <td style="width: 7%"><?= $record["Price"] ?></td>
+              <td style="width: 7%"><?= $record["WeightGrams"] ?></td>
+              <td style="width: 6%"><?= $record["QtyAvail"]; ?></td>
+              <td style="width: 16%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+              <td style="width: 6%"><?= statusOutput("Flag", $record["Flag"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Flag"] . "&updFlag")) ?></td>
+              <td style="width: 7%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=products&id=" . $record["ProductID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

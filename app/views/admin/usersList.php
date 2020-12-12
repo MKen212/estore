@@ -42,22 +42,28 @@
         </tr>
       </thead>
       <tbody><?php
-        foreach ($userList as $record) : ?>
-          <tr><!-- User Record -->
-            <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"] ?></a></td>
-            <td style="width: 16%"><?= $record["Name"] ?></td>
-            <td style="width: 21%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
-            <td style="width: 21%"><?php 
-              if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
-                echo "- Never -";
-              } else {
-                echo date("d/m/Y @ H:i", strtotime($record["LoginTimestamp"])); 
-              } ?>
-            </td>  
-            <td style="width: 8%"><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")) ?></td>
-            <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+        if (empty($userList)) :  // No User Records Found ?>
+          <tr>
+            <td colspan="6">No Users to Display</td>
           </tr><?php
-        endforeach; ?>      
+        else :
+          foreach ($userList as $record) : ?>
+            <tr><!-- User Record -->
+              <td style="width: 25%"><a href="admin_dashboard.php?p=userDetails&id=<?= $record["UserID"] ?>"><?= $record["Email"] ?></a></td>
+              <td style="width: 16%"><?= $record["Name"] ?></td>
+              <td style="width: 21%"><?= date("d/m/Y @ H:i", strtotime($record["EditTimestamp"])) . " by " . $record["EditUserID"] ?></td>
+              <td style="width: 21%"><?php 
+                if ($record["LoginTimestamp"] == "0000-00-00 00:00:00") {
+                  echo "- Never -";
+                } else {
+                  echo date("d/m/Y @ H:i", strtotime($record["LoginTimestamp"])); 
+                } ?>
+              </td>  
+              <td style="width: 8%"><?= statusOutput("IsAdmin", $record["IsAdmin"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["IsAdmin"] . "&updIsAdmin")) ?></td>
+              <td style="width: 9%"><?= statusOutput("Status", $record["Status"], ("admin_dashboard.php?p=users&id=" . $record["UserID"] . "&cur=" . $record["Status"] . "&updStatus")) ?></td>
+            </tr><?php
+          endforeach;
+        endif; ?>
       </tbody>
     </table>
   </div>

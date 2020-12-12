@@ -60,11 +60,11 @@ $_POST = [];
 // Get Order Details for selected Record
 $orderRecord = $order->getRecord($orderID);
 
-// Show Details in Order Header
-include "../app/views/admin/orderHeader.php";
-
 // Get List of order items for selected order
 $orderItemList = $orderItem->getItemsByOrder($orderID);
+
+// Show Details in Order Header
+include "../app/views/admin/orderHeader.php";
 
 // Display Order Items List View
 include "../app/views/admin/orderItemsList.php";

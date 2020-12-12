@@ -4,20 +4,10 @@ $user = new User();
 include_once "../app/models/messageClass.php";
 $message = new Message();
 
-
-// TO HERE - NEED TO WORK LIKE PRODUCT ADD - POST THEN PREP RECORD
-
-
-// If User is Logged In, Get User contact details
+// Get logged in userID
 $userID = 0;
-$contactData =  [
-  "Email" => "",
-  "Name" => "",
-];
 if (isset($_SESSION["userLogin"])) {
-  $userID = $_SESSION["userID"];  
-  // Get User Details for selected record
-  $contactData = $user->getRecord($userID);
+  $userID = $_SESSION["userID"];
 }
 
 // Add Message Record if Contact Form POSTed
@@ -29,26 +19,27 @@ if (isset($_POST["sendContact"])) {
 
   // Add message to Database
   $newMessageID = $message->add($senderName, $senderEmail, $subject, $body, $userID);
+
+  if ($newMessageID) {  // Database Entry success
+    $_POST = [];
+  }
 }
-$_POST = [];
 
+// Initialise Message Record
+$contactRecord = [
+  "Name" => postValue("contactName"),
+  "Email" => postValue("contactEmail"),
+  "Subject" => postValue("contactSubject"),
+  "Body" => postValue("contactBody"),
+];
 
+// If Contact Form is not yet POSTed and user is logged in, update User contact details
+if (!isset($_POST["sendContact"]) && !empty($userID)) {
+  $userRecord = $user->getRecord($userID);
+  $contactRecord["Name"] = $userRecord["Name"];
+  $contactRecord["Email"] = $userRecord["Email"];
+}
+
+// Show Contact Form
+include "../app/views/shop/contactForm.php";
 ?>
-<div id="contact-page" class="container"><!--contact-page-->
-  <div class="row">
-    <div class="col-sm-12 bg">
-      <h2 class="title text-center">Contact Us</h2>
-    </div>
-  </div>
-
-  <div class="row"><?php
-    
-
-    include "../app/views/shop/contactForm.php";
-
-    
-
-    include "../app/views/shop/contactDetails.php";
-    ?>
-  </div>
-</div><!--/contact-page-->
