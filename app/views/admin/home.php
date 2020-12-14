@@ -1,6 +1,10 @@
 <!-- Home - ADMIN -->
 <div class="pt-3 pb-2 mb-3 border-bottom">
   <h2>Admin Home</h2>
+</div>
+<!-- System Messages -->
+<div><?php
+  msgShow(); ?>
 </div><?php
 
 // Display Testing Information if in Testing Mode

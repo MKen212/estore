@@ -7,14 +7,18 @@
         <h2 class="title text-center">My Orders</h2>
       </div>
     </div>
+    <!-- System Messages -->
+    <div class="row"><?php
+      msgShow(); ?>
+    </div>
 
+    <!-- Orders List -->
     <div class="row"><?php
       if (!isset($_SESSION["userLogin"])) :  // Check User is Logged In ?>
         <div class="register-req">
           <p>Please <a href="index.php?p=login">Login (or Signup)</a> to proceed.</p>
         </div><?php
       else :  // Display Order List ?>
-        <!-- Orders List - SHOP -->
         <div class="table-responsive" style="margin-bottom:75px">
           <table class="table table-striped table-sm">
             <thead>

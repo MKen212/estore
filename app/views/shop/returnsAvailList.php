@@ -6,25 +6,29 @@
       <div class="col-sm-12 bg">
         <h2 class="title text-center">Returns Available</h2>
       </div>
-    </div><?php
+    </div>
+    <!-- System Messages -->
+    <div class="row"><?php
+      msgShow(); ?>
+    </div>
 
-    if (empty($refData)) :  // Order Record not found ?>
-      <div class="row register-req">
-        <p>Order ID '<?= $orderID ?>' not found.</p>
-      </div><?php
-    elseif ($isOwner != true) : // Order is not owned by current user ?>
-      <div class="row register-req">
-        <p>Sorry - You do not have access to Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
-      </div><?php
-    elseif ($isActive != true) :  // Order is not Active ?>
-      <div class="row register-req">
-        <p>Sorry - Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
-      </div><?php
-    else :  // Display Returns Available ?>
-      <!-- Return Items Available List - SHOP -->
-      <div class="row">
+    <!-- Return Items Available List -->
+    <div class="row"><?php
+      if (empty($refData)) :  // Order Record not found ?>
+        <div class="register-req">
+          <p>Order ID '<?= $orderID ?>' not found.</p>
+        </div><?php
+      elseif ($isOwner != true) : // Order is not owned by current user ?>
+        <div class="register-req">
+          <p>Sorry - You do not have access to Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
+        </div><?php
+      elseif ($isActive != true) :  // Order is not Active ?>
+        <div class="register-req">
+          <p>Sorry - Order ID '<?= $orderID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
+        </div><?php
+      else :  // Display Returns Available ?>
         <div class="table-responsive" style="margin-bottom:75px">
-          <p >The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID '<?= $refData["InvoiceID"] ?>'</b>:</p>
+          <p>The following lists all items shipped in the last <?= DEFAULTS["returnsAllowance"] ?> days that are available for return against <b>Invoice ID '<?= $refData["InvoiceID"] ?>'</b>:</p>
           <hr />
           <form action="index.php?p=returnConfirmation" method="post" name="retAvailForm" autocomplete="off">
             <input type="hidden" name="orderID" value="<?= $orderID ?>" />
@@ -91,8 +95,8 @@
               </tbody>
             </table>
           </form>
-        </div>
-      </div><?php
-    endif; ?>
+        </div><?php
+      endif; ?>
+    </div>
   </div>
 </section>

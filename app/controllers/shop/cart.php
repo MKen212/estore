@@ -10,8 +10,7 @@ if (isset($_GET["mt"])) {  // User has Opted to Empty Cart
 } elseif (isset($_GET["delItem"])) {  // User has Opted to Delete an Item from their cart
   $delID = $_GET["id"];
   if (!array_key_exists($delID, $_SESSION["cart"])) {  // Check ItemID exists
-    $message = msgPrep("danger", "Item ID '{$delID}' not found in Cart.");
-    msgShow();
+    $_SESSION["message"] = msgPrep("danger", "Item ID '{$delID}' not found in Cart.");
   } else {
     removeFromCart($delID);
     // Update Header / Cart Items ?>

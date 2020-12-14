@@ -7,14 +7,18 @@
         <h2 class="title text-center">My Messages</h2>
       </div>
     </div>
-
+    <!-- System Messages -->
     <div class="row"><?php
-      if (!isset($_SESSION["userLogin"])) : // Check User is Logged In?>
+      msgShow(); ?>
+    </div>
+
+    <!-- Messages List -->
+    <div class="row"><?php
+      if (!isset($_SESSION["userLogin"])) :  // Check User is Logged In?>
         <div class="register-req">
           <p>Please <a href="index.php?p=login">Login (or Signup)</a> to proceed.</p>
         </div><?php
       else :  // Display Message List ?>
-        <!-- Messages List - SHOP -->
         <div class="table-responsive" style="margin-bottom:75px">
           <table class="table table-striped table-sm">
             <thead>

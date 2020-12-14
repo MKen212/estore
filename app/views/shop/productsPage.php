@@ -1,6 +1,12 @@
 <!-- Products Page - SHOP -->
 <section>
   <div class="container">
+    <!-- System Messages -->
+    <div class="row"><?php
+      msgShow(); ?>
+    </div>
+
+    <!-- Products -->
     <div class="row">
       <!-- Sidebar Sort & Category / Brand Filters -->
       <div class="col-sm-3"><?php
@@ -28,7 +34,9 @@
           endif; ?>
         </div><!--/featured_items--><?php
         // Show Product New/OnSale Carousel
-        include "../app/views/shop/productCarousel.php";
+        if (!empty($newProducts) || !empty($saleProducts)) {
+          include "../app/views/shop/productCarousel.php";
+        }
         ?>
       </div>
     </div>

@@ -9,11 +9,11 @@
     </div>
     <!-- System Messages -->
     <div class="row"><?php
-      msgShow();  // Show any system messages ?>
+      msgShow(); ?>
     </div>
 
     <div class="row">
-      <!-- Shop Login Form -->
+      <!-- Login Form - SHOP -->
       <div class="col-sm-4 col-sm-offset-1">
         <div class="login-form">
           <h5>Login to your account</h5>
@@ -30,7 +30,7 @@
         <h2 class="or">OR</h2>
       </div>
 
-      <!-- Register Form -->
+      <!-- Register Form - SHOP -->
       <div class="col-sm-4">
         <div class="signup-form">
           <h5>New User Sign-up</h5>

@@ -47,5 +47,5 @@
       endforeach; ?>
       </div>
     </div>
-  </div><!--/brands-panel-->  
+  </div><!--/brands-panel-->
 </div>

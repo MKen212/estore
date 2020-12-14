@@ -7,25 +7,27 @@
         <h2 class="title text-center">Return Details</h2>
       </div>
     </div>
-
     <!-- System Messages -->
     <div class="row"><?php
-      msgShow();  // Show any system messages coming from orderConfirmation ?>
-    </div><?php
+      msgShow(); ?>
+    </div>
+    
+    <!-- Return Details -->
+    <div class="row"><?php
       if (empty($refData)) :  // Returns Record not found ?>
-        <div class="row register-req">
+        <div class="register-req">
           <p>Return ID '<?= $returnID ?>' not found.</p>
         </div><?php
       elseif ($isOwner != true) : // Return is not owned by current user ?>
-        <div class="row register-req">
+        <div class="register-req">
           <p>Sorry - You do not have access to Return ID '<?= $returnID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>'.</p>
         </div><?php
       elseif ($isActive != true) :  // Return is not Active ?>
-        <div class="row register-req">
+        <div class="register-req">
           <p>Sorry - Return ID '<?= $returnID ?>' for Invoice ID '<?= $refData["InvoiceID"] ?>' is marked as 'Inactive'.</p>
         </div><?php
       else :  // Display Return Header ?>
-        <!-- Returns Header - SHOP -->
+        <!-- Returns Header -->
         <div class="shopper-info">
           <div class="row">
             <!-- Returns Information -->

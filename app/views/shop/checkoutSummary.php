@@ -1,15 +1,16 @@
 <!-- Checkout Summary - SHOP -->
 <section id="cart_items">
   <div class="container">
+    <!-- Title Block -->
     <div class="row">
       <div class="col-sm-12 bg">
         <h2 class="title text-center">Checkout</h2>
       </div>
     </div>
-    
+
+    <!-- Checkout Summary -->
     <div class="row"><?php
-      // Check Cart has Items
-      if (!isset($_SESSION["cart"][0])) :?>
+      if (!isset($_SESSION["cart"][0])) :  // Check Cart has Items ?>
         <div class="register-req">
           <p>Your Shopping Cart is currently empty. Please visit our <a href="index.php?p=products">Shop</a> to proceed.</p>
         </div><?php
@@ -24,9 +25,9 @@
         // NOTE: Potentially validate Cart against stock at this point?
         include "../app/views/shop/cartList.php"; ?>
 
-        <!-- Checkout Summary -->
-        <div class="row">
-          <div class="col-sm-8 clearfix" id="ship">
+        <div class="row" id="ship"><?php
+          msgShow();  // Show any system messages ?>          
+          <div class="col-sm-8 clearfix">
             <form class="bill-to" action="index.php?p=checkout#ship" method="post" name="shippingForm">
               <!-- Shipping Instructions -->
               <div class="form-one order-message">
