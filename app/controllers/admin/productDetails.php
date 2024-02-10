@@ -13,7 +13,7 @@ $_GET = [];
 
 // Update Product Record & Upload new image if Update POSTed
 if (isset($_POST["updateProduct"])) {
-  $initialChecks = 0;
+  $initialChecks = false;
   // If Image File included - Perform initial checks on file
   if ($_FILES["imgFilename"]["error"] != 4) {  // File was Uploaded
     $initialChecks = $uploadImg->initialChecks();

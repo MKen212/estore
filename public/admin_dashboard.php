@@ -14,7 +14,11 @@ if ($_SESSION["userIsAdmin"] != 1) {  // Reject User that is not an Admin
 require "../app/config/_config.php";
 require "../vendor/autoload.php";
 
-if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
+// Get Page Details
+$page = "home";
+if (isset($_GET["p"])) {
+  $page = cleanInput($_GET["p"], "string");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,14 +44,14 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
 
 <body>
   <!-- Top -->
-  <?php include "../app/views/admin/navbar.php";?>
+  <?php include "../app/views/admin/navbar.php"; ?>
   <div class=container-fluid>
     <div class="row">
       <!-- Side -->
-      <?php include "../app/controllers/admin/sidebar.php";?>
+      <?php include "../app/controllers/admin/sidebar.php"; ?>
       <!-- Main -->
       <main class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <?php include "../app/controllers/admin/" . $_GET["p"] . ".php";?>
+        <?php include "../app/controllers/admin/{$page}.php"; ?>
       </main>
     </div>
   </div>
@@ -57,6 +61,5 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If $_GET not set, page=home
     feather.replace();
     bsCustomFileInput.init();
   </script>
-
 </body>
 </html>

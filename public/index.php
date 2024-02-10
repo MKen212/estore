@@ -4,7 +4,11 @@ require "../app/helpers/helperFunctions.php";
 require "../app/config/_config.php";
 require "../vendor/autoload.php";
 
-if (!isset($_GET["p"])) $_GET["p"] = "home";  // If page not set, use "home"
+// Get Page Details
+$page = "home";
+if (isset($_GET["p"])) {
+  $page = cleanInput($_GET["p"], "string");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -30,10 +34,9 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If page not set, use "home"
 </head><!--/head-->
 
 <body><?php
-  
   include "../app/controllers/shop/header.php";
 
-  include "../app/controllers/shop/" . $_GET["p"] . ".php";
+  include "../app/controllers/shop/{$page}.php";
 
   include "../app/views/shop/footer.php";?>
   
@@ -44,6 +47,5 @@ if (!isset($_GET["p"])) $_GET["p"] = "home";  // If page not set, use "home"
   <!-- <script src="js/jquery.prettyPhoto.js"></script> -->
   <!-- <script src="js/main.js"></script> -->
   <!-- <script src="js/estore.js"></script> -->
-
 </body>
 </html>

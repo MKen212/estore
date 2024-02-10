@@ -90,7 +90,6 @@ else :  // Display Product Form ?>
           <label class="col-form-label labFixed">Product Image:</label>
           <div class="custom-file inpFixed">
             <input type="hidden" name="MAX_FILE_SIZE" value="<?= DEFAULTS['maxUploadSize'] ?>" />
-            <input type="hidden" name="origImgFilename" value="<?= $productRecord["ImgFilename"] ?>" />
             <label class="custom-file-label" for="imgFilename">Choose file</label>
             <input class="custom-file-input" type="file" name="imgFilename" id="imgFilename" />
           </div>
@@ -100,6 +99,7 @@ else :  // Display Product Form ?>
           <div class="form-group row">
             <label class="col-form-label labFixed" for="image">Current Image:</label>
             <img width="270" height="250" id="image" src="<?= getFilePath($productRecord["ProductID"], $productRecord["ImgFilename"]) ?>" alt="<?= $productRecord["ImgFilename"] ?>" />
+            <input type="hidden" name="origImgFilename" value="<?= $productRecord["ImgFilename"] ?>" />
           </div><?php
         endif;
         ?>

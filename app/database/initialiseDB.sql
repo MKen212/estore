@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `Status` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '0=Inactive, 1=Active'
 );
 
--- Load initial test users using admin.php?p=register to ensure Password Hashing
+-- Load initial test users using admin_login.php?p=register to ensure Password Hashing
 
 -- Manually Update IsAdmin Status for test user(s)
 UPDATE `users` SET `IsAdmin` = '1' WHERE `UserID` = 1;

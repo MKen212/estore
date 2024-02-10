@@ -1,27 +1,27 @@
 <?php  // Global Helper Functions
 
 /**
- * cleanInput function - Used to clean all Form data entered
- * @param string $input   Original Input
- * @param string $type    Input Type (string, int, float, email, password)
- * @return string $input  Cleaned Input
+ * cleanInput function - Used to clean all manaual data entry
+ * @param string $input    Original Input
+ * @param string $type     Input Type (string, int, float, email, password)
+ * @return string $output  Cleaned Input
  */
 function cleanInput($input, $type) {
   // Clean all with htmlspecialchars
-  $input = htmlspecialchars($input);
+  $output = htmlspecialchars($input);
   if ($type == "string") {
-    $input = trim($input);
-    $input = str_replace("\n", "^~",$input);  // Keep CRLF as ^~
-    $input = stripslashes($input);
-    $input = filter_var($input, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW);
+    $output = trim($output);
+    $output = str_replace("\n", "^~",$output);  // Keep CRLF as ^~
+    $output = stripslashes($output);
+    $output = filter_var($output, FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH | FILTER_FLAG_STRIP_LOW);
   } elseif ($type == "int") {
-    $input = filter_var($input, FILTER_SANITIZE_NUMBER_INT);
+    $output = filter_var($output, FILTER_SANITIZE_NUMBER_INT);
   } elseif ($type == "float") {
-    $input = filter_var($input, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+    $output = filter_var($output, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
   } elseif ($type = "email") {
-    $input = filter_var($input, FILTER_SANITIZE_EMAIL);
+    $output = filter_var($output, FILTER_SANITIZE_EMAIL);
   }
-  return $input;
+  return $output;
 }
 
 /**
@@ -212,7 +212,7 @@ function removeFromCart($itemID) {
 }
 
 /**
- * msgPrep function - Used to add relevant DIV Classes to results message
+ * msgPrep function - Used to prepare system messages for display
  * @param string $type       Type of message (success / warning / danger)
  * @param string $msg        Message Content
  * @return string $prepdMsg  Prepared Message

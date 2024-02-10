@@ -3,13 +3,17 @@ session_start();
 require "../app/helpers/helperFunctions.php";
 require "../app/config/_config.php";
 
-if (!isset($_GET["p"])) $_GET["p"] = "login";  // If page not set, use "login"
+// Get Page Details
+$page = "login";
+if (isset($_GET["p"])) {
+  $page = cleanInput($_GET["p"], "string");
+}
 
 // Check Valid Page is entered
 $validPages = ["login", "logout", "register"];
-if (!in_array($_GET["p"], $validPages)) {
+if (!in_array($page, $validPages)) {
   $_SESSION["message"] = msgPrep("danger", "Error - Page Not Found.");
-  $_GET["p"] = "logout";
+  $page = "logout";
 }
 ?>
 <!DOCTYPE html>
@@ -43,8 +47,7 @@ if (!in_array($_GET["p"], $validPages)) {
     <div class="row justify-content-center">
       <h1>Administration</h1>
     </div>
-    <?php include "../app/controllers/admin_login/" . $_GET["p"] . ".php";?>
+    <?php include "../app/controllers/admin_login/{$page}.php";?>
   </div>
-
 </body>
 </html>

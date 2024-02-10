@@ -54,14 +54,14 @@
                 <li><a href="index.php?p=myAccount"><i class="fa fa-user"></i> My Account</a></li><?php
               endif; ?>
               <!-- Checkout -->
-              <li><a <?= ($_GET["p"] == "checkout") ? 'class="active"' : null ?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+              <li><a <?= ($page == "checkout") ? 'class="active"' : null ?>href="index.php?p=checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
               <!-- Cart -->
-              <li><a <?= ($_GET["p"] == "cart") ? 'class="active"' : null ?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null ?></span></a></li>
+              <li><a <?= ($page == "cart") ? 'class="active"' : null ?>href="index.php?p=cart"><i class="fa fa-shopping-cart"></i> Cart <span class="badge cart-badge" id="cartItems"><?= isset($_SESSION["cart"][0]) && !isset($_GET["mt"]) ? $_SESSION["cart"][0]["itemCount"] : null ?></span></a></li>
               <!-- Login/Logout --><?php
               if (isset($_SESSION["userLogin"])) : ?>
-                <li><a <?= ($_GET["p"] == "logout") ? 'class="active"' : null ?>href="index.php?p=logout"><i class="fa fa-unlock-alt"></i> Logout</a></li><?php
+                <li><a <?= ($page == "logout") ? 'class="active"' : null ?>href="index.php?p=logout"><i class="fa fa-unlock-alt"></i> Logout</a></li><?php
                 else : ?>
-                <li><a <?= ($_GET["p"] == "login") ? 'class="active"' : null ?>href="index.php?p=login"><i class="fa fa-lock"></i> Login</a></li><?php
+                <li><a <?= ($page == "login") ? 'class="active"' : null ?>href="index.php?p=login"><i class="fa fa-lock"></i> Login</a></li><?php
               endif; ?>
             </ul>
           </div>
@@ -86,40 +86,40 @@
           <div class="mainmenu pull-left">
             <ul class="nav navbar-nav collapse navbar-collapse">
               <!-- Home -->
-              <li><a <?= ($_GET["p"] == "home") ? 'class="active"' : null ?>href="index.php">Home</a></li>
+              <li><a <?= ($page == "home") ? 'class="active"' : null ?>href="index.php">Home</a></li>
               <!-- Shop Dropdown -->
-              <li class="dropdown"><a <?= (($_GET["p"] == "products") || ($_GET["p"] == "productDetails") || ($_GET["p"] == "checkout") || ($_GET["p"] == "cart")) ? 'class="active"' : null ?>href="#">Shop<i class="fa fa-angle-down"></i></a>
+              <li class="dropdown"><a <?= (($page == "products") || ($page == "productDetails") || ($page == "checkout") || ($page == "cart")) ? 'class="active"' : null ?>href="#">Shop<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu">
                   <!-- Products -->
-                  <li><a <?= (($_GET["p"] == "products") || ($_GET["p"] == "productDetails")) ? 'class="active"' : null ?>href="index.php?p=products&sp=1">Products</a></li>
+                  <li><a <?= (($page == "products") || ($page == "productDetails")) ? 'class="active"' : null ?>href="index.php?p=products&sp=1">Products</a></li>
                   <!-- Cart -->
-                  <li><a <?= ($_GET["p"] == "cart") ? 'class="active"' : null ?>href="index.php?p=cart">Cart</a></li>
+                  <li><a <?= ($page == "cart") ? 'class="active"' : null ?>href="index.php?p=cart">Cart</a></li>
                   <!-- Checkout -->
-                  <li><a <?= ($_GET["p"] == "checkout") ? 'class="active"' : null ?>href="index.php?p=checkout">Checkout</a></li>
+                  <li><a <?= ($page == "checkout") ? 'class="active"' : null ?>href="index.php?p=checkout">Checkout</a></li>
                 </ul>
               </li>
               <!-- Account Dropdown -->
-              <li class="dropdown"><a <?= (($_GET["p"] == "login") || ($_GET["p"] == "myAccount") || ($_GET["p"] == "myOrders") || ($_GET["p"] == "orderDetails") || ($_GET["p"] == "myReturns") || ($_GET["p"] == "returnDetails") || ($_GET["p"] == "returnItems") || ($_GET["p"] == "myMessages") || ($_GET["p"] == "messageDetails")) ? 'class="active"' : null ?>href="#">Account<i class="fa fa-angle-down"></i></a>
+              <li class="dropdown"><a <?= (($page == "login") || ($page == "myAccount") || ($page == "myOrders") || ($page == "orderDetails") || ($page == "myReturns") || ($page == "returnDetails") || ($page == "returnItems") || ($page == "myMessages") || ($page == "messageDetails")) ? 'class="active"' : null ?>href="#">Account<i class="fa fa-angle-down"></i></a>
                 <ul role="menu" class="sub-menu"><?php
                   if (isset($_SESSION["userLogin"])) : ?>
                     <!-- My Account -->
-                    <li><a <?= ($_GET["p"] == "myAccount") ? 'class="active"' : null ?>href="index.php?p=myAccount">My Account</a></li>
+                    <li><a <?= ($page == "myAccount") ? 'class="active"' : null ?>href="index.php?p=myAccount">My Account</a></li>
                     <!-- My Orders -->
-                    <li><a <?= (($_GET["p"] == "myOrders") || ($_GET["p"] == "orderDetails") || ($_GET["p"] == "returnItems")) ? 'class="active"' : null ?>href="index.php?p=myOrders">My Orders</a></li>
+                    <li><a <?= (($page == "myOrders") || ($page == "orderDetails") || ($page == "returnItems")) ? 'class="active"' : null ?>href="index.php?p=myOrders">My Orders</a></li>
                     <!-- My Returns -->
-                    <li><a <?= (($_GET["p"] == "myReturns") || ($_GET["p"] == "returnDetails")) ? 'class="active"' : null ?>href="index.php?p=myReturns">My Returns</a></li>
+                    <li><a <?= (($page == "myReturns") || ($page == "returnDetails")) ? 'class="active"' : null ?>href="index.php?p=myReturns">My Returns</a></li>
                     <!-- My Messages -->
-                    <li><a <?= (($_GET["p"] == "myMessages") || ($_GET["p"] == "messageDetails")) ? 'class="active"' : null ?>href="index.php?p=myMessages">My Messages</a></li>
+                    <li><a <?= (($page == "myMessages") || ($page == "messageDetails")) ? 'class="active"' : null ?>href="index.php?p=myMessages">My Messages</a></li>
                     <!-- Logout -->
                     <li><a href="index.php?p=logout">Logout</a></li><?php
                   else : ?>
                     <!-- Login -->
-                    <li><a <?= ($_GET["p"] == "login") ? 'class="active"' : null ?>href="index.php?p=login">Login</a></li><?php
+                    <li><a <?= ($page == "login") ? 'class="active"' : null ?>href="index.php?p=login">Login</a></li><?php
                   endif; ?>
                 </ul>
               </li>
               <!-- Contact -->
-              <li><a <?= ($_GET["p"] == "contact") ? 'class="active"' : null ?>href="index.php?p=contact">Contact</a></li>
+              <li><a <?= ($page == "contact") ? 'class="active"' : null ?>href="index.php?p=contact">Contact</a></li>
             </ul>
           </div>
         </div>
